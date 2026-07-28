@@ -1,0 +1,30 @@
+Notas de reunión – Revisión Modelo de Planes de Mantenimiento
+
+Fecha: 24/07/2026
+
+Resumen
+Durante la sesión se confirmó que la solución no debe limitarse a la planificación del mantenimiento, sino contemplar todo el ciclo de vida, incluyendo la ejecución, la captura de información en campo y la mejora continua.
+Principales aspectos tratados
+•	Se revisó la estructura jerárquica utilizada por las organizaciones para gestionar el mantenimiento y la conveniencia de mantener una jerarquía flexible en el CMMS.
+•	Se confirmó la ISO 14224 como referencia principal para la estructura funcional y la clasificación de los planes de mantenimiento.
+•	Se revisó el proceso de elaboración de planes de mantenimiento a partir de los AMEF (FMEA) y de la experiencia operacional.
+•	Se presentó el árbol lógico de la SAE JA1012 (RCM) como criterio para seleccionar la estrategia de mantenimiento más adecuada.
+•	Se explicó el concepto de intervalo PF y su importancia para la definición de tareas basadas en condición.
+•	Se revisó la estructura de un plan de mantenimiento, incluyendo tareas, frecuencias, duración, recursos, disciplina responsable y necesidad de parada de planta.
+•	Se comentó la necesidad de considerar los equipos principales y sus periféricos dentro del mismo plan de mantenimiento.
+•	Se revisó la importancia de definir códigos normalizados para categorías de mantenimiento, disciplinas y puestos de trabajo.
+•	Se analizó el proceso de migración de planes hacia distintos CMMS (SAP, Maximo u otros), destacando la necesidad de disponer de un modelo flexible de exportación.
+Decisiones y requisitos identificados
+•	El CMMS deberá ser independiente del sistema destino y permitir la generación de formatos de carga adaptados a cada cliente.
+•	Se propone desarrollar una interfaz de configuración que permita mapear los campos internos del CMMS con los requeridos por el sistema de destino antes de generar la exportación.
+•	La estructura de los planes deberá permitir agrupar automáticamente las actividades asociadas a un equipo principal junto con sus elementos auxiliares.
+•	La codificación de categorías de mantenimiento deberá alinearse con la ISO 14224.
+•	Será necesario definir un catálogo corporativo de puestos de trabajo y disciplinas para asociar correctamente cada actividad de mantenimiento.
+Observaciones
+Durante la reunión se destacó que la calidad de la información registrada es un factor crítico para el éxito de cualquier CMMS. Se comentó la conveniencia de facilitar la captura de datos de ejecución para evitar pérdidas de información y mejorar la calidad de los datos históricos utilizados para el análisis y la toma de decisiones.
+Acciones
+•	Revisar la integración de los conceptos presentados dentro de la arquitectura funcional del nuevo CMMS.
+•	Solicitar ejemplos de AMEF y documentación de referencia para utilizarlos como base en el diseño funcional.
+
+
+Un saludo
