@@ -4,10 +4,10 @@
 
 | Campo | Valor |
 |---|---|
-| Documento | Especificación funcional y técnica de arranque |
+| Documento | Especificación funcional y de prototipado |
 | Código | `CMMS2-PAS-REL-001` |
-| Versión | `0.1.0` |
-| Estado | Borrador consolidado para revisión |
+| Versión | `0.2.0` |
+| Estado | Alcance funcional y de prototipado consolidado |
 | Fecha | 2026-07-28 |
 | Destinatario | Codex dentro de Visual Studio Code |
 | Alcance inmediato | Definición y prototipo 04 del módulo AMEF/RCM |
@@ -17,17 +17,38 @@
 
 ## 1. Propósito del documento
 
-Este documento proporciona a Codex el contexto necesario para continuar el diseño y, cuando se autorice, desarrollar un prototipo del módulo de Ingeniería de Fiabilidad de CMMS 2.0.
+Este documento proporciona a Codex el contexto necesario para continuar el análisis funcional, elaborar documentos de especificación y desarrollar prototipos HTML del módulo de Ingeniería de Fiabilidad de CMMS 2.0.
 
 No es un prompt para generar una aplicación completa de una sola vez. Es la fuente de contexto inicial para:
 
 1. reconstruir el estado aprobado;
-2. convertir el dominio en una especificación técnica trazable;
-3. cerrar las decisiones arquitectónicas pendientes;
-4. diseñar contratos y modelo de datos;
-5. implementar el prototipo por incrementos verificables.
+2. convertir el dominio en una especificación funcional trazable;
+3. identificar decisiones, dependencias y preguntas que deberán trasladarse a IT;
+4. definir modelos conceptuales y contratos funcionales, sin imponer su implementación;
+5. construir prototipos HTML navegables por incrementos verificables.
 
 Codex debe tratar las decisiones marcadas como **cerradas** como restricciones vigentes. Las propuestas y puntos abiertos no deben convertirse silenciosamente en requisitos.
+
+### 1.1 Límite de responsabilidad
+
+El alcance de este trabajo se limita a:
+
+- análisis funcional;
+- documentos de especificación;
+- modelos conceptuales de información;
+- requisitos, reglas de negocio y criterios de aceptación;
+- prototipos HTML navegables con datos simulados;
+- documentación de necesidades de integración para su posterior evaluación por IT.
+
+Quedan fuera de este trabajo:
+
+- decidir la arquitectura técnica productiva;
+- seleccionar tecnologías de backend, base de datos, integración, identidad o despliegue;
+- crear APIs, procedimientos almacenados, flows o conectores reales;
+- implementar integraciones con el CMMS corporativo u otros sistemas;
+- afirmar que el prototipo HTML es código productivo.
+
+> IT definirá la integración exacta y la arquitectura de implementación. Los artefactos elaborados aquí expresarán qué necesita el negocio y qué comportamiento debe observarse, no cómo debe construirlo IT.
 
 ---
 
@@ -219,9 +240,11 @@ El prototipo debe mostrar un flujo guiado, no un conjunto de tablas CRUD indepen
 - evaluación de aplicabilidad;
 - vista de revisión y aprobación;
 - datos de ejemplo coherentes;
-- persistencia mediante contratos desacoplados de la interfaz.
+- simulación de persistencia en memoria o almacenamiento local, únicamente para demostrar la experiencia;
+- contratos funcionales conceptuales desacoplados de cualquier tecnología;
+- anotaciones para IT sobre datos requeridos, eventos, dependencias y comportamientos esperados.
 
-### 8.2 Excluido de la primera implementación
+### 8.2 Excluido del alcance
 
 - generación real de órdenes de trabajo;
 - optimizador avanzado de campañas;
@@ -232,6 +255,11 @@ El prototipo debe mostrar un flujo guiado, no un conjunto de tablas CRUD indepen
 - cálculo avanzado de costes;
 - sincronización bidireccional con el CMMS existente;
 - despliegue productivo y modelo definitivo de identidad corporativa.
+- backend productivo;
+- modelo físico de base de datos;
+- APIs, procedimientos almacenados, Power Automate flows o conectores reales;
+- decisiones de infraestructura, seguridad técnica y operación;
+- integración real con aplicaciones corporativas.
 
 Estas exclusiones no eliminan los requisitos de trazabilidad necesarios para integrarlos posteriormente.
 
@@ -498,7 +526,7 @@ Cada etapa debe contemplar:
 
 ## 17. Contratos de aplicación preliminares
 
-Codex debe diseñar contratos antes de implementar la interfaz. Nombres orientativos:
+Codex debe documentar contratos funcionales conceptuales antes de implementar la interfaz. Sirven para describir las necesidades de intercambio y no prescriben una tecnología. Nombres orientativos:
 
 | Operación | Propósito |
 |---|---|
@@ -514,17 +542,17 @@ Codex debe diseñar contratos antes de implementar la interfaz. Nombres orientat
 | `DecideApprovalStage` | Aprobar, rechazar o devolver una etapa. |
 | `PublishFmeaRevision` | Validar y publicar un snapshot atómicamente. |
 
-Todos los contratos deben incluir:
+La especificación funcional de cada contrato debe describir:
 
 - `correlationId`;
-- identidad del usuario resuelta en servidor;
+- identidad o rol funcional del usuario;
 - versión esperada para concurrencia;
 - código de resultado;
-- mensajes funcionales separados de detalles técnicos;
-- validaciones de autorización;
+- mensajes funcionales esperados;
+- reglas funcionales de autorización;
 - idempotencia en operaciones de publicación y aprobación.
 
-No debe definirse todavía si estos contratos se implementan con API, procedimientos almacenados y flows, o una combinación, hasta cerrar la arquitectura.
+No debe definirse si estos contratos se implementarán mediante API, procedimientos almacenados, flows u otra solución. Esa decisión corresponde a IT. En el prototipo HTML se simularán mediante servicios locales o datos estáticos claramente identificados como *mock*.
 
 ---
 
@@ -601,17 +629,19 @@ Codex no debe:
 - confundir FLH, taxonomía y ADR;
 - hacer desaparecer activos auxiliares bajo el equipo principal;
 - codificar múltiples dimensiones en un texto o nombre;
-- conectar componentes visuales directamente a SQL o flows;
+- conectar el prototipo a SQL, flows, APIs o sistemas reales;
 - inventar roles, estados, tecnologías o integraciones no aprobadas;
-- generar código productivo antes de cerrar las decisiones que afectan a varias capas.
+- presentar decisiones técnicas como si hubieran sido aprobadas por IT;
+- convertir modelos conceptuales en diseños físicos definitivos;
+- presentar el prototipo HTML como implementación productiva.
 
 ---
 
-## 21. Decisiones arquitectónicas pendientes
+## 21. Decisiones y consultas para IT
 
 | ID | Decisión pendiente | Impacto |
 |---|---|---|
-| `OPEN-ARCH-001` | Tecnología del prototipo: HTML/TypeScript, Power Apps u otra. | Estructura del repositorio, componentes y pruebas. |
+| `CLOSED-PROT-001` | El prototipo se realizará en HTML, CSS y JavaScript. | Permite validar navegación y comportamiento sin condicionar la solución productiva. |
 | `OPEN-ARCH-002` | Sistema de registro del módulo: SQL Server/Azure SQL u otro. | Modelo físico, transacciones y seguridad. |
 | `OPEN-ARCH-003` | Patrón de acceso: API, Power Automate, SP o híbrido. | Contratos, rendimiento y operación. |
 | `OPEN-ARCH-004` | Integración y claves con activos, FLH, taxonomía y ADR existentes. | Integridad referencial y despliegue. |
@@ -622,7 +652,7 @@ Codex no debe:
 | `OPEN-ARCH-009` | Estados y etapas de aprobación definitivos. | Workflow y permisos. |
 | `OPEN-ARCH-010` | Convenciones del repositorio donde se integrará. | Rutas, CI, versionado y entregables. |
 
-Estas decisiones deben cerrarse mediante registros de decisión arquitectónica antes de implementar las capas afectadas.
+Las decisiones `OPEN-ARCH-*` no bloquean el análisis funcional ni el prototipo HTML. Se conservarán como consultas estructuradas para IT y solo bloquearán una futura implementación productiva de las capas afectadas.
 
 ---
 
@@ -698,33 +728,30 @@ Debe adaptarse a la estructura real existente. Si el repositorio aún no existe:
 docs/
   functional/
     CMMS_2.0_ESPECIFICACION_CODEX_AMEF_RCM.md
-  architecture/
-    ARCHITECTURE.md
-    ADR/
-  technical/
-    RELIABILITY_APPLICATION_SPECIFICATION.md
+    REQUIREMENTS_CATALOG.md
+    BUSINESS_RULES.md
+    USER_FLOWS.md
+    ACCEPTANCE_CRITERIA.md
+  integration/
+    IT_INTEGRATION_REQUIREMENTS.md
+    IT_OPEN_QUESTIONS.md
   traceability/
     TRACEABILITY.md
   state/
     PROJECT_STATE.md
   risks/
     RISKS_AND_OPEN_POINTS.md
-src/
-  domain/
-  application/
-  infrastructure/
-  ui/
-contracts/
-  reliability/
-database/
-  migrations/
-  procedures/
-  seeds/
-  tests/
+prototypes/
+  04-amef-rcm/
+    index.html
+    assets/
+      css/
+      js/
+    data/
+      demo-data.json
+    README.md
 tests/
-  unit/
-  integration/
-  acceptance/
+  prototype/
 ```
 
 No crear carpetas vacías ni una arquitectura ceremonial. Crear cada elemento cuando tenga contenido real.
@@ -733,48 +760,49 @@ No crear carpetas vacías ni una arquitectura ceremonial. Crear cada elemento cu
 
 ## 25. Plan de trabajo para Codex
 
-### Sprint 0 — Reconstrucción y decisiones
+### Sprint 0 — Consolidación funcional
 
 Entregables:
 
 - inventario del repositorio;
 - `PROJECT_STATE.md`;
 - catálogo de requisitos y trazabilidad inicial;
-- decisiones vigentes;
-- puntos abiertos;
-- registros de decisión para tecnología, persistencia, integración, identidad y workflow.
+- decisiones funcionales vigentes;
+- supuestos, dependencias y puntos abiertos;
+- catálogo de preguntas y requisitos de integración que deberán validarse con IT;
+- alcance cerrado del prototipo HTML.
 
-Puerta de salida: arquitectura transversal suficientemente cerrada.
+Puerta de salida: alcance funcional y de prototipado suficientemente cerrado, sin exigir decisiones técnicas de IT.
 
-### Sprint 1 — Especificación técnica consolidada
+### Sprint 1 — Especificación funcional consolidada
 
 Entregables:
 
-- especificación de aplicación;
-- modelo de dominio;
-- permisos;
+- especificación funcional;
+- modelo conceptual del dominio;
+- roles y permisos funcionales;
 - estados;
-- contratos;
+- contratos funcionales conceptuales;
 - navegación;
 - árbol visual;
 - criterios de aceptación refinados.
 
 Puerta de salida: cada requisito en alcance tiene diseño y prueba asociada.
 
-### Sprint 2 — Datos y contratos
+### Sprint 2 — Modelo conceptual y datos de demostración
 
 Entregables:
 
-- modelo lógico y físico;
-- diccionario;
-- scripts o migraciones;
-- datos semilla;
-- contratos de lectura y escritura;
-- pruebas de integridad y concurrencia.
+- modelo conceptual de información;
+- diccionario funcional;
+- datos ficticios de demostración;
+- contratos conceptuales de lectura y escritura;
+- reglas de integridad y concurrencia expresadas como requisitos;
+- documento de necesidades y preguntas para IT.
 
 ### Sprint 3 — Shell y etapas 1 a 4
 
-Implementar:
+Prototipar en HTML:
 
 - shell;
 - cabecera;
@@ -784,7 +812,7 @@ Implementar:
 
 ### Sprint 4 — Consecuencias y RCM
 
-Implementar:
+Prototipar en HTML:
 
 - evaluación de consecuencias;
 - matriz de riesgo;
@@ -793,7 +821,7 @@ Implementar:
 
 ### Sprint 5 — Tratamientos y aplicabilidad
 
-Implementar:
+Prototipar en HTML:
 
 - tareas propuestas;
 - decisiones sin tarea;
@@ -802,7 +830,7 @@ Implementar:
 
 ### Sprint 6 — Aprobación y publicación
 
-Implementar:
+Prototipar en HTML:
 
 - etapas;
 - permisos;
@@ -811,17 +839,18 @@ Implementar:
 - nueva revisión;
 - changelog funcional.
 
-### Sprint 7 — Integración, QA y handoff
+### Sprint 7 — Validación funcional y handoff a IT
 
 Entregables:
 
 - trazabilidad final;
-- pruebas;
+- pruebas del prototipo;
 - correcciones;
-- instrucciones de ejecución;
+- instrucciones para abrir y recorrer el prototipo HTML;
 - datos de demostración;
 - limitaciones reales;
-- siguiente fase hacia Job Plans y estrategias.
+- especificación de necesidades de integración para IT;
+- siguiente fase funcional hacia Job Plans y estrategias.
 
 Cada sprint debe terminar con un entregable verificable. No declarar completado trabajo no implementado o no probado.
 
@@ -833,11 +862,11 @@ Cada sprint debe terminar con un entregable verificable. No declarar completado 
 2. Inspeccionar el repositorio y reconstruir el estado real.
 3. No reabrir decisiones cerradas sin contradicción o limitación técnica comprobable.
 4. Registrar hechos, decisiones, restricciones, supuestos y dudas por separado.
-5. No generar implementación antes de resolver los puntos que la condicionan.
+5. No esperar decisiones técnicas de IT para avanzar con documentación o prototipos cuando puedan simularse de forma explícita.
 6. Trabajar por microincrementos completos y verificables.
 7. Modificar únicamente archivos necesarios.
 8. Entregar archivos completos cuando deban copiarse o sustituirse.
-9. Ejecutar pruebas disponibles y reportar resultados literales.
+9. Ejecutar validaciones del HTML y pruebas funcionales del prototipo, y reportar resultados literales.
 10. No afirmar compatibilidad, compilación o funcionamiento sin evidencia.
 11. Preservar cambios existentes del usuario.
 12. Actualizar estado, trazabilidad y decisiones al cerrar cada sprint.
@@ -867,30 +896,30 @@ Cada sprint debe terminar con un entregable verificable. No declarar completado 
 ## 27. Prompt de arranque para Codex
 
 ```text
-Actúa como Arquitecto Principal y desarrollador responsable del módulo de
+Actúa como Analista Funcional Principal y diseñador de prototipos del módulo de
 Ingeniería de Fiabilidad de CMMS 2.0.
 
 Lee primero:
 - las instrucciones del repositorio;
 - docs/functional/CMMS_2.0_ESPECIFICACION_CODEX_AMEF_RCM.md;
 - PROJECT_STATE.md, si existe;
-- los ADR y contratos vigentes.
+- las decisiones funcionales y contratos conceptuales vigentes.
 
-No implementes todavía el prototipo.
+No desarrolles backend ni integración productiva.
 
 Ejecuta el Sprint 0:
 1. inspecciona el repositorio;
 2. reconstruye el estado real;
 3. compara el repositorio con la especificación;
 4. clasifica hechos, decisiones, restricciones, supuestos y dudas;
-5. identifica únicamente las decisiones que bloquean varias capas;
-6. propone los ADR necesarios;
+5. identifica las preguntas que deberán trasladarse a IT, sin convertirlas en bloqueos del análisis;
+6. confirma el alcance del prototipo HTML y las simulaciones necesarias;
 7. genera o actualiza PROJECT_STATE.md, TRACEABILITY.md y
    RISKS_AND_OPEN_POINTS.md;
 8. define el siguiente entregable exacto.
 
-No inventes tecnología, tablas, endpoints, roles ni estados definitivos.
-No modifiques código de aplicación en este sprint.
+No inventes arquitectura productiva, tablas físicas, endpoints ni integraciones.
+No desarrolles código productivo en este sprint.
 No reabras las decisiones funcionales marcadas como cerradas.
 Entrega archivos completos, coherentes y listos para incorporar al repositorio.
 ```
@@ -911,18 +940,21 @@ Entrega archivos completos, coherentes y listos para incorporar al repositorio.
 - flujo guiado del prototipo 04;
 - núcleo mínimo de dominio.
 
-### Pendiente
+### Pendiente de definición por IT
 
 - arquitectura de ejecución;
-- tecnología y repositorio objetivo;
-- matriz de permisos;
-- catálogo inicial y matrices;
-- workflow definitivo;
-- contratos físicos;
-- alcance exacto de perfiles avanzados;
+- tecnología productiva y repositorio objetivo;
+- contratos técnicos y físicos;
 - integración con el CMMS existente.
+
+### Pendiente de definición funcional
+
+- matriz de roles y permisos funcionales;
+- catálogos iniciales y matrices de decisión;
+- workflow definitivo de revisión y aprobación;
+- alcance exacto de los perfiles avanzados;
+- reglas de transición hacia Job Plans y estrategias de mantenimiento.
 
 ### Siguiente paso
 
-Incorporar este documento al repositorio y ejecutar el Sprint 0 con el prompt de arranque. No comenzar por generar pantallas: primero debe cerrarse la arquitectura que afecta a datos, contratos, seguridad y versionado.
-
+Incorporar este documento al repositorio y ejecutar el Sprint 0 con el prompt de arranque. Después se podrá avanzar con la especificación funcional y el prototipo HTML sin esperar a que IT defina la arquitectura productiva. Las decisiones técnicas se documentarán como preguntas y dependencias para el futuro handoff.
