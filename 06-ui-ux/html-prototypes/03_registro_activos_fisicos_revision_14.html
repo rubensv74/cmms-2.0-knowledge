@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CMMS 2.0 · Registro de Activos Físicos</title>
+<style>
+:root{
+ --bg:#f5f7fb;--surface:#fff;--soft:#f8fafc;--border:#dce3ec;--text:#172033;
+ --muted:#667085;--primary:#1677ff;--primary-dark:#0f5fd3;--success:#079455;
+ --warning:#d97706;--danger:#d92d20;--nav:#10233f;--shadow:0 14px 34px rgba(15,23,42,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+.app{display:grid;grid-template-columns:285px 1fr;min-height:100vh}
+aside{background:var(--nav);color:#fff;padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:26px}
+.logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#44c4ff,#1677ff);font-weight:800}
+.brand h1{font-size:16px;margin:0}.brand small{color:#a8b4c5}
+.nav-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#90a2b9;margin:18px 10px 8px}
+.nav-step{display:flex;gap:10px;padding:11px 10px;border-radius:10px;margin:4px 0;color:#cdd7e5;cursor:pointer}
+.nav-step.active{background:#17365f;color:#fff}.nav-step.done{color:#b7f4d3}
+.nav-num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#314965;font-size:12px;font-weight:800;flex:0 0 auto}
+.nav-step.active .nav-num{background:var(--primary)}.nav-step.done .nav-num{background:var(--success)}
+.nav-step strong{display:block;font-size:13px}.nav-step span{display:block;font-size:11px;color:#91a3ba;margin-top:2px}
+.nav-foot{font-size:12px;color:#91a3ba;border-top:1px solid #314965;padding-top:14px;margin-top:24px}
+main{padding:26px 32px 48px}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.topbar h2{margin:0 0 6px;font-size:28px}.topbar p{margin:0;color:var(--muted);max-width:920px}
+.tag{background:#e9f2ff;color:#1459b8;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.progress{height:8px;background:#e7ecf3;border-radius:999px;overflow:hidden;margin-bottom:20px}
+.progress>div{height:100%;background:var(--primary);transition:.25s}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:15px;box-shadow:var(--shadow);overflow:hidden}
+.panel-header{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.panel-header h3{margin:0 0 5px;font-size:20px}.panel-header p{margin:0;color:var(--muted);font-size:13px}
+.panel-body{padding:22px}
+.view{display:none}.view.active{display:block}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid var(--border);border-radius:12px;padding:17px;background:var(--soft)}
+.card h4{margin:0 0 10px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.notice{padding:13px 15px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:13px;line-height:1.5}
+.notice.success{background:#ecfdf3;border-color:#a7f3d0;color:#065f46}
+.notice.warning{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px;color:#344054}
+.field input,.field select{width:100%;padding:10px;border:1px solid var(--border);border-radius:9px;background:#fff}
+.readonly{background:#f2f4f7!important;color:#475467}
+.btn{border:none;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}.btn:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.25)}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark)}
+.btn-secondary{background:#eef2f7;color:#344054}.btn-outline{background:#fff;border:1px solid var(--border);color:#344054}.btn-success{background:var(--success);color:#fff}.btn-danger{background:#fee4e2;color:#b42318}
+.actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.tree ul{list-style:none;margin:0;padding-left:22px}.tree li{margin:8px 0}
+.node{display:inline-flex;gap:7px;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;cursor:pointer}
+.node.selected{border-color:#7eb2ff;background:#f4f8ff}.node b{font-size:11px;color:#1459b8;background:#e9f2ff;padding:3px 6px;border-radius:5px}
+.root-badge{background:#ecfdf3!important;color:#05603a!important}
+.taxonomy-box{margin-top:14px;padding:14px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.taxonomy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.taxonomy-value{padding:9px;border:1px solid var(--border);border-radius:8px;background:#f8fafc}
+.taxonomy-value strong{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}.taxonomy-value span{font-size:12px;font-weight:700}
+.asset-layout{display:grid;grid-template-columns:minmax(380px,1.05fr) minmax(380px,.95fr);gap:18px}
+.asset-tree-box{border:1px solid var(--border);border-radius:12px;background:#fff;padding:14px;min-height:480px}
+.asset-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.asset-form{border:1px solid var(--border);border-radius:12px;background:var(--soft);padding:16px}
+.context{padding:10px;border:1px solid var(--border);border-radius:9px;background:#fff;margin-bottom:12px}
+.context strong{display:block;font-size:12px}.context span{font-size:12px;color:var(--muted)}
+.info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.info-card{padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.info-card strong{display:block;font-size:12px;margin-bottom:4px}.info-card span{font-size:12px;color:var(--muted);line-height:1.4}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.compare-card{border:1px solid var(--border);border-radius:12px;padding:16px;background:#fff}
+.compare-card h4{margin:0 0 6px}
+.compare-card .question{margin-top:12px;padding:11px;border-radius:9px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:13px;font-weight:700}
+.concept-warning{margin-top:16px;padding:14px;border-radius:11px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.concept-warning strong{display:block;margin-bottom:6px}
+.compare-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:12px}
+.compare-table th,.compare-table td{padding:9px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.compare-table th{background:#153c70;color:#fff}
+.adr-fixed-note{margin:14px 0;padding:13px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:13px;line-height:1.5}
+
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:9px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:#153c70;color:#fff}
+.table-wrap{overflow:auto}
+.status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.ok{background:#d1fadf;color:#05603a}.err{background:#fee4e2;color:#b42318}.warn{background:#fef0c7;color:#93370d}
+.validation-item{display:flex;justify-content:space-between;gap:10px;padding:11px;border-bottom:1px solid var(--border)}
+.summary{display:grid;gap:9px}.summary-item{padding:12px;border:1px solid var(--border);border-radius:9px;background:#fff}
+.summary-item strong{display:block;font-size:12px}.summary-item span{font-size:12px;color:var(--muted)}
+.hidden{display:none}
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
+.modal-backdrop.open{display:flex}.modal{width:min(800px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:15px;box-shadow:0 24px 70px rgba(0,0,0,.25)}
+.modal-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--border)}
+.modal-header h3{margin:0 0 5px}.modal-header p{margin:0;color:var(--muted);font-size:13px}.modal-body{padding:20px}
+.modal-close{width:34px;height:34px;border:1px solid var(--border);background:#fff;border-radius:9px;cursor:pointer;font-size:20px}
+.use-case{padding:13px;border:1px solid var(--border);border-radius:10px;background:#f8fafc;margin-bottom:10px}.use-case strong{display:block;margin-bottom:4px}.use-case p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+@media(max-width:1100px){.app{grid-template-columns:1fr}aside{display:none}.grid-2,.grid-3,.asset-layout{grid-template-columns:1fr}}
+@media(max-width:700px){main{padding:18px}.form-grid,.taxonomy-grid,.info-strip{grid-template-columns:1fr}.topbar{display:block}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+ <div class="brand"><div class="logo">ADR</div><div><h1>Physical Asset Registry</h1><small>CMMS 2.0</small></div></div>
+ <div class="nav-title">Proceso</div>
+ <div id="navSteps"></div>
+ <div class="nav-foot">Este asistente consume el Asset Model v1.0 publicado. No redefine la taxonomía ni las reglas del proyecto.</div>
+</aside>
+
+<main>
+ <div class="topbar">
+  <div>
+   <h2>Registro de Activos Físicos (ADR)</h2>
+   <p>Aplica el Modelo de Activos publicado, selecciona una ubicación funcional y construye la composición física del Nodo Raíz ADR y sus hijos.</p>
+  </div>
+  <div class="tag">Proyecto: Demo Refinery</div>
+ </div>
+ <div class="progress"><div id="progressBar"></div></div>
+
+ <section class="panel">
+  <div class="panel-header">
+   <div><h3 id="stepTitle"></h3><p id="stepSubtitle"></p></div>
+   <span class="tag" id="stepCounter"></span>
+  </div>
+  <div class="panel-body">
+
+   <section class="view active">
+    <div class="grid-2">
+     <div class="card">
+      <h4>Ubicación funcional del proyecto</h4>
+      <div class="tree"><ul>
+       <li><span class="node"><b>L1</b>Planta Madrid</span><ul>
+        <li><span class="node"><b>L2</b>Área de Utilidades</span><ul>
+         <li><span class="node"><b>L3</b>Sistema de Aire</span><ul>
+          <li><span class="node"><b>L4</b>Línea de Compresión</span><ul>
+           <li><span class="node selected"><b>L5</b>COMP-101 · Equipo</span></li>
+          </ul></li>
+         </ul></li>
+        </ul></li>
+       </ul></li>
+      </ul></div>
+      <div class="notice success" style="margin-top:14px">Este proyecto usa 5 niveles numéricos. L3 y L4 tienen política <b>MULTIPLE</b>; L5 tiene <b>SINGLE</b>. Los nombres “Sistema”, “Línea” y “Equipo” son etiquetas visibles, no reglas estructurales.</div>
+     </div>
+     <div class="card">
+      <h4>Modelo de Activos aplicable</h4>
+      <div class="notice success"><b>Asset Model · v1.0 · Publicado</b><br>Configuración oficial disponible para el registro físico.</div>
+      <div class="summary" style="margin-top:14px">
+       <div class="summary-item"><strong>Fuente taxonómica</strong><span>Corporativa</span></div>
+       <div class="summary-item"><strong>Catálogo permitido</strong><span>8 clasificaciones habilitadas</span></div>
+       <div class="summary-item"><strong>Criticidad</strong><span>A / B / C · obligatoria</span></div>
+       <div class="summary-item"><strong>Política de raíces</strong><span>Heredada de cada LocationCode</span></div>
+       <div class="summary-item"><strong>Relaciones</strong><span>5 tipos permitidos</span></div>
+      </div>
+      <div class="notice" style="margin-top:14px">La FLH aporta el <b>dónde</b>. El modelo publicado gobierna el <b>qué es</b> y las reglas con las que puede registrarse.</div>
+     </div>
+    </div>
+   </section>
+
+   <section class="view">
+    <div class="notice"><b>Continuidad entre asistentes:</b> importa exactamente el archivo generado en el paso 6 de Configuración del Modelo de Activos del Proyecto.</div>
+    <div class="card" style="margin-top:16px">
+     <h4>Importar Plantilla de Clasificación de Activos Raíz</h4>
+     <div class="summary" style="margin-top:12px"><div class="summary-item"><strong>Plantilla esperada</strong><span>Asset Classification Template</span></div><div class="summary-item"><strong>Proyecto</strong><span>Demo Refinery</span></div><div class="summary-item"><strong>FLH</strong><span>v2.1</span></div><div class="summary-item"><strong>Asset Model</strong><span>v1.0</span></div></div>
+     <div class="asset-toolbar" style="margin:14px 0 0"><button id="importClassificationButton" class="btn btn-primary">Importar plantilla cumplimentada</button><button id="loadClassificationExampleButton" class="btn btn-outline">Cargar ejemplo completo</button><button id="reviewExceptionsButton" class="btn btn-outline" disabled>Revisar 2 excepciones</button><button id="downloadErrorsButton" class="btn btn-outline" disabled>Descargar errores</button><input id="classificationFile" type="file" accept=".xlsx,.xls,.csv" class="hidden"></div>
+     <div id="importClassificationMsg" class="notice success hidden" style="margin-top:12px"><b>Importación completada.</b> 10 asociaciones válidas · 2 excepciones que no bloquean este recorrido. Revísalas en la ficha si necesitas corregirlas.</div>
+     <div id="importedClassificationPreview" class="hidden" style="margin-top:16px">
+      <div class="summary"><div class="summary-item"><strong>Contenido mostrado</strong><span>Ejemplo pedagógico completo</span></div><div class="summary-item"><strong>Filas del ejemplo</strong><span>5</span></div><div class="summary-item"><strong>Asociaciones válidas</strong><span style="color:var(--green);font-weight:800">5</span></div><div class="summary-item"><strong>Excepciones</strong><span>0</span></div></div>
+      <div class="notice" style="margin-top:12px"><b>Ejemplo de una plantilla correctamente cumplimentada.</b> Incluye todas las columnas y muestra cómo cada fila asocia un activo raíz con una ubicación FLH y una clasificación del catálogo publicado. No representa un archivo importado.</div>
+      <div class="table-wrap" style="margin-top:12px"><table>
+       <thead><tr><th>LocationCode</th><th>LocationDescription</th><th>LevelNumber</th><th>DisplayName</th><th>FunctionalRole</th><th>EffectiveAssetRootPolicy</th><th>AssetCode</th><th>AssetDescription</th><th>EquipmentTypeCode</th><th>Discipline</th><th>Typology</th><th>Family</th><th>Subfamily</th><th>Criticality</th><th>ClassificationStatus</th></tr></thead>
+       <tbody>
+        <tr><td>SYS-AIR</td><td>Sistema de aire</td><td>3</td><td>Sistema</td><td>ProcessSystem</td><td>MULTIPLE</td><td>PKG-AIR-01</td><td>Paquete de aire comprimido</td><td>PKG-AIR</td><td>Mechanical</td><td>Mechanical Packages</td><td>Air Package</td><td>Compressed Air Package</td><td>A</td><td><span class="status ok">Válido</span></td></tr>
+        <tr><td>SYS-AIR</td><td>Sistema de aire</td><td>3</td><td>Sistema</td><td>ProcessSystem</td><td>MULTIPLE</td><td>DRYER-101</td><td>Secador de aire</td><td>DRY-ADS</td><td>Mechanical</td><td>Mechanical Static Equipment</td><td>Dryer</td><td>Adsorption Dryer</td><td>B</td><td><span class="status ok">Válido</span></td></tr>
+        <tr><td>COMP-101</td><td>Compresor principal</td><td>5</td><td>Equipo</td><td>Equipment</td><td>SINGLE</td><td>COMP-101</td><td>Compresor centrífugo principal</td><td>COMP-CMS</td><td>Mechanical</td><td>Mechanical Rotating Equipment</td><td>Compressor</td><td>Centrifugal Multi Stage</td><td>A</td><td><span class="status ok">Válido</span></td></tr>
+        <tr><td>LIN-BOM</td><td>Línea de bombeo</td><td>4</td><td>Línea</td><td>ProcessLine</td><td>MULTIPLE</td><td>P-101</td><td>Bomba de proceso A</td><td>PUMP-CEN</td><td>Mechanical</td><td>Mechanical Rotating Equipment</td><td>Pump</td><td>Centrifugal Horizontal</td><td>A</td><td><span class="status ok">Válido</span></td></tr>
+        <tr><td>LIN-BOM</td><td>Línea de bombeo</td><td>4</td><td>Línea</td><td>ProcessLine</td><td>MULTIPLE</td><td>P-102</td><td>Bomba de proceso B</td><td>PUMP-CEN</td><td>Mechanical</td><td>Mechanical Rotating Equipment</td><td>Pump</td><td>Centrifugal Horizontal</td><td>B</td><td><span class="status ok">Válido</span></td></tr>
+       </tbody>
+      </table></div>
+      <div class="notice success" style="margin-top:12px"><b>Cómo leer el ejemplo:</b> SYS-AIR y LIN-BOM utilizan MULTIPLE, por lo que pueden repetirse con distintos AssetCode. COMP-101 utiliza SINGLE y solo admite un activo raíz.</div>
+     </div>
+    </div>
+   </section>
+
+   <section class="view">
+    <div class="grid-2">
+     <div class="card">
+      <h4>Seleccionar una asociación FLH habilitada</h4>
+      <p>El botón de definición solo se habilita al seleccionar una ubicación cuya política efectiva admita activos raíz.</p>
+      <div class="tree" style="margin-top:14px"><ul><li><span class="node"><b>L1</b>Planta Madrid</span><ul><li><span class="node"><b>L2</b>Área de Utilidades</span><ul><li><span class="node"><b>L3</b>Sistema de Aire</span><ul><li><span class="node"><b>L4</b>Línea de Compresión</span><ul><li><span id="rootLocationNode" class="node selected" role="button" tabindex="0"><b>L5</b>COMP-101 · <span class="status ok">SINGLE</span></span></li></ul></li></ul></li></ul></li></ul></li></ul></div>
+      <div id="selectedLocationMessage" class="notice" style="margin-top:14px"><b>Asociación seleccionada:</b> COMP-101 admite un único Nodo Raíz ADR. El botón de definición está habilitado.</div>
+      <button id="openRootConceptButton" class="btn btn-outline" style="margin-top:14px">ⓘ ¿Qué es un Nodo Raíz ADR?</button>
+     </div>
+     <div class="card">
+      <h4>Definir Nodo Raíz ADR</h4>
+      <div class="form-grid">
+       <div class="field"><label>AssetCode</label><input id="rootTag" class="readonly" value="COMP-101" readonly></div>
+       <div class="field"><label>Descripción</label><input id="rootDescription" class="readonly" value="Compresor centrífugo principal" readonly></div>
+       <div class="field"><label>Clasificación ya asociada</label><input id="rootType" class="readonly" value="Compressor - Centrifugal Multi Stage" readonly></div>
+       <div class="field"><label>Criticidad</label><select id="rootCriticality"><option>A</option><option>B</option><option>C</option></select></div>
+      </div>
+      <div class="taxonomy-box">
+       <div class="taxonomy-grid">
+        <div class="taxonomy-value"><strong>Discipline</strong><span>Mechanical</span></div>
+        <div class="taxonomy-value"><strong>Typology</strong><span>Mechanical Rotating Equipment</span></div>
+        <div class="taxonomy-value"><strong>Family</strong><span>Compressor</span></div>
+        <div class="taxonomy-value"><strong>Subfamily</strong><span>Centrifugal Multi Stage</span></div>
+       </div>
+      </div>
+      <div class="notice" style="margin-top:12px">La creación se realiza directamente en esta pantalla con los datos mostrados. Solo es necesario seleccionar una ubicación habilitada en el árbol; no depende de una importación masiva.</div>
+      <button id="createRootButton" class="btn btn-success" style="width:100%;margin-top:14px">Definir Nodo Raíz ADR</button>
+      <div id="rootMessage" class="notice success hidden" style="margin-top:12px">Nodo Raíz ADR definido para la ubicación COMP-101.</div>
+     </div>
+    </div>
+   </section>
+
+   <section class="view">
+    <div class="adr-fixed-note">
+     La posición en este árbol representa exclusivamente la <b>composición física</b>. No reproduce ni reutiliza los niveles configurados en la jerarquía funcional (FLH).
+    </div>
+    <div class="notice">
+     Añade subconjuntos físicos, equipos, instrumentos o agrupaciones técnicas. <b>Los hijos no usan niveles predefinidos de la FLH.</b> Su posición depende de la relación padre-hijo y cada nodo conserva su propia taxonomía.
+    </div>
+    <div class="info-strip">
+     <div class="info-card"><strong>¿Qué puede ser hijo?</strong><span>Sistemas auxiliares, subequipos, motores, bombas, filtros, enfriadores, instrumentos o agrupaciones técnicas.</span></div>
+     <div class="info-card"><strong>¿Puede tener hijos?</strong><span>Sí. Cualquier nodo ADR puede contener otros nodos, con profundidad flexible.</span></div>
+     <div class="info-card"><strong>¿Cómo se estructura?</strong><span>Cada hijo referencia a su padre mediante ParentAssetCode y una relación física como PartOf.</span></div>
+    </div>
+
+    <div class="asset-layout">
+     <div class="asset-tree-box">
+      <div class="asset-toolbar">
+       <button id="addChildButton" class="btn btn-primary">+ Añadir subconjunto físico o activo hijo</button>
+       <button id="loadExampleButton" class="btn btn-outline">Cargar ejemplo completo</button>
+       <button id="openHelpButton" class="btn btn-outline">ⓘ Guía para crear hijos</button>
+       <button id="openConceptButton" class="btn btn-outline">ⓘ Diferencia FLH / ADR</button>
+      </div>
+      <div id="assetTree" class="tree"></div>
+     </div>
+
+     <div class="asset-form">
+      <h4 id="editorTitle">Selecciona un nodo ADR</h4>
+      <div id="assetContext" class="context"><strong>Contexto</strong><span>Selecciona el Nodo Raíz o un activo hijo para añadir un nuevo descendiente.</span></div>
+      <div id="assetEditor" class="hidden">
+       <div class="form-grid">
+        <div class="field"><label>AssetCode</label><input id="childTag"></div>
+        <div class="field"><label>Descripción</label><input id="childDescription"></div>
+        <div class="field"><label>Clasificación del catálogo publicado</label>
+         <select id="childType">
+          <option>Lubrication Assembly</option><option>Pump - Rotary Gear</option><option>Filter - Cartridge</option>
+          <option>Cooler - Oil</option><option>Motor - Induction</option>
+          <option>Transmitter - Pressure</option><option>Transmitter - Temperature</option>
+         </select>
+        </div>
+        <div class="field"><label>Criticidad</label><select id="childCriticality"><option>A</option><option selected>B</option><option>C</option></select></div>
+        <div class="field"><label>Relación con el padre</label>
+         <select id="childRelation"><option>PartOf</option><option>AuxiliarySystem</option><option>Instrumentation</option><option>DrivenBy</option><option>Monitors</option></select>
+        </div>
+        <div class="field"><label>Ubicación funcional</label>
+         <select id="childLocationMode"><option value="inherit">Heredar del Nodo Raíz</option><option value="own">Asignar LocationCode propio</option></select>
+        </div>
+       </div>
+       <div class="taxonomy-box">
+        <div class="taxonomy-grid">
+         <div class="taxonomy-value"><strong>Discipline</strong><span id="childDiscipline">Mechanical</span></div>
+         <div class="taxonomy-value"><strong>Typology</strong><span id="childTypology">Mechanical Packages</span></div>
+         <div class="taxonomy-value"><strong>Family</strong><span id="childFamily">Auxiliary System</span></div>
+         <div class="taxonomy-value"><strong>Subfamily</strong><span id="childSubfamily">Lubrication Assembly</span></div>
+        </div>
+       </div>
+       <div id="locationInfo" class="notice" style="margin-top:12px">LocationCode heredado del Nodo Raíz: COMP-101</div>
+       <div style="display:flex;gap:8px;margin-top:14px">
+        <button id="saveChildButton" class="btn btn-success">Guardar activo hijo</button>
+        <button id="cancelChildButton" class="btn btn-secondary">Cancelar</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <section class="view">
+    <div class="grid-3">
+     <div class="card"><h4>FLH · Dónde está</h4><div class="tree"><ul><li><span class="node"><b>L1</b>Planta Madrid</span><ul><li><span class="node"><b>L2</b>Área Utilidades</span><ul><li><span class="node"><b>L3</b>Sistema Aire</span><ul><li><span class="node"><b>L4</b>Línea Compresión</span><ul><li><span class="node selected"><b>L5</b>COMP-101</span></li></ul></li></ul></li></ul></li></ul></li></ul></div></div>
+     <div class="card"><h4>Taxonomía · Qué es</h4><div id="classificationPreview" class="tree"></div></div>
+     <div class="card"><h4>ADR · De qué forma parte</h4><div id="physicalPreview" class="tree"></div></div>
+    </div>
+   </section>
+
+   <section class="view">
+    <div class="grid-2">
+     <div class="card">
+      <h4>Ruta alternativa: carga masiva ADR</h4>
+      <p>Si no vas a construir la composición física mediante la interfaz del paso 4, genera una plantilla vacía, complétala en Excel e impórtala.</p>
+      <div class="notice warning" style="margin-top:12px"><b>No es la plantilla del paso 2.</b> Aquella clasifica asociaciones raíz; esta define la raíz y todos sus descendientes mediante ParentAssetCode.</div>
+      <div class="asset-toolbar" style="margin-top:14px"><button id="generateAdrTemplateButton" class="btn btn-primary">Generar plantilla ADR vacía</button><button id="importAdrTemplateButton" class="btn btn-outline">Importar plantilla ADR cumplimentada</button><button id="openAdrColumnsButton" class="btn btn-outline">ⓘ Columnas</button><input id="adrTemplateFile" class="hidden" type="file" accept=".xlsx,.xls,.csv"></div>
+      <div id="adrImportMessage" class="notice success hidden" style="margin-top:12px"><b>Archivo recibido.</b> La carga masiva debe validarse como una ruta independiente antes de guardarse.</div>
+     </div>
+     <div class="card">
+      <h4>Regla estructural principal</h4>
+      <div class="summary"><div class="summary-item"><strong>Raíz</strong><span>Única fila con ParentAssetCode vacío</span></div><div class="summary-item"><strong>Hijos</strong><span>ParentAssetCode debe existir en otra fila</span></div><div class="summary-item"><strong>Taxonomía</strong><span>EquipmentTypeCode obligatorio en cada activo</span></div><div class="summary-item"><strong>Ubicación</strong><span>LocationCode propio o heredado según LocationMode</span></div></div>
+     </div>
+    </div>
+    <div class="table-wrap" style="margin-top:18px"><table><thead><tr><th>AssetCode</th><th>ParentAssetCode</th><th>LocationCode</th><th>EquipmentTypeCode</th><th>RelationshipType</th><th>LocationMode</th><th>Criticality</th><th>Description</th></tr></thead><tbody><tr><td colspan="8" style="text-align:center;color:#64748b">La plantilla se genera vacía: solo contiene estos encabezados y hojas de referencia protegidas.</td></tr></tbody></table></div>
+   </section>
+
+   <section class="view">
+    <div class="grid-2">
+     <div class="card">
+      <h4>Validar la estructura creada en la interfaz</h4>
+      <div class="notice">Esta validación comprueba el Nodo Raíz y los hijos creados en los pasos 3 y 4. La plantilla masiva del paso 6 dispone de su propio ciclo de importación y validación.</div>
+      <div id="validationResults"></div>
+      <button id="validateButton" class="btn btn-primary" style="width:100%;margin-top:14px">Validar estructura gráfica</button>
+     </div>
+     <div class="card">
+      <h4>Resultado técnico</h4>
+      <div class="summary">
+       <div class="summary-item"><strong>Nodo Raíz ADR</strong><span>Único registro sin padre</span></div>
+       <div class="summary-item"><strong>Profundidad de hijos</strong><span>Flexible, sin niveles ADR prefijados</span></div>
+       <div class="summary-item"><strong>Taxonomía</strong><span>Obligatoria en cada nodo</span></div>
+       <div class="summary-item"><strong>Relaciones físicas</strong><span>Todos los hijos disponen de un ParentAssetCode válido</span></div>
+      </div>
+      <button id="finishButton" class="btn btn-success" style="width:100%;margin-top:14px" disabled>Guardar estructura ADR</button>
+      <div id="finishMessage" class="notice success hidden" style="margin-top:12px">Estructura gráfica validada y guardada. No se ha generado ni validado una carga masiva.</div>
+     </div>
+    </div>
+   </section>
+
+   <div class="actions">
+    <button id="previousStep" class="btn btn-secondary">Anterior</button>
+    <button id="nextStep" class="btn btn-primary">Siguiente</button>
+   </div>
+  </div>
+ </section>
+</main>
+</div>
+
+<div id="helpModal" class="modal-backdrop">
+ <div class="modal">
+  <div class="modal-header"><div><h3>Relaciones físicas y herencia de ubicación</h3><p>Casos de uso para construir la jerarquía física del ADR.</p></div><button id="closeHelpButton" class="modal-close">×</button></div>
+  <div class="modal-body">
+   <div class="notice"><b>Secuencia recomendada:</b> 1) selecciona en el árbol el activo que actuará como padre; 2) pulsa “Añadir”; 3) identifica, clasifica y relaciona el hijo; 4) guarda y vuelve a seleccionar el siguiente padre.</div>
+   <div class="use-case"><strong>PartOf</strong><p>El activo forma parte físicamente del padre. Ejemplo: bomba, filtro y enfriador dentro del sistema de lubricación.</p></div>
+   <div class="use-case"><strong>AuxiliarySystem</strong><p>Subconjunto físico auxiliar que presta servicio al conjunto principal. Ejemplo: conjunto de lubricación del compresor.</p></div>
+   <div class="use-case"><strong>Instrumentation</strong><p>Instrumento que mide, controla o protege el activo padre. Ejemplo: PT-101 y TT-101.</p></div>
+   <div class="use-case"><strong>Heredar del Nodo Raíz</strong><p>Se usa cuando el hijo no dispone de LocationCode propio. Mantiene la ubicación del conjunto y su posición exacta se explica mediante ParentAssetCode.</p></div>
+   <div class="use-case"><strong>Asignar LocationCode propio</strong><p>Se usa cuando el hijo dispone de una ubicación funcional o TAG propio, sin perder la relación padre-hijo del ADR.</p></div>
+  </div>
+ </div>
+</div>
+
+<div id="exceptionsModal" class="modal-backdrop"><div class="modal"><div class="modal-header"><div><h3>Excepciones de la plantilla importada</h3><p>La revisión es una tarea de corrección, no un paso obligatorio del recorrido principal.</p></div><button class="modal-close" data-close="exceptionsModal">×</button></div><div class="modal-body">
+ <div class="notice">Las columnas conservan el contrato de la plantilla generada en Configuración del Modelo. <b>ValidationMessage</b> es una columna de salida añadida por el importador.</div>
+ <div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>LocationCode</th><th>LocationDescription</th><th>LevelNumber</th><th>DisplayName</th><th>FunctionalRole</th><th>EffectiveAssetRootPolicy</th><th>AssetCode</th><th>AssetDescription</th><th>EquipmentTypeCode</th><th>Discipline</th><th>Typology</th><th>Family</th><th>Subfamily</th><th>Criticality</th><th>ClassificationStatus</th><th>ValidationMessage</th></tr></thead><tbody><tr><td>LIN-BOM</td><td>Línea de bombeo</td><td>4</td><td>Línea</td><td>Process</td><td>MULTIPLE</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Rejected</td><td>AssetCode obligatorio</td></tr><tr><td>COMP-102</td><td>Compresor reserva</td><td>5</td><td>Equipo</td><td>Equipment</td><td>SINGLE</td><td>COMP-102</td><td>Compresor reserva</td><td>COMP-CMS</td><td>Mechanical</td><td>Mechanical Rotating Equipment</td><td>Compressor</td><td>Centrifugal Multi Stage</td><td></td><td>Rejected</td><td>Criticality obligatoria</td></tr></tbody></table></div>
+ <div class="notice warning" style="margin-top:12px">Corrige el Excel de origen y vuelve a importarlo. SINGLE admite una asociación; MULTIPLE admite varias; NONE no admite ninguna.</div>
+</div></div></div>
+
+<div id="rootConceptModal" class="modal-backdrop"><div class="modal"><div class="modal-header"><div><h3>Nodo Raíz ADR</h3><p>Punto de inicio de una composición física.</p></div><button class="modal-close" data-close="rootConceptModal">×</button></div><div class="modal-body"><div class="notice">Es el primer activo del árbol físico asociado a una ubicación FLH. Puede ser un equipo principal, skid, rack, conjunto técnico u otro elemento mantenible.</div><div class="summary" style="margin-top:14px"><div class="summary-item"><strong>AssetCode</strong><span>Identificador único</span></div><div class="summary-item"><strong>ParentAssetCode</strong><span>Vacío únicamente en la raíz</span></div><div class="summary-item"><strong>LocationCode</strong><span>Asociación con la FLH</span></div><div class="summary-item"><strong>Taxonomía</strong><span>Clasifica qué tipo de activo es</span></div></div></div></div></div>
+
+<div id="conceptModal" class="modal-backdrop"><div class="modal"><div class="modal-header"><div><h3>FLH, taxonomía y ADR</h3><p>Tres contextos complementarios, no tres nombres para el mismo árbol.</p></div><button class="modal-close" data-close="conceptModal">×</button></div><div class="modal-body"><table class="compare-table"><thead><tr><th>Contexto</th><th>Pregunta</th><th>Relación principal</th></tr></thead><tbody><tr><td>FLH</td><td>¿Dónde está instalado?</td><td>Padre-hijo entre ubicaciones</td></tr><tr><td>Taxonomía</td><td>¿Qué tipo de activo es?</td><td>Clasificación corporativa</td></tr><tr><td>ADR</td><td>¿De qué forma parte?</td><td>ParentAssetCode entre activos</td></tr></tbody></table><div class="concept-warning"><strong>No confundir un nivel funcional con un subconjunto físico</strong>“Sistema” puede ser una etiqueta visible de la FLH; “conjunto de lubricación” es un nodo físico ADR. No pertenecen al mismo árbol.</div></div></div></div>
+
+<div id="adrColumnsModal" class="modal-backdrop"><div class="modal"><div class="modal-header"><div><h3>Columnas de la plantilla ADR masiva</h3><p>Contrato mínimo para reconstruir la composición física.</p></div><button class="modal-close" data-close="adrColumnsModal">×</button></div><div class="modal-body"><div class="summary"><div class="summary-item"><strong>AssetCode</strong><span>Identificador único</span></div><div class="summary-item"><strong>ParentAssetCode</strong><span>Padre; vacío solo en raíz</span></div><div class="summary-item"><strong>LocationCode</strong><span>Ubicación funcional</span></div><div class="summary-item"><strong>EquipmentTypeCode</strong><span>Código taxonómico publicado</span></div><div class="summary-item"><strong>RelationshipType</strong><span>Relación física con el padre</span></div><div class="summary-item"><strong>LocationMode</strong><span>INHERIT u OWN</span></div><div class="summary-item"><strong>Criticality</strong><span>A, B o C</span></div><div class="summary-item"><strong>Description</strong><span>Nombre legible del activo</span></div></div></div></div></div>
+
+<script>
+const steps=[
+ ['Verificar modelo y seleccionar ubicación','Confirma la FLH y el Modelo de Activos publicados antes de iniciar el árbol ADR.'],
+ ['Importar clasificación de activos raíz','Carga con datos la plantilla vacía generada al final de la configuración del modelo.'],
+ ['Seleccionar asociación y definir raíz','Selecciona en el árbol una ubicación habilitada y crea su Nodo Raíz ADR.'],
+ ['Construir activos hijos en interfaz','Añade subconjuntos físicos, equipos e instrumentos con profundidad flexible.'],
+ ['Revisar los tres contextos','Compara ubicación, taxonomía y composición física antes de continuar.'],
+ ['Preparar carga masiva ADR','Genera una plantilla vacía como alternativa a la construcción mediante interfaz.'],
+ ['Validar y guardar','Comprueba y guarda la estructura creada mediante la ruta gráfica.']
+];
+
+const taxonomy={
+ 'Compressor - Centrifugal Multi Stage':['Mechanical','Mechanical Rotating Equipment','Compressor','Centrifugal Multi Stage'],
+ 'Lubrication Assembly':['Mechanical','Mechanical Packages','Auxiliary System','Lubrication Assembly'],
+ 'Pump - Rotary Gear':['Mechanical','Mechanical Rotating Equipment','Pump','Rotary Gear'],
+ 'Filter - Cartridge':['Mechanical','Mechanical Static Equipment','Filter','Cartridge'],
+ 'Cooler - Oil':['Mechanical','Heat Transfer Equipment','Cooler','Oil Cooler'],
+ 'Motor - Induction':['Electrical','Electrical Rotating Equipment','Motor','Induction'],
+ 'Transmitter - Pressure':['Control & Instrumentation','Field Instruments','Transmitter','Pressure'],
+ 'Transmitter - Temperature':['Control & Instrumentation','Field Instruments','Transmitter','Temperature']
+};
+
+let state={step:0,root:null,selectedId:null,nextId:1,assets:[],rootClassification:'Compressor - Centrifugal Multi Stage',classificationSaved:false,rootLocationSelected:true,locationPolicies:{'SYS-AIR':'MULTIPLE','LIN-BOM':'MULTIPLE','COMP-101':'SINGLE'},importedRoots:[{location:'SYS-AIR',tag:'PKG-AIR-01'},{location:'SYS-AIR',tag:'DRYER-101'}]};
+
+const byId=id=>document.getElementById(id);
+
+function renderNav(){
+ const box=byId('navSteps');box.innerHTML='';
+ steps.forEach((step,index)=>{
+  const item=document.createElement('div');
+  item.className='nav-step'+(index===state.step?' active':index<state.step?' done':'');
+  item.innerHTML=`<div class="nav-num">${index<state.step?'✓':index+1}</div><div><strong>${step[0]}</strong><span>${index<state.step?'Completado':index===state.step?'Paso actual':'Pendiente'}</span></div>`;
+  item.onclick=()=>{state.step=index;renderStep()};
+  box.appendChild(item);
+ });
+}
+
+function renderStep(){
+ document.querySelectorAll('.view').forEach((view,index)=>view.classList.toggle('active',index===state.step));
+ byId('stepTitle').textContent=(state.step+1)+'. '+steps[state.step][0];
+ byId('stepSubtitle').textContent=steps[state.step][1];
+ byId('stepCounter').textContent=`Paso ${state.step+1} de ${steps.length}`;
+ byId('progressBar').style.width=((state.step+1)/steps.length*100)+'%';
+ byId('previousStep').disabled=state.step===0;
+ byId('nextStep').textContent=state.step===steps.length-1?'Finalizar':'Siguiente';
+ renderNav();renderTree();renderExcel();renderPreviews();
+}
+
+function defineRoot(){
+ if(!state.rootLocationSelected){alert('Selecciona COMP-101 en el árbol para habilitar la definición del Nodo Raíz.');return}
+ state.root={id:0,tag:'COMP-101',description:'Compresor centrífugo principal',type:state.rootClassification,criticality:byId('rootCriticality').value,parentId:null,location:'COMP-101',relation:'Root'};
+ state.selectedId=0;
+ byId('rootMessage').classList.remove('hidden');
+ byId('createRootButton').disabled=true;
+ byId('createRootButton').textContent='Nodo Raíz ADR definido';
+ renderTree();renderExcel();renderPreviews();
+}
+
+function getAsset(id){return id===0?state.root:state.assets.find(a=>a.id===id)}
+function childrenOf(id){return state.assets.filter(a=>a.parentId===id)}
+
+function nodeElement(asset){
+ const li=document.createElement('li');
+ const node=document.createElement('span');
+ node.className='node'+(state.selectedId===asset.id?' selected':'');
+ node.innerHTML=`<b class="${asset.id===0?'root-badge':''}">${asset.id===0?'RAÍZ':'ADR'}</b>${asset.tag} · ${asset.description}`;
+ node.onclick=()=>{state.selectedId=asset.id;renderTree();updateContext()};
+ li.appendChild(node);
+ const children=childrenOf(asset.id);
+ if(children.length){
+  const ul=document.createElement('ul');
+  children.forEach(child=>ul.appendChild(nodeElement(child)));
+  li.appendChild(ul);
+ }
+ return li;
+}
+
+function renderTree(){
+ const box=byId('assetTree');
+ if(!box)return;
+ box.innerHTML='';
+ if(!state.root){box.innerHTML='<div class="notice warning">Define primero el Nodo Raíz ADR.</div>';return}
+ const ul=document.createElement('ul');ul.appendChild(nodeElement(state.root));box.appendChild(ul);
+ updateContext();
+}
+
+function updateContext(){
+ const selected=getAsset(state.selectedId);
+ if(!selected)return;
+ byId('assetContext').innerHTML=`<strong>Nodo seleccionado</strong><span>${selected.tag} · ${selected.description}${selected.id===0?' · Nodo Raíz ADR':''}</span>`;
+}
+
+function startChild(){
+ if(!state.root){alert('Define primero el Nodo Raíz ADR.');return}
+ if(state.selectedId===null)state.selectedId=0;
+ const parent=getAsset(state.selectedId);
+ byId('editorTitle').textContent='Añadir activo hijo';
+ byId('assetContext').innerHTML=`<strong>Activo padre</strong><span>${parent.tag} · ${parent.description}</span>`;
+ byId('assetEditor').classList.remove('hidden');
+ byId('childTag').value='';
+ byId('childDescription').value='';
+ updateTaxonomy();updateLocation();
+}
+
+function saveChild(){
+ const parent=getAsset(state.selectedId);
+ const tag=byId('childTag').value.trim();
+ const description=byId('childDescription').value.trim();
+ if(!tag||!description){alert('AssetCode y descripción son obligatorios.');return}
+ const mode=byId('childLocationMode').value;
+ state.assets.push({
+  id:state.nextId++,tag,description,type:byId('childType').value,
+  criticality:byId('childCriticality').value,parentId:parent.id,
+  relation:byId('childRelation').value,location:mode==='inherit'?'COMP-101':tag,locationMode:mode
+ });
+ state.selectedId=state.assets[state.assets.length-1].id;
+ byId('assetEditor').classList.add('hidden');
+ renderTree();renderExcel();renderPreviews();
+}
+
+function loadExample(){
+ state.classificationSaved=true;
+ selectRootLocation();
+ if(!state.root)defineRoot();
+ state.assets=[
+  {id:1,tag:'LUBE-101',description:'Conjunto de lubricación',type:'Lubrication Assembly',criticality:'A',parentId:0,relation:'AuxiliarySystem',location:'COMP-101',locationMode:'inherit'},
+  {id:2,tag:'P-101',description:'Bomba de aceite',type:'Pump - Rotary Gear',criticality:'B',parentId:1,relation:'PartOf',location:'COMP-101',locationMode:'inherit'},
+  {id:3,tag:'F-101',description:'Filtro de aceite',type:'Filter - Cartridge',criticality:'B',parentId:1,relation:'PartOf',location:'COMP-101',locationMode:'inherit'},
+  {id:4,tag:'E-101',description:'Enfriador de aceite',type:'Cooler - Oil',criticality:'B',parentId:1,relation:'PartOf',location:'COMP-101',locationMode:'inherit'},
+  {id:5,tag:'M-101',description:'Motor eléctrico',type:'Motor - Induction',criticality:'A',parentId:0,relation:'DrivenBy',location:'COMP-101',locationMode:'inherit'},
+  {id:6,tag:'PT-101',description:'Transmisor de presión',type:'Transmitter - Pressure',criticality:'C',parentId:0,relation:'Instrumentation',location:'COMP-101',locationMode:'inherit'},
+  {id:7,tag:'TT-101',description:'Transmisor de temperatura',type:'Transmitter - Temperature',criticality:'C',parentId:0,relation:'Instrumentation',location:'COMP-101',locationMode:'inherit'}
+ ];
+ state.nextId=8;state.selectedId=0;
+ renderTree();renderExcel();renderPreviews();
+}
+
+function updateTaxonomy(){
+ const values=taxonomy[byId('childType').value]||['—','—','—','—'];
+ ['childDiscipline','childTypology','childFamily','childSubfamily'].forEach((id,index)=>byId(id).textContent=values[index]);
+}
+function updateLocation(){
+ byId('locationInfo').textContent=byId('childLocationMode').value==='inherit'
+  ?'LocationCode heredado del Nodo Raíz: COMP-101'
+  :'El activo utilizará un LocationCode propio y mantendrá además su ParentAssetCode.';
+}
+
+function renderExcel(){
+ const body=byId('excelPreview');if(!body)return;body.innerHTML='';
+ const all=state.root?[state.root,...state.assets]:[];
+ if(!all.length){body.innerHTML='<tr><td colspan="6">Define o carga una jerarquía para generar la vista previa.</td></tr>';return}
+ all.forEach(asset=>{
+  const parent=asset.parentId===null?'':getAsset(asset.parentId)?.tag||'';
+  body.innerHTML+=`<tr><td>${asset.tag}</td><td>${parent}</td><td>${asset.location}</td><td>${asset.type}</td><td>${asset.criticality}</td><td>${asset.description}</td></tr>`;
+ });
+}
+
+function renderPreviews(){
+ const physical=byId('physicalPreview'),classification=byId('classificationPreview');
+ if(!physical||!classification)return;
+ if(!state.root){physical.innerHTML=classification.innerHTML='<div class="notice warning">Define primero el Nodo Raíz ADR.</div>';return}
+ const clone=document.createElement('ul');clone.appendChild(nodeElement(state.root).cloneNode(true));physical.innerHTML=clone.outerHTML;
+ const all=[state.root,...state.assets];
+ classification.innerHTML='<ul>'+all.map(asset=>{
+  const tax=taxonomy[asset.type]||['—','—','—','—'];
+  return `<li><span class="node"><b>${asset.id===0?'RAÍZ':'TIPO'}</b>${asset.tag} · ${tax.join(' › ')}</span></li>`;
+ }).join('')+'</ul>';
+}
+
+function validate(){
+ const messages=[];let errors=0;
+ if(!state.root){messages.push(['No existe Nodo Raíz ADR','error']);errors++}
+ else messages.push(['Existe un único Nodo Raíz ADR sin padre','ok']);
+
+ const tags=[state.root,...state.assets].filter(Boolean).map(a=>a.tag);
+ if(new Set(tags).size!==tags.length){messages.push(['Existen AssetCode duplicados','error']);errors++}
+ else messages.push(['Todos los AssetCode son únicos','ok']);
+
+ const badParents=state.assets.filter(a=>!getAsset(a.parentId));
+ if(badParents.length){messages.push(['Existen activos con padre inexistente','error']);errors++}
+ else messages.push(['Todos los activos hijos tienen un padre válido','ok']);
+
+ const badTax=[state.root,...state.assets].filter(Boolean).filter(a=>!taxonomy[a.type]);
+ if(badTax.length){messages.push(['Existen nodos sin taxonomía válida','error']);errors++}
+ else messages.push(['Todos los nodos tienen taxonomía válida','ok']);
+
+ const rootLinks=[...state.importedRoots,...(state.root?[{location:state.root.location,tag:state.root.tag}]:[])];
+ const cardinalityErrors=Object.entries(state.locationPolicies).filter(([location,policy])=>{const count=rootLinks.filter(x=>x.location===location).length;return policy==='NONE'?count>0:policy==='SINGLE'?count>1:false});
+ if(cardinalityErrors.length){messages.push(['Se incumple AssetRootPolicy en una o más ubicaciones','error']);errors++}
+ else messages.push(['Cardinalidad NONE, SINGLE y MULTIPLE validada por LocationCode','ok']);
+
+ messages.push(['La profundidad ADR se deriva de ParentAssetCode','ok']);
+ messages.push(['Todos los hijos se estructuran mediante un ParentAssetCode válido','ok']);
+
+ byId('validationResults').innerHTML=messages.map(([text,status])=>`<div class="validation-item"><span>${text}</span><span class="status ${status==='ok'?'ok':'err'}">${status==='ok'?'Correcto':'Error'}</span></div>`).join('');
+ byId('finishButton').disabled=errors>0;
+}
+
+function selectRootLocation(){
+ state.rootLocationSelected=true;
+ byId('rootLocationNode').classList.add('selected');
+ byId('selectedLocationMessage').classList.remove('hidden');
+ if(!state.root)byId('createRootButton').disabled=false;
+}
+
+function openModal(id){byId(id).classList.add('open')}
+function closeModal(id){byId(id).classList.remove('open')}
+
+function generateAdrTemplate(){
+ const headers=['AssetCode','ParentAssetCode','LocationCode','EquipmentTypeCode','RelationshipType','LocationMode','Criticality','Description'];
+ const blob=new Blob([headers.join(',')+'\n'],{type:'text/csv;charset=utf-8'});
+ const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='ADR_Bulk_Load_Template.csv';link.click();URL.revokeObjectURL(link.href);
+}
+
+byId('importClassificationButton').onclick=()=>byId('classificationFile').click();
+byId('classificationFile').onchange=()=>{
+ if(!byId('classificationFile').files.length)return;
+ byId('importClassificationMsg').classList.remove('hidden');
+ byId('downloadErrorsButton').disabled=false;
+ byId('reviewExceptionsButton').disabled=false;
+ byId('importClassificationButton').textContent='Plantilla importada';
+ state.classificationSaved=true;
+};
+byId('loadClassificationExampleButton').onclick=()=>{
+ const preview=byId('importedClassificationPreview');
+ const willShow=preview.classList.contains('hidden');
+ preview.classList.toggle('hidden',!willShow);
+ byId('loadClassificationExampleButton').textContent=willShow?'Ocultar ejemplo completo':'Cargar ejemplo completo';
+ if(willShow)preview.scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+byId('downloadErrorsButton').onclick=()=>alert('La versión productiva generará un Excel con las filas rechazadas y el motivo de cada error.');
+byId('reviewExceptionsButton').onclick=()=>openModal('exceptionsModal');
+byId('rootLocationNode').onclick=selectRootLocation;
+byId('rootLocationNode').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectRootLocation()}};
+byId('createRootButton').onclick=defineRoot;
+byId('addChildButton').onclick=startChild;
+byId('saveChildButton').onclick=saveChild;
+byId('cancelChildButton').onclick=()=>byId('assetEditor').classList.add('hidden');
+byId('loadExampleButton').onclick=loadExample;
+byId('childType').onchange=updateTaxonomy;
+byId('childLocationMode').onchange=updateLocation;
+byId('validateButton').onclick=validate;
+byId('finishButton').onclick=()=>byId('finishMessage').classList.remove('hidden');
+byId('openHelpButton').onclick=()=>byId('helpModal').classList.add('open');
+byId('openConceptButton').onclick=()=>openModal('conceptModal');
+byId('openRootConceptButton').onclick=()=>openModal('rootConceptModal');
+byId('openAdrColumnsButton').onclick=()=>openModal('adrColumnsModal');
+byId('generateAdrTemplateButton').onclick=generateAdrTemplate;
+byId('importAdrTemplateButton').onclick=()=>byId('adrTemplateFile').click();
+byId('adrTemplateFile').onchange=()=>{if(byId('adrTemplateFile').files.length)byId('adrImportMessage').classList.remove('hidden')};
+byId('closeHelpButton').onclick=()=>byId('helpModal').classList.remove('open');
+byId('helpModal').onclick=e=>{if(e.target===byId('helpModal'))byId('helpModal').classList.remove('open')};
+document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>closeModal(button.dataset.close));
+['exceptionsModal','rootConceptModal','conceptModal','adrColumnsModal'].forEach(id=>byId(id).onclick=e=>{if(e.target===byId(id))closeModal(id)});
+byId('previousStep').onclick=()=>{if(state.step>0){state.step--;renderStep()}};
+byId('nextStep').onclick=()=>{if(state.step<steps.length-1){state.step++;renderStep()}else alert('Registro físico validado.')};
+
+renderStep();
+</script>
+</body>
+</html>

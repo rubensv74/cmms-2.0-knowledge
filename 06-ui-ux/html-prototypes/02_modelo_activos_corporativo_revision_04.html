@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CMMS 2.0 · Configuración del Modelo de Activos</title><style>
+:root{--bg:#f5f7fb;--s:#fff;--soft:#f8fafc;--bd:#dce3ec;--tx:#172033;--mu:#667085;--b:#1677ff;--b2:#0f5fd3;--ok:#079455;--warn:#d97706;--err:#d92d20;--nav:#10233f}*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial;background:var(--bg);color:var(--tx)}button,input,select{font:inherit}.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}aside{background:var(--nav);color:#fff;padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;gap:12px;align-items:center;margin-bottom:24px}.logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#44c4ff,#1677ff);font-weight:800}.brand h1{font-size:16px;margin:0}.brand small{color:#a8b4c5}.nav-step{display:flex;gap:10px;padding:11px 10px;border-radius:10px;margin:4px 0;color:#cdd7e5;cursor:pointer}.nav-step.active{background:#17365f}.nav-step.done{color:#b7f4d3}.nav-num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#314965;font-size:12px;font-weight:800}.nav-step.active .nav-num{background:var(--b)}.nav-step.done .nav-num{background:var(--ok)}.nav-step strong{display:block;font-size:13px}.nav-step span{display:block;font-size:11px;color:#91a3ba}.foot{font-size:12px;color:#91a3ba;border-top:1px solid #314965;padding-top:14px;margin-top:24px}main{padding:26px 32px}.top{display:flex;justify-content:space-between;gap:18px}.top h2{margin:0 0 6px;font-size:27px}.top p{margin:0;color:var(--mu)}.tag{background:#e9f2ff;color:#1459b8;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}.progress{height:8px;background:#e7ecf3;border-radius:99px;overflow:hidden;margin:20px 0}.progress div{height:100%;background:var(--b)}.panel{background:#fff;border:1px solid var(--bd);border-radius:15px;box-shadow:0 14px 34px rgba(15,23,42,.08);overflow:hidden}.head{padding:20px 22px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between}.head h3{margin:0 0 5px}.head p{margin:0;color:var(--mu);font-size:13px}.body{padding:22px}.view{display:none}.view.active{display:block}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--bd);border-radius:12px;padding:17px;background:var(--soft)}.card h4{margin:0 0 10px}.card p{margin:0;color:var(--mu);font-size:13px;line-height:1.5}.choice{display:block;padding:13px;border:1px solid var(--bd);border-radius:10px;background:#fff;margin:8px 0}.choice.sel{border-color:#7eb2ff;background:#f4f8ff}.choice small{display:block;color:var(--mu);margin-top:4px}.notice{padding:13px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:13px;line-height:1.5}.notice.ok{background:#ecfdf3;border-color:#a7f3d0;color:#065f46}.notice.warn{background:#fff7ed;border-color:#fed7aa;color:#9a3412}.toggle{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border:1px solid var(--bd);border-radius:10px;background:#fff;margin-bottom:10px}.switch{width:44px;height:25px;border-radius:99px;background:#cbd5e1;position:relative;cursor:pointer}.switch:after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.2s}.switch.on{background:var(--b)}.switch.on:after{left:22px}.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field select,.search{width:100%;padding:10px;border:1px solid var(--bd);border-radius:9px;background:#fff}.search{margin-bottom:12px}.tax-list{display:grid;gap:8px;max-height:360px;overflow:auto}.tax{padding:12px;border:1px solid var(--bd);border-radius:10px;background:#fff;cursor:pointer}.tax.sel{border-color:#7eb2ff;background:#f4f8ff}.tax small{display:block;color:var(--mu);margin-top:4px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:7px 10px;border-radius:99px;background:#e9f2ff;color:#1459b8;font-size:12px;font-weight:700}
+.catalog-toolbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}
+.catalog-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.catalog-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.metric{padding:13px;border:1px solid var(--bd);border-radius:10px;background:#fff}
+.metric strong{display:block;font-size:22px}.metric span{font-size:11px;color:var(--mu)}
+.metric.included strong{color:var(--ok)}.metric.excluded strong{color:#b42318}
+.catalog-filters{display:grid;grid-template-columns:1fr 190px 170px;gap:10px;margin-bottom:14px}
+.catalog-filters .search{margin:0}.catalog-filters select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:9px;background:#fff}
+.catalog-grid{align-items:start}
+.catalog-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.catalog-card-head h4{margin-bottom:4px}.catalog-card-head p{margin:0}
+.catalog-source{padding:6px 9px;border-radius:999px;background:#e9f2ff;color:#1459b8;font-size:11px;font-weight:800}
+.taxonomy-tree{max-height:520px;overflow:auto;padding-right:5px}
+.tax-node{margin:3px 0}
+.tax-node-row{display:grid;grid-template-columns:24px 24px 1fr auto;gap:6px;align-items:center;padding:7px 8px;border-radius:8px}
+.tax-node-row:hover{background:#f2f6fb}
+.tax-node-row.filtered-match{background:#fff7ed}
+.tax-toggle{border:0;background:transparent;cursor:pointer;color:#667085;width:24px;height:24px}
+.tax-toggle.empty{visibility:hidden}
+.tax-checkbox{accent-color:var(--b);width:16px;height:16px}
+.tax-label{min-width:0}
+.tax-label strong{display:block;font-size:12px}
+.tax-label small{display:block;color:var(--mu);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tax-level{padding:4px 7px;border-radius:6px;background:#eef2f7;color:#475467;font-size:10px;font-weight:800}
+.tax-children{margin-left:23px;border-left:1px solid #dce3ec;padding-left:8px}
+.tax-children.collapsed{display:none}
+.exclusion-list{display:grid;gap:8px;max-height:520px;overflow:auto}
+.exclusion-empty{padding:28px;border:2px dashed var(--bd);border-radius:10px;text-align:center;color:var(--mu);background:#fff}
+.exclusion-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--bd);border-radius:9px;background:#fff}
+.exclusion-item strong{display:block;font-size:12px}.exclusion-item small{display:block;color:var(--mu);font-size:10px;margin-top:3px}
+.exclusion-item button{padding:6px 9px}
+@media(max-width:900px){.catalog-toolbar{display:block}.catalog-actions{justify-content:flex-start;margin-top:10px}.catalog-metrics{grid-template-columns:1fr 1fr}.catalog-filters{grid-template-columns:1fr}.catalog-grid{grid-template-columns:1fr}}
+.summary{display:grid;gap:9px}.sum{padding:12px;border:1px solid var(--bd);border-radius:9px;background:#fff}.sum strong{display:block;font-size:12px}.sum span{font-size:12px;color:var(--mu)}.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}.primary{background:var(--b);color:#fff}.success{background:var(--ok);color:#fff}.secondary{background:#eef2f7}.outline{background:#fff;border:1px solid var(--bd)}.actions{display:flex;justify-content:space-between;margin-top:20px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:left}th{background:#153c70;color:#fff}td input,td select{width:100%;padding:7px;border:1px solid var(--bd);border-radius:6px}.triple{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tree ul{list-style:none;margin:0;padding-left:20px}.tree li{margin:7px 0}.node{display:inline-flex;gap:7px;align-items:center;padding:7px 9px;border:1px solid var(--bd);border-radius:8px;background:#fff}.node b{font-size:11px;color:#1459b8;background:#e9f2ff;padding:3px 6px;border-radius:5px}.status{display:inline-flex;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:800}.good{background:#d1fadf;color:#05603a}.bad{background:#fee4e2;color:#b42318}.hidden{display:none}.info-row{display:flex;justify-content:flex-end;margin-bottom:14px}.info-btn{background:#fff;border:1px solid #bfdbfe;color:#1459b8;border-radius:9px;padding:9px 12px;font-weight:700;cursor:pointer}.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}.modal-backdrop.open{display:flex}.modal{width:min(860px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 26px 80px rgba(0,0,0,.28)}.modal-head{display:flex;justify-content:space-between;gap:14px;padding:19px 21px;border-bottom:1px solid var(--bd)}.modal-head h3{margin:0 0 5px}.modal-head p{margin:0;color:var(--mu);font-size:13px}.modal-body{padding:21px}.modal-close{width:34px;height:34px;border:1px solid var(--bd);background:#fff;border-radius:9px;font-size:20px;cursor:pointer}.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.help-item{padding:14px;border:1px solid var(--bd);border-radius:11px;background:#f8fafc}.help-item strong{display:block;margin-bottom:5px}.help-item p{margin:0;color:var(--mu);font-size:13px;line-height:1.5}@media(max-width:1100px){.app{grid-template-columns:1fr}aside{display:none}.grid2,.grid3,.triple{grid-template-columns:1fr}}@media(max-width:700px){main{padding:18px}.form,.help-grid{grid-template-columns:1fr}}
+</style></head><body><div class="app"><aside><div class="brand"><div class="logo">AM</div><div><h1>Asset Model Setup</h1><small>CMMS 2.0</small></div></div><div id="nav"></div><div class="foot">Primero se publica el modelo. Después, el Registro de Activos Físicos lo aplica sin redefinir sus reglas.</div></aside><main><div class="top"><div><h2>Configuración del Modelo de Activos del Proyecto</h2><p>Define y publica el marco que gobernará la clasificación, criticidad, ubicación y relaciones de los activos físicos.</p></div><span class="tag">Proyecto: Demo Refinery · Borrador v1.0</span></div><div class="progress"><div id="bar"></div></div><section class="panel"><div class="head"><div><h3 id="title"></h3><p id="sub"></p></div><span class="tag" id="counter"></span></div><div class="body">
+<section class="view active"><div class="grid2"><div class="card"><h4>Prerrequisito: FLH corporativa publicada</h4><label class="choice sel"><input type="radio" checked> <strong>FLH · Demo Refinery · v2.1</strong><small>5 niveles numéricos · 24 ubicaciones · 12 ubicaciones habilitadas para activos</small></label><div class="notice ok">La FLH aporta LevelNumber, DisplayName, FunctionalRole opcional y EffectiveAssetRootPolicy para cada LocationCode.</div></div><div class="card"><h4>Qué estamos configurando</h4><p>Esta fase no registra activos ni decide qué nivel es un “equipo”. Define el catálogo taxonómico y las reglas que se aplicarán a las ubicaciones habilitadas por la FLH.</p><div class="notice" style="margin-top:14px"><b>Entrada:</b> FLH publicada y taxonomía maestra.<br><b>Salida:</b> Modelo de Activos publicado y plantilla de clasificación gobernada.</div></div></div></section>
+<section class="view"><div class="grid2"><div class="card"><h4>Taxonomía</h4><label class="choice sel tax-choice"><input type="radio" name="taxonomySource" value="corporate" checked> <strong>Taxonomía corporativa</strong><small>Discipline → Typology → Family → Subfamily</small></label><label class="choice tax-choice"><input type="radio" name="taxonomySource" value="project"> <strong>Copiar desde otro proyecto</strong><small>Reutiliza una selección validada.</small></label><label class="choice tax-choice"><input type="radio" name="taxonomySource" value="client"> <strong>Taxonomía del cliente</strong><small>Requiere mapeo previo.</small></label></div><div class="card"><h4>Resultado</h4><div class="summary"><div class="sum"><strong>Opción seleccionada</strong><span id="taxonomySelectedLabel">Taxonomía corporativa</span></div><div class="sum"><strong>Estructura</strong><span>4 niveles taxonómicos</span></div><div class="sum"><strong>Selección</strong><span>Buscador y árbol, no listas masivas</span></div></div></div></div></section>
+<section class="view"><div class="info-row"><button id="openRulesHelp" class="info-btn">ⓘ Entender reglas ADR y opciones de configuración</button></div><div class="grid2"><div class="card"><h4>Reglas ADR</h4><div class="toggle"><div><strong>Relaciones padre-hijo</strong><small>Activos compuestos y sistemas auxiliares.</small></div><div class="switch on"></div></div><div class="toggle"><div><strong>Herencia de ubicación</strong><small>Para hijos físicos sin LocationCode propio.</small></div><div class="switch on"></div></div><div class="toggle"><div><strong>Taxonomía y criticidad obligatorias</strong><small>Todo activo raíz debe clasificarse.</small></div><div class="switch on"></div></div></div><div class="card"><h4>Configuración</h4><div class="form"><div class="field"><label>Modelo de criticidad</label><select id="crit"><option>A / B / C</option><option>Alta / Media / Baja</option><option>1 a 5</option></select></div><div class="field"><label>Ubicación de activos hijos</label><select id="policy"><option>Mixta: propia o heredada</option><option>Ubicación propia obligatoria</option><option>Herencia obligatoria</option></select></div><div class="field"><label>Relación por defecto</label><select><option>PartOf</option><option>AuxiliarySystem</option><option>Instrumentation</option></select></div><div class="field"><label>Máximo de padres físicos</label><input value="1" readonly></div></div><div class="notice warn" style="margin-top:14px">La cantidad de activos raíz por LocationCode no se define aquí: se hereda de EffectiveAssetRootPolicy (NONE, SINGLE o MULTIPLE) publicado en la FLH.</div></div></div></section>
+<section class="view">
+<div class="catalog-toolbar">
+  <div>
+    <h4 style="margin:0 0 4px">Alcance de la taxonomía para el proyecto</h4>
+    <p style="margin:0;color:var(--mu);font-size:13px">Todos los elementos están incluidos por defecto. Desactiva únicamente las ramas o clasificaciones que no se utilizarán.</p>
+  </div>
+  <div class="catalog-actions">
+    <button id="selectAllTaxonomy" class="btn outline">Seleccionar todo</button>
+    <button id="expandAllTaxonomy" class="btn outline">Expandir todo</button>
+    <button id="collapseAllTaxonomy" class="btn outline">Contraer todo</button>
+  </div>
+</div>
+
+<div class="catalog-metrics">
+  <div class="metric"><strong id="taxonomyTotal">0</strong><span>Clasificaciones totales</span></div>
+  <div class="metric included"><strong id="taxonomyIncluded">0</strong><span>Incluidas</span></div>
+  <div class="metric excluded"><strong id="taxonomyExcluded">0</strong><span>Excluidas</span></div>
+  <div class="metric"><strong id="taxonomyBranches">0</strong><span>Ramas principales</span></div>
+</div>
+
+<div class="catalog-filters">
+  <input id="taxonomySearch" class="search" placeholder="Buscar por nombre o ruta taxonómica...">
+  <select id="taxonomyLevelFilter">
+    <option value="all">Todos los niveles</option>
+    <option value="0">Discipline</option>
+    <option value="1">Typology</option>
+    <option value="2">Family</option>
+    <option value="3">Subfamily</option>
+  </select>
+  <select id="taxonomyStatusFilter">
+    <option value="all">Todos los estados</option>
+    <option value="included">Incluidos</option>
+    <option value="excluded">Excluidos</option>
+  </select>
+</div>
+
+<div class="grid2 catalog-grid">
+  <div class="card">
+    <div class="catalog-card-head">
+      <div>
+        <h4>Taxonomía completa</h4>
+        <p>Marca o desmarca cualquier nivel. Las ramas superiores controlan todos sus descendientes.</p>
+      </div>
+      <span class="catalog-source" id="catalogSourceLabel">Corporativa</span>
+    </div>
+    <div id="taxonomyTree" class="taxonomy-tree"></div>
+  </div>
+
+  <div class="card">
+    <div class="catalog-card-head">
+      <div>
+        <h4>Elementos excluidos</h4>
+        <p>Revisa qué clasificaciones no se incorporarán al catálogo del proyecto.</p>
+      </div>
+      <button id="restoreTaxonomy" class="btn outline">Restaurar</button>
+    </div>
+    <div id="taxonomyExclusions" class="exclusion-list"></div>
+    <div class="notice" style="margin-top:14px">No se modifica la taxonomía corporativa. Esta pantalla únicamente define su alcance para el proyecto.</div>
+  </div>
+</div>
+</section>
+<section class="view">
+ <div class="grid2"><div class="card"><h4>Contrato de configuración</h4><div id="summary" class="summary"></div><div class="notice" style="margin-top:14px"><b>Impacto:</b> el Registro de Activos Físicos solo ofrecerá las clasificaciones incluidas y aplicará estas reglas. Los activos existentes conservarán la versión con la que fueron clasificados.</div></div><div class="card"><h4>Validar y publicar modelo</h4><p>La publicación congela el catálogo y las reglas que utilizará la plantilla.</p><div class="summary" style="margin-top:14px"><div class="sum"><strong>Versión</strong><span>Asset Model · v1.0</span></div><div class="sum"><strong>Estado actual</strong><span id="modelStatus">Borrador</span></div><div class="sum"><strong>Siguiente paso</strong><span>Generar Asset Classification Template</span></div></div><button id="generate" class="btn success" style="width:100%;margin-top:18px">Validar y publicar modelo</button><div id="genmsg" class="notice ok hidden" style="margin-top:14px"><b>Asset Model v1.0 publicado.</b><br>Continúa al paso 6 para generar la plantilla vinculada a esta versión.</div></div></div>
+</section>
+<section class="view">
+ <div class="card"><div class="head" style="padding:0 0 14px;border:0"><div><h4 style="margin:0 0 5px">Generar Plantilla de Clasificación de Activos Raíz</h4><p>La plantilla se entrega vacía y vinculada a las versiones publicadas. Sus listas y validaciones proceden de la configuración aprobada.</p></div><div style="display:flex;gap:8px"><button id="openColumnsHelp" class="info-btn">ⓘ Explicar columnas</button><button id="generateClassificationTemplate" class="btn primary" disabled>Generar plantilla Excel</button></div></div>
+  <div class="summary" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px"><div class="sum"><strong>Plantilla</strong><span>Asset Classification Template</span></div><div class="sum"><strong>Proyecto</strong><span>Demo Refinery</span></div><div class="sum"><strong>FLH</strong><span>v2.1</span></div><div class="sum"><strong>Asset Model</strong><span>v1.0</span></div></div>
+  <div class="notice"><b>Regla:</b> Discipline, Typology, Family y Subfamily son columnas informativas calculadas desde EquipmentTypeCode. No deben editarse manualmente.</div>
+  <div class="table" style="margin-top:14px"><table><thead><tr><th>LocationCode</th><th>LocationDescription</th><th>LevelNumber</th><th>DisplayName</th><th>FunctionalRole</th><th>EffectiveAssetRootPolicy</th><th>AssetCode</th><th>AssetDescription</th><th>EquipmentTypeCode</th><th>Discipline</th><th>Typology</th><th>Family</th><th>Subfamily</th><th>Criticality</th><th>ClassificationStatus</th></tr></thead><tbody><tr><td colspan="15" style="text-align:center;color:var(--mu);padding:22px">Plantilla vacía · solo encabezados y reglas de validación</td></tr></tbody></table></div>
+  <div id="templateMsg" class="notice ok hidden" style="margin-top:14px"><b>Plantilla vacía preparada.</b><br>En producción, el XLSX incorporará hojas auxiliares protegidas con LocationCode habilitados, taxonomía, criticidades y reglas SINGLE/MULTIPLE. La hoja de carga permanecerá sin filas.</div>
+ </div>
+</section>
+<div class="actions"><button id="prev" class="btn secondary">Anterior</button><button id="next" class="btn primary">Siguiente</button></div></div></section></main></div>
+<div id="rulesHelpModal" class="modal-backdrop"><div class="modal"><div class="modal-head"><div><h3>Reglas ADR y opciones de configuración</h3><p>Consecuencias funcionales de cada decisión del paso 3.</p></div><button class="modal-close" data-close="rulesHelpModal">×</button></div><div class="modal-body"><div class="help-grid"><div class="help-item"><strong>Relaciones padre-hijo</strong><p>Activada: permite construir composición física mediante ParentAssetCode. Desactivada: todos los activos quedan independientes y se pierde el contexto de conjunto.</p></div><div class="help-item"><strong>Herencia de ubicación</strong><p>Activada: un hijo sin LocationCode propio utiliza la ubicación del activo raíz. Desactivada: cada activo físico debe vincular una ubicación FLH válida.</p></div><div class="help-item"><strong>Taxonomía y criticidad obligatorias</strong><p>Activada: bloquea registros incompletos. Desactivada: permite borradores, pero reduce calidad de mantenimiento, reporting y fiabilidad.</p></div><div class="help-item"><strong>Modelo de criticidad</strong><p>Define los valores permitidos. Cambiar de A/B/C a otra escala requiere mapeo para conservar comparabilidad histórica.</p></div><div class="help-item"><strong>Ubicación propia o heredada</strong><p>Mixta admite ambos casos; propia obligatoria exige LocationCode en cada activo; herencia obligatoria concentra todo el árbol bajo la ubicación raíz.</p></div><div class="help-item"><strong>Relación por defecto</strong><p>Solo propone un valor inicial. El usuario debe cambiarlo cuando corresponda a AuxiliarySystem, Instrumentation, DrivenBy u otra relación aprobada.</p></div><div class="help-item"><strong>Máximo de padres físicos = 1</strong><p>Evita árboles ambiguos: cada activo pertenece a un único padre físico, aunque pueda mantener otras relaciones lógicas no jerárquicas.</p></div><div class="help-item"><strong>Cardinalidad de activos raíz</strong><p>No se configura aquí. El CMMS aplica EffectiveAssetRootPolicy procedente de la FLH para cada LocationCode.</p></div></div></div></div></div>
+<div id="columnsHelpModal" class="modal-backdrop"><div class="modal"><div class="modal-head"><div><h3>Columnas de Asset Classification Template</h3><p>La hoja de carga se genera vacía; los catálogos y validaciones se incorporan como referencias protegidas.</p></div><button class="modal-close" data-close="columnsHelpModal">×</button></div><div class="modal-body"><div class="help-grid"><div class="help-item"><strong>LocationCode</strong><p>Ubicación FLH activa a la que se vincula el activo raíz.</p></div><div class="help-item"><strong>LocationDescription</strong><p>Descripción informativa de la ubicación seleccionada.</p></div><div class="help-item"><strong>LevelNumber / DisplayName</strong><p>Nivel numérico y etiqueta visible heredados de la FLH.</p></div><div class="help-item"><strong>FunctionalRole</strong><p>Rol corporativo opcional de la ubicación; no gobierna la jerarquía.</p></div><div class="help-item"><strong>EffectiveAssetRootPolicy</strong><p>Regla final NONE, SINGLE o MULTIPLE que se validará para el LocationCode.</p></div><div class="help-item"><strong>AssetCode / AssetDescription</strong><p>Identificador único y descripción del nuevo activo raíz ADR.</p></div><div class="help-item"><strong>EquipmentTypeCode</strong><p>Hoja taxonómica seleccionada del catálogo publicado.</p></div><div class="help-item"><strong>Discipline, Typology, Family, Subfamily</strong><p>Ruta calculada desde EquipmentTypeCode; no debe escribirse manualmente.</p></div><div class="help-item"><strong>Criticality</strong><p>Valor permitido por el modelo de criticidad publicado.</p></div><div class="help-item"><strong>ClassificationStatus</strong><p>Resultado del procesamiento: pendiente, válido o rechazado con motivo.</p></div></div></div></div></div>
+<script>
+const steps=[['Verificar contexto del proyecto','Confirma la FLH publicada y el propósito de esta configuración.'],['Seleccionar fuente taxonómica','Define de dónde procede la clasificación maestra.'],['Configurar reglas del modelo','Establece criticidad, relaciones físicas y política de ubicación.'],['Definir catálogo del proyecto','Incluye únicamente las clasificaciones que podrán asignarse a activos.'],['Validar y publicar modelo','Publica una versión estable del catálogo y sus reglas.'],['Generar plantilla de clasificación','Crea el Asset Classification Template que se importará en el Registro de Activos Físicos.']];
+const taxonomy=[{n:'Compressor - Centrifugal Multi Stage',p:['Mechanical','Rotating Equipment','Compressor','Centrifugal Multi Stage']},{n:'Lubrication System',p:['Mechanical','Packages','Auxiliary System','Lubrication System']},{n:'Pump - Rotary Gear',p:['Mechanical','Rotating Equipment','Pump','Rotary Gear']},{n:'Filter - Cartridge',p:['Mechanical','Static Equipment','Filter','Cartridge']},{n:'Cooler - Oil',p:['Mechanical','Heat Transfer','Cooler','Oil Cooler']},{n:'Transmitter - Pressure',p:['Control & Instrumentation','Field Instruments','Transmitter','Pressure']},{n:'Transmitter - Temperature',p:['Control & Instrumentation','Field Instruments','Transmitter','Temperature']},{n:'Motor - Induction',p:['Electrical','Rotating Equipment','Motor','Induction']}];
+const locations=[{c:'SYS-AIR',l:'L3 · Sistema · MULTIPLE',p:['Demo Refinery','Utilities','SYS-AIR']},{c:'LIN-BOM',l:'L4 · Línea · MULTIPLE',p:['Demo Refinery','Utilities','SYS-AIR','LIN-BOM']},{c:'COMP-101',l:'L5 · Equipo · SINGLE',p:['Demo Refinery','Utilities','SYS-AIR','LIN-BOM','COMP-101']}];
+let s={
+ step:0,
+ taxonomySource:'corporate',
+ types:new Set(taxonomy.map(x=>x.n)),
+ expandedTaxonomy:new Set(),
+ assets:[]
+};const $=id=>document.getElementById(id);
+function nav(){let b=$('nav');b.innerHTML='';steps.forEach((x,i)=>{let d=document.createElement('div');d.className='nav-step'+(i===s.step?' active':i<s.step?' done':'');d.innerHTML=`<div class="nav-num">${i<s.step?'✓':i+1}</div><div><strong>${x[0]}</strong><span>${i===s.step?'Paso actual':i<s.step?'Completado':'Pendiente'}</span></div>`;d.onclick=()=>{s.step=i;render()};b.appendChild(d)})}
+function render(){document.querySelectorAll('.view').forEach((v,i)=>v.classList.toggle('active',i===s.step));$('title').textContent=(s.step+1)+'. '+steps[s.step][0];$('sub').textContent=steps[s.step][1];$('counter').textContent=`Paso ${s.step+1} de ${steps.length}`;$('bar').style.width=((s.step+1)/steps.length*100)+'%';$('prev').disabled=s.step===0;$('next').textContent=s.step===steps.length-1?'Cerrar':'Siguiente';nav();renderTaxonomyScope();summary()}
+
+const taxonomyLevelNames=['Discipline','Typology','Family','Subfamily'];
+
+function buildTaxonomyTree(){
+ const root={name:'ROOT',level:-1,path:[],children:new Map(),leaves:[]};
+ taxonomy.forEach(item=>{
+  let current=root;
+  item.p.forEach((name,level)=>{
+   if(!current.children.has(name)){
+    current.children.set(name,{name,level,path:[...current.path,name],children:new Map(),leaves:[]});
+   }
+   current=current.children.get(name);
+   current.leaves.push(item.n);
+  });
+ });
+ return root;
+}
+
+const taxonomyRoot=buildTaxonomyTree();
+
+function nodeKey(node){return node.path.join('||')}
+
+function setNodeSelection(node,checked){
+ node.leaves.forEach(name=>{
+  if(checked)s.types.add(name);
+  else s.types.delete(name);
+ });
+}
+
+function nodeSelectionState(node){
+ const selected=node.leaves.filter(name=>s.types.has(name)).length;
+ return {
+  checked:selected===node.leaves.length,
+  indeterminate:selected>0&&selected<node.leaves.length,
+  selected,
+  total:node.leaves.length
+ };
+}
+
+function taxonomyNodeMatches(node,query,levelFilter,statusFilter){
+ const state=nodeSelectionState(node);
+ const text=(node.name+' '+node.path.join(' ')).toLowerCase();
+ const matchesQuery=!query||text.includes(query);
+ const matchesLevel=levelFilter==='all'||String(node.level)===levelFilter;
+ const matchesStatus=statusFilter==='all'||
+  (statusFilter==='included'&&state.selected>0)||
+  (statusFilter==='excluded'&&state.selected<state.total);
+
+ if(matchesQuery&&matchesLevel&&matchesStatus)return true;
+ return [...node.children.values()].some(child=>taxonomyNodeMatches(child,query,levelFilter,statusFilter));
+}
+
+function createTaxonomyNode(node,query,levelFilter,statusFilter){
+ if(!taxonomyNodeMatches(node,query,levelFilter,statusFilter))return null;
+
+ const stateInfo=nodeSelectionState(node);
+ const wrapper=document.createElement('div');
+ wrapper.className='tax-node';
+
+ const row=document.createElement('div');
+ row.className='tax-node-row';
+ const directMatch=!query||(node.name+' '+node.path.join(' ')).toLowerCase().includes(query);
+ if(query&&directMatch)row.classList.add('filtered-match');
+
+ const hasChildren=node.children.size>0;
+ const key=nodeKey(node);
+ const expanded=s.expandedTaxonomy.has(key)||Boolean(query);
+
+ row.innerHTML=`
+  <button class="tax-toggle ${hasChildren?'':'empty'}" type="button">${expanded?'▾':'▸'}</button>
+  <input class="tax-checkbox" type="checkbox" ${stateInfo.checked?'checked':''}>
+  <div class="tax-label">
+    <strong>${node.name}</strong>
+    <small>${node.path.join(' › ')} · ${stateInfo.selected}/${stateInfo.total} incluidas</small>
+  </div>
+  <span class="tax-level">${taxonomyLevelNames[node.level]}</span>`;
+
+ const checkbox=row.querySelector('.tax-checkbox');
+ checkbox.indeterminate=stateInfo.indeterminate;
+ checkbox.addEventListener('change',()=>{
+  setNodeSelection(node,checkbox.checked);
+  renderTaxonomyScope();
+  summary();
+  rows();
+ });
+
+ const toggle=row.querySelector('.tax-toggle');
+ if(hasChildren){
+  toggle.addEventListener('click',()=>{
+   if(s.expandedTaxonomy.has(key))s.expandedTaxonomy.delete(key);
+   else s.expandedTaxonomy.add(key);
+   renderTaxonomyScope();
+  });
+ }
+
+ wrapper.appendChild(row);
+
+ if(hasChildren){
+  const children=document.createElement('div');
+  children.className='tax-children'+(expanded?'':' collapsed');
+  [...node.children.values()].forEach(child=>{
+   const childElement=createTaxonomyNode(child,query,levelFilter,statusFilter);
+   if(childElement)children.appendChild(childElement);
+  });
+  if(children.children.length)wrapper.appendChild(children);
+ }
+
+ return wrapper;
+}
+
+function renderTaxonomyScope(){
+ const tree=$('taxonomyTree');
+ if(!tree)return;
+
+ const query=($('taxonomySearch')?.value||'').trim().toLowerCase();
+ const levelFilter=$('taxonomyLevelFilter')?.value||'all';
+ const statusFilter=$('taxonomyStatusFilter')?.value||'all';
+
+ tree.innerHTML='';
+ [...taxonomyRoot.children.values()].forEach(node=>{
+  const element=createTaxonomyNode(node,query,levelFilter,statusFilter);
+  if(element)tree.appendChild(element);
+ });
+
+ if(!tree.children.length){
+  tree.innerHTML='<div class="exclusion-empty">No hay elementos que coincidan con los filtros.</div>';
+ }
+
+ const total=taxonomy.length;
+ const included=s.types.size;
+ $('taxonomyTotal').textContent=total;
+ $('taxonomyIncluded').textContent=included;
+ $('taxonomyExcluded').textContent=total-included;
+ $('taxonomyBranches').textContent=taxonomyRoot.children.size;
+
+ const source=$('catalogSourceLabel');
+ if(source)source.textContent=taxonomySourceLabels[s.taxonomySource];
+
+ renderTaxonomyExclusions();
+}
+
+function renderTaxonomyExclusions(){
+ const box=$('taxonomyExclusions');
+ if(!box)return;
+
+ const excluded=taxonomy.filter(item=>!s.types.has(item.n));
+ if(!excluded.length){
+  box.innerHTML='<div class="exclusion-empty">No hay elementos excluidos.<br>Todo el catálogo está disponible para el proyecto.</div>';
+  return;
+ }
+
+ box.innerHTML='';
+ excluded.forEach(item=>{
+  const row=document.createElement('div');
+  row.className='exclusion-item';
+  row.innerHTML=`
+   <div><strong>${item.n}</strong><small>${item.p.join(' › ')}</small></div>
+   <button class="btn outline" type="button">Reincorporar</button>`;
+  row.querySelector('button').addEventListener('click',()=>{
+   s.types.add(item.n);
+   renderTaxonomyScope();
+   summary();
+   rows();
+  });
+  box.appendChild(row);
+ });
+}
+
+function expandAllTaxonomy(){
+ function visit(node){
+  if(node.level>=0&&node.children.size)s.expandedTaxonomy.add(nodeKey(node));
+  node.children.forEach(visit);
+ }
+ visit(taxonomyRoot);
+ renderTaxonomyScope();
+}
+
+function collapseAllTaxonomy(){
+ s.expandedTaxonomy.clear();
+ renderTaxonomyScope();
+}
+
+function selectAllTaxonomy(){
+ s.types=new Set(taxonomy.map(x=>x.n));
+ renderTaxonomyScope();
+ summary();
+ rows();
+}
+
+function summary(){let b=$('summary');if(!b)return;b.innerHTML=`<div class="sum"><strong>FLH vinculada</strong><span>Demo Refinery · v2.1 · Publicada</span></div><div class="sum"><strong>Fuente taxonómica</strong><span>${taxonomySourceLabels[s.taxonomySource]}</span></div><div class="sum"><strong>Catálogo permitido</strong><span>${s.types.size} de ${taxonomy.length} subfamilias incluidas</span></div><div class="sum"><strong>Ubicación de hijos físicos</strong><span>${$('policy')?.value||'Mixta'}</span></div><div class="sum"><strong>Modelo de criticidad</strong><span>${$('crit')?.value||'A / B / C'}</span></div>`}
+function blank(){return{tag:'',type:[...s.types][0]||'',parent:'',rel:'PartOf',loc:locations[0].c,mode:'Asignada',crit:'B',desc:''}}
+function opts(a,v){return a.map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')}
+function rows(){let b=$('rows');if(!b)return;b.innerHTML='';s.assets.forEach((a,i)=>{let parents=['',...s.assets.filter((_,j)=>j!==i).map(x=>x.tag).filter(Boolean)],tr=document.createElement('tr');tr.innerHTML=`<td><input data-f="tag" value="${a.tag}"></td><td><select data-f="type">${opts([...s.types],a.type)}</select></td><td><select data-f="parent">${opts(parents,a.parent)}</select></td><td><select data-f="rel">${opts(['PartOf','AuxiliarySystem','Instrumentation','DrivenBy','Monitors'],a.rel)}</select></td><td><select data-f="loc">${locations.map(l=>`<option value="${l.c}" ${l.c===a.loc?'selected':''}>${l.l}</option>`).join('')}</select></td><td><select data-f="mode">${opts(['Asignada','Heredada'],a.mode)}</select></td><td><select data-f="crit">${opts(['A','B','C'],a.crit)}</select></td><td><input data-f="desc" value="${a.desc}"></td><td><button class="btn outline rm">×</button></td>`;tr.querySelectorAll('[data-f]').forEach(e=>e.onchange=e.oninput=()=>{a[e.dataset.f]=e.value;if(e.dataset.f==='mode'&&e.value==='Heredada'&&a.parent){let p=s.assets.find(x=>x.tag===a.parent);if(p)a.loc=p.loc}preview()});tr.querySelector('.rm').onclick=()=>{s.assets.splice(i,1);rows();preview()};b.appendChild(tr)})}
+function example(){s.assets=[{tag:'COMP-101',type:taxonomy[0].n,parent:'',rel:'PartOf',loc:'TAG-COMP-101',mode:'Asignada',crit:'A',desc:'Compresor principal C-101'},{tag:'LUBE-101',type:taxonomy[1].n,parent:'COMP-101',rel:'AuxiliarySystem',loc:'TAG-LUBE-101',mode:'Asignada',crit:'A',desc:'Sistema de lubricación'},{tag:'P-101',type:taxonomy[2].n,parent:'LUBE-101',rel:'PartOf',loc:'TAG-P-101',mode:'Asignada',crit:'B',desc:'Bomba de aceite'},{tag:'PT-101',type:taxonomy[5].n,parent:'COMP-101',rel:'Instrumentation',loc:'TAG-PT-101',mode:'Asignada',crit:'B',desc:'Transmisor de presión'},{tag:'TT-101',type:taxonomy[6].n,parent:'COMP-101',rel:'Instrumentation',loc:'TAG-COMP-101',mode:'Heredada',crit:'C',desc:'Transmisor sin TAG propio'}];rows();preview()}
+function path(a){return '<ul><li>'+a.map((x,i)=>`<span class="node"><b>${i+1}</b>${x}</span>${i<a.length-1?'<ul><li>':''}`).join('')+a.slice(1).map(()=>'</li></ul>').join('')+'</li></ul>'}
+function preview(){let sel=$('preview');if(!sel)return;let cur=sel.value;sel.innerHTML=s.assets.map(a=>`<option ${a.tag===cur?'selected':''}>${a.tag}</option>`).join('');sel.onchange=triple;triple()}
+function triple(){let a=s.assets.find(x=>x.tag===$('preview').value)||s.assets[0];if(!a){$('locTree').innerHTML=$('classTree').innerHTML=$('physTree').innerHTML='<p>Sin activos.</p>';return}let l=locations.find(x=>x.c===a.loc),t=taxonomy.find(x=>x.n===a.type),chain=[a.tag],c=a;while(c.parent){chain.unshift(c.parent);c=s.assets.find(x=>x.tag===c.parent)||{parent:''}}$('locTree').innerHTML=path(l?l.p:[a.loc]);$('classTree').innerHTML=path(t?t.p:[a.type]);$('physTree').innerHTML=path(chain)}
+function validate(){let out=[],err=0,tags=s.assets.map(a=>a.tag).filter(Boolean);if(!s.assets.length){out.push(['No hay activos','bad']);err++}s.assets.forEach((a,i)=>{if(!a.tag){out.push([`Fila ${i+2}: falta AssetTag`,'bad']);err++}if(a.parent&&!tags.includes(a.parent)){out.push([`Fila ${i+2}: padre inexistente`,'bad']);err++}if(a.parent===a.tag){out.push([`Fila ${i+2}: padre inválido`,'bad']);err++}if(!a.loc){out.push([`Fila ${i+2}: falta ubicación`,'bad']);err++}if(!a.crit){out.push([`Fila ${i+2}: falta criticidad`,'bad']);err++}});if(!err)out.push(['Taxonomía, ubicación, relaciones y criticidad correctas','good']);$('results').innerHTML=out.map(x=>`<p><span class="status ${x[1]}">${x[0]}</span></p>`).join('');$('import').disabled=!!err}
+function csv(){let r=[['AssetTag','EquipmentType','ParentAssetTag','RelationshipType','LocationCode','LocationMode','Criticality','Description']];s.assets.forEach(a=>r.push([a.tag,a.type,a.parent,a.rel,a.loc,a.mode,a.crit,a.desc]));let q=r.map(x=>x.map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(',')).join('\n'),b=new Blob(['\ufeff'+q],{type:'text/csv'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='ADR_Demo.csv';a.click();URL.revokeObjectURL(u)}
+const taxonomySourceLabels={corporate:'Corporativa',project:'Copiada de otro proyecto',client:'Del cliente'};
+document.querySelectorAll('input[name="taxonomySource"]').forEach(radio=>{
+ radio.addEventListener('change',()=>{
+  if(!radio.checked)return;
+  s.taxonomySource=radio.value;
+  document.querySelectorAll('.tax-choice').forEach(label=>{
+   label.classList.toggle('sel',label.querySelector('input').checked);
+  });
+  const selectedLabel=$('taxonomySelectedLabel');
+  if(selectedLabel)selectedLabel.textContent={
+   corporate:'Taxonomía corporativa',
+   project:'Copiar desde otro proyecto',
+   client:'Taxonomía del cliente'
+  }[s.taxonomySource];
+  summary();renderTaxonomyScope();
+ });
+});
+document.querySelectorAll('.switch').forEach(x=>x.onclick=()=>x.classList.toggle('on'));const taxonomySearchInput=$('taxonomySearch');
+if(taxonomySearchInput)taxonomySearchInput.oninput=renderTaxonomyScope;
+const taxonomyLevelFilter=$('taxonomyLevelFilter');
+if(taxonomyLevelFilter)taxonomyLevelFilter.onchange=renderTaxonomyScope;
+const taxonomyStatusFilter=$('taxonomyStatusFilter');
+if(taxonomyStatusFilter)taxonomyStatusFilter.onchange=renderTaxonomyScope;
+const selectAllButton=$('selectAllTaxonomy');
+if(selectAllButton)selectAllButton.onclick=selectAllTaxonomy;
+const expandAllButton=$('expandAllTaxonomy');
+if(expandAllButton)expandAllButton.onclick=expandAllTaxonomy;
+const collapseAllButton=$('collapseAllTaxonomy');
+if(collapseAllButton)collapseAllButton.onclick=collapseAllTaxonomy;
+const restoreButton=$('restoreTaxonomy');
+if(restoreButton)restoreButton.onclick=selectAllTaxonomy;
+function downloadClassificationTemplate(){
+ const header=['LocationCode','LocationDescription','LevelNumber','DisplayName','FunctionalRole','EffectiveAssetRootPolicy','AssetCode','AssetDescription','EquipmentTypeCode','Discipline','Typology','Family','Subfamily','Criticality','ClassificationStatus'];
+ const data=[header];
+ const csv=data.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+ const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='Asset_Classification_Template_Demo_Refinery_v1_0.csv';a.click();URL.revokeObjectURL(url);
+ $('templateMsg').classList.remove('hidden');
+}
+$('generate').onclick=()=>{if(!s.types.size){alert('El catálogo debe incluir al menos una clasificación.');return}$('genmsg').classList.remove('hidden');$('modelStatus').textContent='Publicado · 16/07/2026';$('generate').textContent='Modelo publicado';$('generate').disabled=true;$('generateClassificationTemplate').disabled=false};
+$('generateClassificationTemplate').onclick=downloadClassificationTemplate;
+function openModal(id){$(id).classList.add('open')}
+function closeModal(id){$(id).classList.remove('open')}
+$('openRulesHelp').onclick=()=>openModal('rulesHelpModal');
+$('openColumnsHelp').onclick=()=>openModal('columnsHelpModal');
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+document.querySelectorAll('.modal-backdrop').forEach(m=>m.onclick=e=>{if(e.target===m)closeModal(m.id)});
+$('prev').onclick=()=>{if(s.step>0){s.step--;render()}};
+$('next').onclick=()=>{if(s.step<steps.length-1){s.step++;render()}else alert('Configuración finalizada. Continúa con el Registro de Activos Físicos.')};render();
+</script></body></html>

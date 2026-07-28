@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CMMS 2.0 · Configuración y publicación de la FLH</title>
+<style>
+:root{--b:#1677ff;--b2:#0f5fd3;--bd:#dce3ec;--bg:#f6f8fb;--tx:#0f172a;--mu:#667085;--ok:#079455;--nav:#10233f}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial;background:var(--bg);color:var(--tx)}
+button,input,select{font:inherit}.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+aside{background:var(--nav);color:#fff;padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:26px}.brand-logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#44c4ff,#1677ff);font-weight:800}.brand strong{display:block;font-size:16px}.brand small{display:block;font-size:12px;color:#a8b4c5;margin-top:3px}
+.nav{padding:11px;border-radius:9px;margin:4px 0;color:#cdd7e5;cursor:pointer}.nav.active{background:#17365f}.nav.done{color:#b7f4d3}
+main{padding:26px 32px}.top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.top h1{margin:0 0 6px;font-size:27px}.top p{margin:0;color:var(--mu)}.tag{background:#e9f2ff;color:#1459b8;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}.progress{height:8px;background:#e7ecf3;border-radius:99px;overflow:hidden;margin:20px 0}.progress div{height:100%;background:linear-gradient(90deg,#1677ff,#00c8ff)}
+.panel{background:#fff;border:1px solid var(--bd);border-radius:15px;box-shadow:0 12px 30px rgba(15,23,42,.08);overflow:hidden}
+.head{padding:20px 22px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between}.head h2{margin:0 0 5px;font-size:20px}.head p{margin:0;color:var(--mu);font-size:13px}
+.body{padding:22px}.view{display:none}.view.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{border:1px solid var(--bd);border-radius:13px;padding:18px;background:#f8fafc}.card h3{margin:0 0 10px;font-size:15px}.card p{color:var(--mu);font-size:13px;line-height:1.5}.section-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.section-title h3{margin:0}.info-btn{background:#fff;border:1px solid #bfdbfe;color:#1459b8;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700;cursor:pointer}
+.profile{display:block;padding:13px;border:1px solid var(--bd);border-radius:10px;background:#fff;margin:8px 0;cursor:pointer}.profile.sel{border-color:#7eb2ff;background:#f4f8ff}
+.counter{display:flex;gap:12px;align-items:center;margin:16px 0}.counter button,.counter b{width:44px;height:42px;border:1px solid var(--bd);border-radius:9px;background:#fff;display:grid;place-items:center;font-size:20px}
+.levels{display:grid;gap:8px}.level{display:flex;gap:10px;align-items:center;padding:9px;border:1px solid var(--bd);border-radius:9px;background:#fff}.badge{width:38px;height:32px;display:grid;place-items:center;border-radius:8px;background:#e9f2ff;color:#1459b8;font-weight:800}
+.row{display:grid;grid-template-columns:90px 1fr 1fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.row-header{display:grid;grid-template-columns:90px 1fr 1fr;gap:10px;align-items:center;padding:10px 0;border-bottom:2px solid var(--bd);color:#344054;font-size:12px;font-weight:800;background:#f2f4f7}
+.row-header span{padding:0 10px}
+.row input,.row select{padding:10px;border:1px solid var(--bd);border-radius:8px;width:100%}
+.visible-label{display:inline-flex;align-items:center;min-height:34px;width:max-content;max-width:100%;padding:7px 11px;border-radius:8px;background:#e9f2ff;color:#1459b8;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note{padding:13px;border:1px solid #bfdbfe;background:#eff6ff;color:#1e40af;border-radius:9px;font-size:13px}.ok{background:#ecfdf3;border-color:#a7f3d0;color:#065f46}
+.actions{display:flex;justify-content:space-between;margin-top:20px}.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}.primary{background:var(--b);color:#fff}.secondary{background:#eef2f7}.success{background:var(--ok);color:#fff}.outline{background:#fff;border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:left}th{background:#153c70;color:#fff}td input,td select{width:100%;padding:7px;border:1px solid var(--bd);border-radius:6px}.locked{background:#f2f4f7}
+.status{padding:4px 8px;border-radius:99px;font-weight:700}.good{background:#d1fadf;color:#05603a}.bad{background:#fee4e2;color:#b42318}
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}.modal-backdrop.open{display:flex}.modal{width:min(820px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 26px 80px rgba(0,0,0,.28)}.modal-head{display:flex;justify-content:space-between;gap:14px;padding:19px 21px;border-bottom:1px solid var(--bd)}.modal-head h3{margin:0 0 5px}.modal-head p{margin:0;color:var(--mu);font-size:13px}.modal-body{padding:21px}.modal-close{width:34px;height:34px;border:1px solid var(--bd);background:#fff;border-radius:9px;font-size:20px;cursor:pointer}.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.help-item{padding:14px;border:1px solid var(--bd);border-radius:11px;background:#f8fafc}.help-item strong{display:block;margin-bottom:5px}.help-item p{margin:0;color:var(--mu);font-size:13px;line-height:1.5}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{display:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside><div class="brand"><div class="brand-logo">FLH</div><div><strong>Hierarchy Setup</strong><small>CMMS 2.0 · Project Foundation</small></div></div><div id="nav"></div><div style="margin-top:24px;padding-top:14px;border-top:1px solid #314965;color:#91a3ba;font-size:12px;line-height:1.5">La FLH publicada es el punto de partida del Modelo de Activos y del Registro de Activos Físicos.</div></aside>
+<main>
+<div class="top"><div><h1>Configuración y publicación de la Jerarquía Funcional</h1><p>Define cómo se organiza la instalación, carga sus ubicaciones funcionales y publica una versión consumible por los procesos de activos.</p></div><span class="tag">Proyecto: Demo Refinery · Borrador</span></div>
+<div class="progress"><div id="bar"></div></div>
+<section class="panel">
+<div class="head"><div><h2 id="title"></h2><p id="sub"></p></div><b id="stepTag"></b></div>
+<div class="body">
+<div class="view active">
+<div class="grid"><div class="card"><h3>Perfiles disponibles</h3><div id="profiles"></div></div><div class="card"><h3>¿Qué es un perfil?</h3><p>Es una configuración reutilizable con profundidad, nombres y mapeos habituales. Puedes modificarla después.</p></div></div>
+</div>
+<div class="view">
+<div class="grid"><div class="card"><h3>Número de niveles</h3><p>Usa solo los niveles necesarios.</p><div class="counter"><button id="minus">−</button><b id="count">5</b><button id="plus">+</button></div><div class="note">Entre 1 y 11 niveles.</div></div><div class="card"><h3>Vista previa</h3><div id="preview" class="levels"></div></div></div>
+</div>
+<div class="view"><div class="card"><h3>Nombres que usa el cliente</h3><p>Estos serán los nombres visibles para los usuarios.</p><div id="labels"></div></div></div>
+<div class="view"><div class="card"><h3>Rol funcional opcional</h3><p>La posición en la jerarquía depende únicamente del número de nivel. El rol sirve para reporting corporativo y no condiciona dónde pueden vincularse activos.</p><div id="mapping"></div><div class="note"><b>LevelNumber</b> gobierna la estructura. <b>DisplayName</b> controla lo que ve el usuario. <b>FunctionalRole</b> es una normalización opcional.</div></div></div>
+<div class="view"><div class="card"><div class="section-title"><div><h3>Política de vinculación de activos raíz</h3><p>Configura por nivel el comportamiento predeterminado. La posición numérica y el nombre visible no determinan la capacidad de vincular activos.</p></div><button id="openRootHelp" class="info-btn">ⓘ ¿Qué es un Activo Raíz?</button></div><div id="policyTable"></div><div class="note" style="margin-top:12px"><b>NONE:</b> no admite activos raíz. <b>SINGLE:</b> máximo uno por LocationCode. <b>MULTIPLE:</b> varios AssetCode pueden compartir el mismo LocationCode.</div></div></div>
+<div class="view">
+<div class="grid"><div class="card"><h3>Resumen del modelo FLH</h3><div id="summary" class="levels"></div></div><div class="card"><h3>Generar plantilla</h3><p>La plantilla utilizará LevelNumber y heredará DisplayName, FunctionalRole y AssetRootPolicy desde la configuración.</p><button id="generate" class="btn success" style="width:100%;margin-top:15px">Generar plantilla FLH</button><div id="genMsg" class="note ok" style="display:none;margin-top:12px">Plantilla corporativa preparada.</div></div></div>
+</div>
+<div class="view">
+<div class="section-title"><div class="note" style="flex:1">Completa las ubicaciones usando niveles numéricos. Los nombres, roles y políticas se heredan de la configuración del nivel.</div><button id="openOverrideHelp" class="info-btn">ⓘ Location Override y Effective Policy</button></div>
+<div style="margin:12px 0"><button id="add" class="btn outline">+ Añadir fila</button> <button id="example" class="btn outline">Cargar ejemplo</button> <button id="csv" class="btn success">Descargar CSV</button></div>
+<div style="overflow:auto"><table><thead><tr><th>LocationCode</th><th>ParentLocationCode</th><th>LevelNumber</th><th>DisplayName</th><th>FinalDescription</th><th>FunctionalRole</th><th>Level Policy</th><th>Location Override</th><th>Effective Policy</th><th>Active</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+<p style="font-size:12px;color:#667085">En producción, el backend generaría XLSX. La demo descarga CSV sin librerías externas.</p>
+</div>
+<div class="view">
+<div class="grid"><div class="card"><h3>Validación funcional</h3><div id="results"></div><button id="validate" class="btn primary" style="width:100%;margin-top:12px">Validar jerarquía</button></div><div class="card"><h3>Publicar FLH</h3><p>Solo se habilita cuando la estructura no contiene errores. La publicación crea una versión estable para los procesos posteriores.</p><div class="levels" style="margin:12px 0"><div class="level"><span class="badge">v</span><div><b>FLH · Demo Refinery · v2.1</b><br><small id="flhStatus">Borrador validable</small></div></div></div><button id="import" class="btn success" disabled style="width:100%">Importar y publicar FLH</button><div id="impMsg" class="note ok" style="display:none;margin-top:12px"><b>FLH v2.1 publicada.</b><br>Disponible para configurar el Modelo de Activos del Proyecto.</div></div></div>
+<div class="note" style="margin-top:16px"><b>Contrato de salida:</b> LocationCode, ParentLocationCode, LevelNumber, DisplayName, FunctionalRole opcional, AssetRootPolicy y estado. La siguiente fase seleccionará todas las ubicaciones activas con política SINGLE o MULTIPLE.</div>
+</div>
+<div class="actions"><button id="prev" class="btn secondary">Anterior</button><div><button id="next" class="btn primary">Siguiente</button></div></div>
+</div></section>
+</main></div>
+<div id="rootHelpModal" class="modal-backdrop"><div class="modal"><div class="modal-head"><div><h3>Activo Raíz ADR</h3><p>El primer activo físico vinculado a una ubicación funcional.</p></div><button class="modal-close" data-close="rootHelpModal">×</button></div><div class="modal-body"><div class="help-grid"><div class="help-item"><strong>Qué representa</strong><p>Es el punto de inicio de un árbol físico ADR. Puede ser un equipo principal, paquete, skid, conjunto técnico u otro activo mantenible.</p></div><div class="help-item"><strong>Cómo se vincula</strong><p>El activo conserva su AssetCode y se relaciona con la FLH mediante LocationCode. No se convierte en un nodo FLH ni queda contenido dentro de él.</p></div><div class="help-item"><strong>SINGLE</strong><p>La ubicación funcional admite como máximo un activo raíz. Sus componentes físicos se organizan después mediante ParentAssetCode.</p></div><div class="help-item"><strong>MULTIPLE</strong><p>La misma ubicación puede vincular varios activos raíz independientes. Cada uno inicia su propio árbol físico ADR.</p></div></div></div></div></div>
+<div id="overrideHelpModal" class="modal-backdrop"><div class="modal"><div class="modal-head"><div><h3>Location Override y Effective Policy</h3><p>Cómo aplicar excepciones sin romper el gobierno definido por nivel.</p></div><button class="modal-close" data-close="overrideHelpModal">×</button></div><div class="modal-body"><div class="help-grid"><div class="help-item"><strong>INHERIT</strong><p>La ubicación utiliza la política predeterminada de su LevelNumber. Es el valor recomendado cuando no existe una excepción funcional.</p></div><div class="help-item"><strong>NONE</strong><p>Impide vincular activos raíz en esa ubicación concreta, aunque su nivel permita SINGLE o MULTIPLE.</p></div><div class="help-item"><strong>SINGLE</strong><p>Permite como máximo un AssetCode raíz para ese LocationCode, sustituyendo la política general del nivel.</p></div><div class="help-item"><strong>MULTIPLE</strong><p>Permite varios AssetCode raíz asociados al mismo LocationCode, sustituyendo la política general del nivel.</p></div><div class="help-item" style="grid-column:1/-1"><strong>Effective Policy</strong><p>Es la regla final que aplicará el CMMS. Si Location Override es INHERIT, coincide con Level Policy. Si existe una excepción, Effective Policy toma el valor de esa excepción. Las plantillas y validaciones posteriores utilizan siempre Effective Policy.</p></div></div></div></div></div>
+<script>
+const steps=[
+['Seleccionar el perfil del proyecto','Elige un punto de partida o crea uno nuevo.'],
+['Definir cuántos niveles tendrá la jerarquía','Selecciona solo la profundidad necesaria.'],
+['Asignar los nombres del cliente','Define cómo se llamará cada nivel.'],
+['Asignar roles funcionales opcionales','Normaliza los niveles para reporting sin condicionar la estructura.'],
+['Configurar política de activos raíz','Define si cada nivel admite ninguno, uno o múltiples activos raíz.'],
+['Generar la plantilla del proyecto','Crea la plantilla adaptada.'],
+['Completar la jerarquía en la plantilla','Registra los nodos y sus padres.'],
+['Validar y publicar FLH','Crea una versión estable que podrán consumir los procesos de activos.']
+];
+const types=['NONE','BUSINESS','TECHNOLOGY','PROJECT','AREA','UNIT','SYSTEM','SUBSYSTEM','FUNCTIONAL_UNIT','FUNCTIONAL_SUBUNIT','COMPONENT'];
+const profileConfigs={
+'Refinería':{n:5,l:['Planta','Área','Sistema','Línea','Equipo'],t:['PROJECT','AREA','SYSTEM','FUNCTIONAL_UNIT','COMPONENT'],ap:['NONE','NONE','MULTIPLE','MULTIPLE','SINGLE']},
+'Parque eólico':{n:4,l:['Parque','Bloque','Aerogenerador','Equipo'],t:['PROJECT','AREA','SYSTEM','COMPONENT'],ap:['NONE','NONE','MULTIPLE','SINGLE']},
+'Infraestructura':{n:6,l:['Proyecto','Zona','Tramo','Sistema','Subsistema','Equipo'],t:['PROJECT','AREA','UNIT','SYSTEM','SUBSYSTEM','COMPONENT'],ap:['NONE','NONE','NONE','MULTIPLE','MULTIPLE','SINGLE']},
+'Nuevo perfil':{n:5,l:['Nivel 1','Nivel 2','Nivel 3','Nivel 4','Nivel 5'],t:['NONE','NONE','NONE','NONE','NONE'],ap:['NONE','NONE','NONE','NONE','NONE']}
+};
+let s={step:0,p:'Refinería',n:5,l:[],t:[],ap:[],rows:[]};
+function useProfile(p){let x=profileConfigs[p];s.p=p;s.n=x.n;s.l=[...x.l];s.t=[...x.t];s.ap=[...x.ap];render()}
+function ensure(){while(s.l.length<s.n)s.l.push('Nivel '+(s.l.length+1));while(s.t.length<s.n)s.t.push('NONE');while(s.ap.length<s.n)s.ap.push('NONE');s.l=s.l.slice(0,s.n);s.t=s.t.slice(0,s.n);s.ap=s.ap.slice(0,s.n)}
+function render(){
+ensure();
+document.querySelectorAll('.view').forEach((v,i)=>v.classList.toggle('active',i===s.step));
+title.textContent=(s.step+1)+'. '+steps[s.step][0];sub.textContent=steps[s.step][1];stepTag.textContent='Paso '+(s.step+1)+' de '+steps.length;bar.style.width=((s.step+1)/steps.length*100)+'%';
+nav.innerHTML='';steps.forEach((x,i)=>nav.innerHTML+=`<div class="nav ${i===s.step?'active':i<s.step?'done':''}" onclick="s.step=${i};render()">${i<s.step?'✓':i+1}. ${x[0]}</div>`);
+profilesEl();levelsEl();labelsEl();mapEl();policyEl();summaryEl();rowsEl();
+prev.disabled=s.step===0;next.textContent=s.step===steps.length-1?'Finalizar':'Siguiente';
+}
+function profilesEl(){
+const el=document.getElementById('profiles');
+el.innerHTML='';
+Object.keys(profileConfigs).forEach(p=>{
+const detail=p==='Nuevo perfil'?'Crear desde cero':profileConfigs[p].n+' niveles';
+el.innerHTML+=`<label class="profile ${p===s.p?'sel':''}" onclick="useProfile('${p}')"><input type="radio" ${p===s.p?'checked':''}> <b>${p}</b><br><small>${detail}</small></label>`;
+});
+}
+function levelsEl(){count.textContent=s.n;preview.innerHTML='';for(let i=0;i<s.n;i++)preview.innerHTML+=`<div class="level"><span class="badge">L${i+1}</span><div><b>Nivel ${i+1}</b><br><small>${s.l[i]}</small></div></div>`}
+function labelsEl(){
+labels.innerHTML=`<div class="row-header"><span>Nivel</span><span>Nombre cliente</span><span>Nombre visible para los usuarios</span></div>`;
+for(let i=0;i<s.n;i++){
+labels.innerHTML+=`<div class="row"><b>Nivel ${i+1}</b><input value="${s.l[i]}" oninput="s.l[${i}]=this.value;document.getElementById('visibleLabel_${i}').textContent=this.value||'Sin nombre';levelsEl()"><span id="visibleLabel_${i}" class="visible-label">${s.l[i]||'Sin nombre'}</span></div>`;
+}
+}
+function mapEl(){
+mapping.innerHTML=`<div class="row-header"><span>Nivel</span><span>Nombre visible</span><span>FunctionalRole opcional</span></div>`;
+for(let i=0;i<s.n;i++){
+mapping.innerHTML+=`<div class="row"><b>Nivel ${i+1}</b><span>${s.l[i]}</span><select onchange="s.t[${i}]=this.value">${types.map(t=>`<option ${t===s.t[i]?'selected':''}>${t}</option>`).join('')}</select></div>`;
+}
+}
+function policyEl(){const box=document.getElementById('policyTable');if(!box)return;box.innerHTML='<table><thead><tr><th>LevelNumber</th><th>DisplayName</th><th>FunctionalRole</th><th>AssetRootPolicy</th><th>Efecto</th></tr></thead><tbody>'+s.l.map((label,i)=>`<tr><td><b>L${i+1}</b></td><td>${label}</td><td>${s.t[i]}</td><td><select onchange="s.ap[${i}]=this.value;policyEl();summaryEl()">${['NONE','SINGLE','MULTIPLE'].map(p=>`<option ${p===s.ap[i]?'selected':''}>${p}</option>`).join('')}</select></td><td>${s.ap[i]==='NONE'?'No admite activos raíz':s.ap[i]==='SINGLE'?'Máximo un AssetCode por LocationCode':'Varios AssetCode por LocationCode'}</td></tr>`).join('')+'</tbody></table>'}
+function summaryEl(){summary.innerHTML='';for(let i=0;i<s.n;i++)summary.innerHTML+=`<div class="level"><span class="badge">L${i+1}</span><div><b>${s.l[i]}</b><br><small>Rol: ${s.t[i]} · Activos: ${s.ap[i]}</small></div></div>`}
+function blank(){return{c:'',p:'',lvl:'Nivel 1',d:'',a:true,ov:'INHERIT'}}
+function rowsEl(){rows.innerHTML='';s.rows.forEach((r,i)=>{let lv=Math.max(1,Math.min(s.n,parseInt(r.lvl.replace(/\D/g,''))||1));r.lvl='Nivel '+lv;r.ov=r.ov||'INHERIT';let effective=r.ov==='INHERIT'?s.ap[lv-1]:r.ov;rows.innerHTML+=`<tr><td><input value="${r.c}" oninput="s.rows[${i}].c=this.value"></td><td><input value="${r.p}" oninput="s.rows[${i}].p=this.value"></td><td><select onchange="s.rows[${i}].lvl=this.value;rowsEl()">${Array.from({length:s.n},(_,k)=>`<option ${lv===k+1?'selected':''}>${k+1}</option>`).join('')}</select></td><td><input class="locked" readonly value="${s.l[lv-1]}"></td><td><input value="${r.d}" oninput="s.rows[${i}].d=this.value"></td><td><input class="locked" readonly value="${s.t[lv-1]}"></td><td><input class="locked" readonly value="${s.ap[lv-1]}"></td><td><select onchange="s.rows[${i}].ov=this.value;rowsEl()">${['INHERIT','NONE','SINGLE','MULTIPLE'].map(p=>`<option ${p===r.ov?'selected':''}>${p}</option>`).join('')}</select></td><td><input class="locked" readonly value="${effective}"></td><td><input type="checkbox" ${r.a?'checked':''} onchange="s.rows[${i}].a=this.checked"></td><td><button class="btn outline" onclick="s.rows.splice(${i},1);rowsEl()">×</button></td></tr>`})}
+const title=document.getElementById('title'),sub=document.getElementById('sub'),stepTag=document.getElementById('stepTag'),bar=document.getElementById('bar'),nav=document.getElementById('nav'),count=document.getElementById('count'),preview=document.getElementById('preview'),labels=document.getElementById('labels'),mapping=document.getElementById('mapping'),summary=document.getElementById('summary'),rows=document.getElementById('rows'),prev=document.getElementById('prev'),next=document.getElementById('next'),minus=document.getElementById('minus'),plus=document.getElementById('plus'),generate=document.getElementById('generate'),genMsg=document.getElementById('genMsg'),add=document.getElementById('add'),example=document.getElementById('example'),csv=document.getElementById('csv'),validate=document.getElementById('validate'),results=document.getElementById('results'),importBtn=document.getElementById('import'),impMsg=document.getElementById('impMsg');
+minus.onclick=()=>{if(s.n>1){s.n--;ensure();render()}};plus.onclick=()=>{if(s.n<11){s.n++;ensure();render()}};
+prev.onclick=()=>{if(s.step>0){s.step--;render()}};next.onclick=()=>{if(s.step<steps.length-1){s.step++;render()}else alert('FLH corporativa finalizada. Continúa con la Configuración del Modelo de Activos del Proyecto.')};
+generate.onclick=()=>{genMsg.style.display='block';if(!s.rows.length)s.rows=[blank()];rowsEl()};
+add.onclick=()=>{s.rows.push(blank());rowsEl()};
+example.onclick=()=>{s.rows=[
+{c:'PLT-MAD',p:'',lvl:'Nivel 1',d:s.l[0]+' Madrid',a:true},
+{c:'UTL',p:'PLT-MAD',lvl:'Nivel 2',d:s.l[1]+' de Utilidades',a:true},
+{c:'SYS-AF',p:'UTL',lvl:'Nivel 3',d:s.l[2]+' Agua Fría',a:true},
+{c:'LIN-BOM',p:'SYS-AF',lvl:'Nivel 4',d:s.l[3]+' Bombeo',a:true},
+{c:'BOM-P101',p:'LIN-BOM',lvl:'Nivel 5',d:s.l[4]+' P-101',a:true}
+].slice(0,s.n);rowsEl()};
+csv.onclick=()=>{let a=[['LocationCode','ParentLocationCode','LevelNumber','DisplayName','FinalDescription','FunctionalRole','LevelAssetRootPolicy','LocationPolicyOverride','EffectiveAssetRootPolicy','Active']];s.rows.forEach(r=>{let lv=parseInt(r.lvl.replace(/\D/g,''))||1,ov=r.ov||'INHERIT',effective=ov==='INHERIT'?s.ap[lv-1]:ov;a.push([r.c,r.p,lv,s.l[lv-1],r.d,s.t[lv-1],s.ap[lv-1],ov,effective,r.a?'TRUE':'FALSE'])});let q=a.map(x=>x.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');let b=new Blob(['\ufeff'+q],{type:'text/csv'}),u=URL.createObjectURL(b),x=document.createElement('a');x.href=u;x.download='FLH_Corporate_'+s.p.replace(/\s/g,'_')+'.csv';x.click();URL.revokeObjectURL(u)};
+validate.onclick=()=>{let out=[],err=0,codes=s.rows.map(r=>r.c.trim()).filter(Boolean),roots=s.rows.filter(r=>!r.p.trim());if(!s.rows.length){out.push(['Sin ubicaciones funcionales','bad']);err++}if(new Set(codes).size!==codes.length){out.push(['Existen LocationCode duplicados','bad']);err++}if(s.rows.length&&roots.length!==1){out.push(['La jerarquía debe tener una única raíz','bad']);err++}s.rows.forEach((r,i)=>{let lv=parseInt(r.lvl.replace(/\D/g,''))||1;if(!r.c.trim()){out.push(['Fila '+(i+2)+': falta LocationCode','bad']);err++}if(!r.d.trim()){out.push(['Fila '+(i+2)+': falta descripción','bad']);err++}if(lv>1&&!r.p.trim()){out.push(['Fila '+(i+2)+': falta ParentLocationCode','bad']);err++}if(r.p&&!codes.includes(r.p)){out.push(['Fila '+(i+2)+': padre inexistente','bad']);err++}let parent=s.rows.find(x=>x.c.trim()===r.p.trim());if(parent){let pl=parseInt(parent.lvl.replace(/\D/g,''))||1;if(pl>=lv){out.push(['Fila '+(i+2)+': el padre debe pertenecer a un nivel superior','bad']);err++}}});if(!err)out.push(['FLH válida: códigos, raíz, padres y niveles coherentes','good']);results.innerHTML=out.map(x=>`<p><span class="status ${x[1]}">${x[0]}</span></p>`).join('');importBtn.disabled=!!err};
+importBtn.onclick=()=>{impMsg.style.display='block';document.getElementById('flhStatus').textContent='Publicada · 16/07/2026';importBtn.textContent='FLH publicada';importBtn.disabled=true};
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.getElementById('openRootHelp').onclick=()=>openModal('rootHelpModal');
+document.getElementById('openOverrideHelp').onclick=()=>openModal('overrideHelpModal');
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+document.querySelectorAll('.modal-backdrop').forEach(m=>m.onclick=e=>{if(e.target===m)closeModal(m.id)});
+useProfile('Refinería');
+</script>
+</body></html>
