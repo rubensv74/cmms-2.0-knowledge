@@ -1,4 +1,4 @@
-(function(){
+﻿(function(){
   var state=window.CMMS_INITIAL_STATE;
   state.schemaVersion="P04.5";
   state.analysisHeader.status="En revisión";

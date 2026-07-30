@@ -1,6 +1,6 @@
 ﻿# Prototipo 04 - AMEF + RCM
 
-Entrega incremental de los Sprints P04.0 a P04.4 del flujo AMEF + RCM.
+Entrega incremental de los Sprints P04.0 a P04.5 del flujo AMEF + RCM.
 
 ## Abrir
 
@@ -8,7 +8,7 @@ Abrir `index.html` directamente en un navegador. No requiere servidor, instalaci
 
 ## Estado
 
-P04.4 incorpora tratamiento, tareas, decisiones sin tarea, cobertura, aplicabilidad y perfiles en los Pasos 7-8. El Paso 9 continua como placeholder funcional.
+P04.5 completa el Paso 9 con revision global, aprobaciones, publicacion simulada, snapshot, nueva revision y trazabilidad extremo a extremo. El flujo funcional completo ya es navegable.
 
 ## Documentos
 
@@ -21,6 +21,7 @@ P04.4 incorpora tratamiento, tareas, decisiones sin tarea, cobertura, aplicabili
 - [Validacion P04.2](docs/P04.2_VALIDATION.md)
 - [Validacion P04.3](docs/P04.3_VALIDATION.md)
 - [Validacion P04.4](docs/P04.4_VALIDATION.md)
+- [Validacion P04.5](docs/P04.5_VALIDATION.md)
 
 ## Fuente
 

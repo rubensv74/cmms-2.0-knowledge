@@ -11,7 +11,7 @@
   }
   function renderContext(){
     var c=state.operationalContext,h=state.analysisHeader;
-    el("contextHeader").innerHTML=contextItem("Análisis",h.id+" · Rev. "+h.revision)+contextItem("Activo piloto",c.pilotAsset)+contextItem("Sistema",c.system)+contextItem("Configuración",c.configuration)+contextItem("Criticidad",c.criticality);
+    el("contextHeader").innerHTML=contextItem("Análisis",h.id+" · Rev. "+h.revision+" · "+h.status)+contextItem("Activo piloto",c.pilotAsset)+contextItem("Sistema",c.system)+contextItem("Configuración",c.configuration)+contextItem("Criticidad",c.criticality);
   }
   function contextItem(label,value){return '<div class="context-item"><span>'+escapeHtml(label)+'</span><strong title="'+escapeHtml(value)+'">'+escapeHtml(value)+'</strong></div>';}
   function renderLanding(){

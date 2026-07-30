@@ -1,6 +1,23 @@
 ﻿# Changelog
 
 Todos los cambios relevantes del repositorio documental se registran aqui.
+## [0.7.0] - 2026-07-30
+
+### Anadido
+
+- P04.5 con revision global y cinco etapas de aprobacion.
+- Devolucion comentada, publicacion simulada y snapshot.
+- Modo publicado inmutable y creacion de revision siguiente.
+- Trazabilidad extremo a extremo y registro de cambios.
+
+### Corregido
+
+- Secuencias de codificacion incorrectas heredadas en shell, estado e interfaz.
+
+### Actualizado
+
+- Esquema local P04.5, trazabilidad, estado y guia del prototipo.
+
 ## [0.6.0] - 2026-07-30
 
 ### Anadido
