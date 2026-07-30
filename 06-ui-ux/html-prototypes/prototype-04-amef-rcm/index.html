@@ -1,33 +1,33 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CMMS 2.0 · AMEF + RCM</title>
-  <link rel="stylesheet" href="src/styles/tokens.css"><link rel="stylesheet" href="src/styles/base.css"><link rel="stylesheet" href="src/styles/components.css"><link rel="stylesheet" href="src/styles/responsive.css">
+  <title>CMMS 2.0 Â· AMEF + RCM</title>
+  <link rel="stylesheet" href="src/styles/tokens.css"><link rel="stylesheet" href="src/styles/base.css"><link rel="stylesheet" href="src/styles/components.css"><link rel="stylesheet" href="src/styles/responsive.css"><link rel="stylesheet" href="src/styles/p042.css">
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Saltar al contenido</a>
   <div class="app-shell">
-    <aside id="sidebar" class="sidebar" aria-label="Etapas del análisis">
-      <div class="brand"><span class="brand-mark" aria-hidden="true">04</span><span><strong>AMEF + RCM</strong><small>CMMS 2.0 · Fiabilidad</small></span></div>
+    <aside id="sidebar" class="sidebar" aria-label="Etapas del anÃ¡lisis">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">04</span><span><strong>AMEF + RCM</strong><small>CMMS 2.0 Â· Fiabilidad</small></span></div>
       <nav id="stepper" class="stepper"></nav>
-      <div class="sidebar-foot"><span class="status-dot" aria-hidden="true"></span><span>Prototipo local · datos simulados</span></div>
+      <div class="sidebar-foot"><span class="status-dot" aria-hidden="true"></span><span>Prototipo local Â· datos simulados</span></div>
     </aside>
     <div class="workspace">
       <header class="app-bar">
-        <button id="menuButton" class="icon-button menu-button" type="button" aria-label="Abrir etapas" aria-expanded="false" title="Abrir etapas">☰</button>
-        <div><span class="eyebrow">Análisis de fiabilidad</span><strong>Bomba centrífuga · Agua de refrigeración</strong></div>
-        <div class="app-actions"><span id="saveState" class="save-state" role="status">Sin cambios</span><button id="resetButton" class="icon-button" type="button" aria-label="Reiniciar demostración" title="Reiniciar demostración">↻</button><button id="saveButton" class="button button-secondary" type="button">Guardar borrador</button></div>
+        <button id="menuButton" class="icon-button menu-button" type="button" aria-label="Abrir etapas" aria-expanded="false" title="Abrir etapas">â˜°</button>
+        <div><span class="eyebrow">AnÃ¡lisis de fiabilidad</span><strong>Bomba centrÃ­fuga Â· Agua de refrigeraciÃ³n</strong></div>
+        <div class="app-actions"><span id="saveState" class="save-state" role="status">Sin cambios</span><button id="resetButton" class="icon-button" type="button" aria-label="Reiniciar demostraciÃ³n" title="Reiniciar demostraciÃ³n">â†»</button><button id="saveButton" class="button button-secondary" type="button">Guardar borrador</button></div>
       </header>
-      <section id="contextHeader" class="context-header" aria-label="Contexto del análisis"></section>
-      <main id="mainContent" tabindex="-1"><div id="viewHost"></div><footer id="viewFooter" class="view-footer" hidden><button id="backButton" class="button button-secondary" type="button">← Anterior</button><span id="stepPosition" class="step-position"></span><button id="nextButton" class="button button-primary" type="button">Siguiente →</button></footer></main>
+      <section id="contextHeader" class="context-header" aria-label="Contexto del anÃ¡lisis"></section>
+      <main id="mainContent" tabindex="-1"><div id="viewHost"></div><footer id="viewFooter" class="view-footer" hidden><button id="backButton" class="button button-secondary" type="button">â† Anterior</button><span id="stepPosition" class="step-position"></span><button id="nextButton" class="button button-primary" type="button">Siguiente â†’</button></footer></main>
     </div>
   </div>
   <div id="drawerBackdrop" class="backdrop" hidden></div>
-  <aside id="rulesDrawer" class="drawer" aria-labelledby="drawerTitle" aria-hidden="true"><header><div><span class="eyebrow">Trazabilidad funcional</span><h2 id="drawerTitle">Datos y reglas</h2></div><button id="closeDrawerButton" class="icon-button" type="button" aria-label="Cerrar panel" title="Cerrar">×</button></header><div id="drawerContent" class="drawer-content"></div></aside>
-  <dialog id="tourDialog" class="dialog"><div class="dialog-head"><div><span class="eyebrow">Recorrido guiado</span><h2>Del contexto a una decisión trazable</h2></div><button id="closeTourButton" class="icon-button" type="button" aria-label="Cerrar recorrido" title="Cerrar">×</button></div><div id="tourContent" class="tour-flow"></div><div class="dialog-actions"><button id="tourStartButton" class="button button-primary" type="button">Comenzar análisis</button></div></dialog>
-  <dialog id="resetDialog" class="dialog dialog-small"><div class="dialog-head"><div><span class="eyebrow">Confirmación</span><h2>Reiniciar demostración</h2></div></div><p>Se eliminará el progreso guardado en este navegador y volverás a la introducción.</p><div class="dialog-actions"><button id="cancelResetButton" class="button button-secondary" type="button">Cancelar</button><button id="confirmResetButton" class="button button-danger" type="button">Reiniciar</button></div></dialog>
+  <aside id="rulesDrawer" class="drawer" aria-labelledby="drawerTitle" aria-hidden="true"><header><div><span class="eyebrow">Trazabilidad funcional</span><h2 id="drawerTitle">Datos y reglas</h2></div><button id="closeDrawerButton" class="icon-button" type="button" aria-label="Cerrar panel" title="Cerrar">Ã—</button></header><div id="drawerContent" class="drawer-content"></div></aside>
+  <dialog id="tourDialog" class="dialog"><div class="dialog-head"><div><span class="eyebrow">Recorrido guiado</span><h2>Del contexto a una decisiÃ³n trazable</h2></div><button id="closeTourButton" class="icon-button" type="button" aria-label="Cerrar recorrido" title="Cerrar">Ã—</button></div><div id="tourContent" class="tour-flow"></div><div class="dialog-actions"><button id="tourStartButton" class="button button-primary" type="button">Comenzar anÃ¡lisis</button></div></dialog>
+  <dialog id="resetDialog" class="dialog dialog-small"><div class="dialog-head"><div><span class="eyebrow">ConfirmaciÃ³n</span><h2>Reiniciar demostraciÃ³n</h2></div></div><p>Se eliminarÃ¡ el progreso guardado en este navegador y volverÃ¡s a la introducciÃ³n.</p><div class="dialog-actions"><button id="cancelResetButton" class="button button-secondary" type="button">Cancelar</button><button id="confirmResetButton" class="button button-danger" type="button">Reiniciar</button></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script src="src/data/demo-case.js"></script><script src="src/data/catalogs.js"></script><script src="src/state/initial-state.js"></script><script src="src/state/store.js"></script><script src="src/app.js"></script>
+  <script src="src/data/demo-case.js"></script><script src="src/data/catalogs.js"></script><script src="src/state/initial-state.js"></script><script src="src/rules/validations.js"></script><script src="src/views/p042.js"></script><script src="src/state/store.js"></script><script src="src/app.js"></script>
 </body>
 </html>

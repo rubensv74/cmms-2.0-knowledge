@@ -1,6 +1,6 @@
 ﻿# Prototipo 04 - AMEF + RCM
 
-Entrega incremental de los Sprints P04.0 y P04.1 del flujo AMEF + RCM.
+Entrega incremental de los Sprints P04.0 a P04.2 del flujo AMEF + RCM.
 
 ## Abrir
 
@@ -8,7 +8,7 @@ Abrir `index.html` directamente en un navegador. No requiere servidor, instalaci
 
 ## Estado
 
-P04.1 incorpora landing pedagogica, shell, stepper, contexto, caso conductor, navegacion, estado base, guardado y reinicio local. Los pasos 1-9 son placeholders funcionales; sus formularios se implementan en P04.2-P04.5.
+P04.2 incorpora el nucleo AMEF editable en los Pasos 1-4: alcance, funciones, fallos, modos, causas, efectos, validaciones y arbol navegable. Los Pasos 5-9 continuan como placeholders funcionales.
 
 ## Documentos
 
@@ -18,6 +18,7 @@ P04.1 incorpora landing pedagogica, shell, stepper, contexto, caso conductor, na
 - [Handoff a IT](docs/IT_HANDOFF.md)
 - [Validacion P04.0](docs/SPRINT_VALIDATION.md)
 - [Validacion P04.1](docs/P04.1_VALIDATION.md)
+- [Validacion P04.2](docs/P04.2_VALIDATION.md)
 
 ## Fuente
 

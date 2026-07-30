@@ -12,16 +12,17 @@ En definicion funcional y prototipado incremental.
 - Prototipos HTML 01-03 de fundamentos del modelo de activos.
 - Sprint P04.0 AMEF + RCM: arquitectura, inventario, trazabilidad y handoff a IT.
 - Sprint P04.1: landing, shell, stepper, contexto, navegacion, estado base y persistencia local.
+- Sprint P04.2: alcance, funciones, fallos, modos, causas, efectos, validaciones y arbol AMEF.
 
 ## En curso
 
 - Consolidacion del modelo funcional CMMS 2.0.
 - Organizacion de reuniones, decisiones y recursos.
-- Preparacion de P04.2: nucleo AMEF y validaciones.
+- Preparacion de P04.3: riesgo y decision RCM.
 
 ## Proximos objetivos
 
-- Construir P04.2 con alcance, funciones, fallos, modos, causas, efectos y arbol AMEF.
+- Construir P04.3 con consecuencias, matriz 5x5 y arbol RCM trazable.
 - Mantener trazabilidad y validaciones por sprint.
 
 ## Riesgos y bloqueos

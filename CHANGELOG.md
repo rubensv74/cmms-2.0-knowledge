@@ -1,6 +1,19 @@
 ﻿# Changelog
 
 Todos los cambios relevantes del repositorio documental se registran aqui.
+## [0.4.0] - 2026-07-30
+
+### Anadido
+
+- P04.2 con Pasos 1-4 editables del nucleo AMEF.
+- Dataset normalizado con modo principal y fallo oculto.
+- Validaciones de alcance, funciones, fallos, modos y efectos.
+- Arbol AMEF navegable y persistencia versionada.
+
+### Actualizado
+
+- Trazabilidad, estado y guia del prototipo 04.
+
 ## [0.3.0] - 2026-07-30
 
 ### Anadido
