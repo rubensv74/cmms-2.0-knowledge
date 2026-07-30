@@ -1,4 +1,4 @@
-# Indice maestro
+﻿# Indice maestro
 
 ## Gobierno
 
@@ -35,3 +35,10 @@
 ## Recursos
 
 - `08-resources/`
+
+## Prototipos HTML
+
+- [01 - Configuracion FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
+- [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
+- [03 - Registro de activos fisicos](06-ui-ux/html-prototypes/03_registro_activos_fisicos_revision_14.html)
+- [04 - AMEF + RCM](06-ui-ux/html-prototypes/prototype-04-amef-rcm/README.md)

@@ -1,0 +1,10 @@
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--background);color:var(--ink);font-size:14px}
+button,input,select,textarea{font:inherit}button,a{touch-action:manipulation}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid #80b5ff;outline-offset:2px}
+h1,h2,h3,p{margin-top:0}h1{font-size:32px;line-height:1.18;letter-spacing:0}h2{font-size:21px;letter-spacing:0}h3{font-size:16px;letter-spacing:0}p{line-height:1.6}
+.skip-link{position:fixed;left:12px;top:-60px;background:#fff;color:var(--ink);padding:10px 14px;z-index:200;text-decoration:none;border:2px solid var(--primary)}.skip-link:focus{top:12px}
+.app-shell{min-height:100vh;display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr)}.workspace{min-width:0}
+main{padding:26px 32px 36px;max-width:1440px;width:100%;margin:0 auto}
+.eyebrow{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:4px}.muted{color:var(--muted)}
