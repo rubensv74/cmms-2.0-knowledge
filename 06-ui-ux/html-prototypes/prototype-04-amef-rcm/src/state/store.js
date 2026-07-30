@@ -1,5 +1,5 @@
-(function(){
-  var STORAGE_KEY="cmms2.prototype04.state.v2",clone=function(value){return JSON.parse(JSON.stringify(value));},state=clone(window.CMMS_INITIAL_STATE);
+﻿(function(){
+  var STORAGE_KEY="cmms2.prototype04.state.v3",clone=function(value){return JSON.parse(JSON.stringify(value));},state=clone(window.CMMS_INITIAL_STATE);
   function load(){
     try{
       var saved=localStorage.getItem(STORAGE_KEY),parsed=saved?JSON.parse(saved):null;

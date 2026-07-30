@@ -8,9 +8,9 @@
 | AC-003 | `ContextHeader`, caso y arbol | Coherencia activo-funcion-modo; tarea pendiente | P04.1-P04.4 | Parcial: AMEF implementado |
 | AC-010, AC-021 | `WizardStepper`, navegacion | Recorrido, progreso y accion visibles | P04.1-P04.5 | Parcial: shell implementado |
 | AC-011 | `FmeaTree`, formularios | Entidades diferenciadas y relaciones validas | P04.2 | Implementado |
-| AC-012 | `RiskMatrix` | Matriz versionada y justificacion | P04.3 | Disenado |
-| AC-013, AC-016 | Arbol RCM, evidencia | Resultado reproducible; override protegido | P04.3 | Disenado |
-| AC-014 | RCM y tareas | Condicion y busqueda de fallos | P04.3-P04.4 | Disenado |
+| AC-012 | `RiskMatrix` | Matriz versionada y justificacion | P04.3 | Implementado |
+| AC-013, AC-016 | Arbol RCM, evidencia | Resultado reproducible; override protegido | P04.3 | Implementado |
+| AC-014 | RCM y tareas | Condicion y busqueda de fallos | P04.3-P04.4 | Parcial: decisiones RCM implementadas |
 | AC-015, AC-017 | Tratamiento | Decision sin tarea; separacion de Job Plan/PM | P04.4 | Disenado |
 | AC-018 | `ApplicabilityTable` | Cuatro activos y resultados distintos | P04.4 | Disenado |
 | AC-019 | Revision, timeline | Bloqueo y nueva revision | P04.5 | Disenado |
@@ -35,4 +35,4 @@
 | Revision publicada inmutable y versionable | 13, 14 |
 | Persistencia y reinicio | 15 |
 
-P04.2 implementa los Pasos 1-4 y sus relaciones. P04.3 ampliara riesgo y decision RCM.
+P04.3 implementa riesgo y decision RCM. P04.4 ampliara tratamientos y aplicabilidad.

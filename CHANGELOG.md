@@ -1,6 +1,19 @@
 ﻿# Changelog
 
 Todos los cambios relevantes del repositorio documental se registran aqui.
+## [0.5.0] - 2026-07-30
+
+### Anadido
+
+- P04.3 con consecuencias y matriz de riesgo 5x5 versionada.
+- Arbol RCM con respuestas, explicacion, evidencia y recomendacion reproducible.
+- Estados de informacion insuficiente y override justificado.
+- Rama principal basada en condicion y rama oculta de busqueda de fallos.
+
+### Actualizado
+
+- Esquema local P04.3, trazabilidad, estado y guia del prototipo.
+
 ## [0.4.0] - 2026-07-30
 
 ### Anadido

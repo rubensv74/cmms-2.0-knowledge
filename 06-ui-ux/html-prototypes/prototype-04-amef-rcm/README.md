@@ -1,6 +1,6 @@
 ﻿# Prototipo 04 - AMEF + RCM
 
-Entrega incremental de los Sprints P04.0 a P04.2 del flujo AMEF + RCM.
+Entrega incremental de los Sprints P04.0 a P04.3 del flujo AMEF + RCM.
 
 ## Abrir
 
@@ -8,7 +8,7 @@ Abrir `index.html` directamente en un navegador. No requiere servidor, instalaci
 
 ## Estado
 
-P04.2 incorpora el nucleo AMEF editable en los Pasos 1-4: alcance, funciones, fallos, modos, causas, efectos, validaciones y arbol navegable. Los Pasos 5-9 continuan como placeholders funcionales.
+P04.3 incorpora consecuencias, matriz de riesgo 5x5 y recorrido RCM trazable en los Pasos 5-6. Los Pasos 7-9 continuan como placeholders funcionales.
 
 ## Documentos
 
@@ -19,6 +19,7 @@ P04.2 incorpora el nucleo AMEF editable en los Pasos 1-4: alcance, funciones, fa
 - [Validacion P04.0](docs/SPRINT_VALIDATION.md)
 - [Validacion P04.1](docs/P04.1_VALIDATION.md)
 - [Validacion P04.2](docs/P04.2_VALIDATION.md)
+- [Validacion P04.3](docs/P04.3_VALIDATION.md)
 
 ## Fuente
 

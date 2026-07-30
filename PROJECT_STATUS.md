@@ -13,16 +13,17 @@ En definicion funcional y prototipado incremental.
 - Sprint P04.0 AMEF + RCM: arquitectura, inventario, trazabilidad y handoff a IT.
 - Sprint P04.1: landing, shell, stepper, contexto, navegacion, estado base y persistencia local.
 - Sprint P04.2: alcance, funciones, fallos, modos, causas, efectos, validaciones y arbol AMEF.
+- Sprint P04.3: consecuencias, matriz 5x5, arbol RCM, evidencia, override y rama oculta.
 
 ## En curso
 
 - Consolidacion del modelo funcional CMMS 2.0.
 - Organizacion de reuniones, decisiones y recursos.
-- Preparacion de P04.3: riesgo y decision RCM.
+- Preparacion de P04.4: tratamientos y aplicabilidad.
 
 ## Proximos objetivos
 
-- Construir P04.3 con consecuencias, matriz 5x5 y arbol RCM trazable.
+- Construir P04.4 con tareas, decisiones sin tarea, cobertura, reglas, perfiles y activos aplicables.
 - Mantener trazabilidad y validaciones por sprint.
 
 ## Riesgos y bloqueos

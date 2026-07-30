@@ -29,14 +29,14 @@
     el("viewFooter").hidden=false;el("backButton").disabled=false;el("nextButton").disabled=step.number===steps.length-1;el("stepPosition").textContent="Paso "+step.number+" de 9";el("nextButton").textContent=step.number===steps.length-1?"Fin del recorrido":"Siguiente â†’";
   }
   function render(){
-    state=store.get();renderStepper();renderContext(); if(state.uiState.currentStep===0)renderLanding(); else if(state.uiState.currentStep<=4){el("viewHost").innerHTML=window.CMMS_P042.render(state.uiState.currentStep,state);el("viewFooter").hidden=false;el("backButton").disabled=false;el("nextButton").disabled=false;el("stepPosition").textContent="Paso "+state.uiState.currentStep+" de 9";el("nextButton").textContent="Siguiente →";} else renderStep(steps[state.uiState.currentStep]); renderSaveState();bindDynamic();document.title="CMMS 2.0 · "+steps[state.uiState.currentStep].title;
+    state=store.get();renderStepper();renderContext(); if(state.uiState.currentStep===0)renderLanding(); else if(state.uiState.currentStep<=6){var module=state.uiState.currentStep<=4?window.CMMS_P042:window.CMMS_P043;el("viewHost").innerHTML=module.render(state.uiState.currentStep,state);el("viewFooter").hidden=false;el("backButton").disabled=false;el("nextButton").disabled=false;el("stepPosition").textContent="Paso "+state.uiState.currentStep+" de 9";el("nextButton").textContent="Siguiente →";} else renderStep(steps[state.uiState.currentStep]); renderSaveState();bindDynamic();document.title="CMMS 2.0 · "+steps[state.uiState.currentStep].title;
   }
   function bindDynamic(){
     var start=el("startButton"),tour=el("tourButton");if(start){start.addEventListener("click",function(){goTo(1);});}if(tour){tour.addEventListener("click",openTour);}
     Array.prototype.forEach.call(document.querySelectorAll("[data-rules]"),function(button){button.addEventListener("click",openDrawer);});
-    if(state.uiState.currentStep>=1&&state.uiState.currentStep<=4)window.CMMS_P042.bind(state.uiState.currentStep,state,render,showToast);
+    if(state.uiState.currentStep>=1&&state.uiState.currentStep<=6)(state.uiState.currentStep<=4?window.CMMS_P042:window.CMMS_P043).bind(state.uiState.currentStep,state,render,showToast);
   }
-  function goTo(step){if(step<0||step>=steps.length)return;if(step>state.uiState.currentStep&&state.uiState.currentStep>=1&&state.uiState.currentStep<=4){var check=window.CMMS_P042.validate(state.uiState.currentStep,state);if(!check.valid){showToast(check.errors[0]);return;}}store.setStep(step);closeMenu();render();el("mainContent").focus();}
+  function goTo(step){if(step<0||step>=steps.length)return;if(step>state.uiState.currentStep&&state.uiState.currentStep>=1&&state.uiState.currentStep<=6){var validator=state.uiState.currentStep<=4?window.CMMS_P042:window.CMMS_P043;var check=validator.validate(state.uiState.currentStep,state);if(!check.valid){showToast(check.errors[0]);return;}}store.setStep(step);closeMenu();render();el("mainContent").focus();}
   function renderSaveState(){var s=el("saveState");if(state.uiState.dirty){s.textContent="Cambios sin guardar";return;}s.textContent=state.uiState.lastSavedAt?"Guardado localmente":"Sin cambios";}
   function showToast(message){var t=el("toast");t.textContent=message;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true;},2600);}
   function openDrawer(){
