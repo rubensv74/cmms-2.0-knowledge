@@ -1,4 +1,5 @@
-(function(){
+﻿(function(){
+  if(window.CMMS_INITIAL_STATE)window.CMMS_INITIAL_STATE.schemaVersion="P04.6";
   window.CMMS_P046_SCENARIOS=[
     {id:"complete",label:"Contenido completo",step:null,tone:"success",message:"Caso conductor completo y listo para recorrer."},
     {id:"loading",label:"Carga inicial",step:0,tone:"info",message:"Cargando configuración, catálogos y caso conductor…"},

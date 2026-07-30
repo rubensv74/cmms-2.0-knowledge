@@ -15,11 +15,11 @@
 | AC-018 | `ApplicabilityTable` | Cuatro activos y resultados distintos | P04.4 | Implementado |
 | AC-019 | Revision, timeline | Bloqueo y nueva revision | P04.5 | Implementado |
 | AC-020 | Shell y narrativa | Revision visual: no hoja unica | P04.1-P04.6 | Implementado |
-| AC-022-024 | Todos | 1280/768 px, teclado, foco, texto+color | P04.6 | Disenado |
+| AC-022-024 | Todos | 1440/768/390 px, teclado, foco, texto+color | P04.6 | Implementado |
 | AC-030 | Trazabilidad | Revision a activo y salida futura | P04.5 | Implementado |
 | AC-031 | `Ver datos y reglas` | Entrada/configuracion/resultado | P04.1-P04.5 | Implementado |
-| AC-032 | Esta matriz | Auditoria requisito-vista-prueba | Todos | En curso |
-| AC-033 | `IT_HANDOFF.md` | Neutralidad tecnologica | Todos | En curso |
+| AC-032 | Esta matriz | Auditoria requisito-vista-prueba | Todos | Implementado |
+| AC-033 | `IT_HANDOFF.md` | Neutralidad tecnologica | Todos | Implementado |
 
 ## Reglas criticas y pruebas
 
@@ -35,4 +35,4 @@
 | Revision publicada inmutable y versionable | 13, 14 |
 | Persistencia y reinicio | 15 |
 
-P04.5 completa gobierno y trazabilidad. P04.6 cerrara calidad, estados alternativos y handoff.
+P04.6 cierra calidad, estados alternativos, pruebas y handoff.

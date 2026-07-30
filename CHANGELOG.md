@@ -1,6 +1,19 @@
 ﻿# Changelog
 
 Todos los cambios relevantes del repositorio documental se registran aqui.
+## [0.8.0] - 2026-07-30
+
+### Anadido
+
+- P04.6 con selector de trece estados alternativos.
+- Runner autonomo con quince pruebas funcionales.
+- Diccionario de datos, guion de demo y registro de decisiones.
+- Validacion responsive en escritorio, tablet y movil.
+
+### Actualizado
+
+- Esquema local P04.6, trazabilidad, estado y paquete documental final.
+
 ## [0.7.0] - 2026-07-30
 
 ### Anadido

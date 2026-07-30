@@ -16,16 +16,17 @@ En definicion funcional y prototipado incremental.
 - Sprint P04.3: consecuencias, matriz 5x5, arbol RCM, evidencia, override y rama oculta.
 - Sprint P04.4: tareas, decisiones sin tarea, cobertura, aplicabilidad, perfiles y validacion humana.
 - Sprint P04.5: revision global, aprobaciones, publicacion, snapshot, nueva revision y trazabilidad.
+- Sprint P04.6: estados alternativos, pruebas, accesibilidad, responsive y handoff final.
 
 ## En curso
 
 - Consolidacion del modelo funcional CMMS 2.0.
 - Organizacion de reuniones, decisiones y recursos.
-- Preparacion de P04.6: calidad y handoff.
+- Revision funcional y demostracion del paquete P04 completo.
 
 ## Proximos objetivos
 
-- Completar P04.6 con estados alternativos, accesibilidad, responsive, pruebas y documentacion final.
+- Ejecutar la demostracion de 10-15 minutos y recoger feedback funcional.
 - Mantener trazabilidad y validaciones por sprint.
 
 ## Riesgos y bloqueos
