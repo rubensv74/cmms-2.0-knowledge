@@ -5,14 +5,14 @@
 | Requisito | Vista/componente | Prueba prevista | Sprint | Estado |
 |---|---|---|---|---|
 | AC-001, AC-002 | Landing, `WhyThisMatters` | Comprension AMEF/RCM y narrativa previa | P04.1 | Implementado |
-| AC-003 | `ContextHeader`, caso y arbol | Coherencia activo-funcion-modo; tarea pendiente | P04.1-P04.4 | Parcial: AMEF implementado |
+| AC-003 | Contexto, arbol y cobertura | Coherencia activo-funcion-modo-tarea | P04.1-P04.4 | Implementado |
 | AC-010, AC-021 | `WizardStepper`, navegacion | Recorrido, progreso y accion visibles | P04.1-P04.5 | Parcial: shell implementado |
 | AC-011 | `FmeaTree`, formularios | Entidades diferenciadas y relaciones validas | P04.2 | Implementado |
 | AC-012 | `RiskMatrix` | Matriz versionada y justificacion | P04.3 | Implementado |
 | AC-013, AC-016 | Arbol RCM, evidencia | Resultado reproducible; override protegido | P04.3 | Implementado |
-| AC-014 | RCM y tareas | Condicion y busqueda de fallos | P04.3-P04.4 | Parcial: decisiones RCM implementadas |
-| AC-015, AC-017 | Tratamiento | Decision sin tarea; separacion de Job Plan/PM | P04.4 | Disenado |
-| AC-018 | `ApplicabilityTable` | Cuatro activos y resultados distintos | P04.4 | Disenado |
+| AC-014 | RCM y tareas | Condicion y busqueda de fallos | P04.3-P04.4 | Implementado |
+| AC-015, AC-017 | Tratamiento | Decision sin tarea; separacion de Job Plan/PM | P04.4 | Implementado |
+| AC-018 | `ApplicabilityTable` | Cuatro activos y resultados distintos | P04.4 | Implementado |
 | AC-019 | Revision, timeline | Bloqueo y nueva revision | P04.5 | Disenado |
 | AC-020 | Shell y narrativa | Revision visual: no hoja unica | P04.1-P04.6 | Implementado |
 | AC-022-024 | Todos | 1280/768 px, teclado, foco, texto+color | P04.6 | Disenado |
@@ -35,4 +35,4 @@
 | Revision publicada inmutable y versionable | 13, 14 |
 | Persistencia y reinicio | 15 |
 
-P04.3 implementa riesgo y decision RCM. P04.4 ampliara tratamientos y aplicabilidad.
+P04.4 implementa tratamiento y aplicabilidad. P04.5 ampliara gobierno y trazabilidad.

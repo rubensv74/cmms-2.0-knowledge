@@ -1,6 +1,19 @@
 ﻿# Changelog
 
 Todos los cambios relevantes del repositorio documental se registran aqui.
+## [0.6.0] - 2026-07-30
+
+### Anadido
+
+- P04.4 con tratamiento editable, tareas y decisiones sin tarea.
+- Matriz de cobertura muchos-a-muchos entre modos y tareas.
+- Aplicabilidad explicable sobre cuatro activos y cuatro perfiles.
+- Validacion humana trazada con usuario, fecha y motivo.
+
+### Actualizado
+
+- Esquema local P04.4, trazabilidad, estado y guia del prototipo.
+
 ## [0.5.0] - 2026-07-30
 
 ### Anadido
