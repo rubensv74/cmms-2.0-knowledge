@@ -4,29 +4,27 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Release = Join-Path $Root "releases"
+$Stage = Join-Path $env:TEMP "AMEF_RCM_Experience_Center_v2.0"
 
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
-    $OutputPath = Join-Path $Root "releases/AMEF_RCM_Experience_Center_v1.0.zip"
+    $OutputPath = Join-Path $Release "AMEF_RCM_Experience_Center_v2.0.zip"
 }
 
-$OutputDirectory = Split-Path -Parent $OutputPath
-New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
+Remove-Item $Stage -Recurse -Force -ErrorAction SilentlyContinue
+New-Item $Stage -ItemType Directory | Out-Null
 
-if (Test-Path $OutputPath) {
-    Remove-Item $OutputPath -Force
+@("README.md","manifest.json","index.html","mapa-maestro","prototipos","docs") | ForEach-Object {
+    Copy-Item (Join-Path $Root $_) -Destination $Stage -Recurse -Force
 }
 
-$Items = @(
-    "index.html",
-    "mapa-maestro",
-    "prototipos",
-    "docs",
-    "README.md",
-    "manifest.json"
-) | ForEach-Object { Join-Path $Root $_ }
+Get-ChildItem $Stage -Recurse -Filter "index.repo.html" | Remove-Item -Force
+New-Item (Split-Path -Parent $OutputPath) -ItemType Directory -Force | Out-Null
+Remove-Item $OutputPath -Force -ErrorAction SilentlyContinue
+Compress-Archive -Path (Join-Path $Stage "*") -DestinationPath $OutputPath -CompressionLevel Optimal
 
-Compress-Archive -Path $Items -DestinationPath $OutputPath -CompressionLevel Optimal
-$Hash = (Get-FileHash -Algorithm SHA256 -Path $OutputPath).Hash.ToLowerInvariant()
+$Hash = (Get-FileHash $OutputPath -Algorithm SHA256).Hash.ToLowerInvariant()
+"$Hash  $(Split-Path -Leaf $OutputPath)" | Set-Content (Join-Path $Release "SHA256SUMS.txt")
 
 Write-Host "Paquete creado: $OutputPath"
 Write-Host "SHA256: $Hash"
