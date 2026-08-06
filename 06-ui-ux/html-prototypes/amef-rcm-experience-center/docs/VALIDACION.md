@@ -1,69 +1,49 @@
 # Validación del paquete AMEF–RCM Experience Center
 
-Fecha de última revisión: 06/08/2026
+Fecha: 06/08/2026  
+Versión validada: 2.0.0-conceptual
 
-## Estado actual
+## Alcance validado
 
-La estructura integrada contiene un `index.html` único, mapa maestro y cinco prototipos. Después de generar el primer paquete se ampliaron en profundidad los Prototipos 3 y 4.
+- `index.html` único de entrada.
+- Mapa maestro y cinco prototipos conectados.
+- Documentación explicativa para público general.
+- Funcionamiento sin librerías ni servicios externos.
+- Empaquetado reproducible para Windows y Linux.
 
-Por este motivo, el ZIP `AMEF_RCM_Experience_Center_v1.0.zip` debe considerarse una **entrega histórica de referencia**, no el paquete final vigente.
+## Pruebas realizadas
 
-El ZIP único se regenerará cuando termine la revisión funcional del Prototipo 5, para evitar distribuir varias versiones intermedias con el mismo nombre.
+- Renderizado de los siete HTML principales mediante Chromium.
+- Cero errores JavaScript durante la carga y navegación secuencial.
+- Prototipos 1 y 2: seis etapas disponibles.
+- Prototipos 3, 4 y 5: siete etapas disponibles.
+- Prototipo 3: selección de modo, árbol RCM, escenarios P–F, robustez, persistencia y exportación.
+- Prototipo 4: decisiones RCM, recálculo económico, edición estable de tareas, intervalos, recursos, alcance y gate.
+- Prototipo 5: selección de expediente, trazabilidad, ocho reglas de calidad, discrepancias, aprobaciones, versiones y cuatro señales reales.
+- Revisión de 24 referencias relativas internas; ninguna ruta inexistente.
+- Comprobación de que el ZIP contiene `index.html` en su raíz.
+- Exclusión de archivos auxiliares `index.repo.html` y de la carpeta de releases del paquete distribuible.
 
-## Comprobaciones de la estructura base
+## Paquete validado
 
-- Presencia del `index.html` único de entrada.
-- Resolución de enlaces relativos entre inicio, mapa maestro y cinco prototipos.
-- Existencia de un documento para público general por prototipo.
-- Navegación independiente y offline de cada artefacto.
-- Diseño adaptable para escritorio y anchuras reducidas.
-- Scripts PowerShell y Bash preparados para generar el ZIP final.
+- Archivo: `AMEF_RCM_Experience_Center_v2.0.zip`
+- Archivos incluidos: 26
+- Entrada después de descomprimir: `index.html`
+- SHA256: `5d552c8236a99c9ce7df9ee34fb3a858a77c9148c11281d04d31c89145b4c6ce`
 
-## Validación incremental — Prototipo 3
+## Resultado
 
-- Siete etapas funcionales: entrada AMEF, consecuencias, evidencia, árbol RCM, aplicabilidad, escenarios y decisión.
-- Selección de distintos modos de fallo.
-- Tratamiento de consecuencias combinadas y fallos ocultos.
-- Recorrido adaptativo del árbol de decisión.
-- Interacción con intervalo P–F, capacidad de intervención y probabilidad de detección.
-- Gate dinámico y trazabilidad de la recomendación.
-- Persistencia local y exportación JSON.
-- Comprobación sintáctica del JavaScript.
+El paquete es apto para una demostración funcional offline. Las pruebas verifican la aplicación HTML, su navegación y su coherencia estructural. No validan como configuración corporativa definitiva las decisiones de mantenimiento utilizadas en el ejemplo.
 
-## Validación incremental — Prototipo 4
+## Limitaciones funcionales
 
-- Siete etapas funcionales: decisión RCM, economía, tareas, intervalos, recursos, plan neutro y gate.
-- Cuatro paquetes de decisión RCM seleccionables.
-- Recalculo de costes, riesgo económico residual, ahorro esperado y ROI conceptual.
-- Alta, edición y eliminación de tareas.
-- Validación de técnica, criterio de aceptación, acción ante desviación e intervalo.
-- Comprobación conceptual del intervalo frente al P–F y la ventana de planificación.
-- Asignación de disciplina, puesto, recursos, parada, permisos y riesgos de ejecución.
-- Selección del alcance físico y regla de agrupación con periféricos.
-- Representación de un modelo interno neutro y mapeos ilustrativos hacia SAP, IBM Maximo y Hexagon.
-- Gate bloqueado, condicionado o preparado según los datos del plan.
-- Persistencia local y exportación JSON.
-- Corrección de estabilidad durante la edición de tareas.
-- Comprobación sintáctica del JavaScript local antes de publicar.
-- Comprobación del contenido publicado en la rama mediante el SHA de blob `e5df085553dcbc6061fa653128b9fcd543b77dcf`.
+Siguen pendientes de validación corporativa:
 
-## Pendiente antes de la entrega final
-
-- Ampliar y validar el Prototipo 5.
-- Ejecutar una revisión completa de navegación entre los siete HTML principales.
-- Comprobar la persistencia y el reinicio de los Prototipos 3, 4 y 5.
-- Regenerar el ZIP desde la versión final de la rama.
-- Calcular y registrar el nuevo SHA256.
-- Sustituir cualquier referencia anterior al ZIP v1.0 en la documentación de entrega.
-
-## Alcance de la validación
-
-Esta validación comprueba la coherencia funcional y el comportamiento de la demostración. No valida como configuración corporativa definitiva:
-
-- escalas de riesgo;
-- costes y tasas de fallo;
-- reglas de intervalo;
-- catálogo de disciplinas y puestos;
-- codificación ISO 14224;
-- autoridades de aprobación;
-- campos o mapeos concretos de los sistemas destino.
+- escalas AMEF y reglas de sobreclasificación;
+- árbol RCM y evidencia mínima;
+- criterios económicos y fuentes de coste;
+- reglas de intervalos;
+- catálogos de disciplinas y puestos;
+- workflow de aprobación, firmas y permisos;
+- códigos ISO 14224 y mapeos de exportación;
+- umbrales de mejora continua.
