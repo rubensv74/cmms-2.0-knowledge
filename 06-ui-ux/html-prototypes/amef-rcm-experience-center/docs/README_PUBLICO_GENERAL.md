@@ -1,57 +1,39 @@
 # AMEF–RCM Experience Center — Guía para público general
 
-## Qué problema intenta resolver
+## Qué es
 
-En muchas organizaciones los planes de mantenimiento se construyen a partir de experiencia, costumbre o recomendaciones genéricas. Este conjunto de prototipos propone un recorrido diferente: primero entender qué debe hacer el activo, después analizar cómo puede fallar, evaluar el riesgo, elegir una estrategia justificable, convertirla en tareas y mantener la decisión bajo control durante todo su ciclo de vida.
+Es una demostración interactiva de cómo CMMS 2.0 podría guiar la creación y revisión de una estrategia de mantenimiento. El recorrido utiliza la bomba centrífuga **P-101** como ejemplo continuo.
 
-## Los cinco prototipos
+## Cómo funciona
 
-1. **Comprender el problema.** Define contexto, funciones, fallos funcionales y modos de fallo.
-2. **Evaluar el riesgo.** Ordena los modos mediante AMEF sin depender únicamente del NPR.
-3. **Tomar la decisión RCM.** Recorre consecuencias, aplicabilidad, intervalo P–F y escenarios.
-4. **Convertir la decisión en un plan.** Define tareas, criterios, intervalos, recursos, costes y exportación.
-5. **Gobernar y mejorar.** Asegura trazabilidad, calidad, discrepancias, aprobaciones, versiones y revisión con datos reales.
+Al abrir `index.html`, el usuario encuentra datos realistas del activo y avanza por **28 etapas**. En cada una debe:
 
-## Ayuda contextual
+1. revisar la información disponible;
+2. realizar una acción de análisis;
+3. confirmar una decisión;
+4. comprobar el gate de salida;
+5. transferir un resultado a la etapa siguiente.
 
-En la cabecera de cada prototipo aparece un icono de información `ⓘ`. La ventana asociada no es un manual de la pantalla. Explica el flujo lógico del negocio que representa esa etapa:
+El caso está precargado, pero todos los datos relevantes pueden modificarse durante la discusión.
 
-- la pregunta que debe resolver la organización;
-- los seis pasos principales;
-- los roles que intervienen;
-- las decisiones que deben quedar registradas;
-- el resultado esperado;
-- los errores que deben evitarse;
-- un ejemplo práctico aplicado a la bomba P-101.
+## Los cinco bloques
 
-## Mensaje que debe quedar claro
+1. **Comprender el problema:** activo, contexto, funciones, fallos y modos de fallo.
+2. **Evaluar el riesgo:** efectos, consecuencias, AMEF, criticidad y excepciones.
+3. **Tomar la decisión RCM:** evidencia, P–F, alternativas y política recomendada.
+4. **Convertir en un plan:** economía, tareas, intervalos, recursos y alcance.
+5. **Gobernar y mejorar:** calidad, trazabilidad, revisión, aprobación, versiones y datos reales.
 
-El plan de mantenimiento no es el punto de partida. Es el resultado de una cadena de razonamiento que debe poder explicarse y revisarse posteriormente.
+## Modos de uso
 
-## Cómo utilizar el paquete
+- **Modo guiado:** desbloquea las etapas en orden y obliga a superar cada gate.
+- **Modo presentación:** permite saltar a cualquier etapa durante una reunión, manteniendo visibles los requisitos pendientes.
+- **Módulos de detalle:** los cinco prototipos anteriores siguen disponibles para profundizar en cada bloque.
 
-1. Descomprimir el ZIP.
-2. Mantener la estructura de carpetas.
-3. Abrir `index.html`.
-4. Empezar por el mapa maestro.
-5. Recorrer los prototipos en orden utilizando el caso P-101 como hilo conductor.
-6. Abrir `ⓘ` antes de revisar cada etapa para validar primero el proceso de negocio.
+## Mensaje principal
 
-El paquete funciona offline y no requiere instalación.
+El plan de mantenimiento no es el punto de partida. Es el resultado de una cadena de decisiones que debe poder explicarse, aprobarse y revisarse posteriormente.
 
-## Qué está validado y qué no
+## Límite
 
-Los prototipos reflejan conceptos tratados en las reuniones: comprensión funcional, AMEF, árbol RCM, intervalo P–F, construcción del plan, calidad de datos, trazabilidad y mejora continua.
-
-Los valores numéricos, reglas, workflows, roles, costes, códigos y aprobaciones son ejemplos para validar el modelo funcional. Deben acordarse antes de redactar la especificación definitiva para IT.
-
-## Resultado esperado de las reuniones
-
-La finalidad no es aprobar una pantalla concreta, sino confirmar:
-
-- que el orden lógico es correcto;
-- que no falta ninguna decisión importante;
-- que cada rol comprende su participación;
-- que la información necesaria puede trasladarse a un modelo de datos;
-- que el resultado es independiente del sistema destino;
-- que la organización puede justificar y revisar cada tarea del plan.
+Los datos son realistas, pero las escalas, costes, frecuencias, roles, autoridades y decisiones del caso no constituyen una instrucción de mantenimiento aprobada.
