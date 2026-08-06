@@ -14,10 +14,6 @@
     {"id":"04","name":"Convertir la decision en un plan","entrypoint":"prototipos/04-convertir-en-plan/index.html","status":"expanded"},
     {"id":"05","name":"Gobernar y mejorar","entrypoint":"prototipos/05-gobernar-mejorar/index.html","status":"expanded"}
   ],
-  "distribution": {
-    "filename": "AMEF_RCM_Experience_Center_v2.0.zip",
-    "sha256": "5d552c8236a99c9ce7df9ee34fb3a858a77c9148c11281d04d31c89145b4c6ce"
-  },
   "constraints": [
     "offline",
     "no external dependencies",
