@@ -1,0 +1,45 @@
+name: Apply AMEF-RCM business flow guides
+
+on:
+  push:
+    branches:
+      - agent/amef-rcm-experience-center
+    paths:
+      - .github/workflows/amef-rcm-business-guides.yml
+      - 06-ui-ux/html-prototypes/amef-rcm-experience-center/assets/business-flow-guide.css
+      - 06-ui-ux/html-prototypes/amef-rcm-experience-center/assets/business-flow-guide.js
+      - 06-ui-ux/html-prototypes/amef-rcm-experience-center/tools/apply_business_flow_guides.py
+
+permissions:
+  contents: write
+
+jobs:
+  apply-guides:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/amef-rcm-experience-center
+          fetch-depth: 0
+
+      - name: Apply guide integration
+        run: python 06-ui-ux/html-prototypes/amef-rcm-experience-center/tools/apply_business_flow_guides.py
+
+      - name: Rebuild checksum
+        working-directory: 06-ui-ux/html-prototypes/amef-rcm-experience-center
+        run: |
+          bash package.sh
+          rm -f releases/AMEF_RCM_Experience_Center_v2.1.zip
+
+      - name: Commit generated changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 06-ui-ux/html-prototypes/amef-rcm-experience-center
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Add business flow guides to AMEF-RCM prototypes"
+          git push origin agent/amef-rcm-experience-center
