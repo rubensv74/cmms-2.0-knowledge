@@ -1,0 +1,18 @@
+{
+  "package": "AMEF-RCM Experience Center",
+  "version": "1.0.0",
+  "date": "2026-08-06",
+  "entrypoint": "index.html",
+  "language": "es",
+  "runtime": "offline-static-html",
+  "caseStudy": "Bomba centrifuga P-101",
+  "masterMap": "mapa-maestro/index.html",
+  "prototypes": [
+    {"id":"01","name":"Comprender el problema","entrypoint":"prototipos/01-comprender-problema/index.html"},
+    {"id":"02","name":"Evaluar el riesgo","entrypoint":"prototipos/02-evaluar-riesgo/index.html"},
+    {"id":"03","name":"Tomar la decision RCM","entrypoint":"prototipos/03-decision-rcm/index.html"},
+    {"id":"04","name":"Convertir la decision en un plan","entrypoint":"prototipos/04-convertir-en-plan/index.html"},
+    {"id":"05","name":"Gobernar y mejorar","entrypoint":"prototipos/05-gobernar-mejorar/index.html"}
+  ],
+  "disclaimer": "Demostracion funcional conceptual. No constituye un AMEF-RCM aprobado ni una instruccion operativa."
+}
