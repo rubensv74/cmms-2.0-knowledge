@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AMEF–RCM · Prototipo 5 · Gobernar y mejorar</title>
+<style>
+:root{
+  --bg:#f4f7fb;--surface:#fff;--ink:#15233d;--muted:#667085;--line:#d9e2ec;
+  --primary:#1455d9;--primary-soft:#eaf1ff;--green:#137a4b;--green-soft:#e8f7ef;
+  --amber:#a45b00;--amber-soft:#fff4df;--red:#b42318;--red-soft:#ffebe9;--violet:#6f42c1;--violet-soft:#f0eaff;
+  --shadow:0 10px 28px rgba(20,33,61,.08)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;gap:14px;align-items:center;padding:13px 20px;background:#fff;border-bottom:1px solid var(--line)}
+.top small,.muted{color:var(--muted)}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+.btn,.top a{border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 11px;border-radius:9px;text-decoration:none;font-weight:700;cursor:pointer}
+.btn:hover,.top a:hover{border-color:#9fb5d8}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn.success{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.danger{background:#fff;color:var(--red);border-color:#efb4ae}
+.btn.small{padding:6px 8px;font-size:12px}
+.wrap{max-width:1460px;margin:auto;padding:18px}
+.hero,.panel{background:var(--surface);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}
+.hero{padding:24px;margin-bottom:14px;background:linear-gradient(135deg,#fff,#edf4ff);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center}
+.hero h1{font-size:39px;line-height:1.05;margin:5px 0 10px}
+.chip,.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.chip{background:var(--primary-soft);color:var(--primary)}
+.badge.ready{background:var(--green-soft);color:var(--green)}
+.badge.conditional{background:var(--amber-soft);color:var(--amber)}
+.badge.blocked{background:var(--red-soft);color:var(--red)}
+.badge.info{background:var(--primary-soft);color:var(--primary)}
+.badge.violet{background:var(--violet-soft);color:var(--violet)}
+.metrics{display:grid;grid-template-columns:repeat(2,132px);gap:8px}
+.metric{background:#ffffffd9;border:1px solid var(--line);padding:10px;border-radius:11px}
+.metric b{display:block;font-size:19px}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr) 290px;gap:12px;align-items:start}
+.side,.summary{position:sticky;top:75px;padding:10px}
+.step{width:100%;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;text-align:left;padding:9px;border:0;border-radius:9px;background:transparent;color:var(--ink);cursor:pointer}
+.step:hover{background:#f4f7fb}
+.step.active{background:var(--primary-soft);color:var(--primary)}
+.step .num{display:grid;place-items:center;background:#eef2f7;border-radius:8px;font-size:11px;font-weight:800}
+.step.active .num{background:var(--primary);color:#fff}
+.step small{display:block;color:var(--muted)}
+.view{display:none}.view.active{display:block}
+.section{padding:20px;margin-bottom:12px}
+.section h2{margin:0 0 4px}.lead{margin:0 0 14px;color:var(--muted)}
+.grid{display:grid;gap:10px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:12px}
+.card h3{margin:0 0 7px}.card p{margin:6px 0}
+.package{width:100%;display:flex;justify-content:space-between;gap:10px;text-align:left;border:1px solid var(--line);background:#fff;padding:12px;border-radius:11px;margin-bottom:8px;cursor:pointer}
+.package.active{border:2px solid var(--primary);background:var(--primary-soft);padding:11px}
+.call{border-left:4px solid var(--primary);background:var(--primary-soft);padding:11px;border-radius:9px;margin:11px 0}
+.call.warn{border-color:#e59a20;background:var(--amber-soft)}
+.call.danger{border-color:var(--red);background:var(--red-soft)}
+.call.success{border-color:var(--green);background:var(--green-soft)}
+label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.table{overflow:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;font-size:12px;vertical-align:top}
+th{background:#f8fafc;color:var(--muted);position:sticky;top:0}
+.traceGrid{display:grid;grid-template-columns:repeat(8,minmax(125px,1fr));gap:7px;overflow:auto;padding-bottom:4px}
+.traceNode{border:1px solid var(--line);background:#fff;padding:10px;border-radius:10px;text-align:left;cursor:pointer;min-height:78px}
+.traceNode.active{border:2px solid var(--primary);background:var(--primary-soft);padding:9px}
+.traceNode small{display:block;color:var(--muted)}
+.rule{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:start;border:1px solid var(--line);border-radius:11px;padding:11px;margin-bottom:8px;background:#fff}
+.ruleIcon{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;font-weight:900}
+.ruleIcon.pass{background:var(--green-soft);color:var(--green)}.ruleIcon.warn{background:var(--amber-soft);color:var(--amber)}.ruleIcon.fail{background:var(--red-soft);color:var(--red)}
+.discrepancy{border:1px solid var(--line);border-radius:12px;background:#fff;padding:13px;margin-bottom:10px}
+.discrepancy h3{margin:0 0 5px}.positions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.position{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:9px}
+.approval{display:grid;grid-template-columns:180px minmax(0,1fr) 135px;gap:10px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:11px;margin-bottom:8px;background:#fff}
+.version{border-left:3px solid #b8c9e8;padding:8px 10px;background:#f8fafc;margin:7px 0;border-radius:0 8px 8px 0}
+.report{border:1px solid var(--line);background:linear-gradient(135deg,#fff,#f4f8ff);border-radius:14px;padding:18px}
+.report h2{margin:0 0 5px}.reportKpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:13px 0}
+.reportKpi{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff}.reportKpi b{display:block;font-size:20px}
+.signal{display:grid;grid-template-columns:160px minmax(0,1fr) 130px 120px;gap:8px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:10px;margin-bottom:8px;background:#fff}
+.queueItem{border-left:4px solid var(--amber);background:var(--amber-soft);padding:11px;border-radius:9px;margin:8px 0}
+.trace{border-left:3px solid #b8c9e8;padding:7px 9px;background:#f8fafc;margin:6px 0;border-radius:0 8px 8px 0;font-size:12px}
+.gate{padding:10px;border-radius:10px;font-weight:700}.gate.ready{background:var(--green-soft);color:var(--green)}.gate.conditional{background:var(--amber-soft);color:var(--amber)}.gate.blocked{background:var(--red-soft);color:var(--red)}
+.bar{height:7px;background:#e8edf4;border-radius:999px;overflow:hidden}.bar span{display:block;height:100%;background:var(--primary)}
+.summary dl{display:grid;grid-template-columns:1fr auto;gap:6px;margin:0;font-size:12px}.summary dt{color:var(--muted)}.summary dd{margin:0;font-weight:800;text-align:right}
+.empty{padding:16px;border:1px dashed #b7c3d6;border-radius:10px;text-align:center;color:var(--muted)}
+@media(max-width:1120px){.layout{grid-template-columns:205px minmax(0,1fr)}.summary{grid-column:1/-1;position:static}.hero{grid-template-columns:1fr}.reportKpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.top{position:static;flex-direction:column;align-items:flex-start}.layout{grid-template-columns:1fr}.side{position:static}.g2,.g3,.g4,.positions{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:30px}.approval,.signal{grid-template-columns:1fr}.reportKpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div><b>AMEF–RCM Experience Center</b><small>Prototipo 5 · Gobernanza, aprobación y mejora continua</small></div>
+  <nav>
+    <a href="../../index.html">Inicio</a>
+    <a href="../../mapa-maestro/index.html">Mapa maestro</a>
+    <button class="btn" id="save">Guardar</button>
+    <button class="btn" id="export">Exportar expediente</button>
+  </nav>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <span class="chip">Caso P-101 · ciclo de vida completo</span>
+      <h1>Gobernar y mejorar</h1>
+      <p class="muted">La publicación no cierra el análisis: fija una versión controlada, conserva la evidencia y define qué resultados reales obligarán a revisarla.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><b id="hm">PM-P101</b><small>Expediente</small></div>
+      <div class="metric"><b id="hv">v0.9</b><small>Versión</small></div>
+      <div class="metric"><b id="hq">84/100</b><small>Calidad</small></div>
+      <div class="metric"><b id="hg">Bloqueado</b><small>Gate</small></div>
+    </div>
+  </section>
+  <div class="layout">
+    <aside class="panel side" id="steps"></aside>
+    <div>
+      <section class="view active" data-v="0">
+        <div class="panel section">
+          <h2>1. Expediente y alcance de gobernanza</h2>
+          <p class="lead">Selecciona el paquete que llega desde el Prototipo 4. Cada uno conserva su decisión RCM, tareas, costes, condiciones y nivel de preparación.</p>
+          <div id="packages"></div>
+        </div>
+        <div class="panel section">
+          <div class="grid g4">
+            <div class="card"><label>Plan</label><b id="planCode"></b></div>
+            <div class="card"><label>Decisión RCM</label><b id="strategy"></b></div>
+            <div class="card"><label>Gate heredado</label><div id="inheritedGate"></div></div>
+            <div class="card"><label>Responsable</label><b id="assetOwner"></b></div>
+          </div>
+          <div class="grid g2" style="margin-top:10px">
+            <div class="card"><h3>Alcance físico</h3><ul id="scope"></ul></div>
+            <div class="card"><h3>Condiciones heredadas</h3><ul id="conditions"></ul></div>
+          </div>
+          <div class="actions"><button class="btn primary" data-next="1">Explorar trazabilidad →</button></div>
+        </div>
+      </section>
+
+      <section class="view" data-v="1">
+        <div class="panel section">
+          <h2>2. Trazabilidad integral</h2>
+          <p class="lead">Selecciona cualquier nodo para reconstruir la lógica completa. Una tarea no puede existir aislada de la función, el modo de fallo y la decisión que la justifican.</p>
+          <div class="traceGrid" id="traceNodes"></div>
+          <div class="card" style="margin-top:12px">
+            <label>Detalle del nodo seleccionado</label>
+            <h3 id="traceTitle"></h3>
+            <p id="traceDetail" class="muted"></p>
+            <div class="grid g3">
+              <div><label>Origen</label><span id="traceSource"></span></div>
+              <div><label>Responsable</label><span id="traceOwner"></span></div>
+              <div><label>Evidencia</label><span id="traceEvidence"></span></div>
+            </div>
+          </div>
+          <div id="brokenTrace" class="call success"></div>
+          <div class="actions"><button class="btn" data-prev="0">← Volver</button><button class="btn primary" data-next="2">Validar calidad →</button></div>
+        </div>
+      </section>
+
+      <section class="view" data-v="2">
+        <div class="panel section">
+          <h2>3. Validador de calidad AMEF–RCM</h2>
+          <p class="lead">Las reglas distinguen entre análisis completo, análisis coherente y análisis aprobado. Resolver una observación exige documentar la acción realizada.</p>
+          <div class="grid g4">
+            <div class="card"><label>Puntuación</label><b id="qualityScore"></b></div>
+            <div class="card"><label>Errores críticos</label><b id="criticalCount"></b></div>
+            <div class="card"><label>Advertencias</label><b id="warningCount"></b></div>
+            <div class="card"><label>Reglas conformes</label><b id="passCount"></b></div>
+          </div>
+          <div id="rules" style="margin-top:12px"></div>
+          <div class="actions"><button class="btn" data-prev="1">← Volver</button><button class="btn primary" data-next="3">Gestionar discrepancias →</button></div>
+        </div>
+      </section>
+
+      <section class="view" data-v="3">
+        <div class="panel section">
+          <h2>4. Revisión multidisciplinar y discrepancias</h2>
+          <p class="lead">El objetivo no es ocultar el desacuerdo, sino registrar posiciones, impacto, evidencia y decisión final.</p>
+          <div id="discrepancies"></div>
+          <div class="card">
+            <h3>Nueva discrepancia</h3>
+            <div class="grid g3">
+              <div><label>Tema</label><input id="newTopic" placeholder="Ej. Frecuencia de inspección"></div>
+              <div><label>Área A</label><input id="newAreaA" placeholder="Mantenimiento"></div>
+              <div><label>Área B</label><input id="newAreaB" placeholder="Operaciones"></div>
+            </div>
+            <label style="margin-top:8px">Descripción</label><textarea id="newDescription" placeholder="Explica dónde está el desacuerdo y qué decisión se necesita."></textarea>
+            <button class="btn" id="addDiscrepancy">Añadir discrepancia</button>
+          </div>
+          <div class="actions"><button class="btn" data-prev="2">← Volver</button><button class="btn primary" data-next="4">Revisar aprobaciones →</button></div>
+        </div>
+      </section>
+
+      <section class="view" data-v="4">
+        <div class="panel section">
+          <h2>5. Aprobación, versión e historial</h2>
+          <p class="lead">Cada rol aprueba únicamente su ámbito. La publicación requiere una versión inmutable y una nueva versión para cualquier cambio posterior.</p>
+          <div id="approvals"></div>
+          <div class="grid g2" style="margin-top:12px">
+            <div class="card">
+              <h3>Control de versión</h3>
+              <div class="grid g2">
+                <div><label>Versión propuesta</label><input id="version"></div>
+                <div><label>Tipo de cambio</label><select id="changeType"><option>Versión inicial</option><option>Cambio menor</option><option>Cambio mayor</option><option>Revisión de emergencia</option></select></div>
+              </div>
+              <label style="margin-top:8px">Resumen de cambios</label><textarea id="changeSummary"></textarea>
+              <button class="btn" id="recordVersion">Registrar snapshot</button>
+            </div>
+            <div class="card">
+              <h3>Historial</h3>
+              <div id="versionHistory"></div>
+            </div>
+          </div>
+          <div class="actions"><button class="btn" data-prev="3">← Volver</button><button class="btn primary" data-next="5">Generar informe →</button></div>
+        </div>
+      </section>
+
+      <section class="view" data-v="5">
+        <div class="panel section">
+          <h2>6. Informe técnico explicable</h2>
+          <p class="lead">La lectura ejecutiva resume la decisión, pero permite descender hasta cada evidencia, excepción y aprobación.</p>
+          <div class="report">
+            <span class="chip" id="reportStatus"></span>
+            <h2 id="reportTitle"></h2>
+            <p id="reportSummary" class="muted"></p>
+            <div class="reportKpis">
+              <div class="reportKpi"><b id="rkModes"></b><small>Modos analizados</small></div>
+              <div class="reportKpi"><b id="rkTasks"></b><small>Tareas</small></div>
+              <div class="reportKpi"><b id="rkRisk"></b><small>Riesgo residual</small></div>
+              <div class="reportKpi"><b id="rkCost"></b><small>Coste anual</small></div>
+              <div class="reportKpi"><b id="rkApprovals"></b><small>Aprobaciones</small></div>
+            </div>
+            <div class="grid g2">
+              <div class="card"><h3>Decisiones clave</h3><ul id="reportDecisions"></ul></div>
+              <div class="card"><h3>Pendientes y excepciones</h3><ul id="reportOpen"></ul></div>
+            </div>
+          </div>
+          <div class="actions"><button class="btn" data-prev="4">← Volver</button><button class="btn primary" data-next="6">Comparar con datos reales →</button></div>
+        </div>
+      </section>
+
+      <section class="view" data-v="6">
+        <div class="panel section">
+          <h2>7. Seguimiento y mejora continua</h2>
+          <p class="lead">Los datos reales se comparan con las hipótesis aprobadas. Cuando una desviación supera el umbral, el sistema propone reabrir el análisis y crear una nueva versión.</p>
+          <div id="signals"></div>
+          <div class="grid g2" style="margin-top:12px">
+            <div class="card"><h3>Cola de revisión</h3><div id="reviewQueue"></div></div>
+            <div class="card">
+              <h3>Abrir solicitud de cambio</h3>
+              <label>Motivo</label><textarea id="changeReason" placeholder="Describe por qué debe revisarse el AMEF–RCM."></textarea>
+              <label>Alcance de reapertura</label><select id="reopenScope"><option>AMEF + RCM + Plan</option><option>Solo AMEF</option><option>Solo decisión RCM</option><option>Solo plan e intervalos</option></select>
+              <button class="btn danger" id="reopen">Crear nueva revisión</button>
+              <div id="reopenResult" class="call warn" style="display:none"></div>
+            </div>
+          </div>
+          <div class="call"><b>Principio de control:</b> una revisión nueva no sobrescribe la versión aprobada. Se crea un borrador vinculado al evento que la originó.</div>
+          <div class="actions"><button class="btn" data-prev="5">← Volver</button><button class="btn success" id="markReviewed">Marcar expediente revisado</button><button class="btn" id="reset">Reiniciar demostración</button></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="panel summary">
+      <h3>Resumen</h3>
+      <dl>
+        <dt>Plan</dt><dd id="sm"></dd>
+        <dt>Versión</dt><dd id="sv"></dd>
+        <dt>Calidad</dt><dd id="sq"></dd>
+        <dt>Discrepancias</dt><dd id="sd"></dd>
+        <dt>Aprobaciones</dt><dd id="sa"></dd>
+        <dt>Revisiones</dt><dd id="sr"></dd>
+      </dl>
+      <p><label>Progreso de gobernanza</label></p>
+      <div class="bar"><span id="progress"></span></div>
+      <small id="progressText" class="muted"></small>
+      <p><div id="sideGate" class="gate blocked"></div></p>
+      <h4>Cadena activa</h4>
+      <div id="sideTrace"></div>
+    </aside>
+  </div>
+</main>
+<script>
+const packages=[
+  {
+    id:'PKG-03',plan:'PM-P101-FM03',name:'Rodamientos',strategy:'Mantenimiento basado en condición',gate:'Preparado',gateClass:'ready',owner:'Responsable de Activos Rotativos',
+    scope:['P-101 Bomba','M-101 Motor','CPL-101 Acoplamiento'],conditions:['Validar umbrales corporativos de vibración.','Confirmar capacidad de intervención dentro de 14 días.'],
+    function:'Mantener rotación estable dentro de límites.',functionalFailure:'No mantener estabilidad mecánica.',mode:'FM-03 · Degradación de rodamientos',effect:'Vibración, temperatura y daño secundario.',risk:'Alto',rcm:'Tarea por condición aplicable.',task:'T-01 · Medir vibración y temperatura',interval:'15 días',criterion:'Tendencia y límites ISO 20816 definidos por clase de máquina.',cost:'7.920 €',residual:'Bajo',modes:1,tasks:1,
+    evidence:'Histórico de OT, rutas predictivas y tendencias de vibración.',taskOwner:'Ingeniería de Fiabilidad'
+  },
+  {
+    id:'PKG-01',plan:'PM-P101-FM01',name:'Sello mecánico',strategy:'Seguimiento de condición + estudio de rediseño',gate:'Condicionado',gateClass:'conditional',owner:'Responsable de Activos Rotativos',
+    scope:['P-101 Bomba','PT-101 Instrumentación'],conditions:['Aceptar riesgo ambiental residual.','Cerrar estudio de rediseño del sellado.','Validar coste corporativo de vertido y parada.'],
+    function:'Transferir fluido sin pérdida de contención.',functionalFailure:'Pérdida de contención y reducción de capacidad.',mode:'FM-01 · Degradación del sello mecánico',effect:'Fuga progresiva, posible vertido y parada.',risk:'Crítico',rcm:'Política condicionada por consecuencia ambiental.',task:'T-01 · Inspeccionar fuga y tendencia',interval:'7 días',criterion:'Ausencia de fuga visible y tendencia dentro del umbral.',cost:'10.480 €',residual:'Medio',modes:1,tasks:2,
+    evidence:'Rondas operativas, históricos de fugas y manual del fabricante.',taskOwner:'Mantenimiento + Medioambiente'
+  },
+  {
+    id:'PKG-06',plan:'PM-P102-FM06',name:'Bomba de reserva',strategy:'Búsqueda de fallos mediante prueba funcional',gate:'Preparado',gateClass:'ready',owner:'Responsable del Sistema de Refrigeración',
+    scope:['P-102 Bomba de reserva','M-102 Motor','V-102 Válvula de descarga'],conditions:['Definir condiciones seguras de prueba.','Registrar caudal, presión y tiempo de arranque.'],
+    function:'Proporcionar respaldo automático cuando P-101 no está disponible.',functionalFailure:'La reserva no arranca cuando se requiere.',mode:'FM-06 · Fallo oculto de bomba de reserva',effect:'Pérdida total de refrigeración ante demanda.',risk:'Crítico',rcm:'Búsqueda de fallos / prueba funcional.',task:'T-01 · Ejecutar prueba funcional de reserva',interval:'30 días',criterion:'Arranque, caudal y presión dentro del estándar.',cost:'5.760 €',residual:'Bajo',modes:1,tasks:1,
+    evidence:'Pruebas históricas, causa raíz y requisito operacional.',taskOwner:'Operaciones + Mantenimiento'
+  }
+];
+const steps=['Expediente','Trazabilidad','Calidad','Revisión','Aprobación','Informe','Mejora'];
+const baseRules=[
+  {id:'R01',severity:'critical',title:'Tarea vinculada a un modo de fallo',detail:'Toda tarea debe conservar una relación directa con el modo de fallo tratado.',auto:'pass'},
+  {id:'R02',severity:'critical',title:'Consecuencia crítica con aprobación competente',detail:'Seguridad o medioambiente requieren aceptación explícita del riesgo residual.',auto:'dynamic'},
+  {id:'R03',severity:'warning',title:'Intervalo con fundamento documentado',detail:'La frecuencia debe conservar su referencia P–F, prueba funcional o criterio equivalente.',auto:'pass'},
+  {id:'R04',severity:'warning',title:'Costes con fuente identificada',detail:'Los costes de fallo, parada y ejecución deben indicar su fuente y fecha.',auto:'dynamic'},
+  {id:'R05',severity:'warning',title:'Criterio de aceptación verificable',detail:'La tarea debe producir un resultado que permita decidir conformidad y acción posterior.',auto:'pass'},
+  {id:'R06',severity:'info',title:'Responsable y autoridad separados',detail:'Quien redacta la tarea no debe ser necesariamente quien acepta el riesgo residual.',auto:'pass'},
+  {id:'R07',severity:'critical',title:'Sin trazabilidad rota',detail:'No deben existir funciones, modos, decisiones o tareas huérfanas.',auto:'pass'},
+  {id:'R08',severity:'warning',title:'Discrepancias cerradas o aceptadas',detail:'Toda discrepancia abierta debe impedir la publicación o quedar como excepción aprobada.',auto:'dynamic'}
+];
+const defaultApprovals=[
+  {role:'Mantenimiento',scope:'Contenido técnico de tareas',status:'Aprobado',comment:'Técnica, criterios y recursos revisados.'},
+  {role:'Operaciones',scope:'Ejecutabilidad y ventanas',status:'Pendiente',comment:''},
+  {role:'Ingeniería de Fiabilidad',scope:'AMEF, RCM e intervalos',status:'Aprobado',comment:'Recorrido metodológico consistente.'},
+  {role:'HSE / Medioambiente',scope:'Riesgo residual crítico',status:'No aplica',comment:'Aplicará cuando exista consecuencia HSE.'},
+  {role:'Responsable del activo',scope:'Publicación y presupuesto',status:'Pendiente',comment:''}
+];
+const defaultSignals=[
+  {id:'SIG-01',name:'P–F observado',hypothesis:45,actual:28,unit:'días',threshold:20,direction:'deviation',owner:'Fiabilidad'},
+  {id:'SIG-02',name:'Fallos del modo por año',hypothesis:0.7,actual:1.2,unit:'fallos/año',threshold:25,direction:'deviation',owner:'Mantenimiento'},
+  {id:'SIG-03',name:'Coste anual real',hypothesis:7920,actual:8650,unit:'€',threshold:20,direction:'deviation',owner:'Control de costes'},
+  {id:'SIG-04',name:'Cumplimiento de tareas',hypothesis:95,actual:92,unit:'%',threshold:10,direction:'deviation',owner:'Planificación'}
+];
+let S={
+  package:'PKG-03',step:0,selectedTrace:0,version:'0.9',changeType:'Versión inicial',changeSummary:'Propuesta inicial para revisión multidisciplinar.',reviewed:false,
+  resolvedRules:{},discrepancies:[
+    {id:'D-01',topic:'Frecuencia de inspección de rodamientos',areaA:'Mantenimiento',positionA:'15 días para reducir exposición al fallo.',areaB:'Operaciones',positionB:'30 días para reducir carga operativa.',impact:'El intervalo de 30 días reduce margen de intervención.',decision:'15 días durante seis meses y revisión con datos reales.',owner:'Ingeniería de Fiabilidad',status:'Resuelta'},
+    {id:'D-02',topic:'Fuente del coste de indisponibilidad',areaA:'Control de costes',positionA:'Usar coste promedio corporativo.',areaB:'Operaciones',positionB:'Usar pérdida específica del sistema.',impact:'Cambia el ahorro esperado y el ROI.',decision:'',owner:'Control de costes',status:'Abierta'}
+  ],
+  approvals:structuredClone(defaultApprovals),versions:[{version:'0.8',date:'2026-07-31',type:'Borrador',summary:'Primera consolidación AMEF–RCM.'}],signals:structuredClone(defaultSignals),reviewRequests:[]
+};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],P=()=>packages.find(x=>x.id===S.package),money=n=>new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function go(i){S.step=i;$$('.view').forEach((v,n)=>v.classList.toggle('active',n===i));render();scrollTo({top:0,behavior:'smooth'})}
+function resetPackage(id){S.package=id;S.selectedTrace=0;S.reviewed=false;S.resolvedRules={};S.discrepancies=defaultDiscrepancies(id);S.approvals=clone(defaultApprovals);if(P().gate==='Condicionado'){const h=S.approvals.find(x=>x.role==='HSE / Medioambiente');h.status='Pendiente';h.comment='Debe aceptar el riesgo ambiental residual.'}else{const h=S.approvals.find(x=>x.role==='HSE / Medioambiente');h.status='No aplica'}S.signals=signalsFor(id);render()}
+function defaultDiscrepancies(id){const common=[{id:'D-01',topic:'Fuente del coste de indisponibilidad',areaA:'Control de costes',positionA:'Usar coste promedio corporativo.',areaB:'Operaciones',positionB:'Usar pérdida específica del sistema.',impact:'Cambia el ahorro esperado y el ROI.',decision:'',owner:'Control de costes',status:'Abierta'}];if(id==='PKG-03')common.unshift({id:'D-00',topic:'Frecuencia de inspección de rodamientos',areaA:'Mantenimiento',positionA:'15 días para reducir exposición al fallo.',areaB:'Operaciones',positionB:'30 días para reducir carga operativa.',impact:'El intervalo de 30 días reduce margen de intervención.',decision:'15 días durante seis meses y revisión con datos reales.',owner:'Ingeniería de Fiabilidad',status:'Resuelta'});if(id==='PKG-01')common.unshift({id:'D-00',topic:'Aceptación del riesgo ambiental residual',areaA:'Mantenimiento',positionA:'Mantener seguimiento mientras se estudia el rediseño.',areaB:'Medioambiente',positionB:'No aceptar fuga recurrente sin fecha de rediseño.',impact:'Puede impedir la publicación del plan.',decision:'',owner:'Responsable del activo',status:'Abierta'});if(id==='PKG-06')common.unshift({id:'D-00',topic:'Periodicidad de la prueba funcional',areaA:'Operaciones',positionA:'Mensual durante seis meses.',areaB:'Mantenimiento',positionB:'Bimestral por carga de ejecución.',impact:'Afecta a exposición al fallo oculto.',decision:'Mensual durante seis meses; revisar después.',owner:'Fiabilidad',status:'Resuelta'});return common}
+function signalsFor(id){const s=clone(defaultSignals);if(id==='PKG-01'){s[0]={id:'SIG-01',name:'Fugas observadas por trimestre',hypothesis:1,actual:3,unit:'eventos',threshold:25,direction:'deviation',owner:'Operaciones'};s[1]={id:'SIG-02',name:'Volumen de fuga medio',hypothesis:2,actual:4.2,unit:'litros',threshold:25,direction:'deviation',owner:'Medioambiente'};s[2].hypothesis=10480;s[2].actual=12700}if(id==='PKG-06'){s[0]={id:'SIG-01',name:'Tiempo real de arranque',hypothesis:8,actual:7.4,unit:'s',threshold:20,direction:'deviation',owner:'Operaciones'};s[1]={id:'SIG-02',name:'Pruebas no conformes',hypothesis:0,actual:0,unit:'pruebas',threshold:10,direction:'absolute',owner:'Mantenimiento'};s[2].hypothesis=5760;s[2].actual=5450}return s}
+function traceNodes(){const p=P();return[
+  {type:'Activo',title:p.scope[0],detail:'Objeto técnico principal sobre el que se aplica el análisis.',source:'Registro de activos',owner:p.owner,evidence:'Jerarquía funcional y modelo de activos.'},
+  {type:'Función',title:p.function,detail:'Desempeño requerido en el contexto operacional.',source:'Prototipo 1',owner:'Operaciones',evidence:'Estándar de desempeño validado.'},
+  {type:'Fallo funcional',title:p.functionalFailure,detail:'Estado en el que el activo deja de cumplir la función.',source:'Prototipo 1',owner:'Operaciones + Fiabilidad',evidence:'Límites de desempeño.'},
+  {type:'Modo de fallo',title:p.mode,detail:p.effect,source:'Prototipo 1',owner:'Mantenimiento',evidence:p.evidence},
+  {type:'AMEF',title:'Riesgo '+p.risk,detail:'Priorización del modo considerando consecuencias, ocurrencia y controles.',source:'Prototipo 2',owner:'Equipo AMEF',evidence:'Evaluación de riesgo y excepciones.'},
+  {type:'RCM',title:p.rcm,detail:'Política seleccionada tras recorrer consecuencias, aplicabilidad y efectividad.',source:'Prototipo 3',owner:'Ingeniería de Fiabilidad',evidence:'Árbol RCM y condiciones de validez.'},
+  {type:'Tarea',title:p.task,detail:`Intervalo ${p.interval}. Criterio: ${p.criterion}`,source:'Prototipo 4',owner:p.taskOwner,evidence:'Procedimiento, criterio de aceptación y recursos.'},
+  {type:'Plan',title:p.plan,detail:`Coste anual ${p.cost}. Riesgo residual ${p.residual}.`,source:'Prototipo 4',owner:p.owner,evidence:'Paquete neutro de mantenimiento.'}
+]}
+function openDiscrepancies(){return S.discrepancies.filter(x=>x.status!=='Resuelta'&&x.status!=='Excepción aceptada')}
+function approvalNeeded(a){const p=P();if(a.role==='HSE / Medioambiente'&&p.gate!=='Condicionado')return false;return true}
+function approvalsOk(){return S.approvals.filter(approvalNeeded).every(x=>x.status==='Aprobado'||x.status==='No aplica')}
+function dynamicRule(rule){const p=P();if(rule.id==='R02')return p.gate==='Condicionado'&&!S.approvals.find(x=>x.role==='HSE / Medioambiente'&&x.status==='Aprobado')?'fail':'pass';if(rule.id==='R04')return S.resolvedRules.R04?'pass':'warn';if(rule.id==='R08')return openDiscrepancies().length?'warn':'pass';return rule.auto==='pass'?'pass':'warn'}
+function ruleResults(){return baseRules.map(r=>({...r,status:S.resolvedRules[r.id]?'pass':dynamicRule(r)}))}
+function quality(){const r=ruleResults();let score=100;r.forEach(x=>{if(x.status==='fail')score-=18;else if(x.status==='warn')score-=7});return Math.max(0,score)}
+function signalsTriggered(){return S.signals.filter(s=>{if(s.direction==='absolute')return s.actual>s.threshold;const base=Math.abs(Number(s.hypothesis))||1;return Math.abs(Number(s.actual)-Number(s.hypothesis))/base*100>Number(s.threshold)})}
+function gate(){const critical=ruleResults().filter(x=>x.status==='fail').length,open=openDiscrepancies().length,triggered=signalsTriggered().length;if(critical||P().gate==='Condicionado'&&!approvalsOk())return['blocked','Bloqueado','No puede publicarse: existen condiciones críticas.'];if(open||!approvalsOk()||quality()<90)return['conditional','Condicionado','Puede revisarse, pero aún no publicarse.'];if(triggered)return['conditional','Revisión requerida','La versión aprobada necesita una nueva revisión por datos reales.'];return['ready','Preparado','Expediente listo para publicación controlada.']}
+function progress(){let n=1;if(traceNodes().length===8)n++;if(quality()>=80)n++;if(!openDiscrepancies().length)n++;if(approvalsOk())n++;if(S.versions.length>1)n++;if(S.reviewed)n++;return Math.min(7,n)}
+function renderPackages(){const p=P();$('#packages').innerHTML=packages.map(x=>`<button class="package ${x.id===S.package?'active':''}" data-package="${x.id}"><span><b>${x.plan} · ${x.name}</b><small class="muted" style="display:block">${x.strategy}</small></span><span class="badge ${x.gateClass}">${x.gate}</span></button>`).join('');$$('[data-package]').forEach(b=>b.onclick=()=>resetPackage(b.dataset.package));$('#planCode').textContent=p.plan;$('#strategy').textContent=p.strategy;$('#inheritedGate').innerHTML=`<span class="badge ${p.gateClass}">${p.gate}</span>`;$('#assetOwner').textContent=p.owner;$('#scope').innerHTML=p.scope.map(x=>`<li>${x}</li>`).join('');$('#conditions').innerHTML=p.conditions.map(x=>`<li>${x}</li>`).join('')}
+function renderTrace(){const nodes=traceNodes();$('#traceNodes').innerHTML=nodes.map((n,i)=>`<button class="traceNode ${i===S.selectedTrace?'active':''}" data-trace="${i}"><span class="chip">${n.type}</span><b style="display:block;margin-top:5px">${n.title}</b><small>${i<nodes.length-1?'Conecta con '+nodes[i+1].type:'Resultado gobernado'}</small></button>`).join('');$$('[data-trace]').forEach(b=>b.onclick=()=>{S.selectedTrace=+b.dataset.trace;renderTrace()});const n=nodes[S.selectedTrace]||nodes[0];$('#traceTitle').textContent=n.type+' · '+n.title;$('#traceDetail').textContent=n.detail;$('#traceSource').textContent=n.source;$('#traceOwner').textContent=n.owner;$('#traceEvidence').textContent=n.evidence;const broken=nodes.some(x=>!x.title||!x.owner||!x.evidence);$('#brokenTrace').className='call '+(broken?'danger':'success');$('#brokenTrace').innerHTML=broken?'<b>Trazabilidad incompleta.</b> Existen nodos sin título, responsable o evidencia.':'<b>Trazabilidad completa.</b> La tarea puede reconstruirse hasta la función y el activo.'}
+function renderRules(){const r=ruleResults();$('#qualityScore').textContent=quality()+'/100';$('#criticalCount').textContent=r.filter(x=>x.status==='fail').length;$('#warningCount').textContent=r.filter(x=>x.status==='warn').length;$('#passCount').textContent=r.filter(x=>x.status==='pass').length;$('#rules').innerHTML=r.map(x=>`<div class="rule"><div class="ruleIcon ${x.status}">${x.status==='pass'?'✓':x.status==='fail'?'!':'?'}</div><div><b>${x.id} · ${x.title}</b><div class="muted">${x.detail}</div>${S.resolvedRules[x.id]?`<small>Acción: ${S.resolvedRules[x.id]}</small>`:''}</div><div>${x.status==='pass'?'<span class="badge ready">Conforme</span>':`<button class="btn small" data-resolve-rule="${x.id}">Documentar resolución</button>`}</div></div>`).join('');$$('[data-resolve-rule]').forEach(b=>b.onclick=()=>{const note=prompt('Describe la acción realizada para resolver la observación:','Fuente corporativa validada y registrada.');if(note){S.resolvedRules[b.dataset.resolveRule]=note;render()}})}
+function renderDiscrepancies(){const root=$('#discrepancies');root.innerHTML=S.discrepancies.length?S.discrepancies.map((d,i)=>`<article class="discrepancy"><div style="display:flex;justify-content:space-between;gap:10px"><div><span class="chip">${d.id}</span><h3>${d.topic}</h3><small class="muted">Responsable: ${d.owner}</small></div><span class="badge ${d.status==='Resuelta'?'ready':d.status==='Excepción aceptada'?'conditional':'blocked'}">${d.status}</span></div><div class="positions"><div class="position"><b>${d.areaA}</b><p>${d.positionA}</p></div><div class="position"><b>${d.areaB}</b><p>${d.positionB}</p></div></div><div class="call warn"><b>Impacto:</b> ${d.impact}</div><label>Decisión / acuerdo</label><textarea data-disc="${i}" data-key="decision">${d.decision||''}</textarea><div class="grid g3"><div><label>Responsable</label><input data-disc="${i}" data-key="owner" value="${d.owner}"></div><div><label>Estado</label><select data-disc="${i}" data-key="status"><option ${d.status==='Abierta'?'selected':''}>Abierta</option><option ${d.status==='Resuelta'?'selected':''}>Resuelta</option><option ${d.status==='Excepción aceptada'?'selected':''}>Excepción aceptada</option></select></div><div style="align-self:end"><button class="btn danger" data-del-disc="${i}">Eliminar</button></div></div></article>`).join(''):'<div class="empty">No hay discrepancias registradas.</div>';$$('[data-disc]').forEach(el=>{const update=e=>{S.discrepancies[+e.target.dataset.disc][e.target.dataset.key]=e.target.value};el.oninput=update;el.onchange=e=>{update(e);render()}});$$('[data-del-disc]').forEach(b=>b.onclick=()=>{S.discrepancies.splice(+b.dataset.delDisc,1);S.discrepancies.forEach((d,i)=>d.id='D-'+String(i+1).padStart(2,'0'));render()})}
+function renderApprovals(){const p=P();$('#approvals').innerHTML=S.approvals.map((a,i)=>`<div class="approval"><div><b>${a.role}</b><small class="muted" style="display:block">${a.scope}</small></div><div><input data-app="${i}" data-key="comment" value="${a.comment||''}" placeholder="Comentario de revisión"></div><div><select data-app="${i}" data-key="status"><option ${a.status==='Pendiente'?'selected':''}>Pendiente</option><option ${a.status==='Aprobado'?'selected':''}>Aprobado</option><option ${a.status==='Cambios solicitados'?'selected':''}>Cambios solicitados</option><option ${a.status==='Rechazado'?'selected':''}>Rechazado</option><option ${a.status==='No aplica'?'selected':''}>No aplica</option></select></div></div>`).join('');$$('[data-app]').forEach(el=>{const update=e=>{S.approvals[+e.target.dataset.app][e.target.dataset.key]=e.target.value};el.oninput=update;el.onchange=e=>{update(e);render()}});$('#version').value=S.version;$('#changeType').value=S.changeType;$('#changeSummary').value=S.changeSummary;$('#version').oninput=e=>S.version=e.target.value;$('#changeType').onchange=e=>S.changeType=e.target.value;$('#changeSummary').oninput=e=>S.changeSummary=e.target.value;$('#versionHistory').innerHTML=S.versions.slice().reverse().map(v=>`<div class="version"><b>v${v.version} · ${v.type}</b><small class="muted" style="display:block">${v.date}</small><div>${v.summary}</div></div>`).join('')}
+function renderReport(){const p=P(),g=gate(),approved=S.approvals.filter(x=>x.status==='Aprobado').length,open=[...openDiscrepancies().map(x=>x.topic),...ruleResults().filter(x=>x.status!=='pass').map(x=>x.title)];$('#reportStatus').className='chip';$('#reportStatus').textContent=`${g[1]} · v${S.version}`;$('#reportTitle').textContent=`${p.plan} — ${p.strategy}`;$('#reportSummary').textContent=`El expediente conecta ${p.mode} con ${p.tasks} tarea(s), un coste anual de ${p.cost} y un riesgo residual ${p.residual}. La publicación depende del cierre de calidad, discrepancias y aprobaciones.`;$('#rkModes').textContent=p.modes;$('#rkTasks').textContent=p.tasks;$('#rkRisk').textContent=p.residual;$('#rkCost').textContent=p.cost;$('#rkApprovals').textContent=approved+'/'+S.approvals.filter(approvalNeeded).length;$('#reportDecisions').innerHTML=[p.rcm,p.task+' cada '+p.interval,'Alcance: '+p.scope.join(', '),'Responsable: '+p.owner].map(x=>`<li>${x}</li>`).join('');$('#reportOpen').innerHTML=(open.length?open:['Sin pendientes automáticos.']).map(x=>`<li>${x}</li>`).join('')}
+function deviation(s){if(s.direction==='absolute')return s.actual;const base=Math.abs(Number(s.hypothesis))||1;return Math.round(Math.abs(Number(s.actual)-Number(s.hypothesis))/base*100)}
+function renderSignals(){const triggered=signalsTriggered();$('#signals').innerHTML=S.signals.map((s,i)=>{const trig=triggered.includes(s);return `<div class="signal"><div><b>${s.name}</b><small class="muted" style="display:block">Responsable: ${s.owner}</small></div><div class="grid g2"><div><label>Hipótesis aprobada</label><input type="number" step="any" data-signal="${i}" data-key="hypothesis" value="${s.hypothesis}"></div><div><label>Resultado real</label><input type="number" step="any" data-signal="${i}" data-key="actual" value="${s.actual}"></div></div><div><label>Umbral</label><input type="number" data-signal="${i}" data-key="threshold" value="${s.threshold}"></div><div><span class="badge ${trig?'blocked':'ready'}">${trig?'Revisar':'Dentro de rango'}</span><small class="muted" style="display:block">Desviación: ${deviation(s)}${s.direction==='absolute'?'':'%'}</small></div></div>`}).join('');$$('[data-signal]').forEach(el=>el.onchange=e=>{S.signals[+e.target.dataset.signal][e.target.dataset.key]=+e.target.value;render()});$('#reviewQueue').innerHTML=triggered.length?triggered.map(s=>`<div class="queueItem"><b>${s.id} · ${s.name}</b><div>Hipótesis ${s.hypothesis} ${s.unit}; real ${s.actual} ${s.unit}.</div><small>Supera el umbral configurado y debe evaluarse.</small></div>`).join(''):'<div class="empty">No hay señales que obliguen a reabrir el análisis.</div>'}
+function renderSummary(){const p=P(),g=gate(),c=progress();$('#hm').textContent=p.plan;$('#hv').textContent='v'+S.version;$('#hq').textContent=quality()+'/100';$('#hg').textContent=g[1];$('#sm').textContent=p.plan;$('#sv').textContent='v'+S.version;$('#sq').textContent=quality()+'/100';$('#sd').textContent=openDiscrepancies().length;$('#sa').textContent=S.approvals.filter(x=>x.status==='Aprobado').length+'/'+S.approvals.filter(approvalNeeded).length;$('#sr').textContent=S.reviewRequests.length;$('#progress').style.width=c/7*100+'%';$('#progressText').textContent=c+' de 7 etapas consolidadas';$('#sideGate').className='gate '+g[0];$('#sideGate').textContent=g[2];$('#sideTrace').innerHTML=[p.mode,'AMEF '+p.risk,p.rcm,p.task,p.plan,'v'+S.version+' · '+g[1]].map(x=>`<div class="trace">${x}</div>`).join('')}
+function render(){const c=progress();$('#steps').innerHTML=steps.map((x,i)=>`<button class="step ${i===S.step?'active':''}" data-step="${i}"><span class="num">0${i+1}</span><span><b>${x}</b><small>${i<c?'Revisado':'Pendiente'}</small></span></button>`).join('');$$('[data-step]').forEach(b=>b.onclick=()=>go(+b.dataset.step));renderPackages();renderTrace();renderRules();renderDiscrepancies();renderApprovals();renderReport();renderSignals();renderSummary()}
+$$('[data-next]').forEach(b=>b.onclick=()=>go(+b.dataset.next));$$('[data-prev]').forEach(b=>b.onclick=()=>go(+b.dataset.prev));
+$('#addDiscrepancy').onclick=()=>{const topic=$('#newTopic').value.trim(),a=$('#newAreaA').value.trim(),b=$('#newAreaB').value.trim(),desc=$('#newDescription').value.trim();if(!topic||!a||!b||!desc){alert('Completa tema, áreas y descripción.');return}const n=S.discrepancies.length+1;S.discrepancies.push({id:'D-'+String(n).padStart(2,'0'),topic,areaA:a,positionA:desc,areaB:b,positionB:'Pendiente de documentar.',impact:'Pendiente de evaluar.',decision:'',owner:P().owner,status:'Abierta'});$('#newTopic').value=$('#newAreaA').value=$('#newAreaB').value=$('#newDescription').value='';render()};
+$('#recordVersion').onclick=()=>{if(!S.version.trim()||!S.changeSummary.trim()){alert('Indica versión y resumen de cambios.');return}S.versions.push({version:S.version,date:new Date().toISOString().slice(0,10),type:S.changeType,summary:S.changeSummary});render()};
+$('#reopen').onclick=()=>{const reason=$('#changeReason').value.trim();if(!reason){alert('Documenta el motivo de reapertura.');return}const request={id:'CR-'+String(S.reviewRequests.length+1).padStart(3,'0'),date:new Date().toISOString(),reason,scope:$('#reopenScope').value,sourceSignals:signalsTriggered().map(x=>x.id),fromVersion:S.version,toVersion:nextDraftVersion(S.version)};S.reviewRequests.push(request);S.version=request.toVersion;S.changeType='Revisión de emergencia';S.changeSummary=reason;S.reviewed=false;S.approvals.forEach(a=>{if(a.status!=='No aplica')a.status='Pendiente'});$('#reopenResult').style.display='block';$('#reopenResult').innerHTML=`<b>${request.id} creada.</b><br>Nueva versión ${request.toVersion}; la versión ${request.fromVersion} permanece en el historial.`;render()};
+function nextDraftVersion(v){const clean=String(v).replace(/-draft$/,'');const parts=clean.split('.').map(Number);if(parts.length<2||parts.some(Number.isNaN))return clean+'-review';return parts[0]+'.'+(parts[1]+1)+'-draft'}
+$('#markReviewed').onclick=()=>{S.reviewed=true;render()};
+$('#save').onclick=()=>{localStorage.setItem('amefRcmP5',JSON.stringify(S));alert('Estado guardado en este navegador.')};
+$('#export').onclick=()=>{const payload={prototype:'05-gobernar-mejorar',generatedAt:new Date().toISOString(),package:P(),state:S,traceability:traceNodes(),quality:{score:quality(),rules:ruleResults()},gate:gate(),triggeredSignals:signalsTriggered()};const a=document.createElement('a'),blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});a.href=URL.createObjectURL(blob);a.download=`EXPEDIENTE_${P().plan}_v${S.version}.json`;a.click();URL.revokeObjectURL(a.href)};
+$('#reset').onclick=()=>{localStorage.removeItem('amefRcmP5');S={package:'PKG-03',step:0,selectedTrace:0,version:'0.9',changeType:'Versión inicial',changeSummary:'Propuesta inicial para revisión multidisciplinar.',reviewed:false,resolvedRules:{},discrepancies:defaultDiscrepancies('PKG-03'),approvals:clone(defaultApprovals),versions:[{version:'0.8',date:'2026-07-31',type:'Borrador',summary:'Primera consolidación AMEF–RCM.'}],signals:signalsFor('PKG-03'),reviewRequests:[]};render();go(0)};
+try{const saved=localStorage.getItem('amefRcmP5');if(saved)S={...S,...JSON.parse(saved)}}catch(e){}
+if(!S.discrepancies?.length)S.discrepancies=defaultDiscrepancies(S.package);if(!S.signals?.length)S.signals=signalsFor(S.package);if(!S.approvals?.length)S.approvals=clone(defaultApprovals);render();go(S.step||0);
+</script>
+</body>
+</html>
