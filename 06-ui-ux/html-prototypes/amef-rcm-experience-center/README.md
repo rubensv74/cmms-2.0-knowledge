@@ -18,13 +18,9 @@ Descomprimir el ZIP y abrir `index.html`. No requiere servidor, instalación ni 
 - `docs/`: documentación para público general, coherencia y guía de reunión.
 - `package.ps1` y `package.sh`: generación reproducible del ZIP.
 
-## Versión distribuible
+## Verificación de la distribución
 
-- Nombre: `AMEF_RCM_Experience_Center_v2.0.zip`
-- Entrada: `index.html`
-- SHA256: `5d552c8236a99c9ce7df9ee34fb3a858a77c9148c11281d04d31c89145b4c6ce`
-
-El archivo binario no se versiona dentro del repositorio. Se genera mediante los scripts de empaquetado para evitar duplicidades y paquetes obsoletos.
+El checksum de cada ZIP se publica fuera del paquete en `releases/SHA256SUMS.txt`. De esta forma el archivo puede reproducirse sin introducir una referencia circular a su propio hash.
 
 ## Estado
 
