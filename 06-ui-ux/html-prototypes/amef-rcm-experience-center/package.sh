@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 RELEASE="$ROOT/releases"
 STAGE="$(mktemp -d)"
-OUTPUT="${1:-$RELEASE/AMEF_RCM_Experience_Center_v2.1.zip}"
+OUTPUT="${1:-$RELEASE/AMEF_RCM_Experience_Center_v3.0.zip}"
 trap 'rm -rf "$STAGE"' EXIT
 
 mkdir -p "$(dirname "$OUTPUT")"
