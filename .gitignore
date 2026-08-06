@@ -9,3 +9,4 @@ Thumbs.db
 # Archivos locales de editor
 .vscode/
 .idea/
+.opencode
