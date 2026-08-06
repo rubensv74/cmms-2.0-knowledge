@@ -5,10 +5,10 @@ param(
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Release = Join-Path $Root "releases"
-$Stage = Join-Path $env:TEMP "AMEF_RCM_Experience_Center_v2.1"
+$Stage = Join-Path $env:TEMP "AMEF_RCM_Experience_Center_v3.0"
 
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
-    $OutputPath = Join-Path $Release "AMEF_RCM_Experience_Center_v2.1.zip"
+    $OutputPath = Join-Path $Release "AMEF_RCM_Experience_Center_v3.0.zip"
 }
 
 Remove-Item $Stage -Recurse -Force -ErrorAction SilentlyContinue
