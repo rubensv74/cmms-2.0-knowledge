@@ -1,34 +1,44 @@
 # AMEF–RCM Experience Center — Guía para público general
 
-## Qué es este paquete
+## Qué problema intenta resolver
 
-Es una demostración funcional e interactiva de cómo podría organizarse un módulo AMEF–RCM dentro de CMMS 2.0. No es el sistema definitivo ni un plan de mantenimiento aprobado.
+En muchas organizaciones los planes de mantenimiento se construyen a partir de experiencia, costumbre o recomendaciones genéricas. Este conjunto de prototipos propone un recorrido diferente: primero entender qué debe hacer el activo, después analizar cómo puede fallar, evaluar el riesgo, elegir una estrategia justificable, convertirla en tareas y mantener la decisión bajo control durante todo su ciclo de vida.
 
-El paquete utiliza el caso de una bomba centrífuga de agua de refrigeración, identificada como **P-101**, para que todas las etapas puedan entenderse como una historia continua.
+## Los cinco prototipos
 
-## Cómo abrirlo
+1. **Comprender el problema.** Define contexto, funciones, fallos funcionales y modos de fallo.
+2. **Evaluar el riesgo.** Ordena los modos mediante AMEF sin depender únicamente del NPR.
+3. **Tomar la decisión RCM.** Recorre consecuencias, aplicabilidad, intervalo P–F y escenarios.
+4. **Convertir la decisión en un plan.** Define tareas, criterios, intervalos, recursos, costes y exportación.
+5. **Gobernar y mejorar.** Asegura trazabilidad, calidad, discrepancias, aprobaciones, versiones y revisión con datos reales.
 
-1. Descomprimir el archivo ZIP completo.
+## Mensaje que debe quedar claro
+
+El plan de mantenimiento no es el punto de partida. Es el resultado de una cadena de razonamiento que debe poder explicarse y revisarse posteriormente.
+
+## Cómo utilizar el paquete
+
+1. Descomprimir el ZIP.
 2. Mantener la estructura de carpetas.
-3. Abrir el archivo `index.html` situado en la raíz.
-4. Utilizar los botones para recorrer el mapa maestro y los cinco prototipos.
+3. Abrir `index.html`.
+4. Empezar por el mapa maestro.
+5. Recorrer los prototipos en orden utilizando el caso P-101 como hilo conductor.
 
-No necesita instalación, servidor, conexión a Internet ni permisos especiales. Los cambios realizados durante la demostración se guardan localmente en el navegador cuando este lo permite.
+El paquete funciona offline y no requiere instalación.
 
-## Qué demuestra
+## Qué está validado y qué no
 
-1. Que el proceso comienza comprendiendo el activo y sus funciones.
-2. Que AMEF permite analizar efectos, consecuencias y prioridades.
-3. Que RCM estructura una decisión técnica, pero no sustituye el juicio humano.
-4. Que el plan de mantenimiento aparece como resultado del análisis.
-5. Que todas las decisiones deben ser trazables, aprobables y revisables.
+Los prototipos reflejan conceptos tratados en las reuniones: comprensión funcional, AMEF, árbol RCM, intervalo P–F, construcción del plan, calidad de datos, trazabilidad y mejora continua.
 
-## Qué no debe interpretarse como definitivo
+Los valores numéricos, reglas, workflows, roles, costes, códigos y aprobaciones son ejemplos para validar el modelo funcional. Deben acordarse antes de redactar la especificación definitiva para IT.
 
-- Las escalas y umbrales de riesgo.
-- Los costes y frecuencias del caso de ejemplo.
-- Los roles, aprobaciones y estados de workflow.
-- El modelo de datos y las integraciones.
-- La configuración exacta para SAP, Maximo u otros CMMS.
+## Resultado esperado de las reuniones
 
-Estos elementos necesitarán validación funcional antes de preparar la especificación para IT.
+La finalidad no es aprobar una pantalla concreta, sino confirmar:
+
+- que el orden lógico es correcto;
+- que no falta ninguna decisión importante;
+- que cada rol comprende su participación;
+- que la información necesaria puede trasladarse a un modelo de datos;
+- que el resultado es independiente del sistema destino;
+- que la organización puede justificar y revisar cada tarea del plan.
