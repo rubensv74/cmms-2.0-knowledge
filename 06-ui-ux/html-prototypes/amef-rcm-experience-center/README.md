@@ -1,34 +1,38 @@
 # AMEF–RCM Experience Center
 
-Paquete integrado de demostración funcional para CMMS 2.0 destinado a mantener la coherencia entre las reuniones semanales, la propuesta funcional y los prototipos HTML.
+Versión guiada del modelo funcional AMEF–RCM para CMMS 2.0.
 
 ## Ejecución
 
 Descomprimir el ZIP y abrir `index.html`. No requiere servidor, instalación ni dependencias externas.
 
-## Contenido
+## Punto de entrada
 
-- `index.html`: entrada única.
-- `mapa-maestro/`: 17 etapas del recorrido completo.
-- `prototipos/01-*`: comprender el activo y sus fallos.
-- `prototipos/02-*`: evaluar y priorizar el riesgo.
-- `prototipos/03-*`: tomar una decisión RCM explicable.
-- `prototipos/04-*`: convertir la decisión en tareas y plan.
-- `prototipos/05-*`: gobernar, aprobar, versionar y mejorar.
-- `assets/`: recursos compartidos de las guías prácticas.
-- `docs/`: documentación para público general, coherencia y guía de reunión.
-- `package.ps1` y `package.sh`: generación reproducible del ZIP.
+La versión 3.0 comienza directamente con el caso realista de la bomba **P-101**. El usuario recorre 28 etapas y confirma las acciones y decisiones necesarias para avanzar desde el contexto operacional hasta la mejora continua.
 
-## Guías del flujo de negocio
+El mapa maestro sigue disponible como referencia conceptual y los cinco prototipos se conservan como módulos de detalle.
 
-Cada prototipo incorpora un icono `ⓘ` que abre una guía práctica centrada en el proceso de negocio. La guía no explica controles ni botones: presenta la pregunta de negocio, el flujo lógico, los roles, las decisiones, el resultado esperado, los errores habituales y un ejemplo aplicado a la bomba P-101.
+## Capacidades del recorrido
 
-La definición editorial se encuentra en `docs/GUIAS_FLUJO_NEGOCIO.md`.
+- caso P-101 precargado y editable;
+- progresión secuencial mediante gates;
+- explicación de requisitos pendientes;
+- registro acumulado de decisiones;
+- salida explícita de cada etapa;
+- modo presentación para reuniones;
+- persistencia local;
+- exportación JSON;
+- funcionamiento offline.
 
-## Verificación de la distribución
+## Estructura
 
-El checksum de cada ZIP se publica fuera del paquete en `releases/SHA256SUMS.txt`. De esta forma el archivo puede reproducirse sin introducir una referencia circular a su propio hash.
+- `index.html`: recorrido guiado principal.
+- `mapa-maestro/`: arquitectura conceptual de 17 etapas.
+- `prototipos/01-*` a `05-*`: módulos funcionales de detalle.
+- `docs/RECORRIDO_GUIADO_P101.md`: explicación del enfoque.
+- `docs/`: documentación para público general y reunión.
+- `package.ps1` y `package.sh`: generación del ZIP reproducible.
 
 ## Estado
 
-Versión conceptual integrada 2.1. Los datos, costes, escalas, estados, reglas, roles y umbrales son ejemplos de validación funcional. No constituyen un AMEF–RCM aprobado ni una instrucción operativa.
+Versión conceptual guiada 3.0. Los datos y decisiones del caso son realistas, pero no constituyen un AMEF–RCM aprobado ni una instrucción operativa.
