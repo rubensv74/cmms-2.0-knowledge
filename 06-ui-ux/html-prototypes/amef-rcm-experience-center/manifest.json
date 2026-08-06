@@ -1,6 +1,6 @@
 {
   "package": "AMEF-RCM Experience Center",
-  "version": "2.0.0-conceptual",
+  "version": "2.1.0",
   "date": "2026-08-06",
   "entrypoint": "index.html",
   "language": "es",
@@ -8,11 +8,36 @@
   "caseStudy": "Bomba centrifuga P-101",
   "masterMap": "mapa-maestro/index.html",
   "prototypes": [
-    {"id":"01","name":"Comprender el problema","entrypoint":"prototipos/01-comprender-problema/index.html","status":"integrated"},
-    {"id":"02","name":"Evaluar el riesgo","entrypoint":"prototipos/02-evaluar-riesgo/index.html","status":"integrated"},
-    {"id":"03","name":"Tomar la decision RCM","entrypoint":"prototipos/03-decision-rcm/index.html","status":"expanded"},
-    {"id":"04","name":"Convertir la decision en un plan","entrypoint":"prototipos/04-convertir-en-plan/index.html","status":"expanded"},
-    {"id":"05","name":"Gobernar y mejorar","entrypoint":"prototipos/05-gobernar-mejorar/index.html","status":"expanded"}
+    {
+      "id": "01",
+      "name": "Comprender el problema",
+      "entrypoint": "prototipos/01-comprender-problema/index.html",
+      "status": "integrated"
+    },
+    {
+      "id": "02",
+      "name": "Evaluar el riesgo",
+      "entrypoint": "prototipos/02-evaluar-riesgo/index.html",
+      "status": "integrated"
+    },
+    {
+      "id": "03",
+      "name": "Tomar la decision RCM",
+      "entrypoint": "prototipos/03-decision-rcm/index.html",
+      "status": "expanded"
+    },
+    {
+      "id": "04",
+      "name": "Convertir la decision en un plan",
+      "entrypoint": "prototipos/04-convertir-en-plan/index.html",
+      "status": "expanded"
+    },
+    {
+      "id": "05",
+      "name": "Gobernar y mejorar",
+      "entrypoint": "prototipos/05-gobernar-mejorar/index.html",
+      "status": "expanded"
+    }
   ],
   "constraints": [
     "offline",
@@ -20,5 +45,12 @@
     "conceptual demo",
     "not approved maintenance instruction"
   ],
+  "businessFlowGuides": {
+    "enabled": true,
+    "trigger": "information-icon",
+    "stylesheet": "assets/business-flow-guide.css",
+    "script": "assets/business-flow-guide.js",
+    "documentation": "docs/GUIAS_FLUJO_NEGOCIO.md"
+  },
   "disclaimer": "Demostracion funcional conceptual. No constituye un AMEF-RCM aprobado ni una instruccion operativa."
 }
