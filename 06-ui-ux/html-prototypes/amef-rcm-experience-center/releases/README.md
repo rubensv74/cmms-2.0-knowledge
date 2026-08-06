@@ -30,6 +30,6 @@ Al descomprimirlo, el punto único de entrada es `index.html` en la raíz.
 
 - Versión: 2.0.0-conceptual
 - Archivos: 26
-- SHA256: `ef74c6121b66398ddda08f1c38336b2ccf7470a50e258c0b01341ec6e1797cc6`
+- SHA256: `04fe654f20f5289f5aee4afcf77a34f9ba4172f66d42a1a319085d3a34aaab7b`
 
 El checksum se mantiene fuera del ZIP para que el paquete pueda reproducirse exactamente desde las fuentes versionadas. El distribuible excluye la carpeta `releases` y los archivos auxiliares `index.repo.html`.
