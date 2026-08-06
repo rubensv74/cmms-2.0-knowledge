@@ -1,7 +1,7 @@
 # Validación del paquete AMEF–RCM Experience Center
 
 Fecha: 06/08/2026  
-Versión validada: 2.0.0-conceptual
+Versión validada: 2.1.0-conceptual
 
 ## Alcance validado
 
@@ -24,6 +24,18 @@ Versión validada: 2.0.0-conceptual
 - Comprobación de que el ZIP contiene `index.html` en su raíz.
 - Exclusión de archivos auxiliares `index.repo.html` y de la carpeta de releases del paquete distribuible.
 
+## Validación incremental — Guías prácticas del flujo de negocio
+
+- Icono `ⓘ` disponible en los cinco prototipos del paquete distribuible.
+- Contenido diferenciado para cada una de las cinco etapas.
+- Seis pasos del flujo lógico en cada guía.
+- Secciones comunes para roles, decisiones, resultados, errores y ejemplo P-101.
+- Apertura desde el icono y cierre mediante botón, fondo o tecla Escape.
+- Foco devuelto al icono después del cierre.
+- Comprobación de apertura y cierre en Chromium sin errores JavaScript.
+- Recursos compartidos compatibles con funcionamiento offline.
+- El contenido se centra en el proceso de negocio y no en el uso de la interfaz.
+
 ## Resultado
 
 El paquete es apto para una demostración funcional offline. Las pruebas verifican la aplicación HTML, su navegación y su coherencia estructural. No validan como configuración corporativa definitiva las decisiones de mantenimiento utilizadas en el ejemplo.
@@ -41,4 +53,5 @@ Siguen pendientes de validación corporativa:
 - catálogos de disciplinas y puestos;
 - workflow de aprobación, firmas y permisos;
 - códigos ISO 14224 y mapeos de exportación;
-- umbrales de mejora continua.
+- umbrales de mejora continua;
+- contenido definitivo y responsables de mantenimiento de las guías de negocio.
