@@ -12,6 +12,18 @@ En muchas organizaciones los planes de mantenimiento se construyen a partir de e
 4. **Convertir la decisión en un plan.** Define tareas, criterios, intervalos, recursos, costes y exportación.
 5. **Gobernar y mejorar.** Asegura trazabilidad, calidad, discrepancias, aprobaciones, versiones y revisión con datos reales.
 
+## Ayuda contextual
+
+En la cabecera de cada prototipo aparece un icono de información `ⓘ`. La ventana asociada no es un manual de la pantalla. Explica el flujo lógico del negocio que representa esa etapa:
+
+- la pregunta que debe resolver la organización;
+- los seis pasos principales;
+- los roles que intervienen;
+- las decisiones que deben quedar registradas;
+- el resultado esperado;
+- los errores que deben evitarse;
+- un ejemplo práctico aplicado a la bomba P-101.
+
 ## Mensaje que debe quedar claro
 
 El plan de mantenimiento no es el punto de partida. Es el resultado de una cadena de razonamiento que debe poder explicarse y revisarse posteriormente.
@@ -23,6 +35,7 @@ El plan de mantenimiento no es el punto de partida. Es el resultado de una caden
 3. Abrir `index.html`.
 4. Empezar por el mapa maestro.
 5. Recorrer los prototipos en orden utilizando el caso P-101 como hilo conductor.
+6. Abrir `ⓘ` antes de revisar cada etapa para validar primero el proceso de negocio.
 
 El paquete funciona offline y no requiere instalación.
 
