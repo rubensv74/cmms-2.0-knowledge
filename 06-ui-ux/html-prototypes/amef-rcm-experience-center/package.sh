@@ -4,14 +4,15 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 RELEASE="$ROOT/releases"
 STAGE="$(mktemp -d)"
-OUTPUT="${1:-$RELEASE/AMEF_RCM_Experience_Center_v2.0.zip}"
+OUTPUT="${1:-$RELEASE/AMEF_RCM_Experience_Center_v2.1.zip}"
 trap 'rm -rf "$STAGE"' EXIT
 
 mkdir -p "$(dirname "$OUTPUT")"
-for item in README.md manifest.json index.html mapa-maestro prototipos docs; do
+for item in README.md manifest.json index.html mapa-maestro prototipos docs assets; do
   cp -R "$ROOT/$item" "$STAGE/"
 done
 find "$STAGE" -name 'index.repo.html' -delete
+python3 "$ROOT/tools/inject_business_flow_links.py" "$STAGE"
 rm -f "$OUTPUT"
 (cd "$STAGE" && zip -qr "$OUTPUT" .)
 
