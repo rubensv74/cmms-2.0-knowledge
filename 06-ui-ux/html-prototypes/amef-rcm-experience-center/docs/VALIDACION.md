@@ -24,16 +24,11 @@ Versión validada: 2.0.0-conceptual
 - Comprobación de que el ZIP contiene `index.html` en su raíz.
 - Exclusión de archivos auxiliares `index.repo.html` y de la carpeta de releases del paquete distribuible.
 
-## Paquete validado
-
-- Archivo: `AMEF_RCM_Experience_Center_v2.0.zip`
-- Archivos incluidos: 26
-- Entrada después de descomprimir: `index.html`
-- SHA256: `5d552c8236a99c9ce7df9ee34fb3a858a77c9148c11281d04d31c89145b4c6ce`
-
 ## Resultado
 
 El paquete es apto para una demostración funcional offline. Las pruebas verifican la aplicación HTML, su navegación y su coherencia estructural. No validan como configuración corporativa definitiva las decisiones de mantenimiento utilizadas en el ejemplo.
+
+El nombre y el SHA256 de la entrega se registran externamente en `releases/SHA256SUMS.txt`, que no forma parte del ZIP.
 
 ## Limitaciones funcionales
 
