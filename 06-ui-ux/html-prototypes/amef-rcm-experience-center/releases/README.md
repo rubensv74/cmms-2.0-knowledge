@@ -20,16 +20,16 @@ chmod +x package.sh
 Ambos scripts generan:
 
 ```text
-releases/AMEF_RCM_Experience_Center_v2.0.zip
+releases/AMEF_RCM_Experience_Center_v2.1.zip
 releases/SHA256SUMS.txt
 ```
 
-Al descomprimirlo, el punto único de entrada es `index.html` en la raíz.
+Durante el empaquetado se incorporan a los cinco prototipos los recursos compartidos de las guías prácticas del flujo de negocio. Al descomprimirlo, el punto único de entrada es `index.html` en la raíz.
 
 ## Entrega validada
 
-- Versión: 2.0.0-conceptual
-- Archivos: 26
-- SHA256: `04fe654f20f5289f5aee4afcf77a34f9ba4172f66d42a1a319085d3a34aaab7b`
+- Versión: 2.1.0-conceptual
+- Archivos: 21
+- SHA256: `e69d166ad22ed72ff2f3cf4862ef3dccdd790eeeada9d9ba4bac5c4d0b04107a`
 
-El checksum se mantiene fuera del ZIP para que el paquete pueda reproducirse exactamente desde las fuentes versionadas. El distribuible excluye la carpeta `releases` y los archivos auxiliares `index.repo.html`.
+El checksum se mantiene fuera del ZIP para evitar una referencia circular. El distribuible excluye la carpeta `releases`, los archivos auxiliares `index.repo.html` y las herramientas de construcción.
