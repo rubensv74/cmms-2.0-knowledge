@@ -10,9 +10,6 @@ Screens:
             !(varFLCurrentStageId="FL-07" || varFLCurrentStageId="FL-08" || varFLCurrentStageId="FL-09" || varFLCurrentStageId="FL-10" || varFLCurrentStageId="FL-11"),
             Set(varFLCurrentStageId,"FL-07")
         );
-        Set(varFLSeverity,Max(1,Min(5,varFLSeverity)));
-        Set(varFLOccurrence,Max(1,Min(5,varFLOccurrence)));
-        Set(varFLDetection,Max(1,Min(5,varFLDetection)));
         Set(varFLRiskScore,varFLSeverity*varFLOccurrence*varFLDetection)
 
     Children:
@@ -30,7 +27,6 @@ Screens:
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =App.Width
-
           Children:
             - cmpFLAMEFNav:
                 Control: CanvasComponent
@@ -61,7 +57,6 @@ Screens:
                   Width: =If(varFLSidebarCollapsed,76,220)
                   X: =0
                   Y: =0
-
             - conFLAMEFMain:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
@@ -78,29 +73,27 @@ Screens:
                   Width: =Parent.Width-cmpFLAMEFNav.Width
                   X: =cmpFLAMEFNav.Width
                   Y: =0
-
                 Children:
                   - cmpFLAMEFHeader:
                       Control: CanvasComponent
                       ComponentName: cmp_FL_PageHeaderPro
                       Properties:
-                        Archetype: ="ANÁLISIS DE RIESGO"
-                        CaseCode: =varFLActiveCaseCode
-                        CaseType: =LookUp(colFLFailureModes,Code=varFLSelectedFailureMode,Name)
+                        Archetype: ="RIESGO AMEF CONTEXTUAL"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
                         Height: =132
                         JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
                         JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
                         ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
                         ProgressTotal: =28
-                        ReviewHint: ="FL-07 a FL-11"
+                        ReviewHint: =varFLActiveApplicationCode
                         ReviewState: =If(varFLCaseDraft,"Borrador","En revisión")
-                        Subtitle: ="Describe efectos, valora el riesgo y distingue cálculo, recomendación y decisión humana."
+                        Subtitle: ="La criticidad de P-101 es contexto de planta. Aquí valoramos el riesgo del modo seleccionado dentro de la aplicación AMEF. Son conceptos distintos."
                         Title: ="AMEF · Efectos y riesgo"
                         Width: =Parent.Width
                         WorkspaceCode: ="ESTRATEGIA"
                         X: =0
                         Y: =0
-
                   - cmpFLAMEFRail:
                       Control: CanvasComponent
                       ComponentName: cmp_FL_ProcessRailPro
@@ -130,7 +123,6 @@ Screens:
                         Width: =300
                         X: =24
                         Y: =cmpFLAMEFHeader.Height+12
-
                   - conFLAMEFWork:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
@@ -147,8 +139,22 @@ Screens:
                         Width: =Parent.Width-cmpFLAMEFRail.Width-60
                         X: =cmpFLAMEFRail.X+cmpFLAMEFRail.Width+12
                         Y: =cmpFLAMEFHeader.Height+12
-
                       Children:
+                        - cmpFLAMEFLineage:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_LineagePanelPro
+                            Properties:
+                              ApplicationCode: =varFLActiveApplicationCode
+                              AssetCode: =varFLActiveAssetCode
+                              CriticalityLabel: =varFLActiveCriticality
+                              ExecutionLabel: ="RiskAssessment contextual"
+                              Height: =112
+                              LibraryCode: =varFLActiveFmeaCode
+                              RevisionCode: =varFLActiveFmeaRevisionCode
+                              Title: ="Origen y contexto del análisis"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
                         - conFLAMEFMode:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
@@ -157,14 +163,14 @@ Screens:
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =ColorValue("#FFFFFF")
-                              Height: =60
+                              Height: =72
                               RadiusBottomLeft: =12
                               RadiusBottomRight: =12
                               RadiusTopLeft: =12
                               RadiusTopRight: =12
                               Width: =Parent.Width
                               X: =0
-                              Y: =0
+                              Y: =124
                             Children:
                               - lblFLAMEFModeLabel:
                                   Control: ModernText@1.0.0
@@ -173,8 +179,8 @@ Screens:
                                     Color: =ColorValue("#7C3AED")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =8
-                                    Text: ="MODO CONFIRMADO"
-                                    Width: =Parent.Width-210
+                                    Text: ="MODO / CAUSA APLICABLES"
+                                    Width: =Parent.Width-310
                                     X: =18
                                     Y: =10
                               - lblFLAMEFModeValue:
@@ -183,12 +189,23 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#0F172A")
                                     FontWeight: =FontWeight.Semibold
-                                    Size: =12
-                                    Text: =LookUp(colFLFailureModes,HumanSelected,Code & " · " & Name)
-                                    Width: =Parent.Width-210
+                                    Size: =11
+                                    Text: =varFLSelectedFailureMode & " · " & LookUp(colFLFmeaFailureModes,Code=varFLSelectedFailureMode,Name)
+                                    Width: =Parent.Width-310
                                     Wrap: =false
                                     X: =18
                                     Y: =31
+                              - lblFLAMEFCauseValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: =Coalesce(LookUp(colFLFmeaFailureCauses,FailureCauseId=varFLSelectedFailureCause,CauseCode & " · " & Statement),"Causa no seleccionada")
+                                    Width: =Parent.Width-310
+                                    Wrap: =false
+                                    X: =18
+                                    Y: =51
                               - lblFLAMEFDetectionLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -225,8 +242,74 @@ Screens:
                                     Size: =9
                                     Width: =56
                                     X: =Parent.Width-70
-                                    Y: =22
-
+                                    Y: =25
+                        - conFLAMEFCriticality:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#FED7AA")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFF7ED")
+                              Height: =88
+                              RadiusBottomLeft: =12
+                              RadiusBottomRight: =12
+                              RadiusTopLeft: =12
+                              RadiusTopRight: =12
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =208
+                            Children:
+                              - lblFLAMEFCriticalityTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#C2410C")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="CRITICIDAD DEL ACTIVO · INPUT DE CONTEXTO"
+                                    Width: =Parent.Width-210
+                                    X: =18
+                                    Y: =14
+                              - lblFLAMEFCriticalityValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C2D12")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =11
+                                    Text: =varFLActiveAssetCode & " · " & varFLActiveCriticality & " · " & varFLActiveCriticalityRevision
+                                    Width: =Parent.Width-210
+                                    X: =18
+                                    Y: =38
+                              - lblFLAMEFCriticalityHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#9A3412")
+                                    Size: =8
+                                    Text: ="No se calcula con S/O/D. Puede influir posteriormente en perfil, prioridad o frecuencia."
+                                    Width: =Parent.Width-210
+                                    X: =18
+                                    Y: =61
+                              - btnFLAMEFCriticalityOpen:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorValue("#EA580C")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#C2410C")
+                                    Fill: =ColorValue("#FFFFFF")
+                                    Height: =34
+                                    OnSelect: =Navigate(scr_FL_AssetCriticality,ScreenTransition.None)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Size: =8
+                                    Text: ="Ver análisis de criticidad"
+                                    Width: =175
+                                    X: =Parent.Width-193
+                                    Y: =26
                         - conFLAMEFEffects:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
@@ -235,14 +318,14 @@ Screens:
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =ColorValue("#FFFFFF")
-                              Height: =320
+                              Height: =304
                               RadiusBottomLeft: =14
                               RadiusBottomRight: =14
                               RadiusTopLeft: =14
                               RadiusTopRight: =14
                               Width: =(Parent.Width-12)*0.43
                               X: =0
-                              Y: =72
+                              Y: =308
                             Children:
                               - lblFLAMEFEffectsLabel:
                                   Control: ModernText@1.0.0
@@ -251,7 +334,7 @@ Screens:
                                     Color: =ColorValue("#0284C7")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =9
-                                    Text: ="FL-07 · EFECTOS DEL MODO DE FALLO"
+                                    Text: ="FL-07 · EFECTOS HEREDADOS Y CONTEXTUALES"
                                     Width: =Parent.Width-36
                                     X: =18
                                     Y: =14
@@ -261,7 +344,7 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#64748B")
                                     Size: =8
-                                    Text: ="Trabajo humano · describe qué ocurre localmente, en el sistema y en la operación."
+                                    Text: ="La revisión aporta el efecto base. Estos campos representan el contexto de P-101 y cualquier ajuste queda trazado en la aplicación."
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
@@ -276,7 +359,7 @@ Screens:
                                     Text: ="Efecto local"
                                     Width: =Parent.Width-36
                                     X: =18
-                                    Y: =72
+                                    Y: =76
                               - txtFLAMEFLocal:
                                   Control: Classic/TextInput@2.3.2
                                   Properties:
@@ -285,7 +368,7 @@ Screens:
                                     Color: =ColorValue("#0F172A")
                                     Default: =varFLFailureEffectLocal
                                     Fill: =ColorValue("#F8FCFF")
-                                    Height: =56
+                                    Height: =50
                                     Mode: =TextMode.MultiLine
                                     OnChange: |-
                                       =
@@ -297,10 +380,10 @@ Screens:
                                     RadiusBottomRight: =7
                                     RadiusTopLeft: =7
                                     RadiusTopRight: =7
-                                    Size: =9
+                                    Size: =8
                                     Width: =Parent.Width-36
                                     X: =18
-                                    Y: =92
+                                    Y: =94
                               - lblFLAMEFSystemLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -311,7 +394,7 @@ Screens:
                                     Text: ="Efecto en sistema"
                                     Width: =Parent.Width-36
                                     X: =18
-                                    Y: =158
+                                    Y: =150
                               - txtFLAMEFSystem:
                                   Control: Classic/TextInput@2.3.2
                                   Properties:
@@ -320,7 +403,7 @@ Screens:
                                     Color: =ColorValue("#0F172A")
                                     Default: =varFLFailureEffectSystem
                                     Fill: =ColorValue("#F8FCFF")
-                                    Height: =56
+                                    Height: =50
                                     Mode: =TextMode.MultiLine
                                     OnChange: |-
                                       =
@@ -332,10 +415,10 @@ Screens:
                                     RadiusBottomRight: =7
                                     RadiusTopLeft: =7
                                     RadiusTopRight: =7
-                                    Size: =9
+                                    Size: =8
                                     Width: =Parent.Width-36
                                     X: =18
-                                    Y: =178
+                                    Y: =168
                               - lblFLAMEFOperationalLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -346,7 +429,7 @@ Screens:
                                     Text: ="Efecto operacional"
                                     Width: =Parent.Width-36
                                     X: =18
-                                    Y: =244
+                                    Y: =224
                               - txtFLAMEFOperational:
                                   Control: Classic/TextInput@2.3.2
                                   Properties:
@@ -355,7 +438,7 @@ Screens:
                                     Color: =ColorValue("#0F172A")
                                     Default: =varFLFailureEffectOperational
                                     Fill: =ColorValue("#F8FCFF")
-                                    Height: =54
+                                    Height: =50
                                     Mode: =TextMode.MultiLine
                                     OnChange: |-
                                       =
@@ -367,11 +450,10 @@ Screens:
                                     RadiusBottomRight: =7
                                     RadiusTopLeft: =7
                                     RadiusTopRight: =7
-                                    Size: =9
+                                    Size: =8
                                     Width: =Parent.Width-36
                                     X: =18
-                                    Y: =264
-
+                                    Y: =242
                         - cmpFLAMEFRiskMatrix:
                             Control: CanvasComponent
                             ComponentName: cmp_FL_RiskMatrixPro
@@ -381,7 +463,7 @@ Screens:
                               CriticalOverride: =varFLCriticalOverride
                               DetectionLabel: ="Detección"
                               DetectionValue: =varFLDetection
-                              Height: =320
+                              Height: =304
                               HighMax: =15
                               LowMax: =5
                               MatrixMode: ="PRODUCT"
@@ -399,16 +481,15 @@ Screens:
                               RiskScoreLabel: ="NPR"
                               RowAxisTitle: ="SEVERIDAD"
                               RowScale: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
-                              ScaleNote: ="Escala 1–5 heredada del prototipo AMEF · bandas demostrativas pendientes de validación corporativa"
+                              ScaleNote: ="Escala AMEF 1–5 del laboratorio · bandas demostrativas pendientes de validación corporativa"
                               SeverityValue: =varFLSeverity
                               ShowDetection: =true
                               ShowRiskScore: =true
-                              Subtitle: ="Selecciona Severidad y Ocurrencia en la matriz 5×5. Detección se valora aparte y participa en el NPR."
-                              Title: ="FL-09 · Matriz de criticidad"
+                              Subtitle: ="Selecciona Severidad y Ocurrencia. Detección se valora aparte y participa en el NPR. Esta matriz no representa la criticidad de P-101."
+                              Title: ="FL-09 · Matriz de riesgo AMEF"
                               Width: =Parent.Width-conFLAMEFEffects.Width-12
                               X: =conFLAMEFEffects.Width+12
-                              Y: =72
-
+                              Y: =308
                         - cmpFLAMEFDecision:
                             Control: CanvasComponent
                             ComponentName: cmp_FL_DecisionPanelPro
@@ -416,9 +497,9 @@ Screens:
                               CanConfirm: =true
                               CanOverride: =true
                               ConfirmLabel: ="Confirmar consecuencia"
-                              ContextText: ="El sistema puede proponer una clasificación a partir de los efectos documentados; la autoridad sigue siendo humana."
-                              DecisionReason: ="Los efectos principales afectan a disponibilidad y capacidad del proceso."
-                              Height: =206
+                              ContextText: ="El sistema puede proponer una consecuencia a partir de los efectos y reglas vigentes. La clasificación final sigue siendo una decisión humana."
+                              DecisionReason: ="Los efectos principales del ejemplo afectan a disponibilidad y capacidad del proceso."
+                              Height: =198
                               HumanDecisionValue: =varFLConsequenceClass
                               IsOverride: =false
                               OnConfirmDecision: |-
@@ -427,30 +508,28 @@ Screens:
                                 Set(varFLCurrentStageId,"FL-10");
                                 Set(varFLCaseDraft,true)
                               OnOverrideDecision: =Set(varFLCaseDraft,true)
-                              RecommendationExplanation: |-
-                                ="Caso ilustrativo: no se ha identificado una consecuencia dominante de seguridad o medio ambiente."
+                              RecommendationExplanation: ="Caso ilustrativo; las reglas corporativas de consecuencia permanecen pendientes de validación."
                               RecommendationLabel: ="Clasificación recomendada"
                               RecommendationValue: ="Operacional"
                               RequiredRole: ="Ingeniería de Fiabilidad"
                               ShowDecision: =true
                               ShowRecommendation: =true
                               ShowSystemResult: =true
-                              SystemResultLabel: ="NPR · cálculo"
+                              SystemResultLabel: ="NPR · cálculo AMEF"
                               SystemResultValue: =Text(varFLRiskScore)
                               Title: ="FL-08 / 10 · Consecuencia y prioridad"
                               Width: =Parent.Width*0.56
                               X: =0
-                              Y: =404
-
+                              Y: =624
                         - cmpFLAMEFGate:
                             Control: CanvasComponent
                             ComponentName: cmp_FL_GatePanelPro
                             Properties:
                               CanContinue: =!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5
                               ContinueLabel: ="Continuar a decisión RCM"
-                              GateStatus: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"passed","warning")
-                              GateTitle: ="FL-11 · Validación AMEF"
-                              Height: =206
+                              GateStatus: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"passed","blocked")
+                              GateTitle: ="Control de avance AMEF"
+                              Height: =198
                               OnContinue: |-
                                 =
                                 UpdateIf(colFLStageExecutions,StageId="FL-07" || StageId="FL-08" || StageId="FL-09" || StageId="FL-10" || StageId="FL-11",{Status:"confirmed",IsCurrent:false});
@@ -458,11 +537,11 @@ Screens:
                                 UpdateIf(colFLStageExecutions,StageId="FL-12",{IsCurrent:true});
                                 Set(varFLCaseDraft,true);
                                 Navigate(scr_FL_RCM,ScreenTransition.None)
-                              OutputLabel: ="RiskAssessment + consecuencia confirmada"
-                              Reason: =If(IsBlank(Trim(varFLFailureEffectLocal)) || IsBlank(Trim(varFLFailureEffectSystem)) || IsBlank(Trim(varFLFailureEffectOperational)),"Completa los tres niveles de efecto.",If(varFLSeverity<1 || varFLSeverity>5 || varFLOccurrence<1 || varFLOccurrence>5 || varFLDetection<1 || varFLDetection>5,"S, O y D deben estar entre 1 y 5.","Efectos, matriz S×O, NPR y clasificación están preparados para RCM."))
-                              RequiredAction: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"Continuar a la decisión RCM.","Completar o corregir la valoración AMEF.")
+                              OutputLabel: ="RiskAssessment contextual + consecuencia confirmada"
+                              Reason: =If(IsBlank(Trim(varFLFailureEffectLocal)) || IsBlank(Trim(varFLFailureEffectSystem)) || IsBlank(Trim(varFLFailureEffectOperational)),"Completa los efectos contextuales.",If(varFLSeverity<1 || varFLSeverity>5 || varFLOccurrence<1 || varFLOccurrence>5 || varFLDetection<1 || varFLDetection>5,"S, O y D deben estar entre 1 y 5.","Riesgo AMEF preparado. La criticidad de activo permanece como contexto separado."))
+                              RequiredAction: ="Completar efectos, S/O/D y consecuencia"
                               ResponsibleRole: ="Ingeniería de Fiabilidad"
-                              Summary: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"Preparado para entrar en RCM","Revisión AMEF incompleta")
+                              Summary: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"Preparado para RCM","Revisión AMEF incompleta")
                               Width: =Parent.Width-cmpFLAMEFDecision.Width-12
                               X: =cmpFLAMEFDecision.Width+12
-                              Y: =404
+                              Y: =624
