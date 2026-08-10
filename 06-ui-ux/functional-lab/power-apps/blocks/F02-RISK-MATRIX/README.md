@@ -9,20 +9,30 @@
 
 ## Decisión de diseño
 
-`cmp_FL_RiskMatrixPro` no queda limitado estructuralmente a 10×10.
+`cmp_FL_RiskMatrixPro` no queda limitado estructuralmente a una dimensión concreta.
 
-El caso P-101 utiliza:
+El **caso P-101 del Functional Lab utiliza 5×5** porque esa es la escala ya utilizada en los prototipos AMEF revisados:
 
 ```text
-RowScale    Severidad 1..10
-ColumnScale Ocurrencia 1..10
+RowScale    Severidad 1..5
+ColumnScale Ocurrencia 1..5
 MatrixMode  PRODUCT
 Resultado   S×O
-Detección   separada
+Detección   1..5 y separada de la matriz
 NPR         S×O×D calculado por el host
 ```
 
-El mismo componente puede recibir escalas distintas, por ejemplo 5×5 o categorías con rating numérico subyacente.
+Valores iniciales heredados del prototipo:
+
+```text
+S = 4
+O = 3
+D = 3
+S×O = 12
+NPR = 36
+```
+
+La elección 5×5 es una **configuración funcional vigente del laboratorio**, no una restricción técnica del componente ni una regla universal de CMMS 2.0.
 
 ## Contrato configurable
 
@@ -36,7 +46,7 @@ ScaleLabel
 ScaleScore
 ```
 
-La cantidad de filas y columnas se deriva de `CountRows(...)`; no existe un `10` estructural fijo en el layout.
+La cantidad de filas y columnas se deriva de `CountRows(...)`.
 
 ### MatrixMode = PRODUCT
 
@@ -59,20 +69,18 @@ CellScore
 BandKey     LOW | MODERATE | HIGH | CRITICAL
 ```
 
-Esto permite representar matrices cuya criticidad no sea simplemente el producto de los dos ejes.
+Esto permite representar una futura matriz corporativa cuya criticidad no dependa simplemente del producto de los ejes.
 
 ## Compatibilidad AMEF
 
-Se conservan los outputs existentes:
+Se conservan:
 
 ```text
 SelectedSeverityOut
 SelectedOccurrenceOut
 ```
 
-Por tanto, `scr_FL_AMEF` no necesita modificarse para seguir usando la matriz 10×10 de P-101.
-
-Se añaden además:
+Y se exponen además:
 
 ```text
 SelectedRowLabelOut
@@ -81,34 +89,49 @@ MatrixScoreOut
 MatrixBandOut
 ```
 
+## Configuración actual de P-101
+
+`scr_FL_AMEF` suministra expresamente dos escalas de cinco niveles.
+
+Las bandas visuales del laboratorio se configuran provisionalmente como:
+
+```text
+Bajo       S×O <= 5
+Moderado   S×O <= 10
+Alto       S×O <= 15
+Crítico    S×O > 15
+```
+
+**Estas bandas son demostrativas y quedan pendientes de validación corporativa.** La decisión validada ahora es la escala 1–5 heredada del prototipo, no esos umbrales.
+
 ## Orden
 
 1. Crear o sustituir `cmp_FL_RiskMatrixPro` con el Source Code completo.
-2. Guardar la definición del componente.
-3. Sustituir el Source Code completo de `scr_FL_AMEF` por la versión canónica actual si todavía no está instalada.
+2. Guardar la definición.
+3. Sustituir `scr_FL_AMEF` por la versión canónica actual.
 4. Abrir Home una vez si el runtime v2 todavía no está inicializado.
-5. Abrir AMEF y realizar una sola validación integrada.
+5. Abrir AMEF y realizar una única validación integrada.
 
 ## Validación única P-101
 
-- la configuración por defecto debe producir 10×10 = 100 celdas;
-- S=8 y O=4 deben identificar la celda actual;
-- la celda actual debe mostrar score S×O = 32;
+- deben verse **5×5 = 25 celdas**;
+- S=4 y O=3 deben identificar la celda actual;
+- el resultado S×O inicial debe ser 12;
 - D=3 debe mostrarse aparte;
-- NPR inicial esperado: 96;
+- NPR inicial esperado: 36;
 - seleccionar otra celda debe actualizar S y O y recalcular NPR;
-- editar D debe recalcular NPR sin mover la posición S×O;
-- la banda visual de matriz debe mantenerse separada del NPR;
-- consecuencia recomendada y decisión humana deben seguir diferenciadas;
-- el control de avance debe seguir explicando el estado.
+- Detección solo admite 1..5 y no mueve la posición S×O;
+- la banda visual se mantiene separada del NPR;
+- consecuencia recomendada y decisión humana permanecen diferenciadas;
+- el control de avance explica el estado y solo permite continuar con el AMEF completo.
 
 ## Configuraciones futuras soportadas
 
 ```text
-AMEF / FMEA          10×10 S × O + D separada
-Risk matrix          5×5 Severity × Likelihood
-RCM                  Probability × Consequence
-Matriz corporativa   celdas y bandas definidas por configuración
+P-101 / AMEF actual  5×5 S × O + D separada
+FMEA alternativo     10×10 si se valida expresamente
+RCM / Risk           Probability × Consequence
+Matriz corporativa   escalas, celdas y bandas configuradas
 ```
 
 No se crean componentes diferentes para cada metodología.
@@ -121,10 +144,6 @@ Responder:
 RISK MATRIX OK
 ```
 
-si la carga, interacción, cálculo y composición visual son correctos.
+si carga, interacción, cálculo y composición visual son correctos.
 
-Si aparece un error de Studio, enviar el mensaje completo y/o captura. Se corregirá la clase completa del error antes de continuar.
-
-## Nota metodológica
-
-Los umbrales 20 / 40 / 70 y la escala 10×10 son configuración demostrativa del caso P-101. No constituyen una regla universal ni una configuración corporativa aprobada.
+Si aparece un error de Studio, enviar el mensaje completo y/o captura.
