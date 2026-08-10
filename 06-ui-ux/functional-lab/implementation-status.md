@@ -2,8 +2,8 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
-**Último gate superado:** app baseline creada + arquitectura premium definida  
-**Validación Power Apps:** F01-00A pendiente de Studio
+**Último gate superado:** `cmp_FL_SidebarPro` definition accepted  
+**Gate actual:** `INSTANCE_SAFE` — FAILED / diagnostic reduction in progress
 
 ## 1. Estado de incrementos
 
@@ -18,10 +18,11 @@
 | F00-07 Fixture P-101 | completed | Caso existente convertido a JSON canónico. |
 | F00-08 Arquitectura del Lab | completed | Capas, estado, workspaces y límites definidos. |
 | F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
-| F01-00 Auditoría Power Apps Foundation | partial | App creada; falta baseline real de Studio/App Checker y componentes fundacionales. |
-| F01-00A cmp_FL_SidebarPro | published-pending-validation | Contrato y Source Code publicados; pendiente pegar/guardar/validar en Studio. |
-| F01-00B cmp_FL_PageHeaderPro | blocked-by-F01-00A | Se preparará solo tras validar Sidebar. |
-| F01-01 Premium App Shell Foundation | blocked-by-components | Depende de Sidebar + Header validados. |
+| F01-00 Auditoría Power Apps Foundation | partial | App creada y definición de primer componente aceptada; gate de instancia ha detectado incidente bloqueante. |
+| F01-00A cmp_FL_SidebarPro | failed-instance / correcting | Source Code aceptado; Studio se cierra al insertar instancia. FL-SC-001 abierto. |
+| F01-00A-R1 root-only diagnostic | pending-user-validation | Reducir el componente al mínimo para delimitar la causa. |
+| F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara hasta resolver seguridad de instancia del Sidebar. |
+| F01-01 Premium App Shell Foundation | blocked-by-components | Depende de componentes fundacionales `INSTANCE_SAFE`. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
 | F01-03 Adaptador P-101 | planned | JSON → colecciones Power Fx. |
 | F01-04 Navegación base | planned | Navegación entre workspaces sin lógica funcional avanzada. |
@@ -31,31 +32,46 @@
 | F01-08 WS-01 Output | planned | Salida estructurada hacia WS-02. |
 | F01-09 Hardening / Visual QA WS-01 | planned | Empty/error/dirty/accessibility/calidad visual y documentación. |
 
-## 2. F01-00 — Resultado actual
+## 2. Incidente actual — FL-SC-001
 
-Completado:
+Observación confirmada en `CMMS 2.0 Functional Lab`:
 
-- inspección del protocolo activo de Pulse;
-- inspección del protocolo modular de pantallas;
-- inspección del registro de compatibilidad Source Code;
-- inspección de componentes premium de referencia de Pulse;
-- adopción de arquetipos SaaS y estándares de la base de conocimiento;
-- estrategia de componentes premium propia del Functional Lab;
-- Canvas app `CMMS 2.0 Functional Lab` creada por el responsable;
-- contrato de `cmp_FL_SidebarPro`;
-- Source Code F01-00A publicado en la rama de trabajo.
+```text
+F01-00A source pasted / definition created: PASS
+Save / no immediate Source Code error: PASS
+Insert component instance: Studio closes
+INSTANCE_SAFE: FAIL
+READY_FOR_INTEGRATION: NO
+```
 
-Pendiente de la herramienta real:
+Registro:
 
-- pegar/crear `cmp_FL_SidebarPro` en la app;
-- guardar;
-- comprobar Source Code validation;
-- revisar App Checker;
-- verificar render expandido y colapsado;
-- comprobar selección y evento;
-- registrar cualquier incompatibilidad nueva.
+```text
+development/incidents/FL-SC-001-component-instance-crash.md
+```
 
-## 3. Arquitectura de interfaz de WS-01
+La causa técnica se mantiene como `UNKNOWN` hasta obtener un reproducer reducido.
+
+## 3. Estrategia de corrección
+
+No se modifica varias veces el componente completo por intuición.
+
+La reconstrucción seguirá:
+
+```text
+R1 root only
+→ R2 identidad/texto
+→ R3 contenedores estáticos
+→ R4 navegación visual sin eventos
+→ R5 custom inputs simples
+→ R6 Gallery + Table
+→ R7 Output/Event
+→ R8 geometría completa
+```
+
+Solo el primer estadio que reproduce el cierre se considera evidencia útil para aislar la causa.
+
+## 4. Arquitectura de interfaz de WS-01
 
 Declaración inicial:
 
@@ -68,19 +84,17 @@ SECONDARY_PATTERNS: contextual inspector, status/gate panel, help modal, dirty g
 
 Esta selección se considera hipótesis de interfaz validable durante el vertical slice.
 
-## 4. Componentes premium fundacionales
+## 5. Componentes premium fundacionales
 
-Secuencia obligatoria:
+Secuencia obligatoria, actualmente detenida:
 
 ```text
-F01-00A  cmp_FL_SidebarPro
-F01-00B  cmp_FL_PageHeaderPro
-F01-01   Premium App Shell Foundation
+F01-00A  cmp_FL_SidebarPro        ← FL-SC-001 / correcting
+F01-00B  cmp_FL_PageHeaderPro     ← BLOCKED
+F01-01   Premium App Shell        ← BLOCKED
 ```
 
-No se preparará F01-00B hasta que F01-00A sea aceptado en Power Apps Studio.
-
-## 5. Gate funcional de WS-01
+## 6. Gate funcional de WS-01
 
 ### Inputs existentes
 
@@ -120,13 +134,14 @@ No se preparará F01-00B hasta que F01-00A sea aceptado en Power Apps Studio.
 
 Objeto de contexto funcional listo para alimentar funciones y fallos.
 
-## 6. Archivos F01 actuales
+## 7. Archivos F01 actuales
 
 - `development/f01-00-power-apps-foundation-audit.md`
 - `development/compatibility.md`
+- `development/incidents/FL-SC-001-component-instance-crash.md`
 - `power-apps/components/cmp_FL_SidebarPro.md`
 - `power-apps/components/cmp_FL_SidebarPro.pa.yaml`
 
-## 7. Regla de continuidad
+## 8. Regla de continuidad
 
-> No se prepara el siguiente bloque técnico hasta que el anterior quede integrado y validado en Power Apps Studio o exista una corrección explícita en curso.
+> No se prepara F01-00B ni ningún bloque dependiente hasta que `cmp_FL_SidebarPro` alcance `INSTANCE_SAFE` o se tome una decisión explícita de arquitectura que cambie la estrategia de componentes.
