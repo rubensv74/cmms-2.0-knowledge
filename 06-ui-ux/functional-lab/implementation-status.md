@@ -1,9 +1,9 @@
 # Functional Lab — Implementation Status
 
 **Fecha:** 2026-08-10  
-**Estado general:** Foundation  
-**Último gate superado:** Auditoría y arquitectura conceptual inicial  
-**Validación Power Apps:** todavía no iniciada
+**Estado general:** F01 — Power Apps Foundation  
+**Último gate superado:** auditoría estática y arquitectura técnica F01-00  
+**Validación Power Apps:** pendiente de app baseline real
 
 ## 1. Estado de incrementos
 
@@ -18,8 +18,8 @@
 | F00-07 Fixture P-101 | completed | Caso existente convertido a JSON canónico. |
 | F00-08 Arquitectura del Lab | completed | Capas, estado, workspaces y límites definidos. |
 | F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
-| F01-00 Auditoría Power Apps de foundation | planned | Confirmar dialecto Source Code, componentes reutilizables y restricciones antes de YAML. |
-| F01-01 Shell de pantalla | blocked-by-F01-00 | Primer bloque técnico. |
+| F01-00 Auditoría Power Apps Foundation | partial | Auditoría estática y compatibilidad completadas; falta app real y Studio. |
+| F01-01 Shell de pantalla | blocked-by-runtime-baseline | Primer bloque técnico. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
 | F01-03 Adaptador P-101 | planned | JSON → colecciones Power Fx. |
 | F01-04 Navegación base | planned | Navegación entre workspaces sin lógica funcional avanzada. |
@@ -29,24 +29,40 @@
 | F01-08 WS-01 Output | planned | Salida estructurada hacia WS-02. |
 | F01-09 Hardening WS-01 | planned | Empty/error/dirty/accessibility y documentación. |
 
-## 2. Condición para comenzar YAML
+## 2. F01-00 — Resultado actual
 
-No generar código Source Code de Power Apps hasta completar F01-00.
+Completado:
 
-F01-00 debe confirmar:
+- inspección del protocolo activo de Pulse;
+- inspección del protocolo modular de pantallas;
+- inspección del registro de compatibilidad Source Code;
+- inspección de un shell real utilizado en Pulse;
+- registro de compatibilidad propio del Functional Lab;
+- árbol técnico mínimo de `scr_FunctionalLab`;
+- secuencia de bloques F01;
+- decisión de no depender de componentes premium en Bloque 01.
 
-- schema Source Code aceptado por el entorno;
-- convenciones de nombres;
-- controles Classic/Modern seguros;
-- componentes premium reutilizables disponibles;
-- propiedades incompatibles conocidas;
-- estrategia visual inicial;
-- ubicación canónica de pantalla y bloques;
-- mecanismo inicial del Runtime Adapter.
+Pendiente de la herramienta real:
 
-## 3. Gate funcional de WS-01
+- crear/identificar la Canvas app del Functional Lab;
+- confirmar schema Source Code aceptado;
+- confirmar versiones reales de controles;
+- obtener baseline de App Checker;
+- integrar y validar Bloque 01.
 
-Antes del bloque visual deben estar claros:
+## 3. Condición para generar Bloque 01
+
+Debe existir una Canvas app vacía o baseline destinada al laboratorio.
+
+Nombre recomendado:
+
+```text
+CMMS 2.0 Functional Lab
+```
+
+El primer bloque será autocontenido y no asumirá que componentes premium de Pulse estén instalados.
+
+## 4. Gate funcional de WS-01
 
 ### Inputs existentes
 
@@ -86,13 +102,12 @@ Antes del bloque visual deben estar claros:
 
 Objeto de contexto funcional listo para alimentar funciones y fallos.
 
-## 4. Bloqueadores actuales
+## 5. Documentos técnicos F01
 
-No existe bloqueador funcional para Foundation.
+- `development/f01-00-power-apps-foundation-audit.md`
+- `development/compatibility.md`
 
-El siguiente gate es técnico y requiere inspeccionar la base Power Apps que se vaya a utilizar para el Functional Lab antes de producir el primer YAML.
-
-## 5. Regla de continuidad
+## 6. Regla de continuidad
 
 Una vez iniciado F01:
 
