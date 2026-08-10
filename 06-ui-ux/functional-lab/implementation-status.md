@@ -3,7 +3,7 @@
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
 **Último gate superado:** `F01-00A-R4 navegación visual sin eventos` — INSTANCE_SAFE PASS  
-**Gate actual:** `F01-00A-R5 custom inputs simples` — PENDING STUDIO VALIDATION
+**Gate actual:** `F01-00A-R5-T Text custom input` — PENDING STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
@@ -24,7 +24,8 @@
 | F01-00A-R2 identity/text diagnostic | validated-pass | ModernText estático instance-safe. |
 | F01-00A-R3 static-containers diagnostic | validated-pass | AutoLayout + contenedores anidados estáticos instance-safe. |
 | F01-00A-R4 static-navigation diagnostic | validated-pass | Rectangle + Icon + Label + Button estáticos, sin eventos, instance-safe. |
-| F01-00A-R5 simple-custom-inputs diagnostic | pending-user-validation | Prueba inputs custom primitivos sin Gallery/Table/Output/Event. |
+| F01-00A-R5 simple-custom-inputs diagnostic | failed-instance | Text + Boolean + Color custom inputs reproducen el cierre al insertar instancia. |
+| F01-00A-R5-T Text-input diagnostic | pending-user-validation | Aísla una única CustomProperty Input/Text consumida por el título. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara hasta resolver seguridad de instancia del Sidebar. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | Depende de componentes fundacionales `INSTANCE_SAFE`. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
@@ -38,50 +39,35 @@
 
 ## 2. Incidente actual — FL-SC-001
 
-Observación inicial:
-
-```text
-F01-00A complete source pasted / definition created: PASS
-Insert complete component instance: Studio closes
-INSTANCE_SAFE: FAIL
-READY_FOR_INTEGRATION: NO
-```
-
-Reducción actual:
-
 ```text
 R1 root-only: PASS
 R2 identity/text: PASS
 R3 static containers: PASS
 R4 static navigation controls: PASS
-R5 simple custom inputs: PENDING
+R5 Text+Boolean+Color custom inputs: FAIL — Studio closes
+R5-T Text input only: PENDING
 ```
 
 Interpretación vigente:
 
-- el mecanismo básico de CanvasComponent no reproduce el cierre;
-- root `GroupContainer@1.5.0` ManualLayout no lo reproduce;
-- `ModernText@1.0.0` estático no lo reproduce;
-- AutoLayout vertical + contenedores anidados estáticos no lo reproduce;
-- Rectangle/Icon/Label/Button estáticos sin eventos no lo reproducen;
-- la causa técnica concreta sigue `UNKNOWN`.
+- la superficie problemática está dentro del delta introducido en R5;
+- no está demostrado qué tipo de propiedad es responsable;
+- tampoco está demostrado si el problema está en declarar la propiedad o en consumirla;
+- `Table`, `Gallery`, `Output` y `Event` aún no forman parte de la reproducción reducida.
 
 ## 3. Estrategia de corrección
 
+Se vuelve al baseline R4, último estado `INSTANCE_SAFE`, y R5 se subdivide por tipo:
+
 ```text
-R1 root only                         PASS
-→ R2 identidad/texto                PASS
-→ R3 contenedores estáticos         PASS
-→ R4 navegación visual sin eventos  PASS
-→ R5 custom inputs simples          CURRENT
-→ R6 Gallery + Table
-→ R7 Output/Event
-→ R8 geometría completa
+R5-T Text only          CURRENT
+R5-B Boolean only       después, si es necesario
+R5-C Color only         después, si es necesario
 ```
 
-R5 prueba únicamente inputs primitivos `Text`, `Boolean` y `Color` consumidos por controles ya validados. No introduce `Gallery`, `Table`, `Output`, `Event` ni `OnSelect`.
+Si R5-T falla, la siguiente reducción separará **declaración** de la propiedad `Text` frente a **consumo** de esa propiedad.
 
-Si R5 falla, se subdividirá por tipo de propiedad custom antes de avanzar.
+No se avanza a R6 mientras esta superficie no quede delimitada.
 
 ## 4. Arquitectura de interfaz de WS-01
 
@@ -100,48 +86,6 @@ F01-00B  cmp_FL_PageHeaderPro     ← BLOCKED
 F01-01   Premium App Shell        ← BLOCKED
 ```
 
-## 6. Gate funcional de WS-01
+## 6. Regla de continuidad
 
-### Inputs existentes
-- código y nombre de activo;
-- planta/unidad;
-- servicio;
-- frontera;
-- demanda y presión;
-- modos operativos;
-- redundancia;
-- restricciones;
-- fuentes de evidencia.
-
-### Inputs humanos
-- correcciones del contexto;
-- confirmación de evidencia;
-- nivel de confianza.
-
-### Cálculos / validaciones
-- número de fuentes disponibles;
-- consistencia mínima del contexto;
-- estado del gate de preparación.
-
-### Decisión humana
-- confirmar que el contexto representa el caso que debe analizarse.
-
-### Gate
-- bloquear el avance cuando falte información crítica;
-- explicar qué falta;
-- distinguir reglas validadas de reglas de demostración.
-
-### Output
-Objeto de contexto funcional listo para alimentar funciones y fallos.
-
-## 7. Archivos F01 actuales
-
-- `development/f01-00-power-apps-foundation-audit.md`
-- `development/compatibility.md`
-- `development/incidents/FL-SC-001-component-instance-crash.md`
-- `power-apps/components/cmp_FL_SidebarPro.md`
-- `power-apps/components/cmp_FL_SidebarPro.pa.yaml`
-
-## 8. Regla de continuidad
-
-> No se prepara F01-00B ni ningún bloque dependiente hasta que `cmp_FL_SidebarPro` completo alcance `INSTANCE_SAFE` o se tome una decisión explícita de arquitectura que cambie la estrategia de componentes.
+> No se prepara F01-00B ni ningún bloque dependiente hasta que `cmp_FL_SidebarPro` completo alcance `INSTANCE_SAFE`.
