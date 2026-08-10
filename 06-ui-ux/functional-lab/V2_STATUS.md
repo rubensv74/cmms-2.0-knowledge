@@ -54,6 +54,9 @@ Los ADR viven en `adr/`.
 | `cmp_FL_ProcessRailPro` | PASS_STATIC / Studio pending |
 | `cmp_FL_DecisionPanelPro` | PASS_STATIC / Studio pending |
 | `cmp_FL_GatePanelPro` | PASS_STATIC / Studio pending |
+| `cmp_FL_RiskMatrixPro` | PASS_STATIC / Studio pending |
+
+`cmp_FL_RiskMatrixPro` representa una matriz S×O de 10×10, permite seleccionar Severidad y Ocurrencia, muestra Detección de forma separada y recibe desde el host los umbrales que determinan las bandas de criticidad. La configuración demostrativa del laboratorio no constituye todavía una escala corporativa aprobada.
 
 ## 4. Pantallas v2 generadas
 
@@ -109,6 +112,24 @@ FL-27..28   Effectiveness
 ```
 
 No se ha eliminado ninguna etapa para ahorrar pantallas.
+
+### FL-09 — criticidad y NPR
+
+La pantalla `scr_FL_AMEF` distingue ahora explícitamente:
+
+```text
+Severidad + Ocurrencia
+        ↓
+Matriz visual S×O
+        ↓
+banda de criticidad
+
+Severidad × Ocurrencia × Detección
+        ↓
+NPR calculado por el sistema
+```
+
+La matriz y el NPR son representaciones relacionadas, pero no se presentan como el mismo indicador.
 
 ## 6. Runtime v2
 
@@ -193,19 +214,27 @@ responsibleRole
 output
 ```
 
+`RiskMatrixPro` separa:
+
+```text
+human severity / occurrence selection
+matrix position and band
+human detection value
+system NPR calculation
+critical override information
+```
+
 ## 9. Validación estática
 
 `development/V2_STATIC_VALIDATION_2026-08-10.md`
 
-Resultado:
+Resultado base:
 
 ```text
 PASS_STATIC
 ```
 
-Se verificaron sintaxis YAML, referencias de pantallas/componentes y clases de errores conocidas del proyecto.
-
-Esto NO sustituye Studio.
+El incremento RiskMatrix se validó además con parser YAML antes de publicar tanto el componente como la pantalla AMEF de sustitución. Esto NO sustituye Studio.
 
 ## 10. Gate actual
 
@@ -219,7 +248,7 @@ La validación se hace mediante seis smoke tests representativos, no 21 pruebas 
 3 FLH / TreePro
 4 CaseOverview / ProcessRail
 5 FailureModes / DecisionPanel
-6 AMEF / calculation + decision + GatePanel
+6 AMEF / RiskMatrix + calculation + decision + gate
 ```
 
 Si estos seis pasan, se considera validado el esqueleto de arquitectura v2 y se continúa con Visual QA y correcciones funcionales por pantalla.
@@ -231,7 +260,7 @@ La reconstrucción arquitectónica se considera terminada cuando:
 - decisiones y ADR están versionados;
 - mapa de pantallas existe;
 - contratos de dominio existen;
-- seis componentes Foundation existen;
+- siete componentes Foundation existen;
 - 21 pantallas están generadas;
 - runtime v2 está generado;
 - PASS_STATIC completado;
