@@ -2,8 +2,8 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Functional Foundation + vertical slices  
-**Último gate superado:** `F01-05 WS-01 Caso y contexto / Objeto 360` — VALIDATED PASS  
-**Gate actual:** `F01-06 WS-02 Funciones y fallos` — IN DESIGN / READY FOR CANDIDATE
+**Último gate superado:** `F01-06 WS-02 Funciones y fallos` — VALIDATED PASS  
+**Gate actual:** `Discovery pre-journey FLH / Taxonomía / ADR` + preparación `WS-03`
 
 ## 1. Estado de incrementos
 
@@ -18,62 +18,61 @@
 | F01-03 Adaptador P-101 | validated-pass | Fixture P-101 proyectado a variables/colecciones Power Fx y representado correctamente. |
 | F01-04 Navegación funcional | active | Shell conserva navegación completa; los gates gobiernan el avance validado. |
 | F01-05 WS-01 Caso y contexto | validated-pass | Datos existentes + edición humana + evidencia + gate + `colFL_WS01Output` + transición a WS-02. |
-| F01-06 WS-02 Funciones y fallos | active | FL-04..FL-06: funciones medibles, fallos funcionales, recomendación de modo y decisión humana. |
+| F01-06 WS-02 Funciones y fallos | validated-pass | Funciones y fallos revisables + recomendación FM-03 separada de decisión humana + override justificable + `colFL_WS02Output`. |
+| Discovery pre-journey trees | active-discovery | FLH + Taxonomía + ADR como contexto previo; componente árbol PULSE pendiente de localización exacta. |
+| F01-07 WS-03 Efectos y riesgo | planned | Siguiente vertical slice del journey una vez completado el checkpoint de discovery suficiente para no perder la visión global. |
 
-## 2. Resultado F01-05 — WS-01
+## 2. Resultado F01-06 — WS-02
 
 Validación comunicada por el usuario:
 
 ```text
-WS-01 OK
-Pantalla estable                              PASS
-Datos existentes P-101                       PASS
-Service / Boundary / Constraints editables   PASS
-Confirmación humana de evidencia             PASS
-Gate explicable                              PASS
-Gate pasa a estado preparado                 PASS
-colFL_WS01Output                             PASS
-Continuar → ActiveKey Functions              PASS
-Shell / Sidebar / Header                     PASS
+WS-02 TERMINADO
+Pantalla / Shell estable                       PASS
+Funciones revisables                           PASS
+Fallos funcionales total/parcial              PASS
+Modos de fallo candidatos                     PASS
+Recomendación del sistema FM-03               PASS
+Selección humana explícita                    PASS
+Override con motivo                           PASS
+Gate explicable                               PASS
+colFL_WS02Output                              PASS
+Transición hacia Risk / WS-03                 PASS
 ```
 
-WS-01 demuestra por primera vez el patrón funcional completo del laboratorio:
+WS-02 consolida el patrón:
 
 ```text
-existing_input
-→ user_input
-→ human_confirmation
+validated upstream output
+→ editable functional model
+→ system recommendation
+→ human decision
+→ justified override when applicable
 → gate
-→ structured_output
-→ next workspace
+→ structured output
 ```
 
-## 3. Gate actual — WS-02
+## 3. Checkpoint actual — FLH / Taxonomía / ADR + TreePro
 
-WS-02 agrupa:
+Las tres vistas se consideran por ahora contexto previo al journey, no nuevas etapas FL.
+
+Objetivo:
 
 ```text
-FL-04 Definir funciones con estándar
-FL-05 Identificar fallos funcionales
-FL-06 Seleccionar modos de fallo relevantes
+P-101 en FLH
+→ P-101 en Taxonomía
+→ P-101 en ADR
+→ FL-01..FL-28
 ```
 
-Responsabilidad del siguiente candidato:
+Auditoría PULSE realizada hasta ahora:
 
-```text
-colFL_WS01Output
-→ funciones medibles revisables
-→ fallos funcionales total/parcial
-→ modos de fallo candidatos
-→ recomendación del sistema (FM-03 en P-101)
-→ decisión humana sobre el modo a analizar
-→ motivo obligatorio si existe override
-→ gate explicable
-→ colFL_WS02Output
-→ WS-03 Efectos y riesgo
-```
+- `power-apps/components` no contiene un componente con nombre `Tree*` o `Hierarchy*`;
+- búsquedas por `tree`, `hierarchy`, `ParentId` y `FLH` no han identificado la fuente del árbol;
+- en `power-apps/screens` del snapshot `main` solo aparecen `Home`, `PunchReview` y `Punches`;
+- por tanto, no se atribuye arquitectura ni limitación de tres niveles a ningún componente hasta localizar la fuente real.
 
-La recomendación del sistema y la decisión humana deben conservar identidades separadas. Un override debe conservar la recomendación original y exigir motivo.
+El discovery permanece abierto, pero no debe bloquear indefinidamente WS-03 si la fuente del árbol no está versionada todavía.
 
 ## 4. Baseline vigente
 
@@ -84,7 +83,9 @@ Caso demostración        P-101
 Fuente canónica          JSON versionado
 Runtime                  Power Fx sustituible
 Persistencia productiva  no decidida
-WS-01 output              colFL_WS01Output
+WS-01 output             colFL_WS01Output
+WS-02 output             colFL_WS02Output
+YAML delivery            remote-first en GitHub
 ```
 
-No se abre ninguna decisión de backend, SQL, Dataverse, API o integración productiva en WS-02.
+No se abre ninguna decisión de backend, SQL, Dataverse, API o integración productiva en este checkpoint.
