@@ -1,28 +1,35 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R1 — SIDEBAR ROOT-ONLY REPRODUCER
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R2 — SIDEBAR IDENTITY/TEXT REPRODUCER
 #
 # Status: CORRECTIVE DIAGNOSTIC — PENDING POWER APPS STUDIO VALIDATION
 # Incident: FL-SC-001
 # Operation: REPLACE COMPLETE COMPONENT SOURCE
 # Target component: cmp_FL_SidebarPro
+# Previous result: R1 root-only = PASS / INSTANCE_SAFE
 #
 # PURPOSE
-# Determine whether a minimal CanvasComponent created from Source Code can be
-# instantiated safely in the CMMS 2.0 Functional Lab app.
+# Add only static identity/text controls on top of the R1-safe root to determine
+# whether static ModernText children are sufficient to reproduce the Studio crash.
 #
 # IMPORTANT
 # Replace the COMPLETE current cmp_FL_SidebarPro source with this content,
 # beginning at `ComponentDefinitions:`.
-# Do not keep any CustomProperties or children from the previous version.
+# Do not keep CustomProperties or children from any previous version.
 #
-# INTENTIONALLY REMOVED FOR THIS TEST
+# ADDED IN R2
+# - four static ModernText@1.0.0 controls
+# - fixed text only
+# - AutoHeight=true
+#
+# STILL EXCLUDED
 # - CustomProperties
 # - Table inputs
 # - Output properties
 # - Event properties
 # - Gallery
-# - ModernText / Label / Button / Icon
+# - Label / Button / Icon
 # - navigation logic
 # - conditional geometry
+# - nested containers
 # - AutoLayout nesting
 #
 # VALIDATION
@@ -30,15 +37,14 @@
 # 2. Save succeeds.
 # 3. Insert ONE instance of cmp_FL_SidebarPro on an otherwise empty screen.
 # 4. Studio must remain open and responsive.
-# 5. The instance renders as a dark 220x700 surface.
+# 5. The instance shows C2 / CMMS 2.0 / Functional Lab / CONCEPT LAB.
 # 6. Save again.
 # 7. App Checker shows no new error attributable to the component.
 #
 # INTERPRETATION
-# PASS -> minimal CanvasComponent infrastructure is instance-safe; restore the
-#         sidebar incrementally until the first failing responsibility appears.
-# FAIL -> investigate the CanvasComponent Source Code/baseline mechanism itself;
-#         do not restore component complexity.
+# PASS -> static ModernText identity layer is not sufficient to reproduce the crash;
+#         continue with R3 static container composition.
+# FAIL -> reduce within the ModernText/child-control layer before adding anything else.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
@@ -66,3 +72,55 @@ ComponentDefinitions:
             Width: =Parent.Width
             X: =0
             Y: =0
+          Children:
+            - lblFLSB_R2_Mark:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#38BDF8")
+                  FontWeight: =FontWeight.Bold
+                  Size: =13
+                  Text: ="C2"
+                  Width: =42
+                  Wrap: =false
+                  X: =17
+                  Y: =20
+
+            - lblFLSB_R2_Title:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#F8FAFC")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =13
+                  Text: ="CMMS 2.0"
+                  Width: =132
+                  Wrap: =false
+                  X: =70
+                  Y: =19
+
+            - lblFLSB_R2_Subtitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#94A3B8")
+                  Size: =9
+                  Text: ="Functional Lab"
+                  Width: =132
+                  Wrap: =false
+                  X: =70
+                  Y: =45
+
+            - lblFLSB_R2_Environment:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#94A3B8")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =8
+                  Text: ="CONCEPT LAB"
+                  Width: =186
+                  Wrap: =false
+                  X: =17
+                  Y: =72
