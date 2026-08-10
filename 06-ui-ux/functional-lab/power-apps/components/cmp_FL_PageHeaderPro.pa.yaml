@@ -1,0 +1,308 @@
+# CMMS 2.0 FUNCTIONAL LAB — F01-00B — PREMIUM PAGE HEADER
+#
+# Status: PENDING POWER APPS STUDIO VALIDATION
+# Target component: cmp_FL_PageHeaderPro
+# Authoring strategy: BODY-ONLY SOURCE CODE
+#
+# IMPORTANT
+# - NO CustomProperties block.
+# - NO Event / Output.
+# - NO globals.
+# - NO external assets.
+# - Public contract will be added in Studio only when the App Shell needs it.
+#
+# Current visual context:
+# - Workspace: WS-01 Case & Context
+# - Archetype: Object 360
+# - Case: P-101
+# - Journey position: 01 / 28
+# - Review state: Ready for review
+
+ComponentDefinitions:
+  cmp_FL_PageHeaderPro:
+    DefinitionType: CanvasComponent
+
+    Properties:
+      Fill: =ColorValue("#FFFFFF")
+      Height: =112
+      Width: =1200
+
+    Children:
+      - conFLPH_Root:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#E2E8F0")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#FFFFFF")
+            Height: =Parent.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+
+          Children:
+            - conFLPH_Identity:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  Height: =82
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Max(340,conFLPH_Case.X-48)
+                  X: =24
+                  Y: =12
+
+                Children:
+                  - lblFLPH_Eyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: ="WS-01  ·  OBJECT 360"
+                        Width: =Parent.Width
+                        Wrap: =false
+                        X: =0
+                        Y: =0
+
+                  - lblFLPH_Title:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =20
+                        Text: ="Case & Context"
+                        Width: =Parent.Width
+                        Wrap: =false
+                        X: =0
+                        Y: =21
+
+                  - lblFLPH_Subtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =9
+                        Text: ="Understand the asset, boundaries and operating context before defining functions"
+                        Width: =Parent.Width
+                        Wrap: =false
+                        X: =0
+                        Y: =54
+
+            - conFLPH_Case:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F8FAFC")
+                  Height: =62
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =164
+                  X: =conFLPH_Journey.X-Self.Width-10
+                  Y: =18
+
+                Children:
+                  - lblFLPH_CaseLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =7
+                        Text: ="CURRENT CASE"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =9
+
+                  - lblFLPH_CaseValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="P-101"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =29
+
+                  - lblFLPH_CaseType:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =7
+                        Text: ="Centrifugal pump"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =46
+
+            - conFLPH_Journey:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F8FAFC")
+                  Height: =62
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =126
+                  X: =conFLPH_Status.X-Self.Width-10
+                  Y: =18
+
+                Children:
+                  - lblFLPH_JourneyLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =7
+                        Text: ="JOURNEY"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =9
+
+                  - lblFLPH_JourneyValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="01 / 28"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =29
+
+                  - lblFLPH_JourneyHint:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =7
+                        Text: ="Context"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =46
+
+            - conFLPH_Status:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#BBF7D0")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F0FDF4")
+                  Height: =62
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =168
+                  X: =Parent.Width-Self.Width-24
+                  Y: =18
+
+                Children:
+                  - conFLPH_StatusDot:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#22C55E")
+                        Height: =8
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =8
+                        X: =12
+                        Y: =14
+
+                  - lblFLPH_StatusLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#166534")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =7
+                        Text: ="REVIEW STATE"
+                        Width: =Parent.Width-36
+                        Wrap: =false
+                        X: =28
+                        Y: =9
+
+                  - lblFLPH_StatusValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#14532D")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =10
+                        Text: ="Ready for review"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =31
+
+                  - lblFLPH_StatusHint:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#16A34A")
+                        Size: =7
+                        Text: ="Evidence available"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =47
+
+            - recFLPH_ProgressTrack:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  Fill: =ColorValue("#E2E8F0")
+                  Height: =2
+                  Width: =Parent.Width-48
+                  X: =24
+                  Y: =105
+
+            - recFLPH_ProgressValue:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  Fill: =ColorValue("#38BDF8")
+                  Height: =2
+                  Width: =Max(44,(Parent.Width-48)/28)
+                  X: =24
+                  Y: =105
