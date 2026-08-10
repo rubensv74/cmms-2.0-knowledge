@@ -1,6 +1,6 @@
 # cmp_FL_SidebarPro — Component Specification
 
-**Status:** REVIEW_REQUIRED / FL-SC-001 diagnostic reconstruction  
+**Status:** VALIDATED — RC2 INSTANCE_SAFE  
 **Increment:** F01-00A  
 **Purpose:** navegación premium común del CMMS 2.0 Functional Lab.
 
@@ -8,14 +8,14 @@
 
 Proporcionar navegación persistente entre workspaces del Functional Lab sin conocer la lógica interna de cada workspace.
 
-El componente final deberá:
+El componente:
 
-- mostrar identidad del producto;
-- mostrar los workspaces disponibles;
-- destacar el workspace activo;
-- exponer la selección realizada;
-- mostrar el caso actual y el rol de demostración;
-- soportar modo compacto/expandido.
+- muestra identidad del producto;
+- muestra los workspaces disponibles;
+- destaca el workspace activo;
+- expone la selección realizada;
+- muestra el caso actual y el rol de demostración;
+- soporta modo compacto/expandido.
 
 No debe:
 
@@ -25,7 +25,7 @@ No debe:
 - navegar directamente a pantallas concretas;
 - depender de variables globales de PULSE o del Functional Lab.
 
-## 2. Public contract previsto
+## 2. Public contract validado
 
 ### Inputs
 
@@ -47,7 +47,7 @@ AccentColor       Color
 ActiveFillColor   Color
 ```
 
-Expected `NavItems` shape:
+`NavItems` shape:
 
 ```text
 Order
@@ -68,11 +68,27 @@ SelectedKey       Text
 OnSelectItem()
 ```
 
-La pantalla host recibirá el evento y decidirá qué hacer con `SelectedKey`.
+La pantalla host recibe el evento y decide la navegación o acción asociada a `SelectedKey`.
 
-Este contrato permanece temporalmente retirado del Source Code durante el diagnóstico de `FL-SC-001` y se restaurará por etapas.
+## 3. Contract declaration pattern
 
-## 3. Supported states previstos
+RC2 confirmó que el Sidebar completo puede declararse e instanciarse con `CustomProperties` cuando sus Inputs siguen el patrón de una referencia `INSTANCE_SAFE` real (`cmp_HeatMapPro`):
+
+```yaml
+PropertyKind: Input
+DisplayName: ...
+Description: ...
+DataType: ...
+Default: ...
+```
+
+Para Outputs y Events se conserva el patrón propio de su `PropertyKind`; no se añaden campos por simetría.
+
+Regla:
+
+> Los componentes nuevos deben copiar la forma completa del contrato de una referencia estable equivalente. No simplificar metadatos por intuición.
+
+## 4. Supported states
 
 ```text
 Default
@@ -85,12 +101,12 @@ No case selected
 Case selected
 ```
 
-## 4. Visual contract previsto
+## 5. Visual contract
 
 Expanded width: 220 px  
 Collapsed width: 76 px
 
-Estructura prevista:
+Estructura:
 
 ```text
 Product identity
@@ -109,75 +125,59 @@ Principios:
 - icono centrado en colapsado;
 - contexto de caso secundario y no competidor con navegación.
 
-## 5. Compatibility constraints
+## 6. Compatibility constraints
 
 - `GroupContainer@1.5.0` para geometría y radios.
-- `Gallery@2.15.0` para navegación cuando alcance su etapa diagnóstica.
-- `Classic/Icon@2.5.0` para iconografía inicial cuando se reintroduzca.
+- `Gallery@2.15.0` para navegación.
+- `Classic/Icon@2.5.0` para iconografía inicial.
 - `Label@2.5.1` sin propiedades `Radius*`.
 - `Classic/Button@2.2.0` sin `AccessibleLabel` hasta validación específica.
 - `ModernText@1.0.0` estático con `AutoHeight=true` por defecto.
 - sin SVG inline.
 - sin assets de imagen externos.
 - sin variables globales internas.
-- `DEFINITION_ACCEPTED` y `INSTANCE_SAFE` son gates independientes.
+- `DEFINITION_ACCEPTED` y `INSTANCE_SAFE` siguen siendo gates independientes.
 
-## 6. FL-SC-001 — estado diagnóstico
+## 7. FL-SC-001 — resolución
 
 La versión completa inicial fue aceptada como definición pero cerró Power Apps Studio al insertar una instancia.
 
-Resultados confirmados:
+La investigación produjo dos aprendizajes:
+
+1. `DEFINITION_ACCEPTED != INSTANCE_SAFE`.
+2. `CustomProperties` no era la causa general: `cmp_HeatMapPro` demostró un contrato complejo y estable en PULSE.
+
+RC2 reconstruyó el Sidebar completo con el contrato público restaurado y los Inputs normalizados según el patrón HeatMap-style.
+
+Resultado:
 
 ```text
-R1 root-only                              PASS / INSTANCE_SAFE
-R2 identidad + ModernText estático       PASS / INSTANCE_SAFE
-R3 contenedores estáticos + AutoLayout   PENDING
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
 ```
 
-Interpretación actual:
+FL-SC-001 queda cerrado como `RESOLVED — CORRECTIVE PATTERN VALIDATED`.
 
-- CanvasComponent mínimo no reproduce el cierre;
-- root `GroupContainer@1.5.0` ManualLayout no reproduce el cierre;
-- cuatro `ModernText@1.0.0` estáticos tampoco lo reproducen;
-- la causa técnica concreta continúa `UNKNOWN`;
-- F01-00B permanece bloqueado.
+La prueba RC2 se realizó además sobre una definición limpia, por lo que no se declara que `DisplayName` o `Description` sean individualmente la única causa técnica del cierre original. Se adopta el patrón completo porque es reproducible y suficiente para continuar.
 
-R3 reintroduce únicamente composición estática de contenedores anidados y AutoLayout. Si R3 falla se subdividirá antes de añadir navegación o contrato público.
-
-## 7. Initial icon vocabulary previsto
+## 8. Validation status F01-00A
 
 ```text
-Overview
-Context
-Functions
-Risk
-Decision
-Plan
-Governance
-Improve
-Settings
-```
-
-El vocabulario se traducirá internamente a iconos Classic seguros. Si una clave no se reconoce, se utilizará un icono neutro.
-
-## 8. Validation gate final para F01-00A
-
-El componente completo solo podrá salir de `REVIEW_REQUIRED` cuando supere:
-
-```text
-[ ] PASS_STATIC
-[ ] DEFINITION_ACCEPTED
-[ ] INSTANCE_SAFE con una instancia aislada
-[ ] Save después de insertar instancia
-[ ] Reopen estable
-[ ] PUBLIC_CONTRACT_VALIDATED
-[ ] render expanded correcto
-[ ] render collapsed correcto
-[ ] item activo visible
-[ ] click cambia SelectedKey
-[ ] OnSelectItem se dispara
-[ ] texto sin clipping/mini-scrollbars
-[ ] App Checker sin nuevos errores atribuibles al componente
+[x] PASS_STATIC
+[x] DEFINITION_ACCEPTED
+[x] INSTANCE_SAFE con instancia aislada
+[x] contrato público restaurado
+[x] CustomProperties complejas aceptadas
+[x] patrón de referencia PULSE documentado
+[ ] Save/reopen final del conjunto integrado
+[ ] render expanded QA final
+[ ] render collapsed QA final
+[ ] click cambia SelectedKey en integración host
+[ ] OnSelectItem se dispara en integración host
+[ ] texto sin clipping/mini-scrollbars en shell final
+[ ] App Checker sin nuevos errores atribuibles en shell final
 [ ] VISUAL_QA_VALIDATED
-[ ] READY_FOR_INTEGRATION
+[ ] READY_FOR_INTEGRATION final
 ```
+
+El componente ya puede utilizarse para continuar F01-00B y preparar posteriormente el Premium App Shell, manteniendo los gates visuales y de integración pendientes.
