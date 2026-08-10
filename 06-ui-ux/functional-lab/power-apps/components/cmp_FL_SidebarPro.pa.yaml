@@ -1,21 +1,28 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-RC2 — PREMIUM SIDEBAR / HEATMAP CONTRACT MODEL
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-RC2 — PREMIUM SIDEBAR WITH VALIDATED CUSTOM PROPERTY CONTRACT
 #
-# Status: PENDING POWER APPS STUDIO VALIDATION
-# Incident: FL-SC-001
-# Reference: working PULSE cmp_HeatMapPro
+# Status: VALIDATED — INSTANCE_SAFE PASS
+# Incident: FL-SC-001 RESOLVED — CORRECTIVE PATTERN VALIDATED
+# Target component: cmp_FL_SidebarPro
 #
-# PURPOSE
-# Restore the complete original Sidebar contract and visual body, changing only
-# the Input custom-property metadata to match the proven HeatMap pattern:
-# PropertyKind + DisplayName + Description + DataType + Default.
+# REFERENCE PATTERN
+# CustomProperties are modeled after the instance-safe PULSE cmp_HeatMapPro.
+# Inputs preserve PropertyKind + DisplayName + Description + DataType + Default.
+# Outputs and Events preserve their own PropertyKind-specific patterns.
 #
-# IMPORTANT
-# This test intentionally keeps Text, Boolean, Color, Table, Output and Event.
-# We are testing the complete component, not another primitive micro-test.
+# IMPORTANT EVIDENCE
+# - Original reduced custom-property contract: definition accepted, instance crash.
+# - cmp_HeatMapPro with extensive CustomProperties: stable in PULSE.
+# - RC2 full Sidebar with HeatMap-style input metadata: instance-safe in Studio.
+#
+# The exact platform-internal root cause is not narrowed to DisplayName or
+# Description alone because RC2 was also created on a clean component.
+# The validated engineering rule is to copy the complete public-contract shape
+# from an equivalent INSTANCE_SAFE reference and retain the instance smoke test.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
     DefinitionType: CanvasComponent
+
     CustomProperties:
       AppTitle:
         PropertyKind: Input
@@ -23,24 +30,28 @@ ComponentDefinitions:
         Description: Product title shown in the sidebar header
         DataType: Text
         Default: ="CMMS 2.0"
+
       AppSubtitle:
         PropertyKind: Input
         DisplayName: AppSubtitle
         Description: Product subtitle shown below the main title
         DataType: Text
         Default: ="Functional Lab"
+
       EnvironmentLabel:
         PropertyKind: Input
         DisplayName: EnvironmentLabel
         Description: Environment or experience label shown in the sidebar
         DataType: Text
         Default: ="CONCEPT LAB"
+
       ActiveKey:
         PropertyKind: Input
         DisplayName: ActiveKey
         Description: Navigation key currently active in the host workspace
         DataType: Text
         Default: ="Overview"
+
       NavItems:
         PropertyKind: Input
         DisplayName: NavItems
@@ -58,70 +69,82 @@ ComponentDefinitions:
               {Order:70, Key:"Governance", Label:"Governance", IconKey:"Governance"},
               {Order:80, Key:"Improve", Label:"Effectiveness", IconKey:"Improve"}
           )
+
       IsCollapsed:
         PropertyKind: Input
         DisplayName: IsCollapsed
         Description: Collapse the sidebar to its compact navigation state
         DataType: Boolean
         Default: =false
+
       CurrentCaseCode:
         PropertyKind: Input
         DisplayName: CurrentCaseCode
         Description: Code of the current Functional Lab case
         DataType: Text
         Default: ="P-101"
+
       CurrentCaseName:
         PropertyKind: Input
         DisplayName: CurrentCaseName
         Description: Name of the current Functional Lab case
         DataType: Text
         Default: ="Cooling water centrifugal pump"
+
       UserRole:
         PropertyKind: Input
         DisplayName: UserRole
         Description: Role label shown in the sidebar footer
         DataType: Text
         Default: ="Functional reviewer"
+
       SurfaceColor:
         PropertyKind: Input
         DisplayName: SurfaceColor
         Description: Main sidebar surface color
         DataType: Color
         Default: =ColorValue("#07111F")
+
       SurfaceAltColor:
         PropertyKind: Input
         DisplayName: SurfaceAltColor
         Description: Alternate sidebar surface color
         DataType: Color
         Default: =ColorValue("#0B1B2E")
+
       TextColor:
         PropertyKind: Input
         DisplayName: TextColor
         Description: Primary sidebar text color
         DataType: Color
         Default: =ColorValue("#F8FAFC")
+
       MutedTextColor:
         PropertyKind: Input
         DisplayName: MutedTextColor
         Description: Secondary sidebar text color
         DataType: Color
         Default: =ColorValue("#94A3B8")
+
       AccentColor:
         PropertyKind: Input
         DisplayName: AccentColor
         Description: Accent color used for selected and highlighted states
         DataType: Color
         Default: =ColorValue("#38BDF8")
+
       ActiveFillColor:
         PropertyKind: Input
         DisplayName: ActiveFillColor
         Description: Background fill used by the active navigation item
         DataType: Color
         Default: =ColorValue("#12395A")
+
       OnSelectItem:
         PropertyKind: Event
         ReturnType: None
         Default: =
+
       SelectedKey:
         PropertyKind: Output
         DataType: Text
@@ -150,6 +173,7 @@ ComponentDefinitions:
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =Parent.Width
+
           Children:
             - conFLSB_Brand:
                 Control: GroupContainer@1.5.0
@@ -167,6 +191,7 @@ ComponentDefinitions:
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                   Width: =Parent.Width
+
                 Children:
                   - conFLSB_Mark:
                       Control: GroupContainer@1.5.0
@@ -199,6 +224,7 @@ ComponentDefinitions:
                               Wrap: =false
                               X: =0
                               Y: =8
+
                   - lblFLSB_AppTitle:
                       Control: ModernText@1.0.0
                       Properties:
@@ -213,6 +239,7 @@ ComponentDefinitions:
                         Wrap: =false
                         X: =70
                         Y: =19
+
                   - lblFLSB_AppSubtitle:
                       Control: ModernText@1.0.0
                       Properties:
@@ -226,6 +253,7 @@ ComponentDefinitions:
                         Wrap: =false
                         X: =70
                         Y: =45
+
                   - lblFLSB_Environment:
                       Control: ModernText@1.0.0
                       Properties:
@@ -272,6 +300,7 @@ ComponentDefinitions:
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                   Width: =Parent.Width
+
                 Children:
                   - galFLNav:
                       Control: Gallery@2.15.0
@@ -293,6 +322,7 @@ ComponentDefinitions:
                         TemplatePadding: =3
                         TemplateSize: =50
                         Width: =Parent.Width
+
                       Children:
                         - recFLSB_ActiveBar:
                             Control: Rectangle@2.3.0
@@ -305,6 +335,7 @@ ComponentDefinitions:
                               Width: =3
                               X: =0
                               Y: =6
+
                         - icoFLSB_Item:
                             Control: Classic/Icon@2.5.0
                             Properties:
@@ -331,6 +362,7 @@ ComponentDefinitions:
                               Width: =22
                               X: =If(cmp_FL_SidebarPro.IsCollapsed,(Parent.TemplateWidth-Self.Width)/2,16)
                               Y: =14
+
                         - lblFLSB_Item:
                             Control: Label@2.5.1
                             Properties:
@@ -349,6 +381,7 @@ ComponentDefinitions:
                               Wrap: =false
                               X: =48
                               Y: =0
+
                         - btnFLSB_Hit:
                             Control: Classic/Button@2.2.0
                             Properties:
@@ -395,6 +428,7 @@ ComponentDefinitions:
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                   Width: =Parent.Width
+
                 Children:
                   - lblFLSB_CaseLabel:
                       Control: ModernText@1.0.0
@@ -410,6 +444,7 @@ ComponentDefinitions:
                         Wrap: =false
                         X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
                         Y: =12
+
                   - lblFLSB_CaseCode:
                       Control: ModernText@1.0.0
                       Properties:
@@ -424,6 +459,7 @@ ComponentDefinitions:
                         Wrap: =false
                         X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
                         Y: =34
+
                   - lblFLSB_CaseName:
                       Control: ModernText@1.0.0
                       Properties:
@@ -437,6 +473,7 @@ ComponentDefinitions:
                         Wrap: =true
                         X: =14
                         Y: =58
+
                   - lblFLSB_Role:
                       Control: ModernText@1.0.0
                       Properties:
