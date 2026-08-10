@@ -2,8 +2,8 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
-**Último gate superado:** `cmp_FL_SidebarPro` definition accepted  
-**Gate actual:** `INSTANCE_SAFE` — FAILED / diagnostic reduction in progress
+**Último gate superado:** `F01-00A-R1 root-only` — INSTANCE_SAFE PASS  
+**Gate actual:** `F01-00A-R2 identidad/texto` — PENDING STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
@@ -18,9 +18,10 @@
 | F00-07 Fixture P-101 | completed | Caso existente convertido a JSON canónico. |
 | F00-08 Arquitectura del Lab | completed | Capas, estado, workspaces y límites definidos. |
 | F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
-| F01-00 Auditoría Power Apps Foundation | partial | App creada y definición de primer componente aceptada; gate de instancia ha detectado incidente bloqueante. |
-| F01-00A cmp_FL_SidebarPro | failed-instance / correcting | Source Code aceptado; Studio se cierra al insertar instancia. FL-SC-001 abierto. |
-| F01-00A-R1 root-only diagnostic | pending-user-validation | Reducir el componente al mínimo para delimitar la causa. |
+| F01-00 Auditoría Power Apps Foundation | partial | App creada y diagnóstico real de seguridad de instancia en curso. |
+| F01-00A cmp_FL_SidebarPro | review-required | La versión completa inicial cerraba Studio al insertar instancia; FL-SC-001 abierto. |
+| F01-00A-R1 root-only diagnostic | validated-pass | Definición e instancia correctas; baseline CanvasComponent + root GroupContainer seguro en esta prueba. |
+| F01-00A-R2 identity/text diagnostic | pending-user-validation | Añade únicamente cuatro ModernText estáticos sobre R1. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara hasta resolver seguridad de instancia del Sidebar. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | Depende de componentes fundacionales `INSTANCE_SAFE`. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
@@ -34,14 +35,23 @@
 
 ## 2. Incidente actual — FL-SC-001
 
-Observación confirmada en `CMMS 2.0 Functional Lab`:
+Observación inicial confirmada en `CMMS 2.0 Functional Lab`:
 
 ```text
-F01-00A source pasted / definition created: PASS
+F01-00A complete source pasted / definition created: PASS
 Save / no immediate Source Code error: PASS
-Insert component instance: Studio closes
+Insert complete component instance: Studio closes
 INSTANCE_SAFE: FAIL
 READY_FOR_INTEGRATION: NO
+```
+
+Resultado de reducción actual:
+
+```text
+R1 root-only definition: PASS
+R1 root-only instance: PASS
+R1 save after insertion: PASS reported
+R2 identity/text: PENDING
 ```
 
 Registro:
@@ -54,13 +64,11 @@ La causa técnica se mantiene como `UNKNOWN` hasta obtener un reproducer reducid
 
 ## 3. Estrategia de corrección
 
-No se modifica varias veces el componente completo por intuición.
-
-La reconstrucción seguirá:
+La reconstrucción seguirá desde el último baseline seguro:
 
 ```text
-R1 root only
-→ R2 identidad/texto
+R1 root only                         PASS
+→ R2 identidad/texto                CURRENT
 → R3 contenedores estáticos
 → R4 navegación visual sin eventos
 → R5 custom inputs simples
@@ -89,7 +97,7 @@ Esta selección se considera hipótesis de interfaz validable durante el vertica
 Secuencia obligatoria, actualmente detenida:
 
 ```text
-F01-00A  cmp_FL_SidebarPro        ← FL-SC-001 / correcting
+F01-00A  cmp_FL_SidebarPro        ← FL-SC-001 / diagnostic reconstruction
 F01-00B  cmp_FL_PageHeaderPro     ← BLOCKED
 F01-01   Premium App Shell        ← BLOCKED
 ```
@@ -144,4 +152,4 @@ Objeto de contexto funcional listo para alimentar funciones y fallos.
 
 ## 8. Regla de continuidad
 
-> No se prepara F01-00B ni ningún bloque dependiente hasta que `cmp_FL_SidebarPro` alcance `INSTANCE_SAFE` o se tome una decisión explícita de arquitectura que cambie la estrategia de componentes.
+> No se prepara F01-00B ni ningún bloque dependiente hasta que `cmp_FL_SidebarPro` completo alcance `INSTANCE_SAFE` o se tome una decisión explícita de arquitectura que cambie la estrategia de componentes.
