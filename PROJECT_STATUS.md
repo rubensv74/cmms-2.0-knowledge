@@ -1,35 +1,83 @@
-﻿# Estado del proyecto
+# Estado del proyecto
 
-**Ultima actualizacion:** 2026-07-30
+**Última actualización:** 2026-08-10
 
 ## Estado general
 
-En definicion funcional y prototipado incremental.
+Transición desde prototipado conceptual HTML hacia **CMMS 2.0 Functional Lab**, una aplicación Power Apps destinada a validar el modelo funcional mediante casos ejecutables y a producir documentación funcional trazable para IT.
 
 ## Completado
 
-- Estructura inicial del repositorio documental.
+### Fundamentos previos
+
+- Estructura documental inicial.
 - Prototipos HTML 01-03 de fundamentos del modelo de activos.
-- Sprint P04.0 AMEF + RCM: arquitectura, inventario, trazabilidad y handoff a IT.
-- Sprint P04.1: landing, shell, stepper, contexto, navegacion, estado base y persistencia local.
-- Sprint P04.2: alcance, funciones, fallos, modos, causas, efectos, validaciones y arbol AMEF.
-- Sprint P04.3: consecuencias, matriz 5x5, arbol RCM, evidencia, override y rama oculta.
-- Sprint P04.4: tareas, decisiones sin tarea, cobertura, aplicabilidad, perfiles y validacion humana.
-- Sprint P04.5: revision global, aprobaciones, publicacion, snapshot, nueva revision y trazabilidad.
-- Sprint P04.6: estados alternativos, pruebas, accesibilidad, responsive y handoff final.
+- Prototipo 04 AMEF + RCM por sprints P04.0-P04.6.
+- AMEF–RCM Experience Center v3 con caso P-101 y recorrido guiado de 28 etapas.
+- Dossier de contexto para NotebookLM.
+
+### Foundation Functional Lab — 2026-08-10
+
+- Auditoría de transición desde prototipos hacia laboratorio funcional.
+- Adaptación del Protocolo de Implementación Incremental Asistida por IA usado en Pulse.
+- Gate funcional obligatorio antes del gate técnico.
+- Visión y límites del Functional Lab.
+- Functional Journey de 28 etapas independiente de la UI.
+- Agrupación inicial en nueve workspaces.
+- Matriz preliminar persona vs sistema.
+- Arquitectura conceptual del laboratorio.
+- Schemas JSON para journey y casos.
+- Conversión del caso P-101 existente a fixture JSON canónico.
+- Definición del paquete documental modular para IT.
 
 ## En curso
 
-- Consolidacion del modelo funcional CMMS 2.0.
-- Organizacion de reuniones, decisiones y recursos.
-- Revision funcional y demostracion del paquete P04 completo.
+- Consolidación del modelo funcional CMMS 2.0 a partir de la nueva estructura.
+- Preparación del primer vertical slice en Power Apps: `WS-01 Caso y contexto`.
 
-## Proximos objetivos
+## Siguiente gate
 
-- Ejecutar la demostracion de 10-15 minutos y recoger feedback funcional.
-- Mantener trazabilidad y validaciones por sprint.
+### F01-00 — Auditoría Power Apps Foundation
 
-## Riesgos y bloqueos
+Antes de generar YAML deben confirmarse en el entorno real:
 
-- Sin bloqueo para el prototipo AMEF + RCM.
-- Riesgo, workflow, persistencia e integraciones productivas quedan para IT y no bloquean la demo.
+- schema Source Code;
+- convenciones y componentes reutilizables;
+- controles seguros;
+- restricciones y errores conocidos;
+- arquitectura visual base;
+- mecanismo inicial de adaptación JSON → colecciones Power Fx.
+
+Después se iniciará el primer bloque técnico siguiendo el protocolo incremental.
+
+## Próximos incrementos
+
+1. Shell de pantalla.
+2. Runtime state mínimo.
+3. Adaptador P-101.
+4. Navegación base.
+5. WS-01 — contexto visual.
+6. WS-01 — edición.
+7. WS-01 — gate de evidencia.
+8. WS-01 — output hacia funciones y fallos.
+9. Hardening y documentación de WS-01.
+
+No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
+
+## Riesgos principales
+
+- Confundir el Functional Lab con la arquitectura productiva futura.
+- Convertir hipótesis conceptuales en automatismos sin validación.
+- Identificar una etapa de negocio con una pantalla de forma automática.
+- Introducir backend o integraciones antes de que el laboratorio las necesite.
+- Duplicar conocimiento entre prototipos, app y documentación funcional.
+
+## Fuentes de verdad principales
+
+- `00-governance/cmms-functional-lab-incremental-protocol.md`
+- `01-vision/cmms-functional-lab-vision.md`
+- `02-functional/process-model/functional-journey.md`
+- `02-functional/process-model/human-system-decisions.md`
+- `06-ui-ux/functional-lab/architecture.md`
+- `06-ui-ux/functional-lab/implementation-status.md`
+- `07-it-handoff/functional-document-set.md`
