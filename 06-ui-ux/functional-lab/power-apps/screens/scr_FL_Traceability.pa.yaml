@@ -1,0 +1,349 @@
+Screens:
+  scr_FL_Traceability:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-23" || varFLCurrentStageId="FL-24"),Set(varFLCurrentStageId,"FL-23"));
+        ClearCollect(
+            colFLTraceChain,
+            {Order:1,Code:"FUN-01",Label:"Función principal",Value:LookUp(colFLFunctions,FunctionType="Principal",Statement),Status:"ok"},
+            {Order:2,Code:"FF-02",Label:"Fallo funcional parcial",Value:LookUp(colFLFunctionalFailures,FailureType="Parcial",Statement),Status:"ok"},
+            {Order:3,Code:"FM-03",Label:"Modo de fallo",Value:LookUp(colFLFailureModes,HumanSelected,Name),Status:"ok"},
+            {Order:4,Code:"AMEF",Label:"Riesgo",Value:varFLConsequenceClass & " · NPR " & Text(varFLRiskScore),Status:"warning"},
+            {Order:5,Code:"RCM",Label:"Estrategia",Value:varFLRecommendedStrategy,Status:"ok"},
+            {Order:6,Code:"TASK",Label:"Tarea",Value:varFLTaskName,Status:"ok"},
+            {Order:7,Code:"PLAN",Label:"Paquete",Value:varFLGrouping,Status:"ok"}
+        );
+        If(IsBlank(varFLQualityResolved),Set(varFLQualityResolved,false))
+
+    Children:
+      - conFLTraceRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLTraceNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLTraceNav.SelectedKey);
+                    Switch(cmpFLTraceNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLTraceMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLTraceNav.Width
+                  X: =cmpFLTraceNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLTraceHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="GOBERNANZA DEL CASO"
+                        CaseCode: =varFLActiveCaseCode
+                        CaseType: ="Trazabilidad"
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="FL-23 y FL-24"
+                        ReviewState: =If(varFLQualityResolved,"Calidad resuelta","Advertencia abierta")
+                        Subtitle: ="Reconstruye por qué existe la tarea y resuelve observaciones de calidad antes de solicitar aprobación."
+                        Title: ="Trazabilidad y calidad"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLTraceRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLTraceHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLTraceRail.SelectedStageIdOut);
+                          Switch(cmpFLTraceRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLTraceHeader.Height+12
+                  - conFLTraceWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLTraceHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLTraceRail.Width-60
+                        X: =cmpFLTraceRail.X+cmpFLTraceRail.Width+12
+                        Y: =cmpFLTraceHeader.Height+12
+                      Children:
+                        - conFLTraceChain:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =360
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =(Parent.Width-12)*0.62
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLTraceChainLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-23 · CADENA DE JUSTIFICACIÓN"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - galFLTraceChain:
+                                  Control: Gallery@2.15.0
+                                  Variant: Vertical
+                                  Properties:
+                                    BorderColor: =Color.Transparent
+                                    Height: =304
+                                    Items: =SortByColumns(colFLTraceChain,"Order",SortOrder.Ascending)
+                                    ShowScrollbar: =false
+                                    TemplateFill: =Color.Transparent
+                                    TemplatePadding: =2
+                                    TemplateSize: =42
+                                    Width: =Parent.Width-28
+                                    X: =14
+                                    Y: =44
+                                  Children:
+                                    - conFLTraceDot:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          BorderThickness: =0
+                                          DropShadow: =DropShadow.None
+                                          Fill: =If(ThisItem.Status="warning",ColorValue("#F59E0B"),ColorValue("#22C55E"))
+                                          Height: =9
+                                          RadiusBottomLeft: =9
+                                          RadiusBottomRight: =9
+                                          RadiusTopLeft: =9
+                                          RadiusTopRight: =9
+                                          Width: =9
+                                          X: =4
+                                          Y: =14
+                                    - lblFLTraceCode:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0284C7")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: =ThisItem.Code
+                                          Width: =62
+                                          X: =22
+                                          Y: =8
+                                    - lblFLTraceLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: =ThisItem.Label
+                                          Width: =130
+                                          X: =88
+                                          Y: =8
+                                    - lblFLTraceValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =8
+                                          Text: =ThisItem.Value
+                                          Width: =Parent.TemplateWidth-230
+                                          Wrap: =false
+                                          X: =224
+                                          Y: =8
+                        - conFLTraceQuality:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =If(varFLQualityResolved,ColorValue("#BBF7D0"),ColorValue("#FDE68A"))
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =If(varFLQualityResolved,ColorValue("#F0FDF4"),ColorValue("#FFFBEB"))
+                              Height: =360
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLTraceChain.Width-12
+                              X: =conFLTraceChain.Width+12
+                              Y: =0
+                            Children:
+                              - lblFLTraceQualityLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =If(varFLQualityResolved,ColorValue("#15803D"),ColorValue("#B45309"))
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-24 · CONTROL DE CALIDAD"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLTraceQualityTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =15
+                                    Text: =If(varFLQualityResolved,"Advertencia resuelta","Advertencia abierta")
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =46
+                              - lblFLTraceQualityText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =10
+                                    Text: =varFLAMEFException
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =82
+                              - lblFLTraceQualityDecision:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: |-
+                                      ="Decisión propuesta: " & varFLQualityDecision
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =142
+                              - txtFLTraceResolution:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#FDE68A")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =varFLReviewResolution
+                                    Fill: =ColorValue("#FFFFFF")
+                                    Height: =72
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: =Set(varFLReviewResolution,Trim(Self.Text));Set(varFLCaseDraft,true)
+                                    PaddingLeft: =10
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =9
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =198
+                              - btnFLTraceResolve:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =If(varFLQualityResolved,ColorValue("#BBF7D0"),ColorValue("#F59E0B"))
+                                    BorderThickness: =1
+                                    Color: =If(varFLQualityResolved,ColorValue("#166534"),Color.White)
+                                    Fill: =If(varFLQualityResolved,ColorValue("#F0FDF4"),ColorValue("#F59E0B"))
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =38
+                                    OnSelect: |-
+                                      =
+                                      Set(varFLQualityResolved,true);
+                                      Set(varFLCaseDraft,true);
+                                      UpdateIf(colFLStageExecutions,StageId="FL-24",{Status:"draft"})
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Size: =9
+                                    Text: =If(varFLQualityResolved,"Resolución registrada","Registrar resolución")
+                                    Width: =170
+                                    X: =18
+                                    Y: =294
+                        - cmpFLTraceGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =CountRows(colFLTraceChain)=7 && varFLQualityResolved && !IsBlank(varFLReviewResolution)
+                              ContinueLabel: ="Enviar a revisión"
+                              GateStatus: =If(CountRows(colFLTraceChain)=7 && varFLQualityResolved && !IsBlank(varFLReviewResolution),"passed","warning")
+                              GateTitle: ="Gate de gobernanza previa"
+                              Height: =220
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-23" || StageId="FL-24",{Status:"confirmed"});
+                                Set(varFLCaseDraft,false);
+                                Set(varFLCurrentStageId,"FL-25");
+                                Navigate(scr_FL_ReviewApproval,ScreenTransition.None)
+                              OutputLabel: ="Caso trazable y findings resueltos para revisión multidisciplinar"
+                              Reason: =If(varFLQualityResolved,"La cadena es completa y la advertencia conserva resolución trazable.","Existe un finding de calidad que debe resolverse antes de aprobación.")
+                              RequiredAction: ="Resolver findings y confirmar integridad de trazabilidad"
+                              ResponsibleRole: ="Ingeniería de Fiabilidad"
+                              Summary: =If(varFLQualityResolved,"Preparado para revisión","Advertencia de calidad pendiente")
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =372
