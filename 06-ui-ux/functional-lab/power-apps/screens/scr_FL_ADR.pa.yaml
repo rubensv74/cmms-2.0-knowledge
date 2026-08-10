@@ -1,0 +1,332 @@
+Screens:
+  scr_FL_ADR:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Assets");
+        Set(varFLAssetSelectedNode,"P101");
+        ClearCollect(
+            colFLADRNodes,
+            {RowNodeId:"P101",RowParentNodeId:"",RowLevel:1,RowLabel:"P-101 · Bomba centrífuga",RowDescription:"Activo raíz del análisis de relaciones",RowSortPath:"001",RowPath:"P-101",RowNodeType:"asset",RowIconKey:"flag",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+            {RowNodeId:"ADR-PWR",RowParentNodeId:"P101",RowLevel:2,RowLabel:"Accionamiento y transmisión",RowDescription:"Relaciones físicas del tren",RowSortPath:"001/001",RowPath:"P-101 > Accionamiento y transmisión",RowNodeType:"relation",RowIconKey:"settings",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+            {RowNodeId:"M101",RowParentNodeId:"ADR-PWR",RowLevel:3,RowLabel:"M-101 · Motor eléctrico",RowDescription:"Suministra potencia mecánica a P-101",RowSortPath:"001/001/001",RowPath:"P-101 > Accionamiento > M-101",RowNodeType:"equipment",RowIconKey:"settings",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true},
+            {RowNodeId:"CPL101",RowParentNodeId:"ADR-PWR",RowLevel:3,RowLabel:"CPL-101 · Acoplamiento",RowDescription:"Transmite par entre motor y bomba",RowSortPath:"001/001/002",RowPath:"P-101 > Accionamiento > CPL-101",RowNodeType:"equipment",RowIconKey:"document",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true},
+            {RowNodeId:"ADR-PROC",RowParentNodeId:"P101",RowLevel:2,RowLabel:"Dependencia de proceso",RowDescription:"Objetos afectados por la función de P-101",RowSortPath:"001/002",RowPath:"P-101 > Dependencia de proceso",RowNodeType:"relation",RowIconKey:"message",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+            {RowNodeId:"E201",RowParentNodeId:"ADR-PROC",RowLevel:3,RowLabel:"E-201 · Intercambiador",RowDescription:"Consume el caudal de refrigeración suministrado",RowSortPath:"001/002/001",RowPath:"P-101 > Dependencia de proceso > E-201",RowNodeType:"equipment",RowIconKey:"document",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true},
+            {RowNodeId:"ADR-RED",RowParentNodeId:"P101",RowLevel:2,RowLabel:"Redundancia",RowDescription:"Capacidad de respaldo",RowSortPath:"001/003",RowPath:"P-101 > Redundancia",RowNodeType:"relation",RowIconKey:"lock",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+            {RowNodeId:"P102",RowParentNodeId:"ADR-RED",RowLevel:3,RowLabel:"P-102 · Bomba de reserva",RowDescription:"Reserva automática de P-101",RowSortPath:"001/003/001",RowPath:"P-101 > Redundancia > P-102",RowNodeType:"equipment",RowIconKey:"document",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true},
+            {RowNodeId:"ADR-MON",RowParentNodeId:"P101",RowLevel:2,RowLabel:"Monitorización de condición",RowDescription:"Relaciones de medición",RowSortPath:"001/004",RowPath:"P-101 > Monitorización",RowNodeType:"relation",RowIconKey:"trend",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+            {RowNodeId:"VIB-P101",RowParentNodeId:"ADR-MON",RowLevel:3,RowLabel:"Puntos DE/NDE · Vibración",RowDescription:"Puntos normalizados de condición",RowSortPath:"001/004/001",RowPath:"P-101 > Monitorización > Puntos DE/NDE",RowNodeType:"measurement",RowIconKey:"trend",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true}
+        )
+
+    Children:
+      - conFLADRRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLADRNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Assets"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLADRNav.SelectedKey);
+                    Switch(cmpFLADRNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLADRMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLADRNav.Width
+                  X: =cmpFLADRNav.Width
+                  Y: =0
+                Children:
+                  - lblFLADREyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =9
+                        Text: ="ACTIVOS · P-101"
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =20
+                  - lblFLADRTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =23
+                        Text: =LookUp(colFLText,Key="SCREEN_ADR_TITLE",If(varFLLocale="en",EN,ES))
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =46
+                  - lblFLADRSubtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =10
+                        Text: =LookUp(colFLText,Key="SCREEN_ADR_SUBTITLE",If(varFLLocale="en",EN,ES))
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =82
+                  - conFLADRTabs:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =50
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =116
+                      Children:
+                        - btnFLADRFLH:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =ColorValue("#475569")
+                              Fill: =Color.Transparent
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_FLH,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="FLH"
+                              Width: =110
+                              X: =8
+                              Y: =8
+                        - btnFLADRTax:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =ColorValue("#475569")
+                              Fill: =Color.Transparent
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_Taxonomy,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Taxonomía"
+                              Width: =126
+                              X: =126
+                              Y: =8
+                        - btnFLADRActive:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              Color: =ColorValue("#0369A1")
+                              Fill: =ColorValue("#F0F9FF")
+                              Height: =34
+                              OnSelect: =false
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="ADR"
+                              Width: =110
+                              X: =260
+                              Y: =8
+                        - btnFLADR360:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =ColorValue("#475569")
+                              Fill: =Color.Transparent
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_Asset360,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Ficha 360"
+                              Width: =126
+                              X: =378
+                              Y: =8
+                  - cmpFLADRTree:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_TreePro
+                      Properties:
+                        AllowSearch: =true
+                        CompactMode: =true
+                        Height: =Parent.Height-196
+                        HighlightBadgeText: ="ACTIVO"
+                        HighlightNodeId: ="P101"
+                        Items: =colFLADRNodes
+                        MaxVisualDepth: =11
+                        OnSelectNode: =Set(varFLAssetSelectedNode,cmpFLADRTree.SelectedNodeIdOut)
+                        OnToggleNode: |-
+                          =
+                          With({_nodeId:cmpFLADRTree.ToggleNodeIdOut,_target:cmpFLADRTree.ToggleTargetExpandedOut,_sortPath:LookUp(colFLADRNodes,RowNodeId=cmpFLADRTree.ToggleNodeIdOut,RowSortPath)},Patch(colFLADRNodes,LookUp(colFLADRNodes,RowNodeId=_nodeId),{RowIsExpanded:_target});If(_target,UpdateIf(colFLADRNodes,RowParentNodeId=_nodeId,{RowIsVisible:true}),UpdateIf(colFLADRNodes,StartsWith(RowSortPath,_sortPath & "/"),{RowIsVisible:false,RowIsExpanded:false})))
+                        SelectedNodeId: =varFLAssetSelectedNode
+                        ShowBreadcrumb: =true
+                        ShowDescriptions: =false
+                        ShowHighlightBadge: =true
+                        ShowIcons: =true
+                        ShowLines: =true
+                        Width: =Min(600,(Parent.Width-60)*0.48)
+                        X: =24
+                        Y: =182
+                  - conFLADRDetail:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-196
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-cmpFLADRTree.Width-60
+                        X: =cmpFLADRTree.X+cmpFLADRTree.Width+12
+                        Y: =182
+                      Children:
+                        - lblFLADRDetailEyebrow:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="RELACIÓN SELECCIONADA"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =18
+                        - lblFLADRDetailTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =19
+                              Text: =cmpFLADRTree.SelectedLabelOut
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =48
+                        - lblFLADRDetailPath:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =10
+                              Text: =cmpFLADRTree.SelectedPathOut
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =90
+                        - conFLADRMeaning:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#F8FAFC")
+                              Height: =146
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =166
+                            Children:
+                              - lblFLADRMeaningLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="CONTEXTO ADR"
+                                    Width: =Parent.Width-28
+                                    X: =14
+                                    Y: =14
+                              - lblFLADRMeaningText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    Size: =10
+                                    Text: ="ADR complementa la jerarquía mostrando dependencias que no son necesariamente padre-hijo físicas: accionamiento, proceso, redundancia, monitorización y otras relaciones relevantes para mantenimiento."
+                                    Width: =Parent.Width-28
+                                    Wrap: =true
+                                    X: =14
+                                    Y: =42
+                        - btnFLADROpen360:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
+                              BorderThickness: =1
+                              Color: =Color.White
+                              DisplayMode: =If(cmpFLADRTree.SelectedNodeIdOut="P101",DisplayMode.Edit,DisplayMode.Disabled)
+                              Fill: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =40
+                              OnSelect: =Navigate(scr_FL_Asset360,ScreenTransition.None)
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Size: =10
+                              Text: ="Abrir ficha 360"
+                              Width: =160
+                              X: =Parent.Width-Self.Width-18
+                              Y: =Parent.Height-Self.Height-18
