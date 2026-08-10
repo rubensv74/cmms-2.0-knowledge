@@ -19,18 +19,21 @@ El Functional Lab sigue siendo un laboratorio conceptual, pero desde v2 se exper
 
 ## Leer primero
 
-1. [Guía de experiencia funcional del usuario](guides/GUIA_EXPERIENCIA_FUNCIONAL_USUARIO.md)
-2. [Arquitectura](architecture.md)
-3. [Estado v2](V2_STATUS.md)
-4. [ADRs](adr/README.md)
-5. [Mapa de pantallas](screen-map.md)
-6. [Contratos de dominio](domain-contracts.md)
-7. [Design System v2](design-system-v2.md)
-8. [Catálogo de componentes](component-catalog.md)
-9. [Instalación Power Apps v2](power-apps/V2_INSTALLATION.md)
-10. [Validación estática](development/V2_STATIC_VALIDATION_2026-08-10.md)
+1. [Guía guiada de demostración](guides/GUIA_DEMOSTRACION_CMMS_FUNCTIONAL_LAB.md)
+2. [Guía de experiencia funcional del usuario](guides/GUIA_EXPERIENCIA_FUNCIONAL_USUARIO.md)
+3. [Arquitectura](architecture.md)
+4. [Estado v2](V2_STATUS.md)
+5. [ADRs](adr/README.md)
+6. [Mapa de pantallas](screen-map.md)
+7. [Contratos de dominio](domain-contracts.md)
+8. [Design System v2](design-system-v2.md)
+9. [Catálogo de componentes](component-catalog.md)
+10. [Instalación Power Apps v2](power-apps/V2_INSTALLATION.md)
+11. [Validación estática](development/V2_STATIC_VALIDATION_2026-08-10.md)
 
-La **Guía de experiencia funcional** es la lectura recomendada para entender el proceso, validar requisitos y preparar una demostración en reunión. Explica para cada pantalla qué información recibe, qué aporta la persona, qué calcula o recomienda el software, qué decisión queda bajo autoridad humana y qué output debe producirse.
+La **Guía guiada de demostración** está pensada para explicar el Functional Lab a un público mixto. Mantiene un hilo narrativo continuo sobre P-101, explica los conceptos únicamente cuando aparecen y distingue en cada etapa qué hace la persona y qué hace el software.
+
+La **Guía de experiencia funcional** es más detallada y sirve para entender el proceso, revisar requisitos y verificar que cada pantalla implementa correctamente inputs, outputs, decisiones y controles de avance.
 
 ## Power Apps
 
