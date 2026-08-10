@@ -23,9 +23,10 @@ R5-TD Input/Text declarado, no consumido      FAIL
 R5-TM Input/Text creado manualmente en Studio PASS
 R5-TS Source Code visible tras R5-TM           AppTitle OMITIDO
 R5-TB binding YAML → AppTitle manual           PASS
+R5-BM Boolean binding                          BLOCKED — ShowEnvironment not recognized
 ```
 
-## 3. Hallazgo demostrado
+## 3. Hallazgo demostrado para Text
 
 R5-TB prueba que un control definido mediante Source Code puede consumir de forma estable una propiedad pública `Data / Input / Text` creada manualmente en Studio:
 
@@ -43,13 +44,39 @@ Por tanto:
 3. El cierre se reproduce cuando el contrato público se intenta crear inyectando `CustomProperties:` en la superficie YAML pegable probada.
 4. El Source Code visible de Studio no representa completamente el contrato público, porque `AppTitle` existe pero no aparece serializado en esa superficie.
 
-## 4. Causa
+## 4. Nuevo hallazgo R5-BM
 
-### Causa de proceso confirmada
+Se aplicó un cuerpo Source Code que referencia:
 
-`DEFINITION_ACCEPTED` no demuestra `INSTANCE_SAFE`.
+```powerfx
+cmp_FL_SidebarPro.ShowEnvironment
+```
 
-### Causa operativa suficientemente delimitada
+Power Apps Studio permaneció abierto, pero la fórmula devolvió:
+
+```text
+Name isn't valid. 'ShowEnvironment' isn't recognized.
+```
+
+Estado correcto de esta prueba:
+
+```text
+STUDIO_CRASH              NO
+BOOLEAN_CONTRACT_RESOLVED NO
+BINDING_VALID             NO
+R5-BM                     BLOCKED
+```
+
+Este resultado NO permite afirmar que `Input/Boolean` sea incompatible. Solo demuestra que `ShowEnvironment` no está disponible con ese nombre en el contrato público de `cmp_FL_SidebarPro` en el momento de la prueba.
+
+Antes de generar o modificar más YAML debe verificarse en Studio:
+
+1. que `ShowEnvironment` pertenece a `cmp_FL_SidebarPro` y no a otro componente;
+2. el nombre interno exacto de la propiedad;
+3. que la propiedad existe después de guardar;
+4. si `AppTitle` sigue también presente.
+
+## 5. Causa operativa delimitada
 
 ```text
 UNSAFE AUTHORING PATH:
@@ -61,9 +88,7 @@ public property created in Studio
 visual/body YAML consumes that property
 ```
 
-El detalle interno exacto de serialización/hidratación permanece no observable en esta superficie, pero ya existe un workaround estable y reproducible para continuar el desarrollo.
-
-## 5. Estrategia de autoría corregida
+## 6. Estrategia de autoría corregida
 
 ```text
 CONTRATO PÚBLICO
@@ -78,20 +103,11 @@ Source Code puede referenciar propiedades ya creadas en Studio, tras smoke test
 
 No volver a introducir `CustomProperties:` en el YAML pegable del Functional Lab salvo nueva evidencia explícita de compatibilidad.
 
-## 6. Siguiente validación
+## 7. Siguiente validación
 
-Antes de reconstruir el Sidebar completo se validarán los tipos públicos que realmente necesita, uno por uno y Studio-first.
+`R5-BM` permanece detenido hasta resolver el contrato Boolean en Studio. No se modifica el YAML mientras `ShowEnvironment` no sea una propiedad pública reconocida del componente.
 
-Siguiente incremento:
-
-```text
-R5-BM — Data / Input / Boolean creado manualmente en Studio
-         + binding simple Visible desde YAML
-```
-
-No se introduce todavía geometría condicional compleja.
-
-## 7. Gate de cierre
+## 8. Gate de cierre
 
 FL-SC-001 permanecerá abierto hasta que:
 
