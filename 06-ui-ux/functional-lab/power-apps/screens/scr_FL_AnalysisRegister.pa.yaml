@@ -6,7 +6,7 @@ Screens:
       OnVisible: =Set(varFLNavKey,"Strategy")
 
     Children:
-      - conFLRegRoot:
+      - conFLAnalysisRegisterRoot:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
@@ -21,7 +21,7 @@ Screens:
             RadiusTopRight: =0
             Width: =App.Width
           Children:
-            - cmpFLRegNav:
+            - cmpFLAnalysisRegisterNav:
                 Control: CanvasComponent
                 ComponentName: cmp_FL_SidebarPro
                 Properties:
@@ -36,13 +36,21 @@ Screens:
                   NavItems: =colFLV2NavItems
                   OnSelectItem: |-
                     =
-                    Set(varFLNavKey,cmpFLRegNav.SelectedKey);
-                    Switch(cmpFLRegNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                    Set(varFLNavKey,cmpFLAnalysisRegisterNav.SelectedKey);
+                    Switch(
+                        cmpFLAnalysisRegisterNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
                   UserRole: =varFLCurrentRole
                   Width: =If(varFLSidebarCollapsed,76,220)
                   X: =0
                   Y: =0
-            - conFLRegMain:
+            - conFLAnalysisRegisterMain:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -55,43 +63,31 @@ Screens:
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =Parent.Width-cmpFLRegNav.Width
-                  X: =cmpFLRegNav.Width
+                  Width: =Parent.Width-cmpFLAnalysisRegisterNav.Width
+                  X: =cmpFLAnalysisRegisterNav.Width
                   Y: =0
                 Children:
-                  - lblFLRegEyebrow:
-                      Control: ModernText@1.0.0
+                  - cmpFLAnalysisRegisterHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
                       Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#0284C7")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =9
-                        Text: ="ESTRATEGIA DE MANTENIMIENTO"
-                        Width: =Parent.Width-48
-                        X: =24
-                        Y: =20
-                  - lblFLRegTitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#0F172A")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =23
-                        Text: =LookUp(colFLText,Key="SCREEN_CASES_TITLE",If(varFLLocale="en",EN,ES))
-                        Width: =Parent.Width-48
-                        X: =24
-                        Y: =46
-                  - lblFLRegSubtitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#64748B")
-                        Size: =10
-                        Text: ="Consulta casos AMEF/RCM, su progreso, estado y responsabilidad actual."
-                        Width: =Parent.Width-48
-                        X: =24
-                        Y: =82
-                  - conFLRegSummary:
+                        Archetype: ="ESTRATEGIA DE MANTENIMIENTO"
+                        CaseCode: ="REGISTRO"
+                        CaseType: ="Casos contextuales"
+                        Height: =132
+                        JourneyHint: ="Cada caso referencia una revisión AMEF y una aplicación a activo"
+                        JourneyPosition: ="CASOS"
+                        ProgressCurrent: =0
+                        ProgressTotal: =28
+                        ReviewHint: ="Biblioteca separada"
+                        ReviewState: ="Alineado"
+                        Subtitle: ="Un caso ya no crea la ingeniería desde cero. Revisa cómo una revisión aprobada se aplica al activo y qué decisiones contextuales quedan pendientes."
+                        Title: ="Registro de análisis"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - conFLAnalysisRegisterToolbar:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -99,99 +95,63 @@ Screens:
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
-                        Height: =92
+                        Height: =54
                         RadiusBottomLeft: =12
                         RadiusBottomRight: =12
                         RadiusTopLeft: =12
                         RadiusTopRight: =12
                         Width: =Parent.Width-48
                         X: =24
-                        Y: =120
+                        Y: =144
                       Children:
-                        - lblFLRegTotal:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =20
-                              Text: =Text(CountRows(colFLAnalysisCases))
-                              Width: =80
-                              X: =18
-                              Y: =20
-                        - lblFLRegTotalHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: ="casos"
-                              Width: =80
-                              X: =18
-                              Y: =54
-                        - lblFLRegReview:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0284C7")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =20
-                              Text: =Text(CountRows(Filter(colFLAnalysisCases,LifecycleStatus="InReview")))
-                              Width: =80
-                              X: =130
-                              Y: =20
-                        - lblFLRegReviewHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: ="en revisión"
-                              Width: =100
-                              X: =130
-                              Y: =54
-                        - lblFLRegApproved:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#15803D")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =20
-                              Text: =Text(CountRows(Filter(colFLAnalysisCases,LifecycleStatus="Approved")))
-                              Width: =80
-                              X: =260
-                              Y: =20
-                        - lblFLRegApprovedHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: ="aprobados"
-                              Width: =100
-                              X: =260
-                              Y: =54
-                        - btnFLRegOpenCurrent:
+                        - btnFLAnalysisRegisterLibrary:
                             Control: Classic/Button@2.2.0
                             Properties:
                               BorderColor: =ColorValue("#0284C7")
                               BorderThickness: =1
-                              Color: =Color.White
-                              Fill: =ColorValue("#0284C7")
-                              FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              HoverFill: =ColorValue("#0369A1")
-                              OnSelect: =Navigate(scr_FL_CaseOverview,ScreenTransition.None)
-                              RadiusBottomLeft: =9
-                              RadiusBottomRight: =9
-                              RadiusTopLeft: =9
-                              RadiusTopRight: =9
-                              Size: =10
-                              Text: ="Abrir P-101"
-                              Width: =140
-                              X: =Parent.Width-Self.Width-18
-                              Y: =26
-                  - conFLRegTable:
+                              Color: =ColorValue("#0369A1")
+                              Fill: =ColorValue("#F0F9FF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_FmeaLibrary,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Biblioteca AMEF"
+                              Width: =145
+                              X: =12
+                              Y: =11
+                        - btnFLAnalysisRegisterApplications:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#7C3AED")
+                              BorderThickness: =1
+                              Color: =ColorValue("#6D28D9")
+                              Fill: =ColorValue("#F5F3FF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_AssetApplication,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Aplicaciones a activos"
+                              Width: =170
+                              X: =167
+                              Y: =11
+                        - lblFLAnalysisRegisterRule:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =8
+                              Text: ="Biblioteca → aplicación → caso. El caso conserva contexto y decisiones; no duplica la revisión."
+                              Width: =Parent.Width-365
+                              Wrap: =true
+                              X: =355
+                              Y: =17
+                  - conFLAnalysisRegisterList:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -199,189 +159,151 @@ Screens:
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
-                        Height: =Parent.Height-246
+                        Height: =Parent.Height-222
                         RadiusBottomLeft: =14
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
                         Width: =Parent.Width-48
                         X: =24
-                        Y: =226
+                        Y: =210
                       Children:
-                        - lblFLRegTableTitle:
+                        - lblFLAnalysisRegisterTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#0F172A")
                               FontWeight: =FontWeight.Semibold
-                              Size: =14
-                              Text: ="Casos de análisis"
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =16
-                        - lblFLRegHeaderCase:
+                              Size: =11
+                              Text: ="Casos activos y aprobados"
+                              Width: =Parent.Width-32
+                              X: =16
+                              Y: =14
+                        - lblFLAnalysisRegisterHCase:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#64748B")
                               FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="CASO"
-                              Width: =80
-                              X: =18
-                              Y: =50
-                        - lblFLRegHeaderTitle:
+                              Size: =7
+                              Text: ="CASO / ACTIVO"
+                              Width: =230
+                              X: =16
+                              Y: =47
+                        - lblFLAnalysisRegisterHFmea:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#64748B")
                               FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="OBJETO / TÍTULO"
-                              Width: =Parent.Width*0.35
-                              X: =100
-                              Y: =50
-                        - lblFLRegHeaderStage:
+                              Size: =7
+                              Text: ="REVISIÓN / APLICACIÓN"
+                              Width: =180
+                              X: =330
+                              Y: =47
+                        - lblFLAnalysisRegisterHCrit:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#64748B")
                               FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="ETAPA"
+                              Size: =7
+                              Text: ="CRITICIDAD"
                               Width: =100
-                              X: =Parent.Width*0.52
-                              Y: =50
-                        - lblFLRegHeaderStatus:
+                              X: =530
+                              Y: =47
+                        - lblFLAnalysisRegisterHState:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#64748B")
                               FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="ESTADO"
-                              Width: =100
-                              X: =Parent.Width*0.66
-                              Y: =50
-                        - lblFLRegHeaderProgress:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="PROGRESO"
-                              Width: =90
-                              X: =Parent.Width*0.80
-                              Y: =50
-                        - galFLRegCases:
+                              Size: =7
+                              Text: ="ESTADO / PROGRESO"
+                              Width: =130
+                              X: =650
+                              Y: =47
+                        - galFLAnalysisRegister:
                             Control: Gallery@2.15.0
                             Variant: Vertical
                             Properties:
                               BorderColor: =Color.Transparent
-                              Height: =Parent.Height-88
+                              Height: =Parent.Height-82
                               Items: =colFLAnalysisCases
-                              ShowScrollbar: =true
-                              TemplateFill: =Color.Transparent
-                              TemplatePadding: =3
-                              TemplateSize: =62
+                              ShowScrollbar: =false
+                              TemplatePadding: =0
+                              TemplateSize: =72
                               Width: =Parent.Width-24
                               X: =12
-                              Y: =76
+                              Y: =72
                             Children:
-                              - lblFLRegCaseCode:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0284C7")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =10
-                                    Text: =ThisItem.CaseCode
-                                    Width: =70
-                                    X: =8
-                                    Y: =18
-                              - lblFLRegCaseTitle:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0F172A")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =10
-                                    Text: =ThisItem.Title
-                                    Width: =Parent.TemplateWidth*0.34
-                                    Wrap: =false
-                                    X: =88
-                                    Y: =12
-                              - lblFLRegCaseOwner:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =8
-                                    Text: =ThisItem.OwnerRole
-                                    Width: =Parent.TemplateWidth*0.34
-                                    Wrap: =false
-                                    X: =88
-                                    Y: =34
-                              - lblFLRegCaseStage:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: =ThisItem.CurrentStageId
-                                    Width: =90
-                                    X: =Parent.TemplateWidth*0.51
-                                    Y: =18
-                              - lblFLRegCaseStatus:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =If(ThisItem.LifecycleStatus="Approved",ColorValue("#15803D"),If(ThisItem.LifecycleStatus="InReview",ColorValue("#0369A1"),ColorValue("#64748B")))
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: =ThisItem.LifecycleStatus
-                                    Width: =100
-                                    X: =Parent.TemplateWidth*0.65
-                                    Y: =18
-                              - lblFLRegCaseProgress:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: =Text(ThisItem.ProgressPct) & "%"
-                                    Width: =60
-                                    X: =Parent.TemplateWidth*0.80
-                                    Y: =18
-                              - btnFLRegCaseOpen:
+                              - btnFLAnalysisRegisterRow:
                                   Control: Classic/Button@2.2.0
                                   Properties:
-                                    BorderColor: =ColorValue("#E2E8F0")
+                                    BorderColor: =If(ThisItem.AnalysisCaseId=varFLActiveCaseId,ColorValue("#0284C7"),ColorValue("#E2E8F0"))
                                     BorderThickness: =1
-                                    Color: =ColorValue("#0F172A")
-                                    Fill: =ColorValue("#FFFFFF")
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =32
+                                    Color: =Color.Transparent
+                                    Fill: =If(ThisItem.AnalysisCaseId=varFLActiveCaseId,ColorValue("#F0F9FF"),ColorValue("#FFFFFF"))
+                                    Height: =Parent.TemplateHeight-6
                                     HoverFill: =ColorValue("#F8FAFC")
                                     OnSelect: |-
                                       =
-                                      If(
-                                          ThisItem.CaseCode="P-101",
-                                          Set(varFLActiveCaseId,ThisItem.AnalysisCaseId);
-                                          Set(varFLActiveCaseCode,ThisItem.CaseCode);
-                                          Set(varFLActiveCaseTitle,ThisItem.CaseCode & " · " & ThisItem.Title);
-                                          Set(varFLCurrentStageId,ThisItem.CurrentStageId);
-                                          Navigate(scr_FL_CaseOverview,ScreenTransition.None)
-                                      )
+                                      Set(varFLActiveCaseId,ThisItem.AnalysisCaseId);
+                                      Set(varFLActiveCaseCode,ThisItem.CaseCode);
+                                      Set(varFLActiveAssetCode,ThisItem.TechnicalObjectCode);
+                                      Set(varFLActiveApplicationCode,ThisItem.ApplicationCode);
+                                      Set(varFLActiveCriticality,ThisItem.Criticality);
+                                      Set(varFLActiveFmeaRevisionCode,ThisItem.FmeaRevisionCode);
+                                      Navigate(scr_FL_CaseOverview,ScreenTransition.None)
+                                    PressedFill: =ColorValue("#E0F2FE")
                                     RadiusBottomLeft: =8
                                     RadiusBottomRight: =8
                                     RadiusTopLeft: =8
                                     RadiusTopRight: =8
+                                    Text: =""
+                                    Width: =Parent.TemplateWidth
+                                    X: =0
+                                    Y: =3
+                              - lblFLAnalysisRegisterCase:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
                                     Size: =9
-                                    Text: =If(ThisItem.CaseCode="P-101","Abrir","Vista demo")
-                                    Width: =90
-                                    X: =Parent.TemplateWidth-Self.Width-8
-                                    Y: =13
+                                    Text: =ThisItem.CaseCode & " · " & ThisItem.Title
+                                    Width: =300
+                                    Wrap: =false
+                                    X: =14
+                                    Y: =14
+                              - lblFLAnalysisRegisterFmea:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =8
+                                    Text: =ThisItem.FmeaRevisionCode & " · " & ThisItem.ApplicationCode
+                                    Width: =185
+                                    X: =318
+                                    Y: =14
+                              - lblFLAnalysisRegisterCrit:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#B45309")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: =ThisItem.Criticality
+                                    Width: =100
+                                    X: =518
+                                    Y: =14
+                              - lblFLAnalysisRegisterState:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =8
+                                    Text: =ThisItem.LifecycleStatus & " · " & Text(ThisItem.ProgressPct) & "%"
+                                    Width: =130
+                                    X: =638
+                                    Y: =14
