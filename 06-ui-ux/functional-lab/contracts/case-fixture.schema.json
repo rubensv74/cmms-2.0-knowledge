@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cmms2-case-fixture.schema.json",
+  "title": "CMMS 2.0 Functional Lab Case Fixture",
+  "type": "object",
+  "required": ["fixtureVersion", "caseId", "name", "disclaimer", "asset", "operationalContext", "evidence", "functions", "failureAnalysis", "risk", "rcm", "treatment", "plan", "governance", "effectiveness"],
+  "properties": {
+    "fixtureVersion": { "type": "string" },
+    "caseId": { "type": "string" },
+    "name": { "type": "string" },
+    "disclaimer": { "type": "string" },
+    "asset": { "type": "object" },
+    "operationalContext": { "type": "object" },
+    "evidence": { "type": "object" },
+    "functions": { "type": "object" },
+    "failureAnalysis": { "type": "object" },
+    "risk": { "type": "object" },
+    "rcm": { "type": "object" },
+    "treatment": { "type": "object" },
+    "plan": { "type": "object" },
+    "governance": { "type": "object" },
+    "effectiveness": { "type": "object" }
+  },
+  "additionalProperties": false
+}
