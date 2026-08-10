@@ -1,38 +1,136 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-RC1 — PREMIUM SIDEBAR RECOVERY
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-RC2 — PREMIUM SIDEBAR / HEATMAP CONTRACT MODEL
 #
-# Status: FULL VISUAL RECOVERY — PENDING ONE FINAL STUDIO SMOKE TEST
+# Status: PENDING POWER APPS STUDIO VALIDATION
 # Incident: FL-SC-001
-# Target component: cmp_FL_SidebarPro
+# Reference: working PULSE cmp_HeatMapPro
 #
-# AUTHORING RULE
-# - NO CustomProperties block in this pasteable Source Code surface.
-# - Public component contract will be created in Studio only when required.
-# - This recovery validates the complete premium visual body in one step.
+# PURPOSE
+# Restore the complete original Sidebar contract and visual body, changing only
+# the Input custom-property metadata to match the proven HeatMap pattern:
+# PropertyKind + DisplayName + Description + DataType + Default.
 #
-# INCLUDED
-# - final brand block
-# - 10-item Functional Lab journey navigation
-# - Gallery with local selection state
-# - premium active/hover states
-# - P-101 current case footer
-# - no external assets, globals or host navigation dependencies
-#
-# VALIDATION
-# 1. Replace complete component Source Code.
-# 2. Save.
-# 3. Insert ONE NEW instance on an isolated screen.
-# 4. Click several journey rows and confirm local selected state changes.
-# 5. Save and reopen.
-# 6. Confirm no new App Checker errors attributable to the component.
+# IMPORTANT
+# This test intentionally keeps Text, Boolean, Color, Table, Output and Event.
+# We are testing the complete component, not another primitive micro-test.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
     DefinitionType: CanvasComponent
+    CustomProperties:
+      AppTitle:
+        PropertyKind: Input
+        DisplayName: AppTitle
+        Description: Product title shown in the sidebar header
+        DataType: Text
+        Default: ="CMMS 2.0"
+      AppSubtitle:
+        PropertyKind: Input
+        DisplayName: AppSubtitle
+        Description: Product subtitle shown below the main title
+        DataType: Text
+        Default: ="Functional Lab"
+      EnvironmentLabel:
+        PropertyKind: Input
+        DisplayName: EnvironmentLabel
+        Description: Environment or experience label shown in the sidebar
+        DataType: Text
+        Default: ="CONCEPT LAB"
+      ActiveKey:
+        PropertyKind: Input
+        DisplayName: ActiveKey
+        Description: Navigation key currently active in the host workspace
+        DataType: Text
+        Default: ="Overview"
+      NavItems:
+        PropertyKind: Input
+        DisplayName: NavItems
+        Description: Navigation table with Order, Key, Label and IconKey
+        DataType: Table
+        Default: |-
+          =
+          Table(
+              {Order:10, Key:"Overview", Label:"Overview", IconKey:"Overview"},
+              {Order:20, Key:"Context", Label:"Case & Context", IconKey:"Context"},
+              {Order:30, Key:"Functions", Label:"Functions & Failures", IconKey:"Functions"},
+              {Order:40, Key:"Risk", Label:"Effects & Risk", IconKey:"Risk"},
+              {Order:50, Key:"Decision", Label:"RCM Decision", IconKey:"Decision"},
+              {Order:60, Key:"Plan", Label:"Plan Design", IconKey:"Plan"},
+              {Order:70, Key:"Governance", Label:"Governance", IconKey:"Governance"},
+              {Order:80, Key:"Improve", Label:"Effectiveness", IconKey:"Improve"}
+          )
+      IsCollapsed:
+        PropertyKind: Input
+        DisplayName: IsCollapsed
+        Description: Collapse the sidebar to its compact navigation state
+        DataType: Boolean
+        Default: =false
+      CurrentCaseCode:
+        PropertyKind: Input
+        DisplayName: CurrentCaseCode
+        Description: Code of the current Functional Lab case
+        DataType: Text
+        Default: ="P-101"
+      CurrentCaseName:
+        PropertyKind: Input
+        DisplayName: CurrentCaseName
+        Description: Name of the current Functional Lab case
+        DataType: Text
+        Default: ="Cooling water centrifugal pump"
+      UserRole:
+        PropertyKind: Input
+        DisplayName: UserRole
+        Description: Role label shown in the sidebar footer
+        DataType: Text
+        Default: ="Functional reviewer"
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Main sidebar surface color
+        DataType: Color
+        Default: =ColorValue("#07111F")
+      SurfaceAltColor:
+        PropertyKind: Input
+        DisplayName: SurfaceAltColor
+        Description: Alternate sidebar surface color
+        DataType: Color
+        Default: =ColorValue("#0B1B2E")
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Primary sidebar text color
+        DataType: Color
+        Default: =ColorValue("#F8FAFC")
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Secondary sidebar text color
+        DataType: Color
+        Default: =ColorValue("#94A3B8")
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Accent color used for selected and highlighted states
+        DataType: Color
+        Default: =ColorValue("#38BDF8")
+      ActiveFillColor:
+        PropertyKind: Input
+        DisplayName: ActiveFillColor
+        Description: Background fill used by the active navigation item
+        DataType: Color
+        Default: =ColorValue("#12395A")
+      OnSelectItem:
+        PropertyKind: Event
+        ReturnType: None
+        Default: =
+      SelectedKey:
+        PropertyKind: Output
+        DataType: Text
 
     Properties:
-      Fill: =ColorValue("#07111F")
-      Height: =768
-      Width: =232
+      Fill: =cmp_FL_SidebarPro.SurfaceColor
+      Height: =900
+      SelectedKey: =Coalesce(galFLNav.Selected.Key, cmp_FL_SidebarPro.ActiveKey, "")
+      Width: =If(cmp_FL_SidebarPro.IsCollapsed,76,220)
 
     Children:
       - conFLSB_Root:
@@ -42,7 +140,7 @@ ComponentDefinitions:
             BorderColor: =RGBA(0,0,0,0)
             BorderThickness: =0
             DropShadow: =DropShadow.None
-            Fill: =ColorValue("#07111F")
+            Fill: =cmp_FL_SidebarPro.SurfaceColor
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
@@ -52,114 +150,96 @@ ComponentDefinitions:
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =Parent.Width
-
           Children:
             - conFLSB_Brand:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
-                  BorderColor: =RGBA(0,0,0,0)
+                  BorderColor: =RGBA(255,255,255,0.06)
                   BorderThickness: =0
                   DropShadow: =DropShadow.None
-                  Fill: =ColorValue("#07111F")
+                  Fill: =cmp_FL_SidebarPro.SurfaceColor
                   FillPortions: =0
-                  Height: =108
-                  LayoutMinHeight: =108
+                  Height: =96
+                  LayoutMinHeight: =96
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                   Width: =Parent.Width
-
                 Children:
                   - conFLSB_Mark:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
-                        BorderColor: =RGBA(125,211,252,0.22)
+                        BorderColor: =RGBA(255,255,255,0.10)
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#0B1B2E")
-                        Height: =44
-                        RadiusBottomLeft: =11
-                        RadiusBottomRight: =11
-                        RadiusTopLeft: =11
-                        RadiusTopRight: =11
-                        Width: =44
-                        X: =16
-                        Y: =20
-
+                        Fill: =cmp_FL_SidebarPro.SurfaceAltColor
+                        Height: =42
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =42
+                        X: =17
+                        Y: =18
                       Children:
                         - lblFLSB_Mark:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
                               AutoHeight: =true
-                              Color: =ColorValue("#38BDF8")
+                              Color: =cmp_FL_SidebarPro.AccentColor
                               FontWeight: =FontWeight.Bold
+                              Height: =26
                               Size: =13
                               Text: ="C2"
                               Width: =Parent.Width
                               Wrap: =false
                               X: =0
-                              Y: =10
-
+                              Y: =8
                   - lblFLSB_AppTitle:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#F8FAFC")
+                        Color: =cmp_FL_SidebarPro.TextColor
                         FontWeight: =FontWeight.Semibold
+                        Height: =24
                         Size: =13
-                        Text: ="CMMS 2.0"
-                        Width: =146
+                        Text: =cmp_FL_SidebarPro.AppTitle
+                        Visible: =!cmp_FL_SidebarPro.IsCollapsed
+                        Width: =Parent.Width-76
                         Wrap: =false
-                        X: =72
-                        Y: =20
-
+                        X: =70
+                        Y: =19
                   - lblFLSB_AppSubtitle:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#94A3B8")
+                        Color: =cmp_FL_SidebarPro.MutedTextColor
+                        Height: =18
                         Size: =9
-                        Text: ="Functional Lab"
-                        Width: =146
+                        Text: =cmp_FL_SidebarPro.AppSubtitle
+                        Visible: =!cmp_FL_SidebarPro.IsCollapsed
+                        Width: =Parent.Width-76
                         Wrap: =false
-                        X: =72
-                        Y: =47
-
-                  - conFLSB_Environment:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
+                        X: =70
+                        Y: =45
+                  - lblFLSB_Environment:
+                      Control: ModernText@1.0.0
                       Properties:
-                        BorderColor: =RGBA(56,189,248,0.18)
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#0B2A43")
-                        Height: =22
-                        RadiusBottomLeft: =11
-                        RadiusBottomRight: =11
-                        RadiusTopLeft: =11
-                        RadiusTopRight: =11
-                        Width: =92
-                        X: =72
-                        Y: =72
-
-                      Children:
-                        - lblFLSB_Environment:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Align: =Align.Center
-                              AutoHeight: =true
-                              Color: =ColorValue("#7DD3FC")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =7
-                              Text: ="CONCEPT LAB"
-                              Width: =Parent.Width
-                              Wrap: =false
-                              X: =0
-                              Y: =5
+                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
+                        AutoHeight: =true
+                        Color: =cmp_FL_SidebarPro.MutedTextColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =18
+                        Size: =8
+                        Text: =cmp_FL_SidebarPro.EnvironmentLabel
+                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-34)
+                        Wrap: =false
+                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,17)
+                        Y: =70
 
             - recFLSB_DividerTop:
                 Control: Rectangle@2.3.0
@@ -174,98 +254,63 @@ ComponentDefinitions:
 
             - conFLSB_Menu:
                 Control: GroupContainer@1.5.0
-                Variant: ManualLayout
+                Variant: AutoLayout
                 Properties:
-                  BorderColor: =RGBA(0,0,0,0)
-                  BorderThickness: =0
                   DropShadow: =DropShadow.None
-                  Fill: =ColorValue("#07111F")
+                  Fill: =Color.Transparent
                   FillPortions: =1
-                  LayoutMinHeight: =470
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =280
+                  PaddingBottom: =10
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =12
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                   Width: =Parent.Width
-
                 Children:
-                  - lblFLSB_MenuTitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#64748B")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =7
-                        Text: ="FUNCTIONAL JOURNEY"
-                        Width: =196
-                        Wrap: =false
-                        X: =18
-                        Y: =12
-
                   - galFLNav:
                       Control: Gallery@2.15.0
                       Variant: Vertical
                       Properties:
                         BorderColor: =RGBA(0,0,0,0)
-                        Height: =Parent.Height-38
+                        FillPortions: =1
                         Items: |-
                           =
-                          Table(
-                              {Order:0, Key:"Overview", Label:"Overview", IconKey:"Overview"},
-                              {Order:10, Key:"Context", Label:"Case & Context", IconKey:"Context"},
-                              {Order:20, Key:"Functions", Label:"Functions & Failures", IconKey:"Functions"},
-                              {Order:30, Key:"Risk", Label:"AMEF & Risk", IconKey:"Risk"},
-                              {Order:40, Key:"Decision", Label:"RCM Decision", IconKey:"Decision"},
-                              {Order:50, Key:"Economics", Label:"Economics & Task", IconKey:"Plan"},
-                              {Order:60, Key:"Execution", Label:"Interval & Execution", IconKey:"Plan"},
-                              {Order:70, Key:"Traceability", Label:"Traceability & QA", IconKey:"Governance"},
-                              {Order:80, Key:"Publication", Label:"Review & Publication", IconKey:"Governance"},
-                              {Order:90, Key:"Improve", Label:"Effectiveness", IconKey:"Improve"}
+                          SortByColumns(
+                              cmp_FL_SidebarPro.NavItems,
+                              "Order",
+                              SortOrder.Ascending
                           )
+                        LayoutMinHeight: =240
+                        OnSelect: =cmp_FL_SidebarPro.OnSelectItem()
                         ShowScrollbar: =false
-                        TemplateFill: =Color.Transparent
-                        TemplatePadding: =2
-                        TemplateSize: =44
-                        Width: =Parent.Width-12
-                        X: =6
-                        Y: =38
-
+                        TemplateFill: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),cmp_FL_SidebarPro.ActiveFillColor,Color.Transparent)
+                        TemplatePadding: =3
+                        TemplateSize: =50
+                        Width: =Parent.Width
                       Children:
-                        - conFLSB_RowSurface:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
-                            Properties:
-                              BorderColor: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),RGBA(56,189,248,0.18),RGBA(0,0,0,0))
-                              BorderThickness: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),1,0)
-                              DropShadow: =DropShadow.None
-                              Fill: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),ColorValue("#12395A"),Color.Transparent)
-                              Height: =Parent.TemplateHeight-4
-                              RadiusBottomLeft: =8
-                              RadiusBottomRight: =8
-                              RadiusTopLeft: =8
-                              RadiusTopRight: =8
-                              Width: =Parent.TemplateWidth-4
-                              X: =2
-                              Y: =2
-
                         - recFLSB_ActiveBar:
                             Control: Rectangle@2.3.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
                               BorderThickness: =0
-                              Fill: =ColorValue("#38BDF8")
-                              Height: =Parent.TemplateHeight-14
-                              Visible: =ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview")
+                              Fill: =cmp_FL_SidebarPro.AccentColor
+                              Height: =Parent.TemplateHeight-12
+                              Visible: =Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey))
                               Width: =3
-                              X: =2
-                              Y: =7
-
+                              X: =0
+                              Y: =6
                         - icoFLSB_Item:
                             Control: Classic/Icon@2.5.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
-                              Color: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),Color.White,ColorValue("#C7D6E8"))
-                              Height: =20
+                              Color: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),Color.White,ColorValue("#C7D6E8"))
+                              Height: =22
                               HoverColor: =Color.White
                               Icon: |-
                                 =
@@ -279,29 +324,31 @@ ComponentDefinitions:
                                     "Plan", Icon.Trending,
                                     "Governance", Icon.Lock,
                                     "Improve", Icon.TrendingUpwards,
+                                    "Settings", Icon.Settings,
                                     Icon.Home
                                 )
-                              Width: =20
-                              X: =16
-                              Y: =12
-
+                              OnSelect: =Select(Parent)
+                              Width: =22
+                              X: =If(cmp_FL_SidebarPro.IsCollapsed,(Parent.TemplateWidth-Self.Width)/2,16)
+                              Y: =14
                         - lblFLSB_Item:
                             Control: Label@2.5.1
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
                               BorderStyle: =BorderStyle.None
                               BorderThickness: =0
-                              Color: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),Color.White,ColorValue("#C7D6E8"))
+                              Color: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),Color.White,ColorValue("#C7D6E8"))
                               Font: =Font.'Segoe UI'
-                              FontWeight: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),FontWeight.Semibold,FontWeight.Normal)
+                              FontWeight: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),FontWeight.Semibold,FontWeight.Normal)
                               Height: =Parent.TemplateHeight
-                              Size: =9
+                              OnSelect: =Select(Parent)
+                              Size: =10
                               Text: =ThisItem.Label
-                              Width: =Parent.TemplateWidth-58
+                              Visible: =!cmp_FL_SidebarPro.IsCollapsed
+                              Width: =Parent.TemplateWidth-54
                               Wrap: =false
                               X: =48
                               Y: =0
-
                         - btnFLSB_Hit:
                             Control: Classic/Button@2.2.0
                             Properties:
@@ -310,7 +357,7 @@ ComponentDefinitions:
                               BorderThickness: =0
                               Color: =Color.Transparent
                               Fill: =Color.Transparent
-                              Height: =Parent.TemplateHeight-4
+                              Height: =Parent.TemplateHeight
                               HoverFill: =RGBA(255,255,255,0.05)
                               OnSelect: =Select(Parent)
                               PressedFill: =RGBA(56,189,248,0.10)
@@ -319,9 +366,9 @@ ComponentDefinitions:
                               RadiusTopLeft: =8
                               RadiusTopRight: =8
                               Text: =""
-                              Width: =Parent.TemplateWidth-4
-                              X: =2
-                              Y: =2
+                              Width: =Parent.TemplateWidth
+                              X: =0
+                              Y: =0
 
             - recFLSB_DividerBottom:
                 Control: Rectangle@2.3.0
@@ -338,84 +385,68 @@ ComponentDefinitions:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
-                  BorderColor: =RGBA(0,0,0,0)
-                  BorderThickness: =0
                   DropShadow: =DropShadow.None
-                  Fill: =ColorValue("#0B1B2E")
+                  Fill: =cmp_FL_SidebarPro.SurfaceAltColor
                   FillPortions: =0
-                  Height: =136
-                  LayoutMinHeight: =136
+                  Height: =132
+                  LayoutMinHeight: =132
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                   Width: =Parent.Width
-
                 Children:
                   - lblFLSB_CaseLabel:
                       Control: ModernText@1.0.0
                       Properties:
+                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
                         AutoHeight: =true
-                        Color: =ColorValue("#64748B")
+                        Color: =cmp_FL_SidebarPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
-                        Text: ="CURRENT CASE"
-                        Width: =198
+                        Height: =18
+                        Size: =8
+                        Text: =If(cmp_FL_SidebarPro.IsCollapsed,"CASE","CURRENT CASE")
+                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-28)
                         Wrap: =false
-                        X: =16
-                        Y: =14
-
+                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
+                        Y: =12
                   - lblFLSB_CaseCode:
                       Control: ModernText@1.0.0
                       Properties:
+                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
                         AutoHeight: =true
-                        Color: =ColorValue("#F8FAFC")
+                        Color: =cmp_FL_SidebarPro.TextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =11
-                        Text: ="P-101"
-                        Width: =198
+                        Height: =22
+                        Size: =10
+                        Text: =Coalesce(cmp_FL_SidebarPro.CurrentCaseCode,"No case")
+                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-28)
                         Wrap: =false
-                        X: =16
-                        Y: =38
-
+                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
+                        Y: =34
                   - lblFLSB_CaseName:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#94A3B8")
+                        Color: =cmp_FL_SidebarPro.MutedTextColor
+                        Height: =34
                         Size: =8
-                        Text: ="Cooling water centrifugal pump"
-                        Width: =198
+                        Text: =cmp_FL_SidebarPro.CurrentCaseName
+                        Visible: =!cmp_FL_SidebarPro.IsCollapsed
+                        Width: =Parent.Width-28
                         Wrap: =true
-                        X: =16
-                        Y: =64
-
-                  - conFLSB_StatusDot:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =RGBA(34,197,94,0.22)
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#22C55E")
-                        Height: =8
-                        RadiusBottomLeft: =8
-                        RadiusBottomRight: =8
-                        RadiusTopLeft: =8
-                        RadiusTopRight: =8
-                        Width: =8
-                        X: =16
-                        Y: =112
-
-                  - lblFLSB_Status:
+                        X: =14
+                        Y: =58
+                  - lblFLSB_Role:
                       Control: ModernText@1.0.0
                       Properties:
+                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
                         AutoHeight: =true
-                        Color: =ColorValue("#7DD3FC")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =7
-                        Text: ="FUNCTIONAL REVIEW · AMEF + RCM"
-                        Width: =184
+                        Color: =cmp_FL_SidebarPro.AccentColor
+                        Height: =18
+                        Size: =8
+                        Text: =If(cmp_FL_SidebarPro.IsCollapsed,"LAB",cmp_FL_SidebarPro.UserRole)
+                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-28)
                         Wrap: =false
-                        X: =32
-                        Y: =106
+                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
+                        Y: =104
