@@ -1,6 +1,6 @@
 # CMMS 2.0 FUNCTIONAL LAB — F01-00B — PREMIUM PAGE HEADER
 #
-# Status: INSTANCE_SAFE PASS — VISUAL QA CORRECTION PENDING
+# Status: INSTANCE_SAFE PASS — COMFORTABLE SCALE QA PENDING
 # Target component: cmp_FL_PageHeaderPro
 #
 # REFERENCE STRATEGY
@@ -10,16 +10,16 @@
 #   PropertyKind + DisplayName + Description + DataType + Default.
 # - No globals, external assets or hidden business logic.
 #
-# VISUAL CORRECTION
-# - Instance insertion is stable.
-# - Compact context cards use two visual text levels only.
-# - CaseType and JourneyHint are composed into the primary value line.
-# - ReviewHint remains in the public contract for later host use but is not rendered in the compact card.
+# COMFORTABLE BASE SCALE
+# - Typography increased for desktop readability.
+# - Geometry increased proportionally to avoid clipping/overlap.
+# - This is the default visual density for Functional Lab.
+# - Future Normal / Comfortable / Large switching belongs to the App Shell.
 #
-# SINGLE QA GATE
+# QA GATE
 # 1. Replace complete component Source Code.
 # 2. Save.
-# 3. Confirm cards render without overlap/clipping.
+# 3. Confirm readable typography and no clipping/overlap.
 # 4. Save/reopen.
 # 5. If stable, continue directly to F01-01 Premium App Shell.
 
@@ -191,7 +191,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =cmp_FL_PageHeaderPro.SurfaceColor
-      Height: =112
+      Height: =132
       Width: =1200
 
     Children:
@@ -219,14 +219,14 @@ ComponentDefinitions:
                   BorderThickness: =0
                   DropShadow: =DropShadow.None
                   Fill: =Color.Transparent
-                  Height: =82
+                  Height: =98
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =Max(340,conFLPH_Case.X-48)
+                  Width: =Max(360,conFLPH_Case.X-48)
                   X: =24
-                  Y: =12
+                  Y: =14
 
                 Children:
                   - lblFLPH_Eyebrow:
@@ -235,7 +235,7 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.AccentColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =8
+                        Size: =10
                         Text: =Upper(cmp_FL_PageHeaderPro.WorkspaceCode) & "  ·  " & Upper(cmp_FL_PageHeaderPro.Archetype)
                         Width: =Parent.Width
                         Wrap: =false
@@ -248,24 +248,24 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.TextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =20
+                        Size: =22
                         Text: =cmp_FL_PageHeaderPro.Title
                         Width: =Parent.Width
                         Wrap: =false
                         X: =0
-                        Y: =21
+                        Y: =25
 
                   - lblFLPH_Subtitle:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.MutedTextColor
-                        Size: =9
+                        Size: =11
                         Text: =cmp_FL_PageHeaderPro.Subtitle
                         Width: =Parent.Width
                         Wrap: =false
                         X: =0
-                        Y: =54
+                        Y: =63
 
             - conFLPH_Case:
                 Control: GroupContainer@1.5.0
@@ -275,14 +275,14 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =cmp_FL_PageHeaderPro.SurfaceAltColor
-                  Height: =62
+                  Height: =74
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
                   RadiusTopLeft: =10
                   RadiusTopRight: =10
-                  Width: =184
+                  Width: =200
                   X: =conFLPH_Journey.X-Self.Width-10
-                  Y: =18
+                  Y: =20
 
                 Children:
                   - lblFLPH_CaseLabel:
@@ -291,12 +291,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
+                        Size: =9
                         Text: ="CURRENT CASE"
-                        Width: =Parent.Width-24
+                        Width: =Parent.Width-28
                         Wrap: =false
-                        X: =12
-                        Y: =10
+                        X: =14
+                        Y: =12
 
                   - lblFLPH_CaseValue:
                       Control: ModernText@1.0.0
@@ -304,12 +304,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.TextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =11
                         Text: =cmp_FL_PageHeaderPro.CaseCode & "  ·  " & cmp_FL_PageHeaderPro.CaseType
-                        Width: =Parent.Width-24
+                        Width: =Parent.Width-28
                         Wrap: =false
-                        X: =12
-                        Y: =32
+                        X: =14
+                        Y: =40
 
             - conFLPH_Journey:
                 Control: GroupContainer@1.5.0
@@ -319,14 +319,14 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =cmp_FL_PageHeaderPro.SurfaceAltColor
-                  Height: =62
+                  Height: =74
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
                   RadiusTopLeft: =10
                   RadiusTopRight: =10
-                  Width: =140
+                  Width: =156
                   X: =conFLPH_Status.X-Self.Width-10
-                  Y: =18
+                  Y: =20
 
                 Children:
                   - lblFLPH_JourneyLabel:
@@ -335,12 +335,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
+                        Size: =9
                         Text: ="JOURNEY"
-                        Width: =Parent.Width-24
+                        Width: =Parent.Width-28
                         Wrap: =false
-                        X: =12
-                        Y: =10
+                        X: =14
+                        Y: =12
 
                   - lblFLPH_JourneyValue:
                       Control: ModernText@1.0.0
@@ -348,12 +348,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.TextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =11
                         Text: =cmp_FL_PageHeaderPro.JourneyPosition & "  ·  " & cmp_FL_PageHeaderPro.JourneyHint
-                        Width: =Parent.Width-24
+                        Width: =Parent.Width-28
                         Wrap: =false
-                        X: =12
-                        Y: =32
+                        X: =14
+                        Y: =40
 
             - conFLPH_Status:
                 Control: GroupContainer@1.5.0
@@ -363,14 +363,14 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =cmp_FL_PageHeaderPro.SuccessSoftColor
-                  Height: =62
+                  Height: =74
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
                   RadiusTopLeft: =10
                   RadiusTopRight: =10
-                  Width: =176
+                  Width: =194
                   X: =Parent.Width-Self.Width-24
-                  Y: =18
+                  Y: =20
 
                 Children:
                   - conFLPH_StatusDot:
@@ -381,14 +381,14 @@ ComponentDefinitions:
                         BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Fill: =cmp_FL_PageHeaderPro.SuccessColor
-                        Height: =8
-                        RadiusBottomLeft: =8
-                        RadiusBottomRight: =8
-                        RadiusTopLeft: =8
-                        RadiusTopRight: =8
-                        Width: =8
-                        X: =12
-                        Y: =14
+                        Height: =9
+                        RadiusBottomLeft: =9
+                        RadiusBottomRight: =9
+                        RadiusTopLeft: =9
+                        RadiusTopRight: =9
+                        Width: =9
+                        X: =14
+                        Y: =16
 
                   - lblFLPH_StatusLabel:
                       Control: ModernText@1.0.0
@@ -396,12 +396,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.SuccessMutedTextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
+                        Size: =9
                         Text: ="REVIEW STATE"
-                        Width: =Parent.Width-36
+                        Width: =Parent.Width-42
                         Wrap: =false
-                        X: =28
-                        Y: =10
+                        X: =32
+                        Y: =12
 
                   - lblFLPH_StatusValue:
                       Control: ModernText@1.0.0
@@ -409,12 +409,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =cmp_FL_PageHeaderPro.SuccessTextColor
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =11
                         Text: =cmp_FL_PageHeaderPro.ReviewState
-                        Width: =Parent.Width-24
+                        Width: =Parent.Width-28
                         Wrap: =false
-                        X: =12
-                        Y: =32
+                        X: =14
+                        Y: =40
 
             - recFLPH_ProgressTrack:
                 Control: Rectangle@2.3.0
@@ -422,10 +422,10 @@ ComponentDefinitions:
                   BorderColor: =RGBA(0,0,0,0)
                   BorderThickness: =0
                   Fill: =cmp_FL_PageHeaderPro.BorderColor
-                  Height: =2
+                  Height: =3
                   Width: =Parent.Width-48
                   X: =24
-                  Y: =105
+                  Y: =123
 
             - recFLPH_ProgressValue:
                 Control: Rectangle@2.3.0
@@ -433,13 +433,13 @@ ComponentDefinitions:
                   BorderColor: =RGBA(0,0,0,0)
                   BorderThickness: =0
                   Fill: =cmp_FL_PageHeaderPro.AccentColor
-                  Height: =2
+                  Height: =3
                   Width: |-
                     =If(
                         cmp_FL_PageHeaderPro.ProgressCurrent <= 0,
                         0,
                         Max(
-                            44,
+                            48,
                             Min(
                                 Parent.Width-48,
                                 (Parent.Width-48) * cmp_FL_PageHeaderPro.ProgressCurrent / Max(1,cmp_FL_PageHeaderPro.ProgressTotal)
@@ -447,4 +447,4 @@ ComponentDefinitions:
                         )
                     )
                   X: =24
-                  Y: =105
+                  Y: =123
