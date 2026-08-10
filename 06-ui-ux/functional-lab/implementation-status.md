@@ -2,46 +2,78 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
-**Gate actual:** `F01-00A-RC2 HeatMap-style custom property contract` — PENDING STUDIO VALIDATION
+**Último gate superado:** `F01-00A-RC2 HeatMap-style custom property contract` — INSTANCE_SAFE PASS  
+**Gate actual:** `F01-00B cmp_FL_PageHeaderPro` — READY TO CONTINUE
 
 ## 1. Estado de incrementos
 
 | Incremento | Estado | Resultado |
 |---|---|---|
 | F00-01..F00-09 | completed | Base funcional, journey, fixture, arquitectura y handoff definidos. |
-| F01-00 Auditoría Power Apps Foundation | active | Compatibilidad real en revisión con referencias PULSE. |
-| F01-00A cmp_FL_SidebarPro | review-required | FL-SC-001 reabierto tras aparecer un contraejemplo funcional con CustomProperties. |
+| F01-00 Auditoría Power Apps Foundation | active | Compatibilidad contrastada con referencias reales PULSE. |
+| F01-00A cmp_FL_SidebarPro | validated-pass | RC2 completo con CustomProperties y contrato HeatMap-style es instance-safe. |
 | F01-00A-R1..R4 | validated-pass | Baselines y controles estáticos validados. |
-| F01-00A-R5 | failed-instance | La declaración concreta de CustomProperties usada en el Sidebar reprodujo cierre. |
-| F01-00A-R5-TM / TB | validated-pass | Input/Text creado en Studio y binding desde YAML funcionaron. |
-| F01-00A-RC2 | pending-user-validation | Sidebar completo con contrato CustomProperties corregido siguiendo `cmp_HeatMapPro`. |
-| F01-00B cmp_FL_PageHeaderPro | blocked-by-sidebar | No avanzar hasta resultado RC2. |
-| F01-01 Premium App Shell Foundation | blocked-by-components | Espera Sidebar + PageHeader. |
+| F01-00A-R5 | failed-instance | La forma reducida de contrato usada inicialmente reprodujo el cierre. |
+| F01-00A-R5-TM / TB | validated-pass | Propiedad Studio + binding YAML demostraron que el tipo Text no era la causa. |
+| F01-00A-RC2 | validated-pass | Sidebar completo: Inputs, Table, Output, Event y bindings; instancia estable. |
+| F01-00B cmp_FL_PageHeaderPro | current | Debe construirse usando como referencia contractual un componente PULSE instance-safe. |
+| F01-01 Premium App Shell Foundation | blocked-by-pageheader | Se prepara tras validar PageHeader. |
+| F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
+| F01-03 Adaptador P-101 | planned | JSON → colecciones Power Fx. |
+| F01-04 Navegación base | planned | Navegación real entre workspaces. |
+| F01-05 WS-01 Contexto visual premium | planned | Object 360 para caso/contexto. |
 
-## 2. Corrección de diagnóstico
+## 2. Hallazgo RC2
 
-La afirmación anterior `CustomProperties en YAML = inseguro` queda retirada.
+`cmp_HeatMapPro` de PULSE demostró que `CustomProperties` es compatible con Source Code en componentes complejos.
 
-`cmp_HeatMapPro` de PULSE demuestra que un CanvasComponent puede usar extensamente CustomProperties de múltiples tipos, Outputs y Events y funcionar correctamente.
-
-El primer diferencial objetivo encontrado es:
+El Sidebar original utilizaba una declaración reducida de Inputs, mientras la referencia estable utiliza:
 
 ```text
-HEATMAP FUNCIONAL
-Input → PropertyKind + DisplayName + Description + DataType + Default
-
-SIDEBAR FALLIDO
-Input → PropertyKind + DataType + Default
+PropertyKind
+DisplayName
+Description
+DataType
+Default
 ```
 
-El Sidebar original omitía `DisplayName` y `Description` en sus Inputs.
+RC2 restauró el contrato público completo del Sidebar y normalizó sus Inputs según ese patrón.
 
-## 3. Próximo incremento
+Resultado real:
 
-RC2 recupera el Sidebar completo y conserva su contrato público. Solo normaliza la definición de Inputs al patrón observado en HeatMap.
+```text
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
+```
 
-No habrá más micro-pruebas por Text/Boolean/Color/Table salvo que RC2 vuelva a fallar.
+## 3. Regla de diseño/autoría vigente
 
-## 4. Continuidad
+```text
+CustomProperties       → PERMITIDO
+Contrato nuevo         → copiar referencia instance-safe equivalente
+Inputs                 → preservar patrón completo de metadatos de la referencia
+Outputs / Events       → copiar patrón por PropertyKind, no por intuición
+Instance smoke test    → obligatorio
+```
 
-> Un único smoke test de RC2 decidirá el siguiente paso. Si pasa, se continúa directamente con `cmp_FL_PageHeaderPro`. Si falla, se compara el siguiente delta estructural contra `cmp_HeatMapPro`.
+No se elimina el contrato público como workaround por defecto.
+
+## 4. FL-SC-001
+
+**Estado:** `RESOLVED — CORRECTIVE PATTERN VALIDATED`.
+
+La causa interna exacta no se persigue más porque RC2 aporta un patrón correctivo suficiente para continuar el producto sin riesgo conocido.
+
+## 5. Continuidad
+
+El siguiente incremento vuelve al objetivo funcional:
+
+```text
+F01-00B cmp_FL_PageHeaderPro
+        ↓
+INSTANCE_SAFE
+        ↓
+F01-01 Premium App Shell Foundation
+```
+
+Antes del YAML de PageHeader se debe seleccionar y comparar una referencia PULSE estable con contrato público similar.
