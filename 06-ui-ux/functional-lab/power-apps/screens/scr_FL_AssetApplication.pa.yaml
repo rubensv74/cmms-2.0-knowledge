@@ -1,0 +1,201 @@
+Screens:
+  scr_FL_AssetApplication:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Strategy")
+
+    Children:
+      - conFLAssetApplicationRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLAssetApplicationNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveFmeaCode
+                  CurrentCaseName: ="Aplicaciones a activos"
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLAssetApplicationNav.SelectedKey);
+                    Switch(
+                        cmpFLAssetApplicationNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+
+            - conFLAssetApplicationMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLAssetApplicationNav.Width
+                  X: =cmpFLAssetApplicationNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLAssetApplicationHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="APLICACIÓN DE INGENIERÍA"
+                        CaseCode: =varFLActiveFmeaCode
+                        CaseType: ="Revisión " & varFLActiveFmeaRevisionCode
+                        Height: =132
+                        JourneyHint: ="Una revisión · varios activos · perfiles contextuales"
+                        JourneyPosition: ="APLICACIÓN"
+                        ProgressCurrent: =0
+                        ProgressTotal: =28
+                        ReviewHint: ="No duplica biblioteca"
+                        ReviewState: ="Contextual"
+                        Subtitle: ="La revisión AMEF se reutiliza. Criticidad, servicio y redundancia pueden ajustar aplicabilidad o frecuencia sin copiar toda la ingeniería."
+                        Title: ="Aplicación a activos"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+
+                  - cmpFLAssetApplicationMatrix:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ApplicabilityMatrixPro
+                      Properties:
+                        Height: =330
+                        Items: =Filter(colFLFmeaApplications,FmeaRevisionId=varFLActiveFmeaRevisionId)
+                        OnSelectApplication: |-
+                          =
+                          Set(varFLActiveApplicationCode,cmpFLAssetApplicationMatrix.SelectedApplicationCodeOut);
+                          Set(varFLActiveAssetCode,cmpFLAssetApplicationMatrix.SelectedAssetCodeOut);
+                          Set(varFLActiveAssetName,LookUp(colFLFmeaApplications,ApplicationCode=varFLActiveApplicationCode,AssetName));
+                          Set(varFLActiveCriticality,LookUp(colFLFmeaApplications,ApplicationCode=varFLActiveApplicationCode,Criticality));
+                          Set(varFLActiveProfileCode,LookUp(colFLFmeaApplications,ApplicationCode=varFLActiveApplicationCode,ProfileCode))
+                        Title: ="Activos que reutilizan " & varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =148
+
+                  - cmpFLAssetApplicationLineage:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_LineagePanelPro
+                      Properties:
+                        ApplicationCode: =varFLActiveApplicationCode
+                        AssetCode: =varFLActiveAssetCode
+                        CriticalityLabel: =varFLActiveCriticality
+                        ExecutionLabel: ="Caso contextual pendiente / en revisión"
+                        Height: =126
+                        LibraryCode: =varFLActiveFmeaCode
+                        RevisionCode: =varFLActiveFmeaRevisionCode
+                        Title: ="Aplicación seleccionada"
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =490
+
+                  - conFLAssetApplicationDetail:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-640
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =628
+                      Children:
+                        - lblFLAssetApplicationDetailTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =11
+                              Text: =varFLActiveAssetCode & " · " & varFLActiveAssetName
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =14
+                        - lblFLAssetApplicationProfile:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =9
+                              Text: ="Perfil " & varFLActiveProfileCode & " · Criticidad " & varFLActiveCriticality & " · " & LookUp(colFLFmeaApplications,ApplicationCode=varFLActiveApplicationCode,IntervalSummary)
+                              Width: =Parent.Width-250
+                              Wrap: =true
+                              X: =18
+                              Y: =42
+                        - lblFLAssetApplicationRule:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =8
+                              Text: ="La frecuencia o aplicabilidad se guarda como TaskProfileVariant. La función, modo, causa y efecto de biblioteca permanecen en la revisión R01."
+                              Width: =Parent.Width-250
+                              Wrap: =true
+                              X: =18
+                              Y: =68
+                        - btnFLAssetApplicationOpen:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
+                              BorderThickness: =1
+                              Color: =Color.White
+                              Fill: =ColorValue("#0284C7")
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =36
+                              HoverFill: =ColorValue("#0369A1")
+                              OnSelect: |-
+                                =
+                                Set(varFLActiveCaseId,Coalesce(LookUp(colFLAnalysisCases,ApplicationCode=varFLActiveApplicationCode,AnalysisCaseId),varFLActiveCaseId));
+                                Set(varFLActiveCaseCode,varFLActiveAssetCode);
+                                Navigate(scr_FL_CaseOverview,ScreenTransition.None)
+                              PressedFill: =ColorValue("#075985")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Abrir caso contextual"
+                              Width: =180
+                              X: =Parent.Width-198
+                              Y: =34
