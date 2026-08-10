@@ -1,0 +1,392 @@
+Screens:
+  scr_FL_Functions:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-04" || varFLCurrentStageId="FL-05"),Set(varFLCurrentStageId,"FL-04"))
+
+    Children:
+      - conFLFunRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLFunNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLFunNav.SelectedKey);
+                    Switch(cmpFLFunNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLFunMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLFunNav.Width
+                  X: =cmpFLFunNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLFunHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="MODELO FUNCIONAL"
+                        CaseCode: =varFLActiveCaseCode
+                        CaseType: ="AMEF + RCM"
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="FL-04 y FL-05"
+                        ReviewState: =If(varFLCaseDraft,"Borrador","Confirmado")
+                        Subtitle: ="Define lo que el activo debe hacer y las formas en que puede incumplir cada función."
+                        Title: ="Funciones y fallos funcionales"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLFunRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLFunHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLFunRail.SelectedStageIdOut);
+                          Switch(cmpFLFunRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLFunHeader.Height+12
+                  - conFLFunWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLFunHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLFunRail.Width-60
+                        X: =cmpFLFunRail.X+cmpFLFunRail.Width+12
+                        Y: =cmpFLFunHeader.Height+12
+                      Children:
+                        - conFLFunContext:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =92
+                              RadiusBottomLeft: =12
+                              RadiusBottomRight: =12
+                              RadiusTopLeft: =12
+                              RadiusTopRight: =12
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLFunContextLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="INPUT CONFIRMADO · CONTEXTO"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =12
+                              - lblFLFunContextText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    Size: =10
+                                    Text: =varFLService & " · " & Text(varFLDutyFlowM3h) & " m³/h · " & Text(varFLDutyPressureBar) & " bar · " & varFLRedundancy
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =38
+                        - conFLFunFunctions:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =294
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =(Parent.Width-12)*0.5
+                              X: =0
+                              Y: =104
+                            Children:
+                              - lblFLFunFunctionsLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-04 · FUNCIONES"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLFunMainLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="Función principal"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =44
+                              - txtFLFunMain:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#BAE6FD")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =LookUp(colFLFunctions,FunctionType="Principal",Statement)
+                                    Fill: =ColorValue("#F8FCFF")
+                                    Height: =82
+                                    HoverBorderColor: =ColorValue("#0284C7")
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: |-
+                                      =
+                                      Patch(colFLFunctions,LookUp(colFLFunctions,FunctionType="Principal"),{Statement:Trim(Self.Text),Status:"Draft"});
+                                      Set(varFLCaseDraft,true);
+                                      UpdateIf(colFLStageExecutions,StageId="FL-04",{Status:"draft"})
+                                    PaddingBottom: =8
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =8
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =10
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =66
+                              - lblFLFunSecondaryLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="Función secundaria"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =164
+                              - txtFLFunSecondary:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#BAE6FD")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =LookUp(colFLFunctions,FunctionType="Secundaria",Statement)
+                                    Fill: =ColorValue("#F8FCFF")
+                                    Height: =84
+                                    HoverBorderColor: =ColorValue("#0284C7")
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: |-
+                                      =
+                                      Patch(colFLFunctions,LookUp(colFLFunctions,FunctionType="Secundaria"),{Statement:Trim(Self.Text),Status:"Draft"});
+                                      Set(varFLCaseDraft,true);
+                                      UpdateIf(colFLStageExecutions,StageId="FL-04",{Status:"draft"})
+                                    PaddingBottom: =8
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =8
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =10
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =186
+                        - conFLFunFailures:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#FED7AA")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =294
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLFunFunctions.Width-12
+                              X: =conFLFunFunctions.Width+12
+                              Y: =104
+                            Children:
+                              - lblFLFunFailuresLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#EA580C")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-05 · FALLOS FUNCIONALES"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLFunTotalLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="Fallo total"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =44
+                              - txtFLFunTotal:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#FED7AA")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =LookUp(colFLFunctionalFailures,FailureType="Total",Statement)
+                                    Fill: =ColorValue("#FFFBF5")
+                                    Height: =82
+                                    HoverBorderColor: =ColorValue("#EA580C")
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: |-
+                                      =
+                                      Patch(colFLFunctionalFailures,LookUp(colFLFunctionalFailures,FailureType="Total"),{Statement:Trim(Self.Text)});
+                                      Set(varFLCaseDraft,true);
+                                      UpdateIf(colFLStageExecutions,StageId="FL-05",{Status:"draft"})
+                                    PaddingBottom: =8
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =8
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =10
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =66
+                              - lblFLFunPartialLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="Fallo parcial"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =164
+                              - txtFLFunPartial:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#FED7AA")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =LookUp(colFLFunctionalFailures,FailureType="Parcial",Statement)
+                                    Fill: =ColorValue("#FFFBF5")
+                                    Height: =84
+                                    HoverBorderColor: =ColorValue("#EA580C")
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: |-
+                                      =
+                                      Patch(colFLFunctionalFailures,LookUp(colFLFunctionalFailures,FailureType="Parcial"),{Statement:Trim(Self.Text)});
+                                      Set(varFLCaseDraft,true);
+                                      UpdateIf(colFLStageExecutions,StageId="FL-05",{Status:"draft"})
+                                    PaddingBottom: =8
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =8
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =10
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =186
+                        - cmpFLFunGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =!IsBlank(Trim(LookUp(colFLFunctions,FunctionType="Principal",Statement))) && !IsBlank(Trim(LookUp(colFLFunctions,FunctionType="Secundaria",Statement))) && !IsBlank(Trim(LookUp(colFLFunctionalFailures,FailureType="Total",Statement))) && !IsBlank(Trim(LookUp(colFLFunctionalFailures,FailureType="Parcial",Statement)))
+                              ContinueLabel: ="Confirmar modelo funcional"
+                              GateStatus: =If(!IsBlank(Trim(LookUp(colFLFunctions,FunctionType="Principal",Statement))) && !IsBlank(Trim(LookUp(colFLFunctions,FunctionType="Secundaria",Statement))) && !IsBlank(Trim(LookUp(colFLFunctionalFailures,FailureType="Total",Statement))) && !IsBlank(Trim(LookUp(colFLFunctionalFailures,FailureType="Parcial",Statement))),"passed","blocked")
+                              GateTitle: ="Gate FL-05 · Modelo funcional"
+                              Height: =190
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLFunctions,true,{Status:"Confirmed"});
+                                UpdateIf(colFLStageExecutions,StageId="FL-04" || StageId="FL-05",{Status:"confirmed"});
+                                Set(varFLCaseDraft,false);
+                                Set(varFLCurrentStageId,"FL-06");
+                                Navigate(scr_FL_FailureModes,ScreenTransition.None)
+                              OutputLabel: ="Funciones y fallos funcionales disponibles para seleccionar causalidad"
+                              Reason: ="Las funciones deben contener un estándar reconocible y los fallos deben expresar pérdida total o parcial de capacidad."
+                              RequiredAction: ="Revisar y confirmar las cuatro definiciones"
+                              ResponsibleRole: ="Ingeniería de Fiabilidad"
+                              Summary: =If(!IsBlank(Trim(LookUp(colFLFunctions,FunctionType="Principal",Statement))) && !IsBlank(Trim(LookUp(colFLFunctions,FunctionType="Secundaria",Statement))) && !IsBlank(Trim(LookUp(colFLFunctionalFailures,FailureType="Total",Statement))) && !IsBlank(Trim(LookUp(colFLFunctionalFailures,FailureType="Parcial",Statement))),"Modelo funcional preparado","Faltan definiciones funcionales")
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =410
