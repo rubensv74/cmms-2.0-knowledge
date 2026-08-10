@@ -1,0 +1,420 @@
+Screens:
+  scr_FL_Effectiveness:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-27" || varFLCurrentStageId="FL-28"),Set(varFLCurrentStageId,"FL-27"));
+        If(IsBlank(varFLChangeRequestOpened),Set(varFLChangeRequestOpened,false))
+
+    Children:
+      - conFLEffectRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLEffectNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLEffectNav.SelectedKey);
+                    Switch(cmpFLEffectNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLEffectMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLEffectNav.Width
+                  X: =cmpFLEffectNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLEffectHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="MEJORA CONTINUA"
+                        CaseCode: =varFLActiveCaseCode
+                        CaseType: ="Versión " & varFLCaseVersion
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="FL-27 y FL-28"
+                        ReviewState: =If(varFLChangeRequestOpened,"Cambio abierto","Evaluación")
+                        Subtitle: ="Compara las hipótesis del análisis con datos reales y decide si mantener, ajustar o reabrir la estrategia."
+                        Title: ="Efectividad y mejora"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLEffectRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLEffectHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLEffectRail.SelectedStageIdOut);
+                          Switch(cmpFLEffectRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLEffectHeader.Height+12
+                  - conFLEffectWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLEffectHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLEffectRail.Width-60
+                        X: =cmpFLEffectRail.X+cmpFLEffectRail.Width+12
+                        Y: =cmpFLEffectHeader.Height+12
+                      Children:
+                        - conFLEffectCompare:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =250
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLEffectCompareLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-27 · HIPÓTESIS VS DATOS REALES"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - conFLEffectPF:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#E2E8F0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#F8FAFC")
+                                    Height: =144
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =(Parent.Width-72)/3
+                                    X: =18
+                                    Y: =52
+                                  Children:
+                                    - lblFLEffectPFLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="DETECCIÓN / P–F"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =12
+                                    - lblFLEffectPFHyp:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#334155")
+                                          Size: =9
+                                          Text: ="Hipótesis " & Text(varFLPFDays) & " días"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =42
+                                    - lblFLEffectPFActual:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#B45309")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =15
+                                          Text: =Text(varFLActualDetectionDays) & " días reales"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =70
+                                    - lblFLEffectPFDelta:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =8
+                                          Text: ="Desviación " & Text(varFLActualDetectionDays-varFLPFDays) & " días"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =112
+                              - conFLEffectCost:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#BBF7D0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#F0FDF4")
+                                    Height: =144
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =(Parent.Width-72)/3
+                                    X: =conFLEffectPF.X+conFLEffectPF.Width+18
+                                    Y: =52
+                                  Children:
+                                    - lblFLEffectCostLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#166534")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="COSTE ANUAL"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =12
+                                    - lblFLEffectCostHyp:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#334155")
+                                          Size: =9
+                                          Text: ="Esperado " & Text(varFLStrategyAnnualCost,"€ #,##0")
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =42
+                                    - lblFLEffectCostActual:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#166534")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =15
+                                          Text: =Text(varFLActualAnnualCostEur,"€ #,##0")
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =70
+                                    - lblFLEffectCostDelta:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =8
+                                          Text: ="Dato observado durante el periodo de revisión"
+                                          Width: =Parent.Width-24
+                                          Wrap: =true
+                                          X: =12
+                                          Y: =108
+                              - conFLEffectFailures:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#FDE68A")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#FFFBEB")
+                                    Height: =144
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =(Parent.Width-72)/3
+                                    X: =conFLEffectCost.X+conFLEffectCost.Width+18
+                                    Y: =52
+                                  Children:
+                                    - lblFLEffectFailuresLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#B45309")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="FALLOS OBSERVADOS"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =12
+                                    - lblFLEffectFailuresValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =24
+                                          Text: =Text(varFLActualFailures)
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =46
+                                    - lblFLEffectFailuresHint:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =8
+                                          Text: ="La estrategia sigue activa, pero el comportamiento real obliga a revisar hipótesis."
+                                          Width: =Parent.Width-24
+                                          Wrap: =true
+                                          X: =12
+                                          Y: =92
+                              - lblFLEffectCompareHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Los datos reales no reescriben el análisis aprobado: generan evidencia para una nueva revisión controlada."
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =218
+                        - conFLEffectDecision:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#FED7AA")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFF7ED")
+                              Height: =194
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =262
+                            Children:
+                              - lblFLEffectDecisionLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#C2410C")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-28 · DECISIÓN DE MEJORA"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLEffectDecisionValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =17
+                                    Text: =varFLReviewDecision
+                                    Width: =Parent.Width-210
+                                    X: =18
+                                    Y: =46
+                              - lblFLEffectDecisionScope:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =10
+                                    Text: =varFLReopenScope
+                                    Width: =Parent.Width-210
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =82
+                              - btnFLEffectOpenChange:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =If(varFLChangeRequestOpened,ColorValue("#BBF7D0"),ColorValue("#EA580C"))
+                                    BorderThickness: =1
+                                    Color: =If(varFLChangeRequestOpened,ColorValue("#166534"),Color.White)
+                                    Fill: =If(varFLChangeRequestOpened,ColorValue("#F0FDF4"),ColorValue("#EA580C"))
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =40
+                                    OnSelect: |-
+                                      =
+                                      Set(varFLChangeRequestOpened,true);
+                                      Set(varFLCaseDraft,true);
+                                      UpdateIf(colFLStageExecutions,StageId="FL-28",{Status:"draft"})
+                                    RadiusBottomLeft: =9
+                                    RadiusBottomRight: =9
+                                    RadiusTopLeft: =9
+                                    RadiusTopRight: =9
+                                    Size: =10
+                                    Text: =If(varFLChangeRequestOpened,"Solicitud abierta","Abrir solicitud de cambio")
+                                    Width: =180
+                                    X: =Parent.Width-Self.Width-18
+                                    Y: =Parent.Height-Self.Height-18
+                        - cmpFLEffectGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =varFLChangeRequestOpened
+                              ContinueLabel: ="Cerrar ciclo de revisión"
+                              GateStatus: =If(varFLChangeRequestOpened,"passed","warning")
+                              GateTitle: ="Cierre del ciclo de mejora"
+                              Height: =210
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-27" || StageId="FL-28",{Status:"confirmed"});
+                                Set(varFLCaseDraft,false);
+                                Navigate(scr_FL_CaseOverview,ScreenTransition.None)
+                              OutputLabel: ="ChangeRequest trazable para nueva iteración del análisis"
+                              Reason: =If(varFLChangeRequestOpened,"La versión aprobada se conserva y la mejora se gestiona mediante un cambio separado.","Los datos reales sugieren revisión, pero todavía no existe una solicitud de cambio.")
+                              RequiredAction: ="Abrir una solicitud de cambio sin alterar la versión congelada"
+                              ResponsibleRole: ="Ingeniería de Fiabilidad"
+                              Summary: =If(varFLChangeRequestOpened,"Mejora continua abierta","Decisión de mejora pendiente")
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =468
