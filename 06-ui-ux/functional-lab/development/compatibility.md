@@ -17,10 +17,6 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 
 ## Niveles de validación obligatorios para CanvasComponent
 
-A partir de `FL-SC-001`, ningún componente puede considerarse validado con una única etiqueta genérica.
-
-Debe registrar explícitamente:
-
 ```text
 PASS_STATIC
 DEFINITION_ACCEPTED
@@ -54,8 +50,6 @@ y se detiene cualquier bloque dependiente.
 
 ## Reglas heredadas y confirmadas por conocimiento previo
 
-Estas reglas se aplican cuando el Functional Lab utilice las mismas versiones de control. Deben confirmarse de nuevo en Studio cuando corresponda.
-
 | Patrón | Riesgo / efecto confirmado | Regla preventiva |
 |---|---|---|
 | `Label@2.5.1` + `Radius*` | `PA2108` | Aplicar radios al contenedor, no a la etiqueta. |
@@ -80,20 +74,29 @@ CanvasComponent
 
 Resultado real: `INSTANCE_SAFE = PASS`.
 
-Interpretación limitada: este patrón concreto no reproduce FL-SC-001. No implica seguridad universal de toda composición con GroupContainer.
-
 ### FL-EVID-002 — ModernText estático sobre root seguro
 
-Validado en Studio mediante `F01-00A-R2`:
+Validado mediante `F01-00A-R2`:
 
 - cuatro `ModernText@1.0.0`;
 - texto constante;
 - `AutoHeight=true`;
-- hijos directos del root ManualLayout validado.
+- hijos directos del root validado.
 
 Resultado real: `INSTANCE_SAFE = PASS`.
 
-Interpretación limitada: esta configuración concreta de ModernText estático no es suficiente para reproducir FL-SC-001.
+### FL-EVID-003 — AutoLayout y contenedores anidados estáticos
+
+Validado mediante `F01-00A-R3`:
+
+- root `GroupContainer@1.5.0` `AutoLayout` vertical;
+- tres `GroupContainer@1.5.0` ManualLayout anidados;
+- textos estáticos repartidos en Brand, Workspace y Footer;
+- sin propiedades custom, Gallery, Table, Output, Event ni navegación.
+
+Resultado real: `INSTANCE_SAFE = PASS`.
+
+Interpretación limitada: la composición concreta de AutoLayout + contenedores anidados probada en R3 no es suficiente para reproducir FL-SC-001.
 
 ## Decisiones para Functional Lab
 
@@ -111,10 +114,6 @@ Los componentes podrán inspirarse en patrones y contratos probados en Pulse, pe
 
 ### FL-COMP-002 — Incorporación secuencial antes del shell
 
-Los componentes fundacionales se instalarán y validarán uno a uno en la app activa antes de que el shell los instancie.
-
-Secuencia inicial:
-
 ```text
 F01-00A  cmp_FL_SidebarPro
 F01-00B  cmp_FL_PageHeaderPro
@@ -124,10 +123,6 @@ F01-01   Premium App Shell Foundation
 Un componente no se considerará disponible por existir en GitHub ni por aceptar su definición. Debe alcanzar `INSTANCE_SAFE`.
 
 ### FL-COMP-003 — Componentes Pulse son referencias, no dependencias
-
-Los componentes de Pulse se usan para aprender contratos, geometría y compatibilidad. No se copian sin auditoría.
-
-Hallazgo inicial:
 
 - `cmp_SidebarNav` está acoplado a PULSE mediante logo, textos y estado global; no se reutiliza directamente.
 - `cmp_PageHeaderPro` es conceptualmente reusable, pero existe evidencia de cierre de Studio durante una prueba de instancia; se usa solo como referencia hasta comprender la causa.
@@ -142,24 +137,9 @@ Los componentes premium del Functional Lab deberán recibir estado mediante inpu
 
 ### FL-COMP-006 — Premium no significa sobrecarga visual
 
-Los componentes deben priorizar:
-
-- jerarquía;
-- legibilidad;
-- densidad correcta;
-- estados claros;
-- accesibilidad;
-- feedback;
-- consistencia;
-- comportamiento realista.
-
-No se añadirán gráficos, sombras o decoración sin función.
+Los componentes deben priorizar jerarquía, legibilidad, densidad correcta, estados claros, accesibilidad, feedback, consistencia y comportamiento realista.
 
 ### FL-COMP-007 — Reducir antes de reescribir cuando falla una instancia
-
-Ante un cierre de Studio o fallo de instancia cuya causa técnica no esté demostrada, no atribuir el problema por intuición a un control concreto.
-
-Aplicar reducción incremental:
 
 ```text
 root only
@@ -181,14 +161,12 @@ El primer estadio que reproduce el fallo delimita la superficie sospechosa.
 **Fecha:** 2026-08-10  
 **Bloque:** F01-00A  
 **Efecto inicial:** la definición completa fue aceptada; al insertar una instancia, Power Apps Studio se cerró.  
-**Session ID:** no disponible en el cierre observado.  
+**Session ID:** no disponible.  
 **Causa técnica:** `UNKNOWN — INVESTIGATION ACTIVE`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Resultados diagnósticos:** `R1 PASS`, `R2 PASS`.  
-**Correctivo actual:** `F01-00A-R3`, contenedores estáticos.  
+**Resultados diagnósticos:** `R1 PASS`, `R2 PASS`, `R3 PASS`.  
+**Correctivo actual:** `F01-00A-R4`, navegación visual sin eventos.  
 **Registro completo:** `development/incidents/FL-SC-001-component-instance-crash.md`.
-
-No se promueve ninguna hipótesis (`Gallery`, `Table`, `Event`, `Output`, AutoLayout, etc.) a causa hasta obtener un reproducer reducido.
 
 ## Estado de validación
 
@@ -198,7 +176,8 @@ Premium component strategy: ACTIVE
 cmp_FL_SidebarPro complete initial instance: FAIL
 R1 root-only instance: PASS
 R2 identity/text instance: PASS
+R3 static containers instance: PASS
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
-Current diagnostic: F01-00A-R3 static containers
+Current diagnostic: F01-00A-R4 static navigation without events
 ```
