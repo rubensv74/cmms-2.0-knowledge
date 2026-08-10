@@ -58,17 +58,25 @@ El protocolo se ha corregido para exigir explícitamente `INSTANCE_SAFE` antes d
 UNKNOWN — INVESTIGATION ACTIVE
 ```
 
-No se atribuye todavía el cierre a:
+Tras R1, R2 y R3 puede afirmarse de forma limitada que no son suficientes por sí solos para reproducir el cierre:
 
+- `CanvasComponent + GroupContainer@1.5.0` ManualLayout mínimo;
+- cuatro `ModernText@1.0.0` estáticos con `AutoHeight=true`;
+- raíz `AutoLayout` vertical;
+- tres `GroupContainer@1.5.0` anidados y estáticos.
+
+Siguen sin aislarse como causa o superficie suficiente:
+
+- `Rectangle@2.3.0`;
+- `Classic/Icon@2.5.0`;
+- `Label@2.5.1`;
+- `Classic/Button@2.2.0`;
 - `Gallery@2.15.0`;
-- propiedad custom `Table`;
-- propiedad `Event`;
-- propiedad `Output`;
-- AutoLayout;
-- fórmulas de geometría;
-- ningún control individual todavía no aislado.
-
-Tras R2 sí puede afirmarse de forma limitada que cuatro controles `ModernText@1.0.0` estáticos, con texto constante y `AutoHeight=true`, directamente dentro del root ManualLayout validado, **no son suficientes por sí solos para reproducir el cierre**.
+- custom properties;
+- `Table`;
+- `Output`;
+- `Event`;
+- lógica dinámica y geometría condicional.
 
 ## 5. Evidencia transversal ya existente
 
@@ -109,49 +117,37 @@ No se preparará F01-00B mientras este incidente permanezca abierto.
 
 **Resultado real comunicado:** `R1 instancia OK`.
 
-Configuración probada:
-
-- `CanvasComponent`;
-- propiedades `Fill`, `Height`, `Width`;
-- un único `GroupContainer@1.5.0` ManualLayout;
-- sin custom properties;
-- sin controles de texto;
-- sin Gallery;
-- sin Event;
-- sin Output;
-- sin Table;
-- sin AutoLayout anidado.
-
-Resultado:
-
 ```text
 DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       PASS
 ```
 
-### Interpretación R1
-
-El mecanismo básico de CanvasComponent Source Code en la app activa no es suficiente para reproducir el cierre.
-
-El patrón mínimo `CanvasComponent + GroupContainer@1.5.0` raíz también resulta seguro en esta prueba.
+El mecanismo básico de CanvasComponent Source Code y el root `GroupContainer@1.5.0` ManualLayout no reproducen el incidente.
 
 ### R2 — Identidad / texto
 
 **Resultado real comunicado:** `R2 instancia OK`.
 
-Configuración probada sobre R1:
+```text
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
+```
 
-- cuatro controles `ModernText@1.0.0` estáticos;
-- texto constante;
-- `AutoHeight=true`;
-- hijos directos del root ManualLayout;
+Cuatro `ModernText@1.0.0` estáticos sobre R1 no reproducen el incidente.
+
+### R3 — Contenedores estáticos
+
+**Resultado real comunicado:** `R3 instancia OK`.
+
+Configuración añadida sobre el baseline validado:
+
+- root `GroupContainer@1.5.0` como `AutoLayout` vertical;
+- tres `GroupContainer@1.5.0` hijos estáticos;
+- identidad, zona de workspace y footer distribuidos entre ellos;
+- sin navegación interactiva;
 - sin custom properties;
 - sin Gallery / Table;
-- sin Output / Event;
-- sin Label / Button / Icon;
-- sin navegación;
-- sin geometría condicional;
-- sin contenedores anidados.
+- sin Output / Event.
 
 Resultado:
 
@@ -160,19 +156,26 @@ DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       PASS
 ```
 
-### Interpretación R2
+### Interpretación R3
 
-La capa de identidad/texto estático probada no reproduce FL-SC-001.
+La composición estática probada con AutoLayout y contenedores anidados no reproduce FL-SC-001.
 
-Por tanto, `ModernText@1.0.0` estático en esta configuración concreta deja de ser una hipótesis suficiente para explicar el cierre inicial.
+Por tanto, la investigación avanza a la siguiente responsabilidad: controles visuales de navegación sin fórmulas de evento ni datos dinámicos.
 
-### R3 — Contenedores estáticos
+### R4 — Navegación visual sin eventos
 
 **Estado:** PENDING STUDIO VALIDATION.
 
-Objetivo: reintroducir composición estructural estática mediante contenedores anidados y AutoLayout, manteniendo fuera Gallery, propiedades custom, outputs, eventos, botones, iconos y lógica de navegación.
+R4 reintroducirá únicamente controles visuales utilizados por la navegación original, con valores estáticos y sin `OnSelect`:
 
-Si R3 falla, se subdividirá esta etapa para separar AutoLayout de la anidación de contenedores antes de introducir cualquier otra responsabilidad.
+- `Rectangle@2.3.0`;
+- `Classic/Icon@2.5.0`;
+- `Label@2.5.1`;
+- `Classic/Button@2.2.0` como hit surface visual sin evento.
+
+Se mantienen fuera `Gallery`, `Table`, custom properties, outputs, events y navegación real.
+
+Si R4 falla, se subdividirá esta etapa por tipo de control antes de avanzar.
 
 ## 8. Regla preventiva inmediata
 
