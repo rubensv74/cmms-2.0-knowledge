@@ -3,7 +3,7 @@
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
 **Último gate superado:** `F01-00A-R4 navegación visual sin eventos` — INSTANCE_SAFE PASS  
-**Gate actual:** `F01-00A-R5-TD Text declaration only` — PENDING STUDIO VALIDATION
+**Gate actual:** `F01-00A-R5-TM manual Text input` — PENDING STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
@@ -17,8 +17,9 @@
 | F01-00A-R3 static-containers | validated-pass | AutoLayout + contenedores anidados estáticos instance-safe. |
 | F01-00A-R4 static-navigation | validated-pass | Rectangle + Icon + Label + Button estáticos sin eventos instance-safe. |
 | F01-00A-R5 primitive inputs | failed-instance | Text + Boolean + Color reproducen el cierre. |
-| F01-00A-R5-T Text input | failed-instance | Un único Input/Text consumido por el título reproduce el cierre. |
-| F01-00A-R5-TD Text declaration only | pending-user-validation | Input/Text declarado sobre baseline mínimo, sin consumo. |
+| F01-00A-R5-T Text input | failed-instance | Un único Input/Text declarado+consumido reproduce el cierre. |
+| F01-00A-R5-TD Text declaration only | failed-instance | Un único Input/Text declarado por Source Code y no consumido reproduce el cierre en baseline mínimo. |
+| F01-00A-R5-TM manual Text input | pending-user-validation | Crear manualmente Data/Input/Text en Studio sobre componente mínimo, sin consumo. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | No se prepara. |
 
@@ -31,28 +32,32 @@ R3 static containers: PASS
 R4 static navigation: PASS
 R5 Text+Boolean+Color: FAIL
 R5-T Text declared+consumed: FAIL
-R5-TD Text declaration only: PENDING
+R5-TD Text declaration only via Source Code: FAIL
+R5-TM manual Text declaration in Studio: PENDING
 ```
 
 Interpretación vigente:
 
-- el fallo ya no requiere Boolean ni Color;
-- el patrón `Input/Text` declarado + consumido es suficiente para reproducir el cierre en R5-T;
-- todavía falta separar declaración frente a consumo;
-- `Table`, `Gallery`, `Output` y `Event` siguen fuera del reproducer reducido.
+- Boolean y Color ya no son necesarios para reproducir el incidente;
+- el consumo del input tampoco es necesario;
+- una declaración Source Code mínima `Input/Text` basta para reproducir el cierre;
+- todavía falta determinar si el fallo pertenece al **camino Source Code** o al **motor de CustomProperties/Enhanced component properties** de la app activa.
 
 ## 3. Estrategia de corrección
 
+No se genera R6 ni otro YAML hasta cerrar esta bifurcación.
+
+Prueba actual:
+
 ```text
-R5-TD  Text declaration only   CURRENT
+R5-TM — crear manualmente en Studio una propiedad Data / Input / Text
+         sobre un componente mínimo instance-safe y no consumirla.
 ```
 
-R5-TD usa el baseline mínimo R1 para evitar ruido adicional.
+Interpretación:
 
-- Si falla: investigar la declaración `Input/Text`/esquema Source Code/enhanced component properties antes de cualquier otro tipo.
-- Si pasa: probar consumo de ese input sobre un único ModernText en baseline mínimo.
-
-No se avanza a R6 mientras esta superficie no quede delimitada.
+- **PASS** → Input/Text funciona al crearse correctamente en Studio; investigar Source Code/serialización/hidratación y adaptar el protocolo de autoría.
+- **FAIL** → investigar Enhanced component properties, app baseline y Power Apps Studio antes de continuar.
 
 ## 4. Componentes premium fundacionales
 
@@ -64,4 +69,4 @@ F01-01   Premium App Shell        ← BLOCKED
 
 ## 5. Regla de continuidad
 
-> No se prepara F01-00B ni ningún bloque dependiente hasta que `cmp_FL_SidebarPro` completo alcance `INSTANCE_SAFE`.
+> No se prepara F01-00B ni ningún bloque dependiente hasta disponer de una estrategia de CustomProperties que alcance `INSTANCE_SAFE` de forma reproducible.
