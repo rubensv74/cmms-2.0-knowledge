@@ -1,0 +1,450 @@
+ComponentDefinitions:
+  cmp_FL_DecisionPanelPro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Título del panel de decisión.
+        DataType: Text
+        Default: ="Decisión requerida"
+
+      ContextText:
+        PropertyKind: Input
+        DisplayName: ContextText
+        Description: Contexto breve de la decisión.
+        DataType: Text
+        Default: ="Revisa la información disponible antes de confirmar."
+
+      SystemResultLabel:
+        PropertyKind: Input
+        DisplayName: SystemResultLabel
+        Description: Etiqueta del resultado calculado.
+        DataType: Text
+        Default: ="Resultado del sistema"
+
+      SystemResultValue:
+        PropertyKind: Input
+        DisplayName: SystemResultValue
+        Description: Resultado calculado o clasificado por el sistema.
+        DataType: Text
+        Default: =""
+
+      RecommendationLabel:
+        PropertyKind: Input
+        DisplayName: RecommendationLabel
+        Description: Etiqueta de la recomendación.
+        DataType: Text
+        Default: ="Recomendación"
+
+      RecommendationValue:
+        PropertyKind: Input
+        DisplayName: RecommendationValue
+        Description: Valor recomendado por el sistema.
+        DataType: Text
+        Default: =""
+
+      RecommendationExplanation:
+        PropertyKind: Input
+        DisplayName: RecommendationExplanation
+        Description: Explicación de la recomendación.
+        DataType: Text
+        Default: =""
+
+      RequiredRole:
+        PropertyKind: Input
+        DisplayName: RequiredRole
+        Description: Rol con autoridad para confirmar.
+        DataType: Text
+        Default: ="Ingeniería de Fiabilidad"
+
+      DecisionState:
+        PropertyKind: Input
+        DisplayName: DecisionState
+        Description: Estado de la decisión humana.
+        DataType: Text
+        Default: ="pending"
+
+      HumanDecisionValue:
+        PropertyKind: Input
+        DisplayName: HumanDecisionValue
+        Description: Decisión humana confirmada o en borrador.
+        DataType: Text
+        Default: =""
+
+      DecisionReason:
+        PropertyKind: Input
+        DisplayName: DecisionReason
+        Description: Motivo de la decisión u override.
+        DataType: Text
+        Default: =""
+
+      IsOverride:
+        PropertyKind: Input
+        DisplayName: IsOverride
+        Description: Indica si la decisión contradice la recomendación.
+        DataType: Boolean
+        Default: =false
+
+      ShowSystemResult:
+        PropertyKind: Input
+        DisplayName: ShowSystemResult
+        Description: Muestra el resultado del sistema.
+        DataType: Boolean
+        Default: =true
+
+      ShowRecommendation:
+        PropertyKind: Input
+        DisplayName: ShowRecommendation
+        Description: Muestra la recomendación del sistema.
+        DataType: Boolean
+        Default: =true
+
+      ShowDecision:
+        PropertyKind: Input
+        DisplayName: ShowDecision
+        Description: Muestra la decisión humana.
+        DataType: Boolean
+        Default: =true
+
+      CanConfirm:
+        PropertyKind: Input
+        DisplayName: CanConfirm
+        Description: Habilita la acción de confirmar.
+        DataType: Boolean
+        Default: =true
+
+      CanOverride:
+        PropertyKind: Input
+        DisplayName: CanOverride
+        Description: Habilita la acción de modificar la recomendación.
+        DataType: Boolean
+        Default: =true
+
+      ConfirmLabel:
+        PropertyKind: Input
+        DisplayName: ConfirmLabel
+        Description: Texto de la acción de confirmación.
+        DataType: Text
+        Default: ="Confirmar recomendación"
+
+      OverrideLabel:
+        PropertyKind: Input
+        DisplayName: OverrideLabel
+        Description: Texto de la acción de override.
+        DataType: Text
+        Default: ="Modificar decisión"
+
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Color principal de acento.
+        DataType: Color
+        Default: =ColorValue("#0284C7")
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Fondo principal.
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Color de borde.
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Texto principal.
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Texto secundario.
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      OnConfirmDecision:
+        PropertyKind: Event
+        DisplayName: OnConfirmDecision
+        Description: Se ejecuta al confirmar la recomendación o decisión actual.
+        ReturnType: None
+        Default: =false
+
+      OnOverrideDecision:
+        PropertyKind: Event
+        DisplayName: OnOverrideDecision
+        Description: Se ejecuta al solicitar una decisión distinta.
+        ReturnType: None
+        Default: =false
+
+    Properties:
+      Fill: =cmp_FL_DecisionPanelPro.SurfaceColor
+      Height: =360
+      Width: =620
+
+    Children:
+      - conFLDecisionRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =cmp_FL_DecisionPanelPro.BorderColor
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =cmp_FL_DecisionPanelPro.SurfaceColor
+            Height: =Parent.Height
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width
+
+          Children:
+            - lblFLDecisionEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =cmp_FL_DecisionPanelPro.AccentColor
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="SISTEMA + DECISIÓN HUMANA"
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =16
+
+            - lblFLDecisionTitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =cmp_FL_DecisionPanelPro.TextColor
+                  FontWeight: =FontWeight.Semibold
+                  Size: =17
+                  Text: =cmp_FL_DecisionPanelPro.Title
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =42
+
+            - lblFLDecisionContext:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =cmp_FL_DecisionPanelPro.MutedTextColor
+                  Size: =10
+                  Text: =cmp_FL_DecisionPanelPro.ContextText
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =72
+
+            - conFLDecisionSystem:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#BAE6FD")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F0F9FF")
+                  Height: =132
+                  RadiusBottomLeft: =11
+                  RadiusBottomRight: =11
+                  RadiusTopLeft: =11
+                  RadiusTopRight: =11
+                  Visible: =cmp_FL_DecisionPanelPro.ShowSystemResult || cmp_FL_DecisionPanelPro.ShowRecommendation
+                  Width: =(Parent.Width-54)*0.5
+                  X: =18
+                  Y: =112
+
+                Children:
+                  - lblFLDecisionSystemLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0369A1")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: ="SISTEMA"
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =10
+
+                  - lblFLDecisionResult:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_FL_DecisionPanelPro.TextColor
+                        FontWeight: =FontWeight.Semibold
+                        Size: =10
+                        Text: |-
+                          =
+                          If(
+                              cmp_FL_DecisionPanelPro.ShowSystemResult,
+                              cmp_FL_DecisionPanelPro.SystemResultLabel & " · " & cmp_FL_DecisionPanelPro.SystemResultValue,
+                              ""
+                          )
+                        Width: =Parent.Width-24
+                        Wrap: =true
+                        X: =12
+                        Y: =32
+
+                  - lblFLDecisionRecommendation:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#075985")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =10
+                        Text: |-
+                          =
+                          If(
+                              cmp_FL_DecisionPanelPro.ShowRecommendation,
+                              cmp_FL_DecisionPanelPro.RecommendationLabel & " · " & cmp_FL_DecisionPanelPro.RecommendationValue,
+                              ""
+                          )
+                        Width: =Parent.Width-24
+                        Wrap: =true
+                        X: =12
+                        Y: =60
+
+                  - lblFLDecisionExplanation:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_FL_DecisionPanelPro.MutedTextColor
+                        Size: =9
+                        Text: =cmp_FL_DecisionPanelPro.RecommendationExplanation
+                        Visible: =cmp_FL_DecisionPanelPro.ShowRecommendation && !IsBlank(cmp_FL_DecisionPanelPro.RecommendationExplanation)
+                        Width: =Parent.Width-24
+                        Wrap: =true
+                        X: =12
+                        Y: =88
+
+            - conFLDecisionHuman:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#FED7AA"),ColorValue("#E9D5FF"))
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#FFF7ED"),ColorValue("#FAF5FF"))
+                  Height: =132
+                  RadiusBottomLeft: =11
+                  RadiusBottomRight: =11
+                  RadiusTopLeft: =11
+                  RadiusTopRight: =11
+                  Visible: =cmp_FL_DecisionPanelPro.ShowDecision
+                  Width: =(Parent.Width-54)*0.5
+                  X: =Parent.Width-Self.Width-18
+                  Y: =112
+
+                Children:
+                  - lblFLDecisionHumanLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#C2410C"),ColorValue("#7C3AED"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: =If(cmp_FL_DecisionPanelPro.IsOverride,"DECISIÓN HUMANA · OVERRIDE","DECISIÓN HUMANA")
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =10
+
+                  - lblFLDecisionHumanValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_FL_DecisionPanelPro.TextColor
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: =If(IsBlank(cmp_FL_DecisionPanelPro.HumanDecisionValue),"Pendiente de decisión",cmp_FL_DecisionPanelPro.HumanDecisionValue)
+                        Width: =Parent.Width-24
+                        Wrap: =true
+                        X: =12
+                        Y: =34
+
+                  - lblFLDecisionHumanReason:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_FL_DecisionPanelPro.MutedTextColor
+                        Size: =9
+                        Text: =If(IsBlank(cmp_FL_DecisionPanelPro.DecisionReason),"Sin motivo registrado",cmp_FL_DecisionPanelPro.DecisionReason)
+                        Width: =Parent.Width-24
+                        Wrap: =true
+                        X: =12
+                        Y: =66
+
+                  - lblFLDecisionRole:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#C2410C"),ColorValue("#7C3AED"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: |-
+                          ="Autoridad: " & cmp_FL_DecisionPanelPro.RequiredRole
+                        Width: =Parent.Width-24
+                        Wrap: =false
+                        X: =12
+                        Y: =105
+
+            - btnFLDecisionConfirm:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =cmp_FL_DecisionPanelPro.AccentColor
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  Color: =Color.White
+                  DisplayMode: =If(cmp_FL_DecisionPanelPro.CanConfirm,DisplayMode.Edit,DisplayMode.Disabled)
+                  Fill: =cmp_FL_DecisionPanelPro.AccentColor
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =40
+                  HoverFill: =ColorValue("#0369A1")
+                  OnSelect: =cmp_FL_DecisionPanelPro.OnConfirmDecision()
+                  PressedFill: =ColorValue("#075985")
+                  RadiusBottomLeft: =9
+                  RadiusBottomRight: =9
+                  RadiusTopLeft: =9
+                  RadiusTopRight: =9
+                  Size: =10
+                  Text: =cmp_FL_DecisionPanelPro.ConfirmLabel
+                  Width: =180
+                  X: =Parent.Width-Self.Width-18
+                  Y: =Parent.Height-Self.Height-18
+
+            - btnFLDecisionOverride:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =cmp_FL_DecisionPanelPro.BorderColor
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  Color: =cmp_FL_DecisionPanelPro.TextColor
+                  DisplayMode: =If(cmp_FL_DecisionPanelPro.CanOverride,DisplayMode.Edit,DisplayMode.Disabled)
+                  Fill: =ColorValue("#FFFFFF")
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =40
+                  HoverFill: =ColorValue("#F8FAFC")
+                  OnSelect: =cmp_FL_DecisionPanelPro.OnOverrideDecision()
+                  PressedFill: =ColorValue("#F1F5F9")
+                  RadiusBottomLeft: =9
+                  RadiusBottomRight: =9
+                  RadiusTopLeft: =9
+                  RadiusTopRight: =9
+                  Size: =10
+                  Text: =cmp_FL_DecisionPanelPro.OverrideLabel
+                  Width: =160
+                  X: =Parent.Width-btnFLDecisionConfirm.Width-Self.Width-28
+                  Y: =Parent.Height-Self.Height-18
