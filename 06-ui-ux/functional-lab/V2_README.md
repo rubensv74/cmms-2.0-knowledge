@@ -19,15 +19,18 @@ El Functional Lab sigue siendo un laboratorio conceptual, pero desde v2 se exper
 
 ## Leer primero
 
-1. [Arquitectura](architecture.md)
-2. [Estado v2](V2_STATUS.md)
-3. [ADRs](adr/README.md)
-4. [Mapa de pantallas](screen-map.md)
-5. [Contratos de dominio](domain-contracts.md)
-6. [Design System v2](design-system-v2.md)
-7. [Catálogo de componentes](component-catalog.md)
-8. [Instalación Power Apps v2](power-apps/V2_INSTALLATION.md)
-9. [Validación estática](development/V2_STATIC_VALIDATION_2026-08-10.md)
+1. [Guía de experiencia funcional del usuario](guides/GUIA_EXPERIENCIA_FUNCIONAL_USUARIO.md)
+2. [Arquitectura](architecture.md)
+3. [Estado v2](V2_STATUS.md)
+4. [ADRs](adr/README.md)
+5. [Mapa de pantallas](screen-map.md)
+6. [Contratos de dominio](domain-contracts.md)
+7. [Design System v2](design-system-v2.md)
+8. [Catálogo de componentes](component-catalog.md)
+9. [Instalación Power Apps v2](power-apps/V2_INSTALLATION.md)
+10. [Validación estática](development/V2_STATIC_VALIDATION_2026-08-10.md)
+
+La **Guía de experiencia funcional** es la lectura recomendada para entender el proceso, validar requisitos y preparar una demostración en reunión. Explica para cada pantalla qué información recibe, qué aporta la persona, qué calcula o recomienda el software, qué decisión queda bajo autoridad humana y qué output debe producirse.
 
 ## Power Apps
 
@@ -44,6 +47,7 @@ cmp_FL_TreePro
 cmp_FL_ProcessRailPro
 cmp_FL_DecisionPanelPro
 cmp_FL_GatePanelPro
+cmp_FL_RiskMatrixPro
 ```
 
 ### Pantallas
