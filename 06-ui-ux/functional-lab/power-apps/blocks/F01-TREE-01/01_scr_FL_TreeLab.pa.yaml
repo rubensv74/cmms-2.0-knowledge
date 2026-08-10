@@ -1,0 +1,355 @@
+Screens:
+  scr_FL_TreeLab:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#1677FF")
+      OnVisible: |-
+        =
+        Set(varFLTreeSelected,"N11-P101");
+
+        ClearCollect(
+            colFLTreeLabNodes,
+            {
+                RowNodeId:"N01",
+                RowParentNodeId:"",
+                RowLevel:1,
+                RowLabel:"Grupo industrial DEMO",
+                RowDescription:"Raíz de prueba para profundidad variable",
+                RowSortPath:"001",
+                RowPath:"Grupo industrial DEMO",
+                RowNodeType:"plant",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N02",
+                RowParentNodeId:"N01",
+                RowLevel:2,
+                RowLabel:"Complejo Norte",
+                RowDescription:"Nivel 2 de la prueba",
+                RowSortPath:"001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte",
+                RowNodeType:"area",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N03",
+                RowParentNodeId:"N02",
+                RowLevel:3,
+                RowLabel:"Planta de proceso",
+                RowDescription:"Nivel 3 de la prueba",
+                RowSortPath:"001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso",
+                RowNodeType:"plant",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N04",
+                RowParentNodeId:"N03",
+                RowLevel:4,
+                RowLabel:"Área de proceso",
+                RowDescription:"Nivel 4 de la prueba",
+                RowSortPath:"001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso",
+                RowNodeType:"area",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N05",
+                RowParentNodeId:"N04",
+                RowLevel:5,
+                RowLabel:"Unidad de proceso A",
+                RowDescription:"Contexto operativo del caso P-101",
+                RowSortPath:"001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A",
+                RowNodeType:"unit",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N06",
+                RowParentNodeId:"N05",
+                RowLevel:6,
+                RowLabel:"Sistema de refrigeración",
+                RowDescription:"Nivel 6 de la prueba",
+                RowSortPath:"001/001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración",
+                RowNodeType:"system",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N07",
+                RowParentNodeId:"N06",
+                RowLevel:7,
+                RowLabel:"Circuito de agua CW-01",
+                RowDescription:"Nivel 7 de la prueba",
+                RowSortPath:"001/001/001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración > Circuito de agua CW-01",
+                RowNodeType:"subsystem",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N08",
+                RowParentNodeId:"N07",
+                RowLevel:8,
+                RowLabel:"Estación de bombeo",
+                RowDescription:"Nivel 8 de la prueba",
+                RowSortPath:"001/001/001/001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración > Circuito de agua CW-01 > Estación de bombeo",
+                RowNodeType:"system",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N09",
+                RowParentNodeId:"N08",
+                RowLevel:9,
+                RowLabel:"Tren de bombeo P-100",
+                RowDescription:"Nivel 9 de la prueba",
+                RowSortPath:"001/001/001/001/001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración > Circuito de agua CW-01 > Estación de bombeo > Tren de bombeo P-100",
+                RowNodeType:"equipment",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N10",
+                RowParentNodeId:"N09",
+                RowLevel:10,
+                RowLabel:"Conjunto bomba-motor",
+                RowDescription:"Nivel 10 de la prueba",
+                RowSortPath:"001/001/001/001/001/001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración > Circuito de agua CW-01 > Estación de bombeo > Tren de bombeo P-100 > Conjunto bomba-motor",
+                RowNodeType:"equipment",
+                RowHasChildren:true,
+                RowIsExpanded:true,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N11-P101",
+                RowParentNodeId:"N10",
+                RowLevel:11,
+                RowLabel:"P-101 · Bomba centrífuga",
+                RowDescription:"Activo del caso AMEF/RCM del Functional Lab",
+                RowSortPath:"001/001/001/001/001/001/001/001/001/001/001",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración > Circuito de agua CW-01 > Estación de bombeo > Tren de bombeo P-100 > Conjunto bomba-motor > P-101",
+                RowNodeType:"tag",
+                RowHasChildren:false,
+                RowIsExpanded:false,
+                RowIsVisible:true
+            },
+            {
+                RowNodeId:"N11-P102",
+                RowParentNodeId:"N10",
+                RowLevel:11,
+                RowLabel:"P-102 · Bomba de reserva",
+                RowDescription:"Equipo redundante del caso",
+                RowSortPath:"001/001/001/001/001/001/001/001/001/001/002",
+                RowPath:"Grupo industrial DEMO > Complejo Norte > Planta de proceso > Área de proceso > Unidad de proceso A > Sistema de refrigeración > Circuito de agua CW-01 > Estación de bombeo > Tren de bombeo P-100 > Conjunto bomba-motor > P-102",
+                RowNodeType:"tag",
+                RowHasChildren:false,
+                RowIsExpanded:false,
+                RowIsVisible:true
+            }
+        )
+
+    Children:
+      - conFLTreeLabRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+
+          Children:
+            - lblFLTreeLabEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#1677FF")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =10
+                  Text: ="DISCOVERY · TREEPRO"
+                  Width: =Parent.Width-48
+                  Wrap: =false
+                  X: =24
+                  Y: =20
+
+            - lblFLTreeLabTitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =22
+                  Text: ="Prueba de jerarquía profunda con P-101"
+                  Width: =Parent.Width-48
+                  Wrap: =false
+                  X: =24
+                  Y: =47
+
+            - lblFLTreeLabHint:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  Size: =10
+                  Text: ="Dataset demostrativo de 11 niveles. No representa todavía la jerarquía ISO ni la taxonomía definitiva."
+                  Width: =Parent.Width-48
+                  Wrap: =false
+                  X: =24
+                  Y: =84
+
+            - cmpFL_Tree:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_TreePro
+                Properties:
+                  AllowSearch: =true
+                  CompactMode: =false
+                  Height: =Parent.Height-140
+                  HighlightNodeId: ="N11-P101"
+                  IndentSize: =18
+                  Items: =colFLTreeLabNodes
+                  MaxVisualDepth: =11
+                  OnSelectNode: =Set(varFLTreeSelected,cmpFL_Tree.SelectedNodeIdOut)
+                  OnToggleNode: |-
+                    =
+                    With(
+                        {
+                            _nodeId:cmpFL_Tree.ToggleNodeIdOut,
+                            _target:cmpFL_Tree.ToggleTargetExpandedOut,
+                            _sortPath:LookUp(colFLTreeLabNodes,RowNodeId=cmpFL_Tree.ToggleNodeIdOut,RowSortPath)
+                        },
+                        Patch(
+                            colFLTreeLabNodes,
+                            LookUp(colFLTreeLabNodes,RowNodeId=_nodeId),
+                            {RowIsExpanded:_target}
+                        );
+                        If(
+                            _target,
+                            UpdateIf(
+                                colFLTreeLabNodes,
+                                RowParentNodeId=_nodeId,
+                                {RowIsVisible:true}
+                            ),
+                            UpdateIf(
+                                colFLTreeLabNodes,
+                                StartsWith(RowSortPath,_sortPath & "/"),
+                                {
+                                    RowIsVisible:false,
+                                    RowIsExpanded:false
+                                }
+                            )
+                        )
+                    )
+                  SelectedNodeId: =varFLTreeSelected
+                  ShowBreadcrumb: =true
+                  ShowIcons: =true
+                  ShowLines: =true
+                  Width: =Min(620,Parent.Width*0.55)
+                  X: =24
+                  Y: =122
+
+            - conFLTreeLabInfo:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#FFFFFF")
+                  Height: =260
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  Width: =Parent.Width-cmpFL_Tree.Width-72
+                  X: =cmpFL_Tree.X+cmpFL_Tree.Width+24
+                  Y: =122
+
+                Children:
+                  - lblFLTreeLabInfoEyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#1677FF")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =9
+                        Text: ="NODO SELECCIONADO"
+                        Width: =Parent.Width-36
+                        Wrap: =false
+                        X: =18
+                        Y: =18
+
+                  - lblFLTreeLabInfoTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =17
+                        Text: =cmpFL_Tree.SelectedLabelOut
+                        Width: =Parent.Width-36
+                        Wrap: =true
+                        X: =18
+                        Y: =48
+
+                  - lblFLTreeLabInfoLevel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#475569")
+                        Size: =11
+                        Text: ="Nivel " & Text(cmpFL_Tree.SelectedLevelOut) & " de 11"
+                        Width: =Parent.Width-36
+                        Wrap: =false
+                        X: =18
+                        Y: =88
+
+                  - lblFLTreeLabInfoPath:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =10
+                        Text: =cmpFL_Tree.SelectedPathOut
+                        Width: =Parent.Width-36
+                        Wrap: =true
+                        X: =18
+                        Y: =122
+
+                  - lblFLTreeLabInfoResult:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#166534")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =10
+                        Text: |-
+                          ="Objetivo: validar profundidad variable, búsqueda, selección, highlight y expansión/contracción con un único componente."
+                        Width: =Parent.Width-36
+                        Wrap: =true
+                        X: =18
+                        Y: =202
