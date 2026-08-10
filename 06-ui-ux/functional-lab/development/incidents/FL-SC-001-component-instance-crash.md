@@ -10,32 +10,33 @@
 
 La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue aceptada por Power Apps Studio, pero Studio se cerró al insertar una instancia.
 
-La reducción incremental ha reproducido el mismo cierre con una definición mínima que contiene una sola `CustomProperty` `Input/Text`, incluso **sin consumirla desde ningún control hijo**.
+La reducción incremental ha aislado una diferencia crítica entre dos caminos de autoría del mismo contrato `Data / Input / Text`.
 
 ## 2. Evidencia acumulada
 
 ```text
-R1 root-only                              PASS
-R2 identidad/texto                       PASS
-R3 contenedores estáticos                PASS
-R4 navegación visual sin eventos         PASS
-R5 Text+Boolean+Color                     FAIL
-R5-T Input/Text declarado+consumido       FAIL
-R5-TD Input/Text declarado, no consumido  FAIL
+R1 root-only                                  PASS
+R2 identidad/texto                           PASS
+R3 contenedores estáticos                    PASS
+R4 navegación visual sin eventos             PASS
+R5 Text+Boolean+Color por Source Code         FAIL
+R5-T Input/Text declarado+consumido           FAIL
+R5-TD Input/Text declarado, no consumido      FAIL
+R5-TM Input/Text creado manualmente en Studio PASS
 ```
 
-### R5-TD — resultado real
+### R5-TD — Source Code
 
-Configuración:
+Baseline mínimo R1 + una única CustomProperty:
 
-- `CanvasComponent`;
-- una única CustomProperty `AppTitle`;
-- `PropertyKind: Input`;
-- `DataType: Text`;
-- `Default: ="CMMS 2.0"`;
-- root `GroupContainer@1.5.0` ManualLayout;
-- ningún control consume `AppTitle`;
-- sin Gallery, Table, Output, Event, OnSelect ni datos dinámicos.
+```text
+AppTitle
+PropertyKind: Input
+DataType: Text
+Default: ="CMMS 2.0"
+```
+
+Ningún control consumía la propiedad.
 
 Resultado:
 
@@ -44,59 +45,82 @@ DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       FAIL — Studio closes on insertion
 ```
 
+### R5-TM — creación manual en Studio
+
+Sobre el mismo enfoque mínimo, se creó desde la interfaz de Power Apps Studio una propiedad:
+
+```text
+Display name: App Title
+Property name: AppTitle
+Property type: Data
+Definition: Input
+Data type: Text
+```
+
+La propiedad no se consumió desde ningún control.
+
+Resultado real comunicado:
+
+```text
+INSTANCE_SAFE PASS
+```
+
 ## 3. Interpretación actual
 
 ### Causa de proceso confirmada
 
 `DEFINITION_ACCEPTED` no demuestra seguridad de instancia. `INSTANCE_SAFE` es un gate independiente y obligatorio.
 
+Además, ya no puede asumirse que una CustomProperty redactada manualmente en `.pa.yaml` sea equivalente a la misma propiedad creada por Studio.
+
 ### Causa técnica
 
 ```text
-UNKNOWN — SURFACE NARROWED TO SOURCE-CODE-CREATED INPUT/TEXT DECLARATION PATH
+UNKNOWN — ISOLATED TO SOURCE-CODE AUTHORING / SERIALIZATION PATH FOR CUSTOM PROPERTY
 ```
 
-R5-TD demuestra que, en el baseline probado, **la declaración Source Code de una única propiedad custom `Input/Text` es suficiente para reproducir el cierre**.
+La evidencia demuestra, en este baseline:
 
-Esto todavía NO demuestra que:
+1. `Input/Text` como capacidad del componente es viable, porque la propiedad creada manualmente en Studio es instance-safe.
+2. El cierre no requiere consumo/binding, porque R5-TD falla sin referencias a la propiedad.
+3. El diferencial observado está en el camino usado para crear/serializar/hidratar la CustomProperty desde Source Code.
 
-- las propiedades `Input/Text` creadas manualmente en Studio sean inseguras;
-- el runtime de Canvas Components no soporte inputs de texto;
-- todas las CustomProperties creadas por Source Code fallen;
-- Boolean, Color, Table, Output o Event compartan la misma causa.
+Todavía NO está demostrado cuál es la diferencia exacta de esquema o metadatos entre la declaración manual y la generada por nuestro YAML.
 
-## 4. Evidencia oficial relevante
+## 4. Superficies descartadas como suficientes
 
-Microsoft documenta las propiedades Data/Input como mecanismo soportado para pasar valores —incluidos texto y color— desde la app host hacia un componente Canvas.
+R1–R4 no reproducen el cierre por sí solas en las configuraciones probadas:
 
-Microsoft también advierte que el esquema `.pa.yaml` está en desarrollo activo; el formato Source Code actual está orientado a control de código fuente y la edición externa está soportada únicamente mediante Power Platform Git Integration.
+- CanvasComponent mínimo;
+- `GroupContainer@1.5.0` ManualLayout;
+- `ModernText@1.0.0` estático;
+- AutoLayout vertical;
+- contenedores anidados estáticos;
+- Rectangle/Icon/Label/Button estáticos sin eventos.
 
-Referencias oficiales:
+R5-TM permite además descartar que `Input/Text` sea intrínsecamente inseguro en esta app.
 
-- `https://learn.microsoft.com/power-apps/maker/canvas-apps/component-properties`
-- `https://learn.microsoft.com/power-apps/maker/canvas-apps/power-apps-yaml`
+## 5. Siguiente prueba discriminante — R5-TS
 
-## 5. Siguiente prueba discriminante — R5-TM
+No se redactará otra CustomProperty a mano en YAML todavía.
 
-No se genera otro YAML todavía.
+Objetivo: capturar cómo **Power Apps Studio serializa realmente** la propiedad `AppTitle` creada manualmente y compararla con la declaración R5-TD que provocó el cierre.
 
-Objetivo: separar el **motor real de CustomProperties** del **camino de creación mediante Source Code**.
+Procedimiento:
 
-Prueba manual en Studio:
-
-1. volver a un componente mínimo instance-safe sin CustomProperties;
-2. crear manualmente desde el panel del componente una propiedad custom Data/Input/Text;
-3. no consumirla en ningún control;
-4. guardar;
-5. insertar una instancia nueva;
-6. registrar si Studio permanece estable.
+1. mantener la instancia R5-TM estable;
+2. abrir el Source Code de la definición del componente;
+3. localizar el bloque que Studio haya generado para `AppTitle`;
+4. copiar ese fragmento exacto, incluidos metadatos adicionales si existen;
+5. comparar Studio-generated vs R5-TD;
+6. solo después construir un reproducer Source Code basado en la serialización real de Studio.
 
 Interpretación:
 
-- **manual PASS** → el runtime de Input/Text es viable y el foco pasa al camino Source Code/serialización/hidratación de la CustomProperty;
-- **manual FAIL** → el foco pasa al motor/configuración de Enhanced component properties en la app/Studio activo.
+- si la serialización de Studio difiere, la diferencia pasa a ser candidata directa del incidente;
+- si es idéntica, habrá que investigar metadatos no visibles, estado interno o secuencia de creación.
 
-No se prueban Boolean, Color, Gallery, Table, Output ni Event hasta cerrar esta bifurcación.
+No se prueban R6, PageHeader ni App Shell hasta cerrar esta comparación.
 
 ## 6. Regla preventiva inmediata
 
@@ -111,18 +135,18 @@ VISUAL_QA_VALIDATED
 READY_FOR_INTEGRATION
 ```
 
-Cuando una etapa falla, reducir únicamente su delta. No continuar añadiendo responsabilidades.
+Regla nueva demostrada:
 
-Además, hasta resolver FL-SC-001:
+> Una CustomProperty creada por Source Code no se considerará equivalente a una propiedad creada por Studio aunque nombre, tipo y valor por defecto parezcan iguales. Si existe un fallo de instancia, capturar primero la serialización generada por Studio y usarla como referencia de esquema.
 
-> No crear contratos públicos de componentes del Functional Lab exclusivamente mediante Source Code y asumirlos válidos por aceptación de definición. Toda CustomProperty deberá demostrar seguridad de instancia; cuando sea necesario se comparará creación Source Code frente a creación manual en Studio.
+Hasta cerrar FL-SC-001, el contrato público del Functional Lab se autorizará primero mediante Studio y después se trasladará a código únicamente cuando la representación serializada haya sido validada.
 
 ## 7. Criterio de cierre
 
 FL-SC-001 solo podrá cerrarse cuando:
 
-1. se determine si el fallo pertenece al camino Source Code o al motor de propiedades custom;
+1. se identifique la diferencia real del camino Source Code o se documente un workaround estable;
 2. exista una estrategia de autoría reproduciblemente instance-safe;
 3. la fuente completa corregida sea estable al insertar, guardar y reabrir;
 4. contrato público y Visual QA pasen;
-5. el aprendizaje reutilizable central se actualice con la regla demostrada.
+5. el aprendizaje reutilizable central quede actualizado.
