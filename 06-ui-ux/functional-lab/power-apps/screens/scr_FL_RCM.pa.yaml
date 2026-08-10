@@ -1,0 +1,436 @@
+Screens:
+  scr_FL_RCM:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-12" || varFLCurrentStageId="FL-13" || varFLCurrentStageId="FL-14" || varFLCurrentStageId="FL-15" || varFLCurrentStageId="FL-16"),Set(varFLCurrentStageId,"FL-12"))
+
+    Children:
+      - conFLRCMRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLRCMNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLRCMNav.SelectedKey);
+                    Switch(cmpFLRCMNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLRCMMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLRCMNav.Width
+                  X: =cmpFLRCMNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLRCMHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="DECISIÓN RCM"
+                        CaseCode: =varFLActiveCaseCode
+                        CaseType: =LookUp(colFLFailureModes,HumanSelected,Name)
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="FL-12 a FL-16"
+                        ReviewState: =If(varFLCaseDraft,"Borrador","En revisión")
+                        Subtitle: ="Comprueba evidencia, ventana P–F y políticas técnicamente válidas antes de confirmar la estrategia."
+                        Title: ="Decisión RCM"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLRCMRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLRCMHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLRCMRail.SelectedStageIdOut);
+                          Switch(cmpFLRCMRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLRCMHeader.Height+12
+                  - conFLRCMWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLRCMHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLRCMRail.Width-60
+                        X: =cmpFLRCMRail.X+cmpFLRCMRail.Width+12
+                        Y: =cmpFLRCMHeader.Height+12
+                      Children:
+                        - conFLRCMBranch:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =146
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLRCMBranchLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-12 / 13 · RAMA Y DEGRADACIÓN DETECTABLE"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - conFLRCMEvident:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#BBF7D0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#F0FDF4")
+                                    Height: =76
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =(Parent.Width-54)*0.28
+                                    X: =18
+                                    Y: =50
+                                  Children:
+                                    - lblFLRCMEvidentLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#166534")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="FALLO EVIDENTE"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =10
+                                    - lblFLRCMEvidentValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#14532D")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =16
+                                          Text: =varFLRCMEvident
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =36
+                              - conFLRCMDetectable:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#BBF7D0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#F0FDF4")
+                                    Height: =76
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =(Parent.Width-54)*0.28
+                                    X: =conFLRCMEvident.X+conFLRCMEvident.Width+9
+                                    Y: =50
+                                  Children:
+                                    - lblFLRCMDetectableLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#166534")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="DEGRADACIÓN DETECTABLE"
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =10
+                                    - lblFLRCMDetectableValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#14532D")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =16
+                                          Text: =varFLRCMDetectable
+                                          Width: =Parent.Width-24
+                                          X: =12
+                                          Y: =36
+                              - lblFLRCMEvidence:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =9
+                                    Text: =varFLRcmPFEvidence
+                                    Width: =Parent.Width*0.38
+                                    Wrap: =true
+                                    X: =Parent.Width*0.61
+                                    Y: =56
+                        - conFLRCMPF:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#F8FCFF")
+                              Height: =180
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =(Parent.Width-12)*0.48
+                              X: =0
+                              Y: =158
+                            Children:
+                              - lblFLRCMPFLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-14 · VENTANA P–F"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLRCMPFValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =24
+                                    Text: =Text(varFLPFDays) & " días"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =44
+                              - lblFLRCMIntervention:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =10
+                                    Text: |-
+                                      ="Tiempo requerido para intervenir: " & Text(varFLInterventionDays) & " días"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =86
+                              - lblFLRCMProbability:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#166534")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =10
+                                    Text: |-
+                                      ="Probabilidad estimada de detección: " & Text(varFLDetectionProbabilityPct) & "%"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =116
+                              - lblFLRCMPFResult:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0369A1")
+                                    Size: =9
+                                    Text: =If(varFLPFDays>varFLInterventionDays,"El sistema considera viable detectar y actuar dentro de la ventana.","La ventana no permite una intervención fiable.")
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =146
+                        - conFLRCMPolicies:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =180
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLRCMPF.Width-12
+                              X: =conFLRCMPF.Width+12
+                              Y: =158
+                            Children:
+                              - lblFLRCMPoliciesLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-15 · POLÍTICAS TÉCNICAMENTE VÁLIDAS"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLRCMAge:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =10
+                                    Text: |-
+                                      ="Relación con edad: " & varFLAgeRelated
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =46
+                              - lblFLRCMPolicy:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#166534")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =10
+                                    Text: |-
+                                      ="Política efectiva disponible: " & varFLEffectivePolicy
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =76
+                              - lblFLRCMFallback:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =9
+                                    Text: |-
+                                      ="Fallback: " & varFLFallbackStrategy
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =108
+                              - lblFLRCMAuthority:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: |-
+                                      ="Autoridad: " & varFLRCMAuthority
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =146
+                        - cmpFLRCMDecision:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_DecisionPanelPro
+                            Properties:
+                              CanConfirm: =varFLRCMDetectable="Sí" && varFLPFDays>varFLInterventionDays
+                              CanOverride: =true
+                              ConfirmLabel: ="Confirmar estrategia"
+                              ContextText: ="La recomendación usa detectabilidad, ventana P–F y validez técnica. La estrategia necesita autoridad humana."
+                              DecisionReason: ="La degradación es detectable y existe margen suficiente para intervenir antes del fallo funcional."
+                              Height: =268
+                              HumanDecisionValue: =varFLRecommendedStrategy
+                              IsOverride: =false
+                              OnConfirmDecision: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageOrder>=12 && StageOrder<=16,{Status:"confirmed"});
+                                Set(varFLCaseDraft,false)
+                              OnOverrideDecision: =Set(varFLCaseDraft,true)
+                              RecommendationExplanation: ="La condición es observable y la ventana P–F permite una política basada en condición sin evidencia suficiente de relación con edad."
+                              RecommendationLabel: ="Estrategia recomendada"
+                              RecommendationValue: =varFLRecommendedStrategy
+                              RequiredRole: ="Ingeniería de Fiabilidad + Mantenimiento + Operaciones"
+                              ShowDecision: =true
+                              ShowRecommendation: =true
+                              ShowSystemResult: =true
+                              SystemResultLabel: ="Viabilidad P–F"
+                              SystemResultValue: =If(varFLPFDays>varFLInterventionDays,"Viable","No viable")
+                              Title: ="FL-16 · Emitir decisión RCM"
+                              Width: =Parent.Width*0.60
+                              X: =0
+                              Y: =350
+                        - cmpFLRCMGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =varFLRCMEvident="Sí" && varFLRCMDetectable="Sí" && varFLPFDays>varFLInterventionDays && !IsBlank(varFLRecommendedStrategy)
+                              ContinueLabel: ="Continuar a economía"
+                              GateStatus: =If(varFLRCMEvident="Sí" && varFLRCMDetectable="Sí" && varFLPFDays>varFLInterventionDays && !IsBlank(varFLRecommendedStrategy),"passed","blocked")
+                              GateTitle: ="Gate RCM"
+                              Height: =268
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageOrder>=12 && StageOrder<=16,{Status:"confirmed"});
+                                Set(varFLCaseDraft,false);
+                                Set(varFLCurrentStageId,"FL-17");
+                                Navigate(scr_FL_Economics,ScreenTransition.None)
+                              OutputLabel: ="Estrategia RCM confirmada para evaluación económica"
+                              Reason: ="La política basada en condición es técnicamente aplicable y mantiene un fallback explícito."
+                              RequiredAction: ="Confirmar la autoridad multidisciplinar"
+                              ResponsibleRole: ="Fiabilidad + Mantenimiento + Operaciones"
+                              Summary: ="Decisión RCM preparada"
+                              Width: =Parent.Width-cmpFLRCMDecision.Width-12
+                              X: =cmpFLRCMDecision.Width+12
+                              Y: =350
