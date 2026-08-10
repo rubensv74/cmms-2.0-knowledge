@@ -1,14 +1,37 @@
 # cmp_FL_SidebarPro — Component Specification
 
-**Status:** Draft / pending Studio validation  
+**Status:** REVIEW_REQUIRED / FL-SC-001  
 **Increment:** F01-00A  
 **Purpose:** navegación premium común del CMMS 2.0 Functional Lab.
 
-## 1. Responsibility
+## 1. Current validation state
+
+```text
+PASS_STATIC                 PASS
+DEFINITION_ACCEPTED         PASS
+INSTANCE_SAFE               FAIL
+PUBLIC_CONTRACT_VALIDATED   NOT TESTED
+VISUAL_QA_VALIDATED         NOT TESTED
+READY_FOR_INTEGRATION       NO
+```
+
+Power Apps Studio accepted the original component definition, but Studio closed when an instance was inserted.
+
+The technical cause is deliberately recorded as `UNKNOWN` until a reduced reproducer isolates the failing responsibility.
+
+Incident:
+
+```text
+../../development/incidents/FL-SC-001-component-instance-crash.md
+```
+
+Current source is temporarily `F01-00A-R1 root-only` and does **not** implement the final public contract described below. The contract remains the target design while the implementation is reconstructed incrementally.
+
+## 2. Responsibility
 
 Proporcionar navegación persistente entre workspaces del Functional Lab sin conocer la lógica interna de cada workspace.
 
-El componente:
+El componente final:
 
 - muestra identidad del producto;
 - muestra los workspaces disponibles;
@@ -25,7 +48,9 @@ No debe:
 - navegar directamente a pantallas concretas;
 - depender de variables globales de PULSE o del Functional Lab.
 
-## 2. Public contract
+## 3. Target public contract
+
+> Este contrato está suspendido durante R1 y se restaurará por incrementos después de demostrar `INSTANCE_SAFE` en el estadio mínimo.
 
 ### Inputs
 
@@ -70,7 +95,7 @@ OnSelectItem()
 
 La pantalla host recibe el evento y decide qué hacer con `SelectedKey`.
 
-## 3. Supported states
+## 4. Supported states target
 
 ```text
 Default
@@ -83,7 +108,7 @@ No case selected
 Case selected
 ```
 
-## 4. Visual contract
+## 5. Visual contract target
 
 Expanded width: 220 px  
 Collapsed width: 76 px
@@ -107,51 +132,64 @@ Principios:
 - icono centrado en colapsado;
 - contexto de caso secundario y no competidor con navegación.
 
-## 5. Compatibility constraints
+## 6. Compatibility constraints
 
-- `GroupContainer@1.5.0` para geometría y radios.
-- `Gallery@2.15.0` para navegación.
-- `Classic/Icon@2.5.0` para iconografía inicial.
-- `Label@2.5.1` sin propiedades `Radius*`.
-- `Classic/Button@2.2.0` sin `AccessibleLabel` hasta validación específica.
-- `ModernText@1.0.0` estático con `AutoHeight=true` por defecto.
-- sin SVG inline.
-- sin assets de imagen externos.
+- consultar `development/compatibility.md` inmediatamente antes de cada corrección YAML;
+- definición aceptada no equivale a instancia segura;
+- cada estadio de reconstrucción debe superar inserción de instancia aislada antes del siguiente;
+- `GroupContainer@1.5.0` para geometría y radios cuando se restaure;
+- `Gallery@2.15.0` no se reincorpora hasta que los estadios anteriores sean `INSTANCE_SAFE`;
+- `Classic/Icon@2.5.0` no se reincorpora hasta el estadio de navegación visual;
+- `Label@2.5.1` sin propiedades `Radius*`;
+- `Classic/Button@2.2.0` sin `AccessibleLabel` hasta validación específica;
+- `ModernText@1.0.0` estático con `AutoHeight=true` por defecto;
+- sin SVG inline;
+- sin assets de imagen externos;
 - sin variables globales internas.
 
-## 6. Initial icon vocabulary
+## 7. Diagnostic reconstruction sequence
 
 ```text
-Overview
-Context
-Functions
-Risk
-Decision
-Plan
-Governance
-Improve
-Settings
+R1 root only
+R2 identidad/texto
+R3 contenedores estáticos
+R4 navegación visual sin eventos
+R5 custom inputs simples
+R6 Gallery + Table input
+R7 Output/Event
+R8 geometría completa
 ```
 
-El vocabulario se traducirá internamente a iconos Classic seguros. Si una clave no se reconoce, se utilizará un icono neutro.
+No se presupone que R6 o R7 sean la causa. Su posición tardía reduce la superficie de diagnóstico.
 
-## 7. Validation for F01-00A
+## 8. Validation — R1
 
-Después de pegar el componente en Power Apps Studio:
+Después de sustituir la fuente completa por F01-00A-R1:
 
 ```text
 [ ] ComponentDefinitions aceptado
-[ ] no PA1001
-[ ] no PA2108
-[ ] no dependencia de asset inexistente
-[ ] no fórmula con variable global interna
-[ ] render expanded correcto
-[ ] render collapsed correcto
-[ ] item activo visible
-[ ] click cambia SelectedKey
-[ ] OnSelectItem se dispara
-[ ] texto sin clipping/mini-scrollbars
-[ ] App Checker sin nuevos errores atribuibles al componente
+[ ] Save correcto
+[ ] insertar UNA instancia en pantalla vacía
+[ ] Studio permanece abierto y responde
+[ ] superficie 220x700 visible
+[ ] segundo Save correcto
+[ ] App Checker sin nuevos errores atribuibles
 ```
 
-El componente permanecerá `Draft` hasta superar esta prueba en la app real.
+Si R1 falla, no se añadirá ninguna complejidad: se investigará el baseline/mecanismo CanvasComponent Source Code.
+
+Si R1 pasa, el siguiente incremento será R2 y solo restaurará identidad/texto.
+
+## 9. Final validation before integration
+
+El componente no podrá utilizarse en el shell hasta completar:
+
+```text
+[ ] PASS_STATIC
+[ ] DEFINITION_ACCEPTED
+[ ] INSTANCE_SAFE
+[ ] PUBLIC_CONTRACT_VALIDATED
+[ ] VISUAL_QA_VALIDATED
+[ ] save/reopen estable
+[ ] READY_FOR_INTEGRATION
+```
