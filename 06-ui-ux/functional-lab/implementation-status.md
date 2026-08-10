@@ -3,7 +3,8 @@
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
 **Último gate superado:** `F01-00A-R5-TM manual Text input` — INSTANCE_SAFE PASS  
-**Gate actual:** `F01-00A-R5-TS Studio serialization comparison` — PENDING USER CAPTURE
+**Último hallazgo:** `F01-00A-R5-TS` — Studio visible Source Code omite la CustomProperty manual  
+**Gate actual:** `F01-00A-R5-TB bind to Studio property` — PENDING STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
@@ -16,71 +17,54 @@
 | F01-00A-R2 identity/text | validated-pass | ModernText estático instance-safe. |
 | F01-00A-R3 static-containers | validated-pass | AutoLayout + contenedores anidados estáticos instance-safe. |
 | F01-00A-R4 static-navigation | validated-pass | Rectangle + Icon + Label + Button estáticos sin eventos instance-safe. |
-| F01-00A-R5 primitive inputs | failed-instance | Text + Boolean + Color por Source Code reproducen el cierre. |
+| F01-00A-R5 primitive inputs | failed-instance | Text + Boolean + Color introducidos mediante `CustomProperties:` reproducen el cierre. |
 | F01-00A-R5-T Text input | failed-instance | Un único Input/Text declarado+consumido por Source Code reproduce el cierre. |
 | F01-00A-R5-TD Text declaration only | failed-instance | Un único Input/Text declarado por Source Code y no consumido reproduce el cierre. |
-| F01-00A-R5-TM manual Text input | validated-pass | El mismo contrato Data/Input/Text creado manualmente en Studio es instance-safe. |
-| F01-00A-R5-TS Studio serialization | pending-user-capture | Comparar el bloque que Studio genera para AppTitle contra R5-TD. |
+| F01-00A-R5-TM manual Text input | validated-pass | El mismo Data/Input/Text creado manualmente en Studio es instance-safe. |
+| F01-00A-R5-TS Studio source capture | completed | El Source Code visible no muestra `CustomProperties` ni `AppTitle`, aunque la propiedad existe. |
+| F01-00A-R5-TB Studio-property binding | pending-user-validation | Probar un ModernText Source Code consumiendo `AppTitle` creado manualmente. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | No se prepara. |
 
-## 2. Incidente actual — FL-SC-001
+## 2. Interpretación vigente
 
 ```text
-R1 root-only: PASS
-R2 identity/text: PASS
-R3 static containers: PASS
-R4 static navigation: PASS
-R5 Text+Boolean+Color via Source Code: FAIL
-R5-T Text declared+consumed via Source Code: FAIL
-R5-TD Text declaration only via Source Code: FAIL
-R5-TM Text property created manually in Studio: PASS
+Input/Text creado en Studio                PASS
+Input/Text inyectado con CustomProperties  FAIL
+Studio visible Source Code                 OMITE AppTitle
 ```
 
-Interpretación vigente:
+Conclusión operativa:
 
-- `Input/Text` no es intrínsecamente inseguro en esta app;
-- el consumo/binding no es necesario para reproducir el cierre;
-- la diferencia observada está asociada al camino de autoría/serialización/hidratación de la CustomProperty desde Source Code;
-- todavía falta identificar qué diferencia concreta existe entre nuestro bloque R5-TD y la representación creada por Studio.
+- `Input/Text` no es intrínsecamente inseguro;
+- el contrato público no está completamente representado en la superficie Source Code visible utilizada en esta prueba;
+- no se volverán a generar `CustomProperties:` dentro del YAML pegable;
+- el contrato se crea en Studio y el cuerpo visual se valida por Source Code por separado.
 
 ## 3. Estrategia de corrección
-
-No se genera R6 ni otro YAML de CustomProperties hasta capturar la representación real producida por Studio.
 
 Prueba actual:
 
 ```text
-R5-TS — abrir Source Code del componente que contiene AppTitle creado manualmente
-         y capturar exactamente el bloque serializado por Studio.
+R5-TB
+AppTitle ya creado manualmente en Studio
++
+Source Code sin CustomProperties
++
+ModernText.Text = cmp_FL_SidebarPro.AppTitle
 ```
 
-Después:
+- PASS → estrategia híbrida viable: contrato en Studio + cuerpo en Source Code.
+- FAIL → reducir el binding a la propiedad manual antes de continuar.
+
+## 4. Componentes premium fundacionales
 
 ```text
-Studio-generated AppTitle
-          ↓ compare
-R5-TD AppTitle escrito manualmente
-          ↓
-identificar delta
-          ↓
-reproducer mínimo Source Code basado en esquema real
-```
-
-## 4. Regla de autoría temporal
-
-Hasta cerrar FL-SC-001:
-
-> Las CustomProperties del Functional Lab se crean primero en Studio. No se generarán contratos públicos nuevos directamente en YAML hasta demostrar que la representación usada es la misma que Studio serializa y que alcanza `INSTANCE_SAFE`.
-
-## 5. Componentes premium fundacionales
-
-```text
-F01-00A  cmp_FL_SidebarPro        ← FL-SC-001 / serialization diagnosis
+F01-00A  cmp_FL_SidebarPro        ← FL-SC-001 / authoring-path diagnosis
 F01-00B  cmp_FL_PageHeaderPro     ← BLOCKED
 F01-01   Premium App Shell        ← BLOCKED
 ```
 
-## 6. Regla de continuidad
+## 5. Regla de continuidad
 
-> No se prepara F01-00B ni ningún bloque dependiente hasta disponer de una estrategia de CustomProperties reproduciblemente instance-safe.
+> No se prepara F01-00B ni ningún bloque dependiente hasta demostrar una estrategia de CustomProperties reproduciblemente `INSTANCE_SAFE`.
