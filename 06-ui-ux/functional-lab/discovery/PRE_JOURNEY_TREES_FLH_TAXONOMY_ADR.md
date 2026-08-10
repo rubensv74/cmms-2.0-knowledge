@@ -1,215 +1,134 @@
 # Discovery — Contexto previo al journey: FLH, Taxonomía y ADR
 
 **Fecha:** 2026-08-10  
-**Estado:** `active-discovery`  
-**Prioridad:** alta para visión global, sin bloquear indefinidamente WS-03  
-**Decisión de implementación:** pendiente
+**Estado:** `tree-source-located / candidate-prepared`  
+**Prioridad:** alta para visión global  
+**Recomendación preliminar:** B — evolucionar el árbol PULSE a profundidad variable
 
-## 1. Motivo
+## 1. Propósito
 
-El Functional Lab recorre actualmente 28 etapas de la metodología de mantenimiento, desde FL-01 hasta FL-28. Antes de entrar en ese recorrido falta una capa de contexto que permita entender dónde vive el activo analizado y cómo se relacionan las distintas jerarquías y clasificaciones del modelo conceptual.
-
-Se proponen tres vistas previas al journey, todas usando el mismo caso P-101:
-
-1. **Árbol FLH** — localizar física/funcionalmente P-101 dentro de la jerarquía de planta.
-2. **Taxonomía** — mostrar la clasificación del activo y su posición dentro del modelo taxonómico vigente.
-3. **Árbol ADR** — mostrar el contexto ADR aplicable al mismo activo según el modelo conceptual vigente.
-
-Estas vistas no deben convertirse automáticamente en nuevas etapas FL-29..FL-31. La hipótesis inicial es tratarlas como **contexto previo al journey**, preservando intactas las 28 etapas metodológicas.
-
-## 2. Objetivo de producto
-
-Antes de comenzar FL-01, una persona debería poder responder visualmente:
-
-- ¿Dónde está P-101 dentro de la planta?
-- ¿Cómo se clasifica?
-- ¿Qué rama ADR le aplica?
-- ¿Qué relaciones existen entre jerarquía, taxonomía y análisis de mantenimiento?
-- ¿Qué parte del contexto proviene de información maestra y qué parte se utiliza después durante AMEF/RCM?
-
-El propósito es mantener una fotografía completa del modelo conceptual CMMS 2.0 y evitar que el Functional Lab quede reducido únicamente al journey AMEF/RCM.
-
-## 3. Hipótesis de navegación
+Antes de las 28 etapas del Functional Lab se incorporarán conceptualmente tres vistas del mismo caso P-101:
 
 ```text
 CONTEXTO DEL ACTIVO
-├── FLH
+├── Árbol FLH
 ├── Taxonomía
-└── ADR
+└── Árbol ADR
 
 METODOLOGÍA DE MANTENIMIENTO
-├── WS-01 / FL-01..03
-├── WS-02 / FL-04..06
-├── ...
-└── WS-09 / FL-27..28
+└── FL-01 .. FL-28
 ```
 
-Esta estructura es una hipótesis de UX y deberá validarse antes de modificar el Sidebar canónico.
+Estas vistas son contexto previo al journey y no nuevas etapas FL.
 
-## 4. Investigación solicitada — componente de árbol PULSE
+## 2. Fuente PULSE localizada
 
-Existe en PULSE una experiencia de árbol identificada por el usuario con una profundidad aproximada de tres niveles. Debe auditarse como posible base de un componente premium reutilizable para CMMS 2.0.
-
-### Pregunta principal
-
-> ¿Puede evolucionar el patrón de árbol de PULSE desde una jerarquía fija de tres niveles a una jerarquía de profundidad variable, capaz de representar hasta once niveles cuando sea necesario, sin diseñar un componente distinto por profundidad?
-
-El objetivo práctico no es obligar a mostrar once niveles. El componente debe poder soportarlos, aunque en una planta concreta solo se utilicen cinco o seis.
-
-## 5. Modelo objetivo a contrastar
-
-No se adopta todavía como arquitectura definitiva, pero el patrón que debe evaluarse frente al árbol real es un modelo padre-hijo genérico:
+El componente indicado por el usuario ya está versionado en:
 
 ```text
-NodeId
-ParentNodeId
-NodeType
-Level
-Code
-Name
-Path
-HasChildren
-SortOrder
+rubensv74/app_pulse
+power-apps/components/cmp_TreeViewPro.pa.yaml
 ```
 
-Esto permitiría separar profundidad máxima de diseño visual y evitar columnas rígidas `Level1`, `Level2`, `Level3`, etc.
+Su modelo ya utiliza una tabla plana con:
 
-## 6. Capacidades a auditar
+```text
+RowNodeId
+RowParentNodeId
+RowLevel
+RowLabel
+RowDescription
+RowSortPath
+```
 
-Cuando se localice la fuente real del árbol PULSE se evaluarán conjuntamente:
+La indentación se calcula dinámicamente a partir de `RowLevel`.
 
-- modelo fijo vs padre-hijo;
-- indentación dinámica por nivel;
-- expandir / contraer por nodo;
-- estado expandido independiente;
-- iconografía por tipo de nodo;
-- selección única;
-- resaltado de P-101;
-- breadcrumbs y path completo;
-- búsqueda;
-- profundidad variable;
-- colección aplanada de nodos visibles;
-- scroll y nombres largos;
-- rendimiento con cientos/miles de nodos;
-- posible lazy expansion;
-- contrato reusable para FLH, Taxonomía y ADR.
+Por tanto, la experiencia actual de tres niveles **no está estructuralmente limitada a tres niveles**. La limitación observada procede principalmente del dataset, la presentación de iconos/colores y la ausencia de expansión/contracción real.
 
-La prueba debe distinguir siempre **profundidad máxima** de **número total de nodos visibles**, porque son problemas diferentes.
+## 3. Decisión preliminar
 
-## 7. Contrato reusable premium a explorar
+```text
+A — reutilizar sin cambios                    no recomendado
+B — evolucionar a profundidad variable       recomendado
+C — reconstruir completamente                no necesario por ahora
+D — descartar Power Apps                      no justificado por la evidencia actual
+```
 
-Nombre provisional:
+La recomendación B debe confirmarse con una única prueba representativa de profundidad 11.
+
+## 4. Evolución preparada
+
+Se ha creado el candidato:
 
 ```text
 cmp_FL_TreePro
 ```
 
-Contrato conceptual posible:
+Principios:
+
+- un solo Canvas Component;
+- tabla plana padre-hijo;
+- profundidad como dato;
+- sin 11 galerías;
+- `MaxVisualDepth` e `IndentSize` configurables;
+- highlight de P-101;
+- breadcrumb/path;
+- búsqueda;
+- selección;
+- evento de expandir/contraer;
+- estado `RowIsVisible` / `RowIsExpanded` mantenido por el host para evitar estado global oculto entre instancias.
+
+## 5. Prueba integrada
+
+Se ha preparado `scr_FL_TreeLab` con una rama demostrativa de once niveles y P-101 situado en nivel 11.
+
+El dataset sirve únicamente para validar el motor visual; no define todavía la jerarquía ISO, FLH o taxonomía definitiva.
+
+La prueba validará de una vez:
 
 ```text
-Inputs
-- Nodes
-- SelectedNodeId
-- HighlightNodeId
-- MaxVisualDepth
-- ShowBreadcrumb
-- ShowSearch
-- IsReadOnly
-- colores / densidad
-
-Outputs
-- SelectedNode
-- SelectedNodeId
-- SelectedPath
-
-Events
-- OnSelectNode
-- OnExpandNode
-- OnCollapseNode
+DEFINITION_ACCEPTED
+INSTANCE_SAFE
+DEPTH_11
+SEARCH
+SELECTION_PATH
+HIGHLIGHT_P101
+TOGGLE
+STUDIO_STABLE
 ```
 
-No se generará YAML de este componente hasta disponer de evidencia del árbol actual y cerrar la decisión de diseño.
+No se harán micropruebas por nivel.
 
-## 8. Reutilización entre las tres pantallas
+## 6. Reutilización prevista
 
-Hipótesis preferida:
+Si el candidato supera la prueba:
 
 ```text
-Tree engine
-├── FLH dataset
-├── Taxonomy dataset
-└── ADR dataset
+cmp_FL_TreePro
+├── dataset FLH
+├── dataset Taxonomía
+└── dataset ADR
 ```
 
-Evitar tres componentes distintos salvo que exista una diferencia funcional real que lo justifique.
+Las tres vistas compartirán motor y mantendrán a P-101 como hilo conductor antes de entrar en WS-01.
 
-## 9. Caso P-101 como hilo conductor
+## 7. Valor estratégico
 
-P-101 deberá poder aparecer:
+El resultado se considera también evidencia sobre la viabilidad futura de Power Apps para CMMS 2.0. Un TreePro capaz de soportar jerarquías profundas sin componentes distintos por nivel sería un activo premium reutilizable para navegación de activos, FLH, taxonomías y ADR.
 
-- resaltado en FLH;
-- clasificado en la taxonomía;
-- relacionado con su rama ADR;
-- y después continuar al WS-01 sin cambiar de contexto.
+## 8. Auditoría detallada
 
-El usuario debe sentir que está mirando **tres perspectivas del mismo activo**, no tres ejemplos diferentes.
+Ver:
 
-## 10. Valor potencial para CMMS 2.0 en Power Apps
+[`TREEPRO_PULSE_AUDIT_2026-08-10.md`](./TREEPRO_PULSE_AUDIT_2026-08-10.md)
 
-Si Power Apps resultara finalmente una plataforma viable para una versión productiva de CMMS 2.0, disponer de componentes premium reutilizables para jerarquías profundas, taxonomías y estructuras ADR reduciría sustancialmente el riesgo de una futura implementación.
-
-El Functional Lab puede funcionar como banco de pruebas de componentes reutilizables sin convertir esa posibilidad en una decisión productiva anticipada.
-
-## 11. Checkpoint ejecutado tras WS-02
-
-WS-02 ha sido validado por el usuario y se ejecutó el checkpoint acordado.
-
-Evidencia obtenida del snapshot `main` de `rubensv74/app_pulse`:
-
-```text
-power-apps/components
-→ no aparece Tree*, Hierarchy* ni componente equivalente por nombre evidente
-
-búsqueda de código
-→ tree / hierarchy / ParentId / FLH sin coincidencia suficiente para identificar la fuente
-
-power-apps/screens
-→ Home
-→ PunchReview
-→ Punches
-```
-
-Conclusión del checkpoint:
-
-> El árbol que el usuario identifica en PULSE no está todavía localizado en el contenido versionado examinado. Puede estar embebido bajo otro nombre, en una versión no reflejada en `main`, en otra fuente o pendiente de sincronización con el repositorio.
-
-No se inferirá su implementación ni se declarará una limitación real de tres niveles hasta analizar el artefacto exacto.
-
-## 12. Decisión operativa tras el checkpoint
-
-El discovery permanece abierto, pero no bloquea el journey.
-
-Secuencia adoptada:
+## 9. Secuencia
 
 ```text
 WS-02 VALIDATED PASS
-→ checkpoint TreePro ejecutado
-→ fuente exacta del árbol PULSE pendiente
+→ TreeViewPro PULSE localizado
+→ cmp_FL_TreePro candidato preparado
+→ una prueba integrada de profundidad 11
+→ si PASS, congelar TreePro Foundation
 → continuar WS-03
-→ retomar auditoría TreePro en cuanto el componente real esté disponible
 ```
-
-Si durante WS-03/WS-04 aparece la fuente real del árbol, la auditoría puede retomarse inmediatamente sin alterar las 28 etapas.
-
-## 13. Criterio de salida de la investigación
-
-La auditoría debe terminar con una recomendación explícita:
-
-```text
-A — reutilizar componente PULSE sin cambio estructural
-B — evolucionar componente PULSE a TreePro de profundidad variable
-C — conservar patrón visual pero reconstruir motor de árbol
-D — Power Apps no es una solución razonable para esta profundidad/volumen
-```
-
-La recomendación debe venir acompañada de evidencia del componente actual, modelo de datos propuesto, límites conocidos, riesgos de rendimiento, prueba mínima representativa e impacto sobre FLH / Taxonomía / ADR.
