@@ -10,6 +10,9 @@ Screens:
             !(varFLCurrentStageId="FL-07" || varFLCurrentStageId="FL-08" || varFLCurrentStageId="FL-09" || varFLCurrentStageId="FL-10" || varFLCurrentStageId="FL-11"),
             Set(varFLCurrentStageId,"FL-07")
         );
+        Set(varFLSeverity,Max(1,Min(5,varFLSeverity)));
+        Set(varFLOccurrence,Max(1,Min(5,varFLOccurrence)));
+        Set(varFLDetection,Max(1,Min(5,varFLDetection)));
         Set(varFLRiskScore,varFLSeverity*varFLOccurrence*varFLDetection)
 
     Children:
@@ -91,7 +94,7 @@ Screens:
                         ProgressTotal: =28
                         ReviewHint: ="FL-07 a FL-11"
                         ReviewState: =If(varFLCaseDraft,"Borrador","En revisión")
-                        Subtitle: ="Describe efectos, valora el riesgo y distingue claramente cálculo, recomendación y decisión humana."
+                        Subtitle: ="Describe efectos, valora el riesgo y distingue cálculo, recomendación y decisión humana."
                         Title: ="AMEF · Efectos y riesgo"
                         Width: =Parent.Width
                         WorkspaceCode: ="ESTRATEGIA"
@@ -193,7 +196,7 @@ Screens:
                                     Color: =ColorValue("#64748B")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =8
-                                    Text: ="DETECCIÓN · 1–10"
+                                    Text: ="DETECCIÓN · 1–5"
                                     Width: =105
                                     X: =Parent.Width-174
                                     Y: =8
@@ -210,7 +213,7 @@ Screens:
                                     HoverBorderColor: =ColorValue("#0284C7")
                                     OnChange: |-
                                       =
-                                      Set(varFLDetection,Max(1,Min(10,Value(Self.Text))));
+                                      Set(varFLDetection,Max(1,Min(5,Value(Self.Text))));
                                       Set(varFLRiskScore,varFLSeverity*varFLOccurrence*varFLDetection);
                                       Set(varFLCaseDraft,true);
                                       UpdateIf(colFLStageExecutions,StageId="FL-09",{Status:"draft"})
@@ -373,12 +376,16 @@ Screens:
                             Control: CanvasComponent
                             ComponentName: cmp_FL_RiskMatrixPro
                             Properties:
+                              ColumnAxisTitle: ="OCURRENCIA"
+                              ColumnScale: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
                               CriticalOverride: =varFLCriticalOverride
+                              DetectionLabel: ="Detección"
                               DetectionValue: =varFLDetection
                               Height: =320
-                              HighMax: =70
-                              LowMax: =20
-                              ModerateMax: =40
+                              HighMax: =15
+                              LowMax: =5
+                              MatrixMode: ="PRODUCT"
+                              ModerateMax: =10
                               OccurrenceValue: =varFLOccurrence
                               OnSelectCell: |-
                                 =
@@ -389,9 +396,14 @@ Screens:
                                 Set(varFLCaseDraft,true);
                                 UpdateIf(colFLStageExecutions,StageId="FL-09",{Status:"draft"})
                               RiskScore: =varFLRiskScore
-                              ScaleNote: ="Matriz S×O de laboratorio · umbrales configurables y pendientes de validación corporativa"
+                              RiskScoreLabel: ="NPR"
+                              RowAxisTitle: ="SEVERIDAD"
+                              RowScale: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
+                              ScaleNote: ="Escala 1–5 heredada del prototipo AMEF · bandas demostrativas pendientes de validación corporativa"
                               SeverityValue: =varFLSeverity
-                              Subtitle: ="Selecciona una celda para revisar Severidad y Ocurrencia. Detección participa en el NPR, no en la posición de la matriz."
+                              ShowDetection: =true
+                              ShowRiskScore: =true
+                              Subtitle: ="Selecciona Severidad y Ocurrencia en la matriz 5×5. Detección se valora aparte y participa en el NPR."
                               Title: ="FL-09 · Matriz de criticidad"
                               Width: =Parent.Width-conFLAMEFEffects.Width-12
                               X: =conFLAMEFEffects.Width+12
@@ -430,93 +442,27 @@ Screens:
                               X: =0
                               Y: =404
 
-                        - conFLAMEFGate:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
+                        - cmpFLAMEFGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
                             Properties:
-                              BorderColor: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=10 && varFLOccurrence>=1 && varFLOccurrence<=10 && varFLDetection>=1 && varFLDetection<=10,ColorValue("#BBF7D0"),ColorValue("#FED7AA"))
-                              BorderThickness: =1
-                              DropShadow: =DropShadow.None
-                              Fill: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=10 && varFLOccurrence>=1 && varFLOccurrence<=10 && varFLDetection>=1 && varFLDetection<=10,ColorValue("#F0FDF4"),ColorValue("#FFF7ED"))
+                              CanContinue: =!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5
+                              ContinueLabel: ="Continuar a decisión RCM"
+                              GateStatus: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"passed","warning")
+                              GateTitle: ="FL-11 · Validación AMEF"
                               Height: =206
-                              RadiusBottomLeft: =14
-                              RadiusBottomRight: =14
-                              RadiusTopLeft: =14
-                              RadiusTopRight: =14
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-07" || StageId="FL-08" || StageId="FL-09" || StageId="FL-10" || StageId="FL-11",{Status:"confirmed",IsCurrent:false});
+                                Set(varFLCurrentStageId,"FL-12");
+                                UpdateIf(colFLStageExecutions,StageId="FL-12",{IsCurrent:true});
+                                Set(varFLCaseDraft,true);
+                                Navigate(scr_FL_RCM,ScreenTransition.None)
+                              OutputLabel: ="RiskAssessment + consecuencia confirmada"
+                              Reason: =If(IsBlank(Trim(varFLFailureEffectLocal)) || IsBlank(Trim(varFLFailureEffectSystem)) || IsBlank(Trim(varFLFailureEffectOperational)),"Completa los tres niveles de efecto.",If(varFLSeverity<1 || varFLSeverity>5 || varFLOccurrence<1 || varFLOccurrence>5 || varFLDetection<1 || varFLDetection>5,"S, O y D deben estar entre 1 y 5.","Efectos, matriz S×O, NPR y clasificación están preparados para RCM."))
+                              RequiredAction: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"Continuar a la decisión RCM.","Completar o corregir la valoración AMEF.")
+                              ResponsibleRole: ="Ingeniería de Fiabilidad"
+                              Summary: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=5 && varFLOccurrence>=1 && varFLOccurrence<=5 && varFLDetection>=1 && varFLDetection<=5,"Preparado para entrar en RCM","Revisión AMEF incompleta")
                               Width: =Parent.Width-cmpFLAMEFDecision.Width-12
                               X: =cmpFLAMEFDecision.Width+12
                               Y: =404
-                            Children:
-                              - lblFLAMEFGateEyebrow:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =8
-                                    Text: ="FL-11 · GATE AMEF"
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =14
-                              - lblFLAMEFGateState:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0F172A")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =13
-                                    Text: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=10 && varFLOccurrence>=1 && varFLOccurrence<=10 && varFLDetection>=1 && varFLDetection<=10,"Preparado para entrar en RCM","Revisión AMEF incompleta")
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =39
-                              - lblFLAMEFGateReason:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =9
-                                    Text: =If(IsBlank(Trim(varFLFailureEffectLocal)) || IsBlank(Trim(varFLFailureEffectSystem)) || IsBlank(Trim(varFLFailureEffectOperational)),"Completa los tres niveles de efecto.",If(varFLSeverity<1 || varFLSeverity>10 || varFLOccurrence<1 || varFLOccurrence>10 || varFLDetection<1 || varFLDetection>10,"S, O y D deben estar entre 1 y 10.","Efectos, criticidad, NPR y clasificación quedan disponibles para la decisión RCM."))
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =70
-                              - lblFLAMEFGateOutput:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#475569")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =8
-                                    Text: ="OUTPUT → RiskAssessment + consecuencia confirmada"
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =115
-                              - btnFLAMEFContinue:
-                                  Control: Classic/Button@2.2.0
-                                  Properties:
-                                    BorderColor: =ColorValue("#0284C7")
-                                    BorderThickness: =1
-                                    Color: =Color.White
-                                    DisplayMode: =If(!IsBlank(Trim(varFLFailureEffectLocal)) && !IsBlank(Trim(varFLFailureEffectSystem)) && !IsBlank(Trim(varFLFailureEffectOperational)) && varFLSeverity>=1 && varFLSeverity<=10 && varFLOccurrence>=1 && varFLOccurrence<=10 && varFLDetection>=1 && varFLDetection<=10,DisplayMode.Edit,DisplayMode.Disabled)
-                                    Fill: =ColorValue("#0284C7")
-                                    Font: =Font.'Segoe UI'
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =36
-                                    HoverFill: =ColorValue("#0369A1")
-                                    OnSelect: |-
-                                      =
-                                      UpdateIf(colFLStageExecutions,StageId="FL-07" || StageId="FL-08" || StageId="FL-09" || StageId="FL-10" || StageId="FL-11",{Status:"confirmed",IsCurrent:false});
-                                      Set(varFLCurrentStageId,"FL-12");
-                                      UpdateIf(colFLStageExecutions,StageId="FL-12",{IsCurrent:true});
-                                      Set(varFLCaseDraft,true);
-                                      Navigate(scr_FL_RCM,ScreenTransition.None)
-                                    PressedFill: =ColorValue("#075985")
-                                    RadiusBottomLeft: =8
-                                    RadiusBottomRight: =8
-                                    RadiusTopLeft: =8
-                                    RadiusTopRight: =8
-                                    Size: =9
-                                    Text: ="Continuar a decisión RCM"
-                                    Width: =190
-                                    X: =Parent.Width-Self.Width-18
-                                    Y: =Parent.Height-Self.Height-16
