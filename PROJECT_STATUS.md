@@ -8,6 +8,8 @@ CMMS 2.0 ha entrado en la fase **Functional Lab**. La foundation funcional está
 
 El laboratorio se utilizará para validar el modelo funcional mediante casos ejecutables y producir documentación funcional trazable para IT, sin convertir Power Apps en una decisión de arquitectura productiva.
 
+La interfaz del Functional Lab se construirá desde Foundation con una **arquitectura SaaS premium**, utilizando los arquetipos, estándares visuales y contratos de componentes curados en `rubensv74/functional-engineering-knowledge-base`.
+
 ## Completado
 
 ### Fundamentos previos
@@ -38,9 +40,12 @@ El laboratorio se utilizará para validar el modelo funcional mediante casos eje
 - Revisión del registro de compatibilidad Source Code de Pulse.
 - Revisión de un shell incremental real utilizado en Pulse.
 - Creación del registro de compatibilidad propio del Functional Lab.
-- Arquitectura técnica mínima de `scr_FunctionalLab`.
 - Secuencia F01-01 a F01-09.
-- Decisión: Bloque 01 no dependerá de componentes premium no confirmados en la app.
+- Estrategia SaaS premium documentada en `06-ui-ux/functional-lab/design-system.md`.
+- Adopción del patrón de selección de arquetipos de la base de conocimiento.
+- Adopción del estándar de calidad visual Power Apps.
+- Adopción del contrato de componentes reutilizables.
+- Decisión: el diseño será premium desde Foundation; no se añadirá una dependencia CanvasComponent hasta confirmar su instalación en la app activa.
 
 ## En curso
 
@@ -51,7 +56,10 @@ La auditoría estática está superada. Falta disponer de la Canvas app real del
 - schema Source Code aceptado;
 - versiones reales de controles;
 - baseline de App Checker;
-- aceptación del primer bloque en Power Apps Studio.
+- componentes premium instalados;
+- componentes fundacionales que deben incorporarse;
+- aceptación del primer bloque en Power Apps Studio;
+- baseline de calidad visual.
 
 ## Siguiente acción
 
@@ -61,19 +69,25 @@ Crear o identificar una Canvas app destinada al laboratorio, nombre recomendado:
 CMMS 2.0 Functional Lab
 ```
 
-Una vez exista, se redactará `F01-01 Shell de pantalla` y se validará en Studio antes de preparar F01-02.
+Una vez exista:
+
+1. inventariar componentes disponibles;
+2. seleccionar los componentes premium fundacionales;
+3. declarar tarea, criterio de éxito y arquetipo del primer workspace;
+4. redactar `F01-01 Premium App Shell Foundation`;
+5. validar el bloque en Power Apps Studio antes de preparar F01-02.
 
 ## Próximos incrementos
 
-1. F01-01 — Shell de pantalla.
+1. F01-01 — Premium App Shell Foundation.
 2. F01-02 — Runtime state mínimo.
 3. F01-03 — Adaptador P-101.
 4. F01-04 — Navegación base.
-5. F01-05 — WS-01 contexto visual.
+5. F01-05 — WS-01 contexto visual premium.
 6. F01-06 — WS-01 edición.
 7. F01-07 — WS-01 gate de evidencia.
 8. F01-08 — WS-01 output hacia funciones y fallos.
-9. F01-09 — Hardening y documentación de WS-01.
+9. F01-09 — Hardening, Visual QA y documentación de WS-01.
 
 No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
 
@@ -82,8 +96,10 @@ No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
 - Confundir el Functional Lab con la arquitectura productiva futura.
 - Convertir hipótesis conceptuales en automatismos sin validación.
 - Identificar una etapa de negocio con una pantalla de forma automática.
+- Forzar un único arquetipo de interfaz a workspaces con trabajos distintos.
 - Introducir backend o integraciones antes de que el laboratorio las necesite.
 - Asumir que un CanvasComponent disponible en GitHub está instalado en la app.
+- Tratar `premium` como mera decoración en lugar de calidad de arquitectura, interacción y componente.
 - Duplicar conocimiento entre prototipos, app y documentación funcional.
 
 ## Fuentes de verdad principales
@@ -93,6 +109,7 @@ No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
 - `02-functional/process-model/functional-journey.md`
 - `02-functional/process-model/human-system-decisions.md`
 - `06-ui-ux/functional-lab/architecture.md`
+- `06-ui-ux/functional-lab/design-system.md`
 - `06-ui-ux/functional-lab/implementation-status.md`
 - `06-ui-ux/functional-lab/development/f01-00-power-apps-foundation-audit.md`
 - `06-ui-ux/functional-lab/development/compatibility.md`
