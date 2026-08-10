@@ -21,7 +21,7 @@ Un componente se crea cuando resuelve una necesidad repetible y visual. Las regl
 
 ## 3. cmp_FL_SidebarPro
 
-El contrato actual se conserva. Cambia el `NavItems` suministrado por el host:
+El contrato actual se conserva. El host suministra los módulos:
 
 ```text
 Home        Inicio
@@ -32,17 +32,13 @@ Governance  Gobernanza
 Settings    Configuración
 ```
 
-Los keys permanecen técnicos e independientes del idioma.
-
 ## 4. cmp_FL_PageHeaderPro
 
-Se reutiliza como cabecera contextual. No debe mostrar siempre journey; en pantallas de Activos puede representar objeto actual, contexto, estado de datos e indicador de fuente.
-
-En pantallas de `AnalysisCase` muestra caso, estado, posición del journey y review state.
+Cabecera contextual reutilizable para objeto, caso y proceso.
 
 ## 5. cmp_FL_TreePro
 
-Contrato de datos principal:
+Contrato principal:
 
 ```text
 RowNodeId
@@ -59,54 +55,15 @@ RowIsExpanded
 RowIsVisible
 ```
 
-No se limita estructuralmente a 3 niveles. Debe permitir profundidad variable y reutilización en FLH, Taxonomía y ADR.
+No se limita estructuralmente a tres niveles y se reutiliza en FLH, Taxonomía y ADR.
 
 ## 6. cmp_FL_ProcessRailPro
 
-### Responsabilidad
-
-Mostrar las 28 etapas sin convertirse en motor de workflow.
-
-### Input Items
-
-```text
-StageOrder
-StageId
-PhaseId
-PhaseLabel
-StageLabel
-Status
-ResponsibilityType
-ResponsibleRole
-ScreenKey
-IsCurrent
-IsAccessible
-HasWarning
-```
-
-### Outputs
-
-```text
-SelectedStageIdOut
-SelectedScreenKeyOut
-SelectedRecordOut
-```
-
-### Event
-
-```text
-OnSelectStage
-```
-
-El host decide navegación y reglas de avance.
+Muestra las 28 etapas sin convertirse en motor de workflow. El host decide navegación, accesibilidad y reglas de avance.
 
 ## 7. cmp_FL_DecisionPanelPro
 
-### Responsabilidad
-
-Hacer inequívoca la separación entre lo que sabe/calcula/recomienda el sistema y lo que debe decidir una persona.
-
-### Contrato conceptual
+Hace inequívoca la separación:
 
 ```text
 systemResult
@@ -116,15 +73,9 @@ reason
 requiredRole
 ```
 
-Los eventos de confirmación y override permanecen gobernados por el host.
-
 ## 8. cmp_FL_GatePanelPro
 
-### Responsabilidad
-
-Evitar controles de avance invisibles o simples botones deshabilitados.
-
-Debe mostrar:
+Representa de forma explícita:
 
 ```text
 status
@@ -135,7 +86,7 @@ responsibleRole
 output
 ```
 
-El término visible para usuario puede ser `Control de avance`, `Estado de la etapa` o equivalente; `Gate` permanece como término técnico interno.
+En interfaz puede mostrarse como `Control de avance`, `Estado de la etapa` o expresión equivalente; `Gate` queda como término técnico interno.
 
 ## 9. cmp_FL_RiskMatrixPro
 
@@ -145,14 +96,14 @@ Representar una matriz de riesgo sin acoplarla a una dimensión fija ni a una ú
 
 ### Escalas
 
-El componente recibe dos tablas:
+Recibe:
 
 ```text
 RowScale
 ColumnScale
 ```
 
-Cada una contiene:
+Cada escala contiene:
 
 ```text
 ScaleIndex
@@ -160,18 +111,22 @@ ScaleLabel
 ScaleScore
 ```
 
-La dimensión se deriva de `CountRows(RowScale) × CountRows(ColumnScale)`.
-
-Ejemplos válidos:
+La dimensión real se deriva de:
 
 ```text
-10×10
+CountRows(RowScale) × CountRows(ColumnScale)
+```
+
+Ejemplos soportados:
+
+```text
 5×5
+10×10
 4×5
 categorías con score numérico subyacente
 ```
 
-### Modos de cálculo
+### Modos
 
 `MatrixMode="PRODUCT"`
 
@@ -181,7 +136,7 @@ CellScore = RowScore × ColumnScore
 
 `MatrixMode="CONFIGURED"`
 
-El host suministra `MatrixCells`:
+El host suministra:
 
 ```text
 RowIndex
@@ -190,25 +145,31 @@ CellScore
 BandKey
 ```
 
-Esto permite reproducir matrices corporativas donde cada celda tenga un resultado explícito.
+### Configuración canónica P-101
 
-### Compatibilidad AMEF
-
-Para P-101:
+El Functional Lab utiliza la escala ya empleada en los prototipos AMEF:
 
 ```text
 RowAxisTitle       Severidad
 ColumnAxisTitle    Ocurrencia
-RowScale           1..10
-ColumnScale        1..10
+RowScale           1..5
+ColumnScale        1..5
 MatrixMode         PRODUCT
-DetectionValue     D separada
+DetectionValue     1..5, separada
 RiskScore          NPR calculado por host
 ```
 
-Los outputs `SelectedSeverityOut` y `SelectedOccurrenceOut` se conservan para no romper `scr_FL_AMEF`.
+Valores iniciales:
 
-Además expone:
+```text
+S=4
+O=3
+D=3
+S×O=12
+NPR=36
+```
+
+Los outputs `SelectedSeverityOut` y `SelectedOccurrenceOut` se conservan para AMEF. También se exponen:
 
 ```text
 SelectedRowLabelOut
@@ -219,7 +180,9 @@ MatrixBandOut
 
 ### Regla arquitectónica
 
-`10×10` es configuración del caso P-101, no una regla universal de CMMS 2.0.
+**5×5 es la configuración actual de P-101 porque mantiene continuidad con los prototipos revisados. No es una limitación del componente.**
+
+Una futura configuración corporativa podrá adoptar otra dimensión, categorías u otra distribución de celdas sin reconstruir `RiskMatrixPro`.
 
 ## 10. Componentes candidatos posteriores
 
@@ -232,11 +195,9 @@ cmp_FL_ApprovalMatrixPro
 cmp_FL_ComparisonTablePro
 ```
 
-Se crearán solo cuando aparezca repetición real en dos o más pantallas.
+Se crearán cuando aparezca repetición real en dos o más pantallas.
 
 ## 11. Regla de promoción
-
-Para promocionar un componente a activo reusable:
 
 ```text
 PASS_STATIC
@@ -247,4 +208,4 @@ VISUAL_QA_VALIDATED
 READY_FOR_INTEGRATION
 ```
 
-La Component Library se aborda cuando varios componentes hayan alcanzado `READY_FOR_INTEGRATION`; no se usa como sustituto de la validación en la app activa.
+La Component Library se aborda cuando varios componentes hayan alcanzado `READY_FOR_INTEGRATION`.
