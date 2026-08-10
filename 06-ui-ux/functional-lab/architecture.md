@@ -1,259 +1,413 @@
-# CMMS 2.0 Functional Lab — Arquitectura
+# CMMS 2.0 Functional Lab — Arquitectura v2
 
-**Estado:** Foundation  
-**Alcance:** arquitectura del laboratorio conceptual, no arquitectura productiva de CMMS 2.0.
+**Estado:** arquitectura objetivo aprobada  
+**Fecha:** 2026-08-10  
+**Ámbito:** aplicación funcional ejecutable para validar CMMS 2.0.  
+**Implementación actual:** Power Apps Canvas.  
+**Backend objetivo de referencia:** contratos preparados para Azure SQL mediante adaptadores sustituibles.
 
-## 1. Objetivo arquitectónico
+## 1. Identidad del producto
 
-Construir una aplicación Canvas Power Apps que permita ejecutar casos funcionales de CMMS 2.0 sin acoplar el razonamiento de negocio a una base de datos, integración o tecnología productiva definitiva.
+La aplicación mantiene la identidad **CMMS 2.0 Functional Lab**.
 
-## 2. Capas
+No es un mockup, un navegador de prototipos ni una presentación de pantallas. Debe poder experimentarse como una aplicación CMMS real y coherente, usando datos de demostración y reglas funcionales todavía en validación cuando corresponda.
 
-```text
-┌───────────────────────────────────────────────┐
-│  Functional Journey                          │
-│  Etapas, decisiones, reglas, gates, outputs  │
-└───────────────────────────────────────────────┘
-                     ↓
-┌───────────────────────────────────────────────┐
-│  Canonical Case Fixtures                     │
-│  JSON versionado: P-101 y casos futuros      │
-└───────────────────────────────────────────────┘
-                     ↓
-┌───────────────────────────────────────────────┐
-│  Runtime Adapter                             │
-│  Convierte fixture en colecciones Power Fx   │
-└───────────────────────────────────────────────┘
-                     ↓
-┌───────────────────────────────────────────────┐
-│  Functional State                            │
-│  Caso activo + decisiones + gates + outputs  │
-└───────────────────────────────────────────────┘
-                     ↓
-┌───────────────────────────────────────────────┐
-│  Workspaces Power Apps                       │
-│  Interacción y validación en reunión         │
-└───────────────────────────────────────────────┘
-                     ↓
-┌───────────────────────────────────────────────┐
-│  Functional Documentation                    │
-│  Requisitos, reglas, datos, UI, roles, IT    │
-└───────────────────────────────────────────────┘
-```
+La etiqueta `Functional Lab` cumple una función de gobernanza: deja claro que las decisiones observadas son conceptuales y no constituyen todavía configuración productiva aprobada.
 
-## 3. Decisión sobre JSON
+## 2. Principio rector
 
-Los archivos JSON son la fuente canónica de los casos de ejemplo.
+> El objetivo no es minimizar pantallas; el objetivo es representar correctamente objetos de negocio, responsabilidades, decisiones, estados y secuencias de trabajo.
 
-Esto no implica que la aplicación productiva vaya a utilizar JSON como persistencia.
+Las 28 etapas AMEF/RCM siguen siendo el modelo metodológico canónico, pero **no se convierten automáticamente en 28 pantallas** ni se ocultan dentro de nueve bloques demasiado agregados.
 
-Power Fx dispone de `ParseJSON` para convertir texto JSON en valores dinámicos o tipados. En el Functional Lab se utilizará un **Runtime Adapter** para transformar el fixture canónico a las colecciones que necesite la app.
+La interfaz se organiza alrededor de objetos y procesos que un usuario de un CMMS pueda reconocer.
 
-El mecanismo concreto de entrada del texto JSON al runtime se decidirá durante los primeros incrementos y deberá ser sustituible. Posibles adaptadores de laboratorio:
+## 3. Arquitectura de navegación dual
 
-- cadena JSON controlada + `ParseJSON`;
-- Power Fx generado desde el fixture;
-- flow auxiliar de lectura;
-- otra fuente temporal compatible con el entorno.
+La aplicación utiliza dos niveles de navegación distintos.
 
-No se introducirá SQL, Dataverse o una API solo para resolver el dataset de demostración.
+### 3.1 Navegación de producto
 
-## 4. Estado funcional
-
-El estado runtime se separará del dato canónico.
-
-Conceptualmente:
+El Sidebar global navega por módulos CMMS:
 
 ```text
-CaseFixture
-+ UserChanges
-+ SystemCalculations
-+ SystemRecommendations
-+ HumanDecisions
-+ GateResults
-= ActiveCaseState
+Inicio
+Activos
+Estrategia de mantenimiento
+Planes de mantenimiento
+Gobernanza
+Configuración
 ```
 
-La app deberá distinguir qué parte procede de cada origen.
+Los módulos todavía no implementados pueden existir como estados `planned` o `preview`, pero el shell debe mostrar desde Foundation la arquitectura global del producto.
 
-## 5. Workspaces v1
+### 3.2 Navegación metodológica
 
-La primera arquitectura contempla nueve workspaces funcionales:
+Dentro de un `AnalysisCase`, un **Process Rail** muestra las 28 etapas del journey:
 
 ```text
-scr_FunctionalLab
-└── conLab_Root
-    ├── conLab_Navigation
-    └── conLab_Content
-        ├── conLab_Header
-        ├── conLab_ContextStrip
-        ├── conLab_WorkspaceHost
-        │   ├── WS-01 Caso y contexto
-        │   ├── WS-02 Funciones y fallos
-        │   ├── WS-03 Efectos y riesgo
-        │   ├── WS-04 Decisión RCM
-        │   ├── WS-05 Economía y tarea
-        │   ├── WS-06 Recursos y alcance
-        │   ├── WS-07 Trazabilidad y calidad
-        │   ├── WS-08 Revisión y publicación
-        │   └── WS-09 Efectividad y mejora
-        └── conLab_OverlayLayer
+Fase 1 · Comprender el problema       FL-01 … FL-06
+Fase 2 · Evaluar el riesgo            FL-07 … FL-11
+Fase 3 · Tomar la decisión RCM        FL-12 … FL-16
+Fase 4 · Convertir en plan            FL-17 … FL-22
+Fase 5 · Gobernar y mejorar           FL-23 … FL-28
 ```
 
-Esta estructura es una hipótesis inicial. La validación funcional puede demostrar que un workspace debe dividirse o fusionarse.
+El Process Rail no sustituye el menú principal. Su función es:
 
-## 6. Paneles comunes
+- hacer visible la secuencia completa;
+- indicar etapa actual y estado;
+- mostrar responsabilidad dominante;
+- permitir consulta de otras etapas cuando el usuario tenga permiso contextual;
+- impedir aprobación formal cuando un gate previo no esté satisfecho;
+- navegar a la pantalla y sección de negocio correspondiente.
 
-Cada workspace debe poder reutilizar los siguientes patrones conceptuales:
+## 4. Modelo de pantallas
 
-### 6.1. Contexto
+Las pantallas se definen por **objeto o proceso de negocio**, no por ahorro de pantallas ni por una equivalencia rígida etapa=pantalla.
 
-Muestra:
-
-- activo;
-- servicio;
-- fase;
-- etapa actual;
-- estado de completitud;
-- nivel de confianza cuando aplique.
-
-### 6.2. Información disponible
-
-Distingue los datos que deberían venir ya informados desde otros módulos o fuentes.
-
-### 6.3. Trabajo del usuario
-
-Contiene los inputs y decisiones de la persona.
-
-### 6.4. Sistema
-
-Muestra por separado:
-
-- cálculo;
-- recomendación;
-- explicación.
-
-### 6.5. Gate
-
-Indica:
-
-- estado `passed`, `blocked` o `warning`;
-- razones;
-- datos faltantes;
-- acción necesaria para desbloquear.
-
-### 6.6. Output
-
-Muestra qué objeto o decisión estructurada queda disponible para el siguiente paso.
-
-## 7. Modelo de navegación
-
-La navegación debe permitir:
-
-- avanzar cuando el gate lo permita;
-- retroceder siempre;
-- saltar en modo presentación sin fingir que los gates previos están aprobados;
-- volver al resumen del caso;
-- identificar visualmente etapas pendientes, bloqueadas, validadas y simuladas.
-
-## 8. Estados obligatorios
-
-Como mínimo:
+Mapa objetivo inicial:
 
 ```text
-NoCase
-LoadingCase
-Loaded
-Dirty
-Calculating
-Blocked
-Warning
-SaveLocalSuccess
-Error
+CMMS 2.0 Functional Lab
+│
+├── Inicio
+│   └── scr_FL_Home
+│
+├── Activos
+│   ├── scr_FL_FLH
+│   ├── scr_FL_Taxonomy
+│   ├── scr_FL_ADR
+│   └── scr_FL_Asset360
+│
+├── Estrategia de mantenimiento
+│   ├── scr_FL_AnalysisRegister
+│   ├── scr_FL_CaseOverview
+│   ├── scr_FL_Context
+│   ├── scr_FL_Functions
+│   ├── scr_FL_FailureModes
+│   ├── scr_FL_AMEF
+│   ├── scr_FL_RCM
+│   ├── scr_FL_Economics
+│   ├── scr_FL_Task
+│   ├── scr_FL_PlanPackage
+│   ├── scr_FL_Traceability
+│   ├── scr_FL_ReviewApproval
+│   └── scr_FL_Effectiveness
+│
+├── Planes de mantenimiento
+│   └── scr_FL_MaintenancePlans
+│
+├── Gobernanza
+│   └── scr_FL_Governance
+│
+└── Configuración
+    └── scr_FL_Settings
 ```
 
-La primera versión puede no tener persistencia remota, pero debe diferenciar claramente estado local y cualquier futura persistencia.
+La existencia de una pantalla en el mapa no implica que todas deban completarse antes de validar el módulo AMEF/RCM. Sí implica que la arquitectura, rutas y contratos deben ser coherentes desde el inicio.
 
-## 9. Trazabilidad runtime
+## 5. Relación entre pantallas y las 28 etapas
 
-Cada decisión registrada debe conservar, cuando aplique:
+| Pantalla | Etapas principales | Objeto dominante |
+|---|---|---|
+| `scr_FL_Context` | FL-01 a FL-03 | `AnalysisCaseContext` |
+| `scr_FL_Functions` | FL-04 a FL-05 | `Function` + `FunctionalFailure` |
+| `scr_FL_FailureModes` | FL-06 | `FailureModeSelection` |
+| `scr_FL_AMEF` | FL-07 a FL-11 | `RiskAssessment` |
+| `scr_FL_RCM` | FL-12 a FL-16 | `RCMAnalysis` |
+| `scr_FL_Economics` | FL-17 | `EconomicAssessment` |
+| `scr_FL_Task` | FL-18 a FL-19 | `MaintenanceTask` + `IntervalJustification` |
+| `scr_FL_PlanPackage` | FL-20 a FL-22 | `MaintenancePlanPackage` |
+| `scr_FL_Traceability` | FL-23 a FL-24 | `TraceLink` + `QualityFinding` |
+| `scr_FL_ReviewApproval` | FL-25 a FL-26 | `Review` + `Approval` + `VersionSnapshot` |
+| `scr_FL_Effectiveness` | FL-27 a FL-28 | `EffectivenessMeasurement` + `ChangeRequest` |
+
+La separación FL-04/05 de FL-06 es deliberada: definir funciones/fallos y seleccionar causalidad son trabajos distintos. La separación FL-17 de FL-18/19 también es deliberada: comparar económicamente alternativas no es lo mismo que diseñar una tarea ejecutable.
+
+## 6. Vistas previas al journey
+
+Antes de entrar en las 28 etapas, el usuario debe poder situar P-101 en tres contextos estructurales independientes:
+
+1. `scr_FL_FLH` — jerarquía funcional/ubicacional;
+2. `scr_FL_Taxonomy` — clasificación/taxonomía;
+3. `scr_FL_ADR` — relaciones y dependencias del activo.
+
+Son pantallas de primer nivel dentro de **Activos**. No son FL-00 ni etapas metodológicas adicionales.
+
+`cmp_FL_TreePro` será el motor jerárquico reusable para las tres vistas, con datasets y semántica diferentes.
+
+## 7. Modelo de caso
+
+P-101 es el primer caso de demostración, no la arquitectura de la aplicación.
+
+Objeto raíz:
 
 ```text
-caseId
-stageId
-ruleId
-inputSnapshot
-systemResult
-systemRecommendation
-humanDecision
-reason
-actorRole
-validationStatus
-timestamp
+AnalysisCase
 ```
 
-En la fase conceptual el actor puede representarse por rol o usuario de demostración; no se considera todavía un modelo definitivo de identidad.
-
-## 10. Separación de reglas
-
-Las fórmulas de UI no deben convertirse en la única definición de una regla funcional.
-
-Cada regla relevante deberá existir también en un catálogo o contrato documental con:
-
-- identificador;
-- descripción;
-- inputs;
-- resultado;
-- estado de validación;
-- fuente;
-- excepciones.
-
-## 11. Estrategia incremental
-
-### Foundation
-
-- auditoría;
-- contratos;
-- fixture P-101;
-- shell;
-- navegación;
-- runtime state.
-
-### Vertical slice 1
-
-WS-01 completo con:
-
-- carga del caso;
-- edición de contexto;
-- gate de preparación;
-- output hacia WS-02.
-
-### Vertical slices posteriores
-
-Un workspace funcional cada vez, aplicando el protocolo:
+Un caso referencia objetos maestros y contiene estado de análisis:
 
 ```text
-arquitectura
-→ bloque pequeño
-→ validación Studio
-→ corrección
-→ documentación
-→ siguiente bloque
+AnalysisCase
+├── TechnicalObject references
+├── Context snapshot
+├── Stage executions
+├── Evidence
+├── Functions
+├── Functional failures
+├── Failure mode selections
+├── Risk assessments
+├── RCM decisions
+├── Economics
+├── Maintenance tasks
+├── Plan package
+├── Reviews / approvals
+├── Version snapshots
+├── Effectiveness measurements
+└── Change requests
 ```
 
-## 12. Decisiones explícitamente pendientes
+## 8. Datos maestros vs datos del análisis
 
-No se decide todavía:
+Datos maestros como:
 
-- backend productivo;
-- base de datos;
-- estrategia de ALM productiva;
-- autenticación final;
-- autorización final;
-- integración con SAP/Maximo/Hexagon;
-- mecanismo definitivo de persistencia;
-- motor genérico de reglas;
-- API final;
-- generación real de Job Plans, PM o WO.
+- código de activo;
+- nombre del activo;
+- jerarquía;
+- taxonomía;
+- relaciones técnicas;
 
-Cualquier necesidad de cerrar uno de estos puntos constituye un gate de arquitectura.
+se consideran **read-only dentro de un caso de análisis**.
+
+El análisis puede registrar un snapshot o contexto específico, pero una corrección del maestro pertenece a otro proceso gobernado.
+
+## 9. Persistencia y borradores
+
+Principio aprobado:
+
+```text
+cambio ordinario → borrador
+
+decisión con autoridad → acción explícita Confirmar / Aprobar
+```
+
+En el Functional Lab los borradores pueden vivir temporalmente en colecciones/variables. El contrato debe asumir desde el diseño una persistencia remota futura.
+
+No se utilizará un botón `Guardar` como sustituto genérico de la semántica del proceso.
+
+## 10. Separación persona / sistema
+
+Toda pantalla de análisis debe distinguir visual y contractualmente:
+
+```text
+existing_input
+user_input
+system_calculation
+system_recommendation
+human_decision
+gate
+output
+```
+
+Patrón obligatorio para decisiones relevantes:
+
+```text
+SystemResult
+SystemRecommendation
+HumanDecision
+DecisionReason
+ActorRole
+Timestamp
+ValidationStatus
+```
+
+Un cálculo nunca se presenta como decisión. Una recomendación nunca se presenta como decisión confirmada.
+
+Si existe override:
+
+```text
+recomendación original + decisión final + motivo
+```
+
+se conservan conjuntamente.
+
+## 11. Roles
+
+Roles conceptuales iniciales:
+
+```text
+ReliabilityEngineering     Ingeniería de Fiabilidad
+MaintenancePlanning       Mantenimiento / Planificación
+Operations                Operaciones
+AssetOwner                Asset Owner / Aprobador
+Administrator             Administrador
+```
+
+El diseño debe soportar participación de varios roles sobre el mismo `AnalysisCase`.
+
+En el Functional Lab la identidad y concurrencia pueden simularse, pero las decisiones deben conservar `ActorRole` y autoridad requerida.
+
+## 12. Responsive
+
+Objetivo de experiencia completa:
+
+```text
+Desktop + Tablet
+```
+
+Móvil no se considera requisito funcional completo todavía.
+
+Las pantallas no deben depender de un ancho fijo único. La arquitectura utilizará:
+
+- sidebar colapsable;
+- regiones con ancho relativo y mínimos razonables;
+- paneles apilables en tablet;
+- Process Rail capaz de alternar entre rail lateral y modo compacto.
+
+## 13. Idioma y localización
+
+La experiencia visible actual se mantiene en español.
+
+Desde esta arquitectura los textos se diseñan para catálogo ES/EN mediante claves semánticas. No se implementa todavía el selector runtime como requisito del sprint actual.
+
+Principio:
+
+```text
+TranslationKey → locale activo → texto visible
+```
+
+No se duplican pantallas por idioma.
+
+## 14. Backend y adaptadores
+
+Se diseñarán contratos pensando especialmente en Azure SQL, sin convertirlo todavía en dependencia irreversible.
+
+```text
+Power Apps UI
+    ↓
+Application / Adapter boundary
+    ↓
+Conceptual contracts
+    ↓
+Azure SQL / API / otra implementación futura
+```
+
+Durante el Functional Lab:
+
+```text
+Fixture JSON / Power Fx collections
+```
+
+puede implementar temporalmente el adaptador.
+
+El objetivo es que sustituir el adaptador no obligue a rediseñar pantallas ni reglas funcionales.
+
+## 15. Modelo conceptual persistente
+
+Entidades objetivo iniciales:
+
+```text
+TechnicalObject
+AssetHierarchyNode
+AssetClassification
+ADRRelation
+
+AnalysisCase
+AnalysisStageExecution
+Evidence
+
+Function
+FunctionalFailure
+FailureMode
+FailureModeSelection
+FailureEffect
+RiskAssessment
+
+RCMAnalysis
+SystemRecommendation
+HumanDecision
+
+EconomicAssessment
+MaintenanceStrategy
+MaintenanceTask
+IntervalJustification
+ResourceRequirement
+MaintenancePlanPackage
+
+TraceLink
+QualityFinding
+Review
+Approval
+VersionSnapshot
+
+EffectivenessMeasurement
+ChangeRequest
+AuditEvent
+```
+
+Este modelo se detallará en `domain-contracts.md` y servirá como puente entre Power Fx y un backend futuro.
+
+## 16. Componentes premium reutilizables
+
+Todo componente genérico estable debe diseñarse para posterior promoción a Component Library.
+
+Foundation objetivo:
+
+```text
+cmp_FL_SidebarPro        navegación de producto
+cmp_FL_PageHeaderPro     cabecera de objeto/proceso
+cmp_FL_TreePro           jerarquías profundas
+cmp_FL_ProcessRailPro    journey de 28 etapas
+cmp_FL_DecisionPanelPro  persona vs sistema
+cmp_FL_GatePanelPro      gate explicable
+```
+
+Las reglas de negocio no viven dentro de los componentes visuales.
+
+## 17. Automatización e IA
+
+La arquitectura reserva `SystemRecommendation` como origen abstracto.
+
+Una recomendación futura puede proceder de:
+
+- regla determinista;
+- analítica;
+- motor experto;
+- IA.
+
+Hasta que una regla sea aprobada explícitamente como automática, las decisiones con autoridad humana requieren confirmación.
+
+## 18. Estrategia de implementación
+
+A partir de v2 se abandona la construcción secuencial de nueve `WS-*` como objetivo de UI.
+
+Orden de construcción:
+
+```text
+A. Arquitectura + ADR + contratos
+B. Foundation premium reusable
+C. Shell de producto
+D. Activos: FLH / Taxonomía / ADR / Asset 360
+E. Registro y Overview de AnalysisCase
+F. Pantallas del journey por objeto/proceso
+G. Planes / Gobernanza / Configuración como módulos coherentes
+H. Integración de persistencia futura
+```
+
+Los artefactos anteriores WS-01 y WS-02 se conservan como evidencia funcional y fuente de reglas, pero dejan de ser la arquitectura definitiva de pantallas.
+
+## 19. Criterio de autenticidad
+
+Una pantalla solo se considera válida si un usuario puede responder:
+
+1. ¿Qué objeto de negocio estoy viendo?
+2. ¿Qué puedo hacer aquí?
+3. ¿Qué información viene del sistema?
+4. ¿Qué debo decidir yo?
+5. ¿Qué responsabilidad/rol interviene?
+6. ¿Qué gate condiciona el avance?
+7. ¿Qué queda persistido o disponible después?
+
+Si la pantalla solo explica el prototipo o resume etapas sin permitir trabajo real, no cumple la arquitectura v2.
