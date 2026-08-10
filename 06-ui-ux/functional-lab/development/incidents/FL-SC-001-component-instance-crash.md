@@ -12,181 +12,93 @@ La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue integrada
 
 Al insertar una instancia del componente completo inicial en la app `CMMS 2.0 Functional Lab`, Power Apps Studio se cerró.
 
-Estado de aquella versión:
+La reducción incremental ha reproducido de nuevo el cierre en `F01-00A-R5`, después de que R1–R4 fueran `INSTANCE_SAFE`.
+
+## 2. Evidencia acumulada
 
 ```text
-SOURCE_VALID                  PASS
-COMPONENT_DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE                 FAIL
-READY_FOR_INTEGRATION         NO
+R1 root-only                         PASS
+R2 identidad/texto                  PASS
+R3 contenedores estáticos           PASS
+R4 navegación visual sin eventos    PASS
+R5 custom inputs Text+Boolean+Color FAIL — Studio closes on instance
 ```
 
-## 2. Acción exacta anterior al cierre
+R5 introducía únicamente estas propiedades custom primitivas sobre el baseline R4 ya validado:
 
-```text
-Insertar una instancia de cmp_FL_SidebarPro
-→ Power Apps Studio se cierra
-```
+- `AppTitle` — Input / Text;
+- `ShowEnvironment` — Input / Boolean;
+- `AccentColor` — Input / Color.
 
-No se reportó mensaje de error ni Session ID porque el síntoma observado fue un cierre de Studio.
+Las tres propiedades eran consumidas por controles ya validados:
 
-## 3. Fuente afectada
+- Text → `ModernText.Text`;
+- Boolean → `ModernText.Visible`;
+- Color → `ModernText.Color` y `Rectangle.Fill`.
 
-Fuente completa inicial que produjo el incidente:
-
-```text
-06-ui-ux/functional-lab/power-apps/components/cmp_FL_SidebarPro.pa.yaml
-```
-
-Blob/source SHA observado antes de la reducción:
-
-```text
-c8e3ac6bc2ef81c1fffdc90a8ec60807b75e9500
-```
-
-## 4. Causa
-
-### Causa de proceso confirmada
-
-La aceptación de `ComponentDefinitions:` fue tratada como un gate insuficiente para demostrar seguridad de instancia.
-
-El protocolo se ha corregido para exigir explícitamente `INSTANCE_SAFE` antes de integrar un CanvasComponent en una pantalla funcional.
-
-### Causa técnica concreta
-
-```text
-UNKNOWN — INVESTIGATION ACTIVE
-```
-
-Tras R1–R4 puede afirmarse de forma limitada que las siguientes superficies probadas no son suficientes para reproducir el cierre:
-
-- `CanvasComponent + GroupContainer@1.5.0` ManualLayout mínimo;
-- `ModernText@1.0.0` estático;
-- raíz AutoLayout vertical;
-- contenedores anidados estáticos;
-- `Rectangle@2.3.0` estático;
-- `Classic/Icon@2.5.0` estático;
-- `Label@2.5.1` estático sin `Radius*`;
-- `Classic/Button@2.2.0` estático sin `AccessibleLabel` y sin `OnSelect`.
-
-Siguen sin aislarse:
-
-- custom properties primitivas;
-- `Table`;
-- `Gallery@2.15.0`;
-- `Output`;
-- `Event`;
-- datos dinámicos, eventos y geometría condicional.
-
-## 5. Evidencia transversal ya existente
-
-La base de conocimiento central ya documenta el mismo patrón de efecto en otro componente (`cmp_PageHeaderPro`): definición aceptada y cierre de Studio al insertar instancia.
-
-Referencias:
-
-```text
-rubensv74/functional-engineering-knowledge-base
-15-standards/power-platform/power-apps-source-code-compatibility-standard.md
-80-learning/power-platform/POWER_APPS_UI_LESSONS_LEARNED.md
-```
-
-Este segundo caso refuerza la obligatoriedad del gate `INSTANCE_SAFE`, pero no confirma todavía una causa técnica común.
-
-## 6. Estrategia de diagnóstico
-
-```text
-R1 root only
-→ R2 identidad/texto
-→ R3 contenedores estáticos
-→ R4 navegación visual sin eventos
-→ R5 custom inputs simples
-→ R6 Gallery + Table input
-→ R7 outputs/events
-→ R8 geometría completa
-```
-
-El primer estadio que vuelva a cerrar Studio delimitará la superficie sospechosa.
-
-No se preparará F01-00B mientras este incidente permanezca abierto.
-
-## 7. Resultados de reducción
-
-### R1 — Root only
-
-**Resultado real comunicado:** `R1 instancia OK`.
-
-```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       PASS
-```
-
-### R2 — Identidad / texto
-
-**Resultado real comunicado:** `R2 instancia OK`.
-
-```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       PASS
-```
-
-### R3 — Contenedores estáticos
-
-**Resultado real comunicado:** `R3 instancia OK`.
-
-```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       PASS
-```
-
-### R4 — Navegación visual sin eventos
-
-**Resultado real comunicado:** `R4 instancia OK`.
-
-Configuración añadida sobre R3:
-
-- `Rectangle@2.3.0`;
-- `Classic/Icon@2.5.0`;
-- `Label@2.5.1`;
-- `Classic/Button@2.2.0` transparente;
-- tres filas de navegación estáticas;
-- sin `OnSelect`;
-- sin custom properties;
-- sin `Gallery`, `Table`, `Output` ni `Event`.
-
-Resultado:
-
-```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       PASS
-```
-
-### Interpretación R4
-
-Los tipos de control visual probados en R4, en configuración estática y sin eventos, no reproducen FL-SC-001.
-
-La investigación avanza a `R5`, dedicado exclusivamente a propiedades custom primitivas.
-
-### R5 — Custom inputs simples
-
-**Estado:** PENDING STUDIO VALIDATION.
-
-R5 debe probar inputs primitivos sin introducir colecciones ni eventos. Se utilizarán propiedades custom simples de tipo `Text`, `Boolean` y `Color` consumidas por controles ya validados.
-
-Se mantienen fuera:
+R5 seguía sin contener:
 
 - `Table`;
 - `Gallery`;
 - `Output`;
 - `Event`;
 - `OnSelect`;
-- navegación real;
-- geometría condicional compleja.
+- `ThisItem`;
+- navegación real.
 
-Si R5 falla, se subdividirá por tipo de propiedad custom antes de avanzar.
+## 3. Causa
 
-## 8. Regla preventiva inmediata
+### Causa de proceso confirmada
 
-Todo CanvasComponent nuevo debe registrar estados separados:
+`DEFINITION_ACCEPTED` no es suficiente para integrar un CanvasComponent. El gate `INSTANCE_SAFE` es obligatorio.
+
+### Causa técnica concreta
+
+```text
+UNKNOWN — SURFACE NARROWED TO R5 DELTA
+```
+
+R5 demuestra únicamente que **algún elemento dentro del delta de propiedades custom primitivas o su consumo** es necesario en esta reproducción.
+
+Todavía NO puede afirmarse que:
+
+- todas las CustomProperties sean inseguras;
+- `Text` sea la causa;
+- `Boolean` sea la causa;
+- `Color` sea la causa;
+- el problema sea declarar la propiedad frente a consumirla.
+
+## 4. Superficies descartadas como suficientes
+
+R1–R4 permiten afirmar, para las configuraciones concretas probadas, que no reproducen el cierre por sí solas:
+
+- CanvasComponent mínimo;
+- `GroupContainer@1.5.0` ManualLayout;
+- `ModernText@1.0.0` estático;
+- AutoLayout vertical;
+- contenedores anidados estáticos;
+- `Rectangle@2.3.0` estático;
+- `Classic/Icon@2.5.0` estático;
+- `Label@2.5.1` sin `Radius*`;
+- `Classic/Button@2.2.0` sin `AccessibleLabel` y sin `OnSelect`.
+
+## 5. Estrategia de diagnóstico actual
+
+R5 se subdivide por tipo de propiedad antes de introducir cualquier otra responsabilidad:
+
+```text
+R5-T  Text input only
+→ si PASS: probar Boolean y Color por separado
+→ si FAIL: subdividir declaración vs consumo de Text
+```
+
+El siguiente correctivo es `F01-00A-R5-T` y partirá del baseline R4 validado, añadiendo exclusivamente una propiedad custom `Text` consumida por el título.
+
+No se prepara R6 ni F01-00B mientras FL-SC-001 permanezca abierto.
+
+## 6. Regla preventiva inmediata
+
+Todo CanvasComponent debe atravesar:
 
 ```text
 PASS_STATIC
@@ -197,16 +109,14 @@ VISUAL_QA_VALIDATED
 READY_FOR_INTEGRATION
 ```
 
-Nunca usar `validado`, `listo` o equivalente mientras `INSTANCE_SAFE` no haya pasado.
+Cuando una etapa falle, reducir únicamente el delta de esa etapa. No avanzar a nuevas responsabilidades ni promover hipótesis a causa sin reproducer reducido.
 
-Cuando se diagnostique un cierre de instancia, reconstruir desde un baseline mínimo `INSTANCE_SAFE` añadiendo una sola responsabilidad por iteración.
-
-## 9. Criterio de cierre
+## 7. Criterio de cierre
 
 FL-SC-001 solo podrá cerrarse cuando:
 
-1. exista un reproducer reducido o una causa técnica suficientemente delimitada;
-2. la fuente corregida completa pueda instanciarse de forma estable;
-3. guardar/reabrir no rompa la instancia;
-4. la regla preventiva esté reflejada en `development/compatibility.md`;
-5. el aprendizaje reutilizable central quede actualizado si aporta evidencia nueva respecto al estándar existente.
+1. la superficie técnica esté suficientemente delimitada;
+2. la fuente completa corregida sea `INSTANCE_SAFE`;
+3. guardar/reabrir sea estable;
+4. el contrato público y Visual QA pasen;
+5. el aprendizaje reutilizable central se actualice si aparece una regla nueva demostrada.
