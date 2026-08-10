@@ -1,0 +1,498 @@
+Screens:
+  scr_FL_Asset360:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Assets")
+
+    Children:
+      - conFLA360Root:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLA360Nav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Assets"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLA360Nav.SelectedKey);
+                    Switch(cmpFLA360Nav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLA360Main:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLA360Nav.Width
+                  X: =cmpFLA360Nav.Width
+                  Y: =0
+                Children:
+                  - lblFLA360Eyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =9
+                        Text: ="ACTIVOS · OBJETO TÉCNICO"
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =20
+                  - lblFLA360Title:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =23
+                        Text: =varFLActiveAssetCode & " · " & varFLActiveAssetName
+                        Width: =Parent.Width-48
+                        Wrap: =false
+                        X: =24
+                        Y: =46
+                  - lblFLA360Subtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =10
+                        Text: ="Ficha consolidada de solo lectura con contexto, relaciones y análisis asociados."
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =82
+                  - conFLA360Tabs:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =50
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =116
+                      Children:
+                        - btnFLA360FLH:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =ColorValue("#475569")
+                              Fill: =Color.Transparent
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_FLH,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="FLH"
+                              Width: =110
+                              X: =8
+                              Y: =8
+                        - btnFLA360Tax:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =ColorValue("#475569")
+                              Fill: =Color.Transparent
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_Taxonomy,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Taxonomía"
+                              Width: =126
+                              X: =126
+                              Y: =8
+                        - btnFLA360ADR:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =ColorValue("#475569")
+                              Fill: =Color.Transparent
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_ADR,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="ADR"
+                              Width: =110
+                              X: =260
+                              Y: =8
+                        - btnFLA360Active:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              Color: =ColorValue("#0369A1")
+                              Fill: =ColorValue("#F0F9FF")
+                              Height: =34
+                              OnSelect: =false
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Ficha 360"
+                              Width: =126
+                              X: =378
+                              Y: =8
+                  - conFLA360Identity:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =220
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =(Parent.Width-60)*0.52
+                        X: =24
+                        Y: =182
+                      Children:
+                        - lblFLA360IdentityLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="IDENTIDAD Y SERVICIO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLA360Code:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =19
+                              Text: =varFLActiveAssetCode
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =46
+                        - lblFLA360Name:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              Size: =11
+                              Text: =varFLActiveAssetName
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =78
+                        - lblFLA360Plant:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =10
+                              Text: |-
+                                ="Unidad: " & varFLPlant
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =108
+                        - lblFLA360Service:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =10
+                              Text: |-
+                                ="Servicio: " & varFLService
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =138
+                        - lblFLA360Master:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#7C3AED")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =8
+                              Text: ="MAESTRO · SOLO LECTURA"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =190
+                  - conFLA360Operating:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =220
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-conFLA360Identity.Width-60
+                        X: =conFLA360Identity.X+conFLA360Identity.Width+12
+                        Y: =182
+                      Children:
+                        - lblFLA360OperatingLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="CONTEXTO OPERATIVO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLA360Duty:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =20
+                              Text: =Text(varFLDutyFlowM3h) & " m³/h  ·  " & Text(varFLDutyPressureBar) & " bar"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =46
+                        - lblFLA360Redundancy:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =10
+                              Text: |-
+                                ="Redundancia: " & varFLRedundancy
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =88
+                        - lblFLA360Constraints:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =10
+                              Text: =varFLConstraints
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =124
+                        - lblFLA360Confidence:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#166534")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: |-
+                                ="Confianza del contexto: " & varFLDataConfidence
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =190
+                  - conFLA360Related:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =220
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =(Parent.Width-60)*0.52
+                        X: =24
+                        Y: =414
+                      Children:
+                        - lblFLA360RelatedLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="OBJETOS RELACIONADOS"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - galFLA360Related:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =Color.Transparent
+                              Height: =160
+                              Items: =Filter(colFLTechnicalObjects,Code<>"P-101")
+                              ShowScrollbar: =false
+                              TemplatePadding: =2
+                              TemplateSize: =48
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =48
+                            Children:
+                              - lblFLA360RelatedCode:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: =ThisItem.Code
+                                    Width: =70
+                                    X: =2
+                                    Y: =8
+                              - lblFLA360RelatedName:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    Size: =10
+                                    Text: =ThisItem.Name
+                                    Width: =Parent.TemplateWidth-180
+                                    Wrap: =false
+                                    X: =82
+                                    Y: =8
+                              - lblFLA360RelatedStatus:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Right
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =9
+                                    Text: =ThisItem.Status
+                                    Width: =80
+                                    X: =Parent.TemplateWidth-86
+                                    Y: =8
+                  - conFLA360Analysis:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#BAE6FD")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F8FCFF")
+                        Height: =220
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-conFLA360Related.Width-60
+                        X: =conFLA360Related.X+conFLA360Related.Width+12
+                        Y: =414
+                      Children:
+                        - lblFLA360AnalysisLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="ESTRATEGIA DE MANTENIMIENTO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLA360AnalysisTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: =varFLActiveCaseTitle
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =46
+                        - lblFLA360AnalysisState:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =10
+                              Text: =varFLCurrentStageId & " · " & LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =88
+                        - lblFLA360AnalysisMeta:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =9
+                              Text: ="Versión " & varFLCaseVersion & " · " & varFLCaseLifecycleStatus & " · Borrador activo"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =126
+                        - btnFLA360OpenAnalysis:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
+                              BorderThickness: =1
+                              Color: =Color.White
+                              Fill: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =40
+                              HoverFill: =ColorValue("#0369A1")
+                              OnSelect: =Navigate(scr_FL_CaseOverview,ScreenTransition.None)
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Size: =10
+                              Text: ="Abrir análisis"
+                              Width: =150
+                              X: =Parent.Width-Self.Width-18
+                              Y: =Parent.Height-Self.Height-18
