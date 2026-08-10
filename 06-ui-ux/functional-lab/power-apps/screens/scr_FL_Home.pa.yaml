@@ -6,203 +6,209 @@ Screens:
       OnVisible: |-
         =
         If(
-            IsBlank(varFLV2Initialized),
+            IsBlank(varFLAlignedInitialized),
             Set(varFLLocale,"es");
             Set(varFLCurrentRole,"Ingeniería de Fiabilidad");
             Set(varFLSidebarCollapsed,false);
             Set(varFLNavKey,"Home");
-            Set(varFLActiveCaseId,"P101-AMEF-RCM-001");
-            Set(varFLActiveCaseCode,"P-101");
-            Set(varFLActiveCaseTitle,"P-101 · Bomba centrífuga de agua de refrigeración");
             Set(varFLActiveAssetCode,"P-101");
             Set(varFLActiveAssetName,"Bomba centrífuga de agua de refrigeración");
+            Set(varFLActiveCriticality,"Alta");
+            Set(varFLActiveCriticalityRevision,"CRIT-P101-R03");
+            Set(varFLActiveFmeaDefinitionId,"FMEA-PUMP-CENT-001");
+            Set(varFLActiveFmeaCode,"AMEF-BOMBA-CENTRIFUGA");
+            Set(varFLActiveFmeaRevisionId,"FMEA-PUMP-CENT-R01");
+            Set(varFLActiveFmeaRevisionCode,"R01");
+            Set(varFLActiveApplicationCode,"APP-P101-R01");
+            Set(varFLActiveProfileCode,"HIGH");
+            Set(varFLActiveCaseId,"P101-AMEF-RCM-001");
+            Set(varFLActiveCaseCode,"P-101");
+            Set(varFLActiveCaseTitle,"P-101 · Aplicación AMEF/RCM");
             Set(varFLCurrentStageId,"FL-07");
             Set(varFLCaseLifecycleStatus,"InReview");
-            Set(varFLCaseVersion,"0.3");
+            Set(varFLCaseVersion,"0.4");
             Set(varFLCaseDraft,true);
             ClearCollect(
-                colFLText,
-                {Key:"NAV_HOME",ES:"Inicio",EN:"Home"},
-                {Key:"NAV_ASSETS",ES:"Activos",EN:"Assets"},
-                {Key:"NAV_STRATEGY",ES:"Estrategia de mantenimiento",EN:"Maintenance strategy"},
-                {Key:"NAV_PLANS",ES:"Planes de mantenimiento",EN:"Maintenance plans"},
-                {Key:"NAV_GOVERNANCE",ES:"Gobernanza",EN:"Governance"},
-                {Key:"NAV_SETTINGS",ES:"Configuración",EN:"Settings"},
-                {Key:"SCREEN_HOME_TITLE",ES:"Inicio",EN:"Home"},
-                {Key:"SCREEN_HOME_SUBTITLE",ES:"Visión operativa del laboratorio y trabajo pendiente",EN:"Operational view of the lab and pending work"},
-                {Key:"SCREEN_FLH_TITLE",ES:"Árbol FLH",EN:"FLH tree"},
-                {Key:"SCREEN_FLH_SUBTITLE",ES:"Ubica el activo dentro de la jerarquía funcional y de localización",EN:"Locate the asset within the functional and location hierarchy"},
-                {Key:"SCREEN_TAXONOMY_TITLE",ES:"Taxonomía",EN:"Taxonomy"},
-                {Key:"SCREEN_TAXONOMY_SUBTITLE",ES:"Clasificación del activo y contexto de familia de equipos",EN:"Asset classification and equipment family context"},
-                {Key:"SCREEN_ADR_TITLE",ES:"Árbol ADR",EN:"ADR tree"},
-                {Key:"SCREEN_ADR_SUBTITLE",ES:"Relaciones y dependencias técnicas alrededor del activo",EN:"Technical relationships and dependencies around the asset"},
-                {Key:"SCREEN_ASSET360_TITLE",ES:"Ficha 360 del activo",EN:"Asset 360"},
-                {Key:"SCREEN_CASES_TITLE",ES:"Registro de análisis",EN:"Analysis register"},
-                {Key:"SCREEN_CASEOVERVIEW_TITLE",ES:"Caso P-101",EN:"P-101 case"},
-                {Key:"SCREEN_CONTEXT_TITLE",ES:"Contexto del análisis",EN:"Analysis context"},
-                {Key:"SCREEN_FUNCTIONS_TITLE",ES:"Funciones y fallos funcionales",EN:"Functions and functional failures"},
-                {Key:"SCREEN_MODES_TITLE",ES:"Modos de fallo",EN:"Failure modes"},
-                {Key:"SCREEN_AMEF_TITLE",ES:"AMEF · Efectos y riesgo",EN:"FMEA · Effects and risk"},
-                {Key:"SCREEN_RCM_TITLE",ES:"Decisión RCM",EN:"RCM decision"},
-                {Key:"SCREEN_ECON_TITLE",ES:"Evaluación económica",EN:"Economic assessment"},
-                {Key:"SCREEN_TASK_TITLE",ES:"Tarea e intervalo",EN:"Task and interval"},
-                {Key:"SCREEN_PLAN_TITLE",ES:"Paquete de plan",EN:"Plan package"},
-                {Key:"SCREEN_TRACE_TITLE",ES:"Trazabilidad y calidad",EN:"Traceability and quality"},
-                {Key:"SCREEN_REVIEW_TITLE",ES:"Revisión y aprobación",EN:"Review and approval"},
-                {Key:"SCREEN_EFFECT_TITLE",ES:"Efectividad y mejora",EN:"Effectiveness and improvement"},
-                {Key:"SCREEN_PLANS_TITLE",ES:"Planes de mantenimiento",EN:"Maintenance plans"},
-                {Key:"SCREEN_GOV_TITLE",ES:"Gobernanza",EN:"Governance"},
-                {Key:"SCREEN_SETTINGS_TITLE",ES:"Configuración",EN:"Settings"}
+                colFLV2NavItems,
+                {Order:10,Key:"Home",Label:"Inicio",IconKey:"Overview"},
+                {Order:20,Key:"Assets",Label:"Activos",IconKey:"Context"},
+                {Order:30,Key:"Strategy",Label:"Estrategia de mantenimiento",IconKey:"Decision"},
+                {Order:40,Key:"Plans",Label:"Planes de mantenimiento",IconKey:"Plan"},
+                {Order:50,Key:"Governance",Label:"Gobernanza",IconKey:"Governance"},
+                {Order:60,Key:"Settings",Label:"Configuración",IconKey:"Settings"}
             );
             ClearCollect(
-                colFLV2NavItems,
-                {Order:10,Key:"Home",Label:LookUp(colFLText,Key="NAV_HOME",If(varFLLocale="en",EN,ES)),IconKey:"Overview"},
-                {Order:20,Key:"Assets",Label:LookUp(colFLText,Key="NAV_ASSETS",If(varFLLocale="en",EN,ES)),IconKey:"Context"},
-                {Order:30,Key:"Strategy",Label:LookUp(colFLText,Key="NAV_STRATEGY",If(varFLLocale="en",EN,ES)),IconKey:"Decision"},
-                {Order:40,Key:"Plans",Label:LookUp(colFLText,Key="NAV_PLANS",If(varFLLocale="en",EN,ES)),IconKey:"Plan"},
-                {Order:50,Key:"Governance",Label:LookUp(colFLText,Key="NAV_GOVERNANCE",If(varFLLocale="en",EN,ES)),IconKey:"Governance"},
-                {Order:60,Key:"Settings",Label:LookUp(colFLText,Key="NAV_SETTINGS",If(varFLLocale="en",EN,ES)),IconKey:"Settings"}
+                colFLAssetCriticality,
+                {TechnicalObjectCode:"P-101",CriticalityClass:"Alta",CriticalityScore:82,ProductionImpact:"Alto",SafetyImpact:"Medio",EnvironmentalImpact:"Medio",RedundancyContext:"P-102 disponible en reserva automática",ServiceContext:"Agua de refrigeración · servicio continuo",Revision:"CRIT-P101-R03",Status:"Approved"},
+                {TechnicalObjectCode:"P-102",CriticalityClass:"Media",CriticalityScore:58,ProductionImpact:"Medio",SafetyImpact:"Medio",EnvironmentalImpact:"Medio",RedundancyContext:"Reserva de P-101",ServiceContext:"Reserva automática",Revision:"CRIT-P102-R02",Status:"Approved"},
+                {TechnicalObjectCode:"P-103",CriticalityClass:"Baja",CriticalityScore:31,ProductionImpact:"Bajo",SafetyImpact:"Bajo",EnvironmentalImpact:"Bajo",RedundancyContext:"Servicio auxiliar",ServiceContext:"Intermitente",Revision:"CRIT-P103-R01",Status:"Approved"}
+            );
+            ClearCollect(
+                colFLFmeaDefinitions,
+                {FmeaDefinitionId:"FMEA-PUMP-CENT-001",Code:"AMEF-BOMBA-CENTRIFUGA",Name:"Bomba centrífuga",EquipmentFamilyCode:"CENTRIFUGAL_PUMP",EquipmentFamilyName:"Bombas centrífugas",LifecycleStatus:"Approved",OwnerRole:"Ingeniería de Fiabilidad"},
+                {FmeaDefinitionId:"FMEA-COMP-CENT-001",Code:"AMEF-COMPRESOR-CENTRIFUGO",Name:"Compresor centrífugo",EquipmentFamilyCode:"CENTRIFUGAL_COMPRESSOR",EquipmentFamilyName:"Compresores centrífugos",LifecycleStatus:"Draft",OwnerRole:"Ingeniería de Fiabilidad"},
+                {FmeaDefinitionId:"FMEA-COMP-REC-001",Code:"AMEF-COMPRESOR-RECIPROCANTE",Name:"Compresor reciprocante",EquipmentFamilyCode:"RECIPROCATING_COMPRESSOR",EquipmentFamilyName:"Compresores reciprocantes",LifecycleStatus:"Draft",OwnerRole:"Ingeniería de Fiabilidad"}
+            );
+            ClearCollect(
+                colFLFmeaRevisions,
+                {FmeaRevisionId:"FMEA-PUMP-CENT-R01",FmeaDefinitionId:"FMEA-PUMP-CENT-001",RevisionCode:"R01",RevisionStatus:"Approved",ChangeSummary:"Revisión base aprobada para el Functional Lab",IsFrozen:true},
+                {FmeaRevisionId:"FMEA-PUMP-CENT-R02-DRAFT",FmeaDefinitionId:"FMEA-PUMP-CENT-001",RevisionCode:"R02",RevisionStatus:"Draft",ChangeSummary:"Borrador de mejora pendiente de validación",IsFrozen:false}
+            );
+            ClearCollect(
+                colFLFmeaFunctions,
+                {FunctionId:"FN-01",FmeaRevisionId:"FMEA-PUMP-CENT-R01",FunctionType:"Primary",Statement:"Transferir agua de refrigeración al E-201",PerformanceStandard:"120 m³/h a 6 bar",OperatingMode:"Normal",Sequence:1,Status:"Approved"},
+                {FunctionId:"FN-02",FmeaRevisionId:"FMEA-PUMP-CENT-R01",FunctionType:"Protective",Statement:"Mantener estanqueidad del fluido bombeado",PerformanceStandard:"Sin fuga visible fuera de criterio",OperatingMode:"Normal",Sequence:2,Status:"Approved"}
+            );
+            ClearCollect(
+                colFLFmeaFunctionalFailures,
+                {FunctionalFailureId:"FF-01",FunctionId:"FN-01",FailureType:"Total",Statement:"No suministra caudal de refrigeración",Threshold:"Caudal insuficiente para mantener servicio",Sequence:1},
+                {FunctionalFailureId:"FF-02",FunctionId:"FN-01",FailureType:"Partial",Statement:"Suministra caudal o presión insuficiente",Threshold:"Por debajo del estándar operativo",Sequence:2},
+                {FunctionalFailureId:"FF-03",FunctionId:"FN-02",FailureType:"Partial",Statement:"Pierde estanqueidad",Threshold:"Fuga por encima del criterio aceptable",Sequence:3}
+            );
+            ClearCollect(
+                colFLFmeaFailureModes,
+                {FailureModeId:"FM-01",FmeaRevisionId:"FMEA-PUMP-CENT-R01",FunctionalFailureId:"FF-03",Code:"FM-01",Name:"Degradación del sello mecánico",Description:"Pérdida progresiva de estanqueidad",MechanismCategory:"Desgaste / sellado",Sequence:1,Status:"Approved"},
+                {FailureModeId:"FM-03",FmeaRevisionId:"FMEA-PUMP-CENT-R01",FunctionalFailureId:"FF-01",Code:"FM-03",Name:"Degradación de rodamiento",Description:"Incremento de vibración y temperatura hasta pérdida de función",MechanismCategory:"Desgaste / lubricación / alineación",Sequence:2,Status:"Approved"},
+                {FailureModeId:"FM-04",FmeaRevisionId:"FMEA-PUMP-CENT-R01",FunctionalFailureId:"FF-02",Code:"FM-04",Name:"Cavitación",Description:"Formación y colapso de burbujas con degradación hidráulica",MechanismCategory:"Hidráulico",Sequence:3,Status:"Approved"}
+            );
+            ClearCollect(
+                colFLFmeaFailureCauses,
+                {FailureCauseId:"FC-0301",FailureModeId:"FM-03",CauseCode:"FC-0301",CauseType:"Lubrication",Statement:"Lubricación insuficiente o degradada",Mechanism:"Pérdida de película lubricante y aumento de fricción",Sequence:1,Status:"Approved"},
+                {FailureCauseId:"FC-0302",FailureModeId:"FM-03",CauseCode:"FC-0302",CauseType:"Alignment",Statement:"Desalineación del conjunto",Mechanism:"Carga adicional sobre el rodamiento",Sequence:2,Status:"Approved"},
+                {FailureCauseId:"FC-0401",FailureModeId:"FM-04",CauseCode:"FC-0401",CauseType:"Hydraulic",Statement:"NPSH disponible insuficiente",Mechanism:"Vaporización local y colapso de burbujas",Sequence:1,Status:"Approved"}
+            );
+            ClearCollect(
+                colFLFmeaFailureEffects,
+                {FailureEffectId:"FE-0301",FailureModeId:"FM-03",LocalEffect:"Aumento progresivo de vibración y temperatura en el apoyo",SystemEffect:"Pérdida de estabilidad mecánica, daño secundario en sello y acoplamiento",OperationalEffect:"Reducción de capacidad y posible parada no planificada de P-101",SafetyEffect:"Sin consecuencia de seguridad dominante en el caso ilustrativo",EnvironmentalEffect:"Sin consecuencia ambiental dominante en el caso ilustrativo",Status:"Approved"},
+                {FailureEffectId:"FE-0401",FailureModeId:"FM-04",LocalEffect:"Ruido, vibración y erosión hidráulica",SystemEffect:"Pérdida de rendimiento y daño progresivo del impulsor",OperationalEffect:"Caudal insuficiente y reducción de margen operativo",SafetyEffect:"Pendiente de contexto",EnvironmentalEffect:"Pendiente de contexto",Status:"Approved"}
+            );
+            ClearCollect(
+                colFLProposedTasks,
+                {ProposedMaintenanceTaskId:"PT-01",FmeaRevisionId:"FMEA-PUMP-CENT-R01",TaskCode:"PT-VIB-01",Name:"Medir vibración y temperatura de rodamientos",TaskType:"ConditionBased",Technique:"Vibración + temperatura",BaseAcceptanceCriterion:"Comparar con baseline y límites aprobados",BaseActionIfFailed:"Escalar diagnóstico y planificar intervención",BaseIntervalValue:1,BaseIntervalUnit:"Mes",ProcedureRequiredByDefault:false,Status:"Approved"},
+                {ProposedMaintenanceTaskId:"PT-02",FmeaRevisionId:"FMEA-PUMP-CENT-R01",TaskCode:"PT-LUBE-01",Name:"Verificar condición y nivel de lubricación",TaskType:"Scheduled",Technique:"Inspección / lubricación",BaseAcceptanceCriterion:"Nivel y condición dentro de criterio",BaseActionIfFailed:"Completar/corregir lubricación y evaluar contaminación",BaseIntervalValue:1,BaseIntervalUnit:"Mes",ProcedureRequiredByDefault:true,Status:"Approved"},
+                {ProposedMaintenanceTaskId:"PT-03",FmeaRevisionId:"FMEA-PUMP-CENT-R01",TaskCode:"PT-OPS-01",Name:"Inspección operacional de ruido, fuga y cavitación",TaskType:"OperatorCare",Technique:"Inspección visual/auditiva",BaseAcceptanceCriterion:"Sin fuga anormal, ruido de cavitación ni vibración evidente",BaseActionIfFailed:"Generar aviso y revisión de condiciones de proceso",BaseIntervalValue:1,BaseIntervalUnit:"Semana",ProcedureRequiredByDefault:false,Status:"Approved"}
+            );
+            ClearCollect(
+                colFLTaskFailureModeLinks,
+                {LinkId:"LINK-01",ProposedMaintenanceTaskId:"PT-01",FailureModeId:"FM-03",CoverageType:"Detect",CoverageRationale:"Detecta degradación de rodamiento antes de pérdida funcional"},
+                {LinkId:"LINK-02",ProposedMaintenanceTaskId:"PT-02",FailureModeId:"FM-03",CoverageType:"Prevent",CoverageRationale:"Reduce probabilidad de degradación por lubricación"},
+                {LinkId:"LINK-03",ProposedMaintenanceTaskId:"PT-03",FailureModeId:"FM-04",CoverageType:"Detect",CoverageRationale:"Permite detectar síntomas operacionales de cavitación"},
+                {LinkId:"LINK-04",ProposedMaintenanceTaskId:"PT-03",FailureModeId:"FM-01",CoverageType:"Detect",CoverageRationale:"Permite detectar fuga visible del sello"}
+            );
+            ClearCollect(
+                colFLFmeaApplications,
+                {ApplicationCode:"APP-P101-R01",FmeaRevisionId:"FMEA-PUMP-CENT-R01",AssetCode:"P-101",AssetName:"Bomba centrífuga de agua de refrigeración",Criticality:"Alta",CriticalityRevision:"CRIT-P101-R03",ApplicabilityStatus:"Aplicable",ProfileCode:"HIGH",IntervalSummary:"Vibración mensual · ronda semanal",ContextSummary:"Servicio continuo; P-102 disponible en reserva automática",Status:"InReview"},
+                {ApplicationCode:"APP-P102-R01",FmeaRevisionId:"FMEA-PUMP-CENT-R01",AssetCode:"P-102",AssetName:"Bomba centrífuga de reserva",Criticality:"Media",CriticalityRevision:"CRIT-P102-R02",ApplicabilityStatus:"Aplicable",ProfileCode:"MEDIUM",IntervalSummary:"Vibración bimestral · ronda semanal",ContextSummary:"Reserva automática; menor tiempo de operación",Status:"Approved"},
+                {ApplicationCode:"APP-P103-R01",FmeaRevisionId:"FMEA-PUMP-CENT-R01",AssetCode:"P-103",AssetName:"Bomba auxiliar de servicio intermitente",Criticality:"Baja",CriticalityRevision:"CRIT-P103-R01",ApplicabilityStatus:"Parcialmente aplicable",ProfileCode:"LOW",IntervalSummary:"Vibración trimestral · ronda mensual",ContextSummary:"Servicio intermitente",Status:"Draft"}
+            );
+            ClearCollect(
+                colFLTaskProfileVariants,
+                {TaskProfileVariantId:"TPV-P101-01",ApplicationCode:"APP-P101-R01",ProposedMaintenanceTaskId:"PT-01",ProfileCode:"HIGH",IsApplicable:true,IntervalValue:1,IntervalUnit:"Mes",Reason:"Criticidad alta y servicio continuo",IsOverride:false},
+                {TaskProfileVariantId:"TPV-P102-01",ApplicationCode:"APP-P102-R01",ProposedMaintenanceTaskId:"PT-01",ProfileCode:"MEDIUM",IsApplicable:true,IntervalValue:2,IntervalUnit:"Mes",Reason:"Reserva automática y menor exposición operativa",IsOverride:false},
+                {TaskProfileVariantId:"TPV-P103-01",ApplicationCode:"APP-P103-R01",ProposedMaintenanceTaskId:"PT-01",ProfileCode:"LOW",IsApplicable:true,IntervalValue:3,IntervalUnit:"Mes",Reason:"Servicio intermitente y criticidad baja",IsOverride:false}
+            );
+            ClearCollect(colFLFunctions,AddColumns(Filter(colFLFmeaFunctions,FmeaRevisionId=varFLActiveFmeaRevisionId),"Code",FunctionId,"Name",Statement));
+            ClearCollect(colFLFunctionalFailures,AddColumns(colFLFmeaFunctionalFailures,"Code",FunctionalFailureId,"Name",Statement));
+            ClearCollect(colFLFailureModes,AddColumns(Filter(colFLFmeaFailureModes,FmeaRevisionId=varFLActiveFmeaRevisionId),"SystemRecommended",Code="FM-03","HumanSelected",Code="FM-03","Confidence",If(Code="FM-03","Alta","Media")));
+            ClearCollect(
+                colFLAnalysisCases,
+                {AnalysisCaseId:"P101-AMEF-RCM-001",CaseCode:"P-101",Title:"Aplicación AMEF/RCM de bomba centrífuga",TechnicalObjectCode:"P-101",FmeaRevisionCode:"R01",ApplicationCode:"APP-P101-R01",Criticality:"Alta",LifecycleStatus:"InReview",CurrentStageId:"FL-07",CurrentVersion:"0.4",OwnerRole:"Ingeniería de Fiabilidad",ProgressPct:21,RiskState:"En evaluación"},
+                {AnalysisCaseId:"P102-AMEF-RCM-002",CaseCode:"P-102",Title:"Aplicación AMEF/RCM de bomba de reserva",TechnicalObjectCode:"P-102",FmeaRevisionCode:"R01",ApplicationCode:"APP-P102-R01",Criticality:"Media",LifecycleStatus:"Approved",CurrentStageId:"FL-26",CurrentVersion:"1.0",OwnerRole:"Ingeniería de Fiabilidad",ProgressPct:93,RiskState:"Aprobado"}
             );
             ClearCollect(
                 colFLStageExecutions,
-                {StageOrder:1,StageId:"FL-01",PhaseId:"P1",PhaseLabel:"Comprender el problema",StageLabel:"Definir el activo y sus límites",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Context",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:2,StageId:"FL-02",PhaseId:"P1",PhaseLabel:"Comprender el problema",StageLabel:"Describir el contexto operacional",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Operaciones",ScreenKey:"Context",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:3,StageId:"FL-03",PhaseId:"P1",PhaseLabel:"Comprender el problema",StageLabel:"Comprobar la preparación de datos",Status:"confirmed",ResponsibilityType:"gate",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Context",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:4,StageId:"FL-04",PhaseId:"P1",PhaseLabel:"Comprender el problema",StageLabel:"Definir funciones con estándar",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Functions",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:5,StageId:"FL-05",PhaseId:"P1",PhaseLabel:"Comprender el problema",StageLabel:"Identificar fallos funcionales",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Functions",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:6,StageId:"FL-06",PhaseId:"P1",PhaseLabel:"Comprender el problema",StageLabel:"Seleccionar modos de fallo relevantes",Status:"confirmed",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"FailureModes",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:7,StageId:"FL-07",PhaseId:"P2",PhaseLabel:"Evaluar el riesgo",StageLabel:"Describir efectos del modo de fallo",Status:"draft",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:true,IsAccessible:true,HasWarning:false},
-                {StageOrder:8,StageId:"FL-08",PhaseId:"P2",PhaseLabel:"Evaluar el riesgo",StageLabel:"Clasificar las consecuencias",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:9,StageId:"FL-09",PhaseId:"P2",PhaseLabel:"Evaluar el riesgo",StageLabel:"Valorar severidad, ocurrencia y detección",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:10,StageId:"FL-10",PhaseId:"P2",PhaseLabel:"Evaluar el riesgo",StageLabel:"Aplicar reglas de sobreclasificación",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:11,StageId:"FL-11",PhaseId:"P2",PhaseLabel:"Evaluar el riesgo",StageLabel:"Revisar controles y excepciones",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:12,StageId:"FL-12",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Confirmar si el fallo es evidente",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:1,StageId:"FL-01",PhaseId:"P1",PhaseLabel:"Comprender aplicación y contexto",StageLabel:"Confirmar activo, revisión y límites",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Context",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:2,StageId:"FL-02",PhaseId:"P1",PhaseLabel:"Comprender aplicación y contexto",StageLabel:"Describir contexto operacional",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Operaciones",ScreenKey:"Context",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:3,StageId:"FL-03",PhaseId:"P1",PhaseLabel:"Comprender aplicación y contexto",StageLabel:"Comprobar preparación y criticidad",Status:"confirmed",ResponsibilityType:"gate",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Context",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:4,StageId:"FL-04",PhaseId:"P1",PhaseLabel:"Comprender aplicación y contexto",StageLabel:"Revisar funciones heredadas",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Functions",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:5,StageId:"FL-05",PhaseId:"P1",PhaseLabel:"Comprender aplicación y contexto",StageLabel:"Revisar fallos funcionales heredados",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Functions",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:6,StageId:"FL-06",PhaseId:"P1",PhaseLabel:"Comprender aplicación y contexto",StageLabel:"Seleccionar modos y causas aplicables",Status:"confirmed",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"FailureModes",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:7,StageId:"FL-07",PhaseId:"P2",PhaseLabel:"Evaluar efectos y riesgo AMEF",StageLabel:"Revisar efectos del modo de fallo",Status:"draft",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:true,IsAccessible:true,HasWarning:false},
+                {StageOrder:8,StageId:"FL-08",PhaseId:"P2",PhaseLabel:"Evaluar efectos y riesgo AMEF",StageLabel:"Clasificar consecuencias",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:9,StageId:"FL-09",PhaseId:"P2",PhaseLabel:"Evaluar efectos y riesgo AMEF",StageLabel:"Valorar S/O/D",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:10,StageId:"FL-10",PhaseId:"P2",PhaseLabel:"Evaluar efectos y riesgo AMEF",StageLabel:"Aplicar sobreclasificación",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:11,StageId:"FL-11",PhaseId:"P2",PhaseLabel:"Evaluar efectos y riesgo AMEF",StageLabel:"Revisar controles y excepciones",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:12,StageId:"FL-12",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Ejecutar primera rama RCM",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
                 {StageOrder:13,StageId:"FL-13",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Demostrar degradación detectable",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:14,StageId:"FL-14",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Evaluar la ventana P–F",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:15,StageId:"FL-15",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Comparar políticas técnicamente válidas",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:16,StageId:"FL-16",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Emitir la decisión RCM explicable",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:17,StageId:"FL-17",PhaseId:"P4",PhaseLabel:"Convertir la decisión en un plan",StageLabel:"Comparar el coste esperado",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"Economics",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:18,StageId:"FL-18",PhaseId:"P4",PhaseLabel:"Convertir la decisión en un plan",StageLabel:"Diseñar una tarea ejecutable",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"Task",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:19,StageId:"FL-19",PhaseId:"P4",PhaseLabel:"Convertir la decisión en un plan",StageLabel:"Justificar el intervalo de la tarea",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Task",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:20,StageId:"FL-20",PhaseId:"P4",PhaseLabel:"Convertir la decisión en un plan",StageLabel:"Asignar recursos y condiciones de ejecución",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"PlanPackage",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:21,StageId:"FL-21",PhaseId:"P4",PhaseLabel:"Convertir la decisión en un plan",StageLabel:"Definir alcance y paquete de plan",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"PlanPackage",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:22,StageId:"FL-22",PhaseId:"P4",PhaseLabel:"Convertir la decisión en un plan",StageLabel:"Superar el gate del plan",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"PlanPackage",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:23,StageId:"FL-23",PhaseId:"P5",PhaseLabel:"Gobernar y mejorar",StageLabel:"Reconstruir la trazabilidad integral",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Traceability",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:24,StageId:"FL-24",PhaseId:"P5",PhaseLabel:"Gobernar y mejorar",StageLabel:"Ejecutar el control de calidad",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Traceability",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:25,StageId:"FL-25",PhaseId:"P5",PhaseLabel:"Gobernar y mejorar",StageLabel:"Resolver la revisión multidisciplinar",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Asset Owner / Aprobador",ScreenKey:"ReviewApproval",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:26,StageId:"FL-26",PhaseId:"P5",PhaseLabel:"Gobernar y mejorar",StageLabel:"Aprobar y congelar una versión",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Asset Owner / Aprobador",ScreenKey:"ReviewApproval",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:27,StageId:"FL-27",PhaseId:"P5",PhaseLabel:"Gobernar y mejorar",StageLabel:"Comparar hipótesis con datos reales",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Effectiveness",IsCurrent:false,IsAccessible:true,HasWarning:false},
-                {StageOrder:28,StageId:"FL-28",PhaseId:"P5",PhaseLabel:"Gobernar y mejorar",StageLabel:"Abrir la mejora continua",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Effectiveness",IsCurrent:false,IsAccessible:true,HasWarning:false}
+                {StageOrder:14,StageId:"FL-14",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Evaluar ventana P–F",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:15,StageId:"FL-15",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Comparar políticas válidas",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:16,StageId:"FL-16",PhaseId:"P3",PhaseLabel:"Tomar la decisión RCM",StageLabel:"Emitir decisión RCM explicable",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:17,StageId:"FL-17",PhaseId:"P4",PhaseLabel:"Convertir en trabajo ejecutable",StageLabel:"Comparar coste esperado",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"Economics",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:18,StageId:"FL-18",PhaseId:"P4",PhaseLabel:"Convertir en trabajo ejecutable",StageLabel:"Confirmar tarea ejecutable",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"Task",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:19,StageId:"FL-19",PhaseId:"P4",PhaseLabel:"Convertir en trabajo ejecutable",StageLabel:"Justificar intervalo",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Task",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:20,StageId:"FL-20",PhaseId:"P4",PhaseLabel:"Convertir en trabajo ejecutable",StageLabel:"Asignar recursos y carga",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"PlanPackage",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:21,StageId:"FL-21",PhaseId:"P4",PhaseLabel:"Convertir en trabajo ejecutable",StageLabel:"Definir alcance y agrupación",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"PlanPackage",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:22,StageId:"FL-22",PhaseId:"P4",PhaseLabel:"Convertir en trabajo ejecutable",StageLabel:"Control de preparación del plan",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Mantenimiento / Planificación",ScreenKey:"PlanPackage",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:23,StageId:"FL-23",PhaseId:"P5",PhaseLabel:"Gobernar, ejecutar y mejorar",StageLabel:"Reconstruir trazabilidad integral",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Traceability",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:24,StageId:"FL-24",PhaseId:"P5",PhaseLabel:"Gobernar, ejecutar y mejorar",StageLabel:"Ejecutar control de calidad",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Traceability",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:25,StageId:"FL-25",PhaseId:"P5",PhaseLabel:"Gobernar, ejecutar y mejorar",StageLabel:"Resolver revisión multidisciplinar",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Asset Owner / Aprobador",ScreenKey:"ReviewApproval",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:26,StageId:"FL-26",PhaseId:"P5",PhaseLabel:"Gobernar, ejecutar y mejorar",StageLabel:"Aprobar y congelar versión",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Asset Owner / Aprobador",ScreenKey:"ReviewApproval",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:27,StageId:"FL-27",PhaseId:"P5",PhaseLabel:"Gobernar, ejecutar y mejorar",StageLabel:"Comparar hipótesis con datos reales",Status:"not_started",ResponsibilityType:"calculation",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Effectiveness",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                {StageOrder:28,StageId:"FL-28",PhaseId:"P5",PhaseLabel:"Gobernar, ejecutar y mejorar",StageLabel:"Abrir mejora continua",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"Effectiveness",IsCurrent:false,IsAccessible:true,HasWarning:false}
             );
-            ClearCollect(
-                colFLAnalysisCases,
-                {AnalysisCaseId:"P101-AMEF-RCM-001",CaseCode:"P-101",Title:"Bomba centrífuga de agua de refrigeración",TechnicalObjectCode:"P-101",LifecycleStatus:"InReview",CurrentStageId:"FL-07",CurrentVersion:"0.3",OwnerRole:"Ingeniería de Fiabilidad",ProgressPct:21,RiskState:"En evaluación"},
-                {AnalysisCaseId:"C101-AMEF-RCM-002",CaseCode:"C-101",Title:"Compresor de gas de proceso",TechnicalObjectCode:"C-101",LifecycleStatus:"Draft",CurrentStageId:"FL-03",CurrentVersion:"0.1",OwnerRole:"Ingeniería de Fiabilidad",ProgressPct:10,RiskState:"Pendiente"},
-                {AnalysisCaseId:"E201-AMEF-RCM-003",CaseCode:"E-201",Title:"Intercambiador de refrigeración",TechnicalObjectCode:"E-201",LifecycleStatus:"Approved",CurrentStageId:"FL-26",CurrentVersion:"1.0",OwnerRole:"Asset Owner / Aprobador",ProgressPct:93,RiskState:"Controlado"}
-            );
-            ClearCollect(
-                colFLTechnicalObjects,
-                {TechnicalObjectId:"TO-P101",Code:"P-101",Name:"Bomba centrífuga de agua de refrigeración",ObjectType:"Bomba",ParentCode:"P-100",Status:"Activo"},
-                {TechnicalObjectId:"TO-P102",Code:"P-102",Name:"Bomba de reserva",ObjectType:"Bomba",ParentCode:"P-100",Status:"Reserva"},
-                {TechnicalObjectId:"TO-M101",Code:"M-101",Name:"Motor eléctrico",ObjectType:"Motor",ParentCode:"P-101",Status:"Activo"},
-                {TechnicalObjectId:"TO-CPL101",Code:"CPL-101",Name:"Acoplamiento",ObjectType:"Acoplamiento",ParentCode:"P-101",Status:"Activo"}
-            );
-            Set(varFLPlant,"Unidad de proceso A");
-            Set(varFLService,"Transferir agua de refrigeración al intercambiador E-201");
-            Set(varFLBoundary,"Desde la brida de aspiración hasta la brida de descarga, incluyendo motor M-101, acoplamiento y protecciones.");
-            Set(varFLDutyFlowM3h,120);
-            Set(varFLDutyPressureBar,6);
-            Set(varFLRedundancy,"P-102 en reserva automática");
-            Set(varFLConstraints,"Servicio continuo; pérdida total de caudal > 20 min afecta a producción y puede elevar temperatura del proceso.");
-            Set(varFLDataConfidence,"Media-alta");
-            ClearCollect(
-                colFLFunctions,
-                {FunctionId:"FUN-01",FunctionType:"Principal",Statement:"Transferir 120 m³/h de agua de refrigeración a 6 bar durante operación normal.",Status:"Confirmed"},
-                {FunctionId:"FUN-02",FunctionType:"Secundaria",Statement:"Contener el fluido sin fuga visible y transmitir potencia sin vibración perjudicial.",Status:"Confirmed"}
-            );
-            ClearCollect(
-                colFLFunctionalFailures,
-                {FunctionalFailureId:"FF-01",FunctionId:"FUN-01",FailureType:"Total",Statement:"No entregar caudal de refrigeración cuando el sistema lo requiere."},
-                {FunctionalFailureId:"FF-02",FunctionId:"FUN-01",FailureType:"Parcial",Statement:"Entregar menos de 108 m³/h, presión inferior a 5,5 bar o hacerlo con fuga/vibración fuera del límite."}
-            );
-            ClearCollect(
-                colFLFailureModes,
-                {FailureModeId:"FM-01",Code:"FM-01",Name:"Degradación del sello mecánico",SystemRecommended:false,HumanSelected:false},
-                {FailureModeId:"FM-03",Code:"FM-03",Name:"Degradación de rodamientos",SystemRecommended:true,HumanSelected:true},
-                {FailureModeId:"FM-06",Code:"FM-06",Name:"Fallo oculto de la bomba de reserva",SystemRecommended:false,HumanSelected:false},
-                {FailureModeId:"FM-07",Code:"FM-07",Name:"Obstrucción parcial en aspiración",SystemRecommended:false,HumanSelected:false}
-            );
-            Set(varFLFailureEffectLocal,"Aumento progresivo de vibración y temperatura en el apoyo.");
-            Set(varFLFailureEffectSystem,"Pérdida de estabilidad mecánica, daño secundario en sello y acoplamiento.");
-            Set(varFLFailureEffectOperational,"Reducción de capacidad y posible parada no planificada de P-101.");
+            Set(varFLSelectedFailureMode,"FM-03");
+            Set(varFLFailureEffectLocal,LookUp(colFLFmeaFailureEffects,FailureModeId="FM-03",LocalEffect));
+            Set(varFLFailureEffectSystem,LookUp(colFLFmeaFailureEffects,FailureModeId="FM-03",SystemEffect));
+            Set(varFLFailureEffectOperational,LookUp(colFLFmeaFailureEffects,FailureModeId="FM-03",OperationalEffect));
             Set(varFLConsequenceClass,"Operacional");
             Set(varFLSeverity,4);
             Set(varFLOccurrence,3);
             Set(varFLDetection,3);
             Set(varFLRiskScore,varFLSeverity*varFLOccurrence*varFLDetection);
             Set(varFLCriticalOverride,"No");
-            Set(varFLExistingControls,"Medición mensual de vibración y temperatura; rondas operativas.");
+            Set(varFLExistingControls,"Medición mensual de vibración y temperatura; rondas operativas");
             Set(varFLAMEFConfidence,"Media");
-            Set(varFLAMEFException,"Confirmar baseline de vibración después de la próxima alineación.");
-            Set(varFLRCMEvident,"Sí");
-            Set(varFLRCMDetectable,"Sí");
-            Set(varFLRcmPFEvidence,"Histórico de tendencias y experiencia de equipos equivalentes muestran degradación detectable.");
-            Set(varFLPFDays,45);
-            Set(varFLInterventionDays,14);
+            Set(varFLAMEFException,"Confirmar baseline de vibración después de la próxima alineación");
+            ClearCollect(
+                colFLDecisionQuestions,
+                {QuestionCode:"Q01",Sequence:1,QuestionText:"¿El fallo es evidente para la operación en condiciones normales?",QuestionType:"Boolean",ResponsibleRole:"Ingeniería de Fiabilidad"},
+                {QuestionCode:"Q02",Sequence:2,QuestionText:"¿Existe una degradación detectable antes del fallo funcional?",QuestionType:"Boolean",ResponsibleRole:"Ingeniería de Fiabilidad"},
+                {QuestionCode:"Q03",Sequence:3,QuestionText:"¿La ventana P–F permite detectar, planificar e intervenir con margen?",QuestionType:"Boolean",ResponsibleRole:"Ingeniería de Fiabilidad"},
+                {QuestionCode:"Q04",Sequence:4,QuestionText:"¿La política propuesta es técnicamente aplicable y eficaz?",QuestionType:"Boolean",ResponsibleRole:"Ingeniería de Fiabilidad"}
+            );
+            Set(varFLDecisionLogicCode,"RCM-DEMO-01");
+            Set(varFLDecisionLogicRevision,"R01");
+            Set(varFLRCMIsEvident,true);
+            Set(varFLRCMIsDetectable,true);
+            Set(varFLPFDays,60);
+            Set(varFLInterventionDays,15);
             Set(varFLDetectionProbabilityPct,85);
-            Set(varFLAgeRelated,"No demostrada");
-            Set(varFLEffectivePolicy,"Sí");
-            Set(varFLRecommendedStrategy,"Mantenimiento basado en condición");
-            Set(varFLFallbackStrategy,"Restauración o sustitución condicionada");
-            Set(varFLRCMAuthority,"Fiabilidad + Mantenimiento + Operaciones");
-            Set(varFLFailRatePerYear,1.2);
-            Set(varFLRepairCostPerFailureEur,8500);
-            Set(varFLDowntimeHoursPerFailure,18);
-            Set(varFLDowntimeRateEurPerHour,2500);
-            Set(varFLAdditionalImpactCostEur,9000);
-            Set(varFLAnnualRuns,17);
-            Set(varFLLaborHoursPerRun,1.2);
-            Set(varFLLaborRateEurPerHour,62);
-            Set(varFLMaterialPerRunEur,18);
-            Set(varFLFixedAnnualCostEur,1800);
-            Set(varFLProbabilityReductionPct,65);
-            Set(varFLConsequenceReductionPct,10);
-            Set(varFLTaskName,"Medir vibración global, espectro y temperatura de rodamientos");
-            Set(varFLTaskTechnique,"Tomar medidas en puntos normalizados DE/NDE, registrar carga y comparar tendencia con baseline.");
-            Set(varFLTaskAcceptance,"Sin alarma de tendencia; valores dentro del límite corporativo y sin incremento sostenido > 25 %.");
-            Set(varFLTaskFailedAction,"Generar aviso de ingeniería, aumentar frecuencia y planificar inspección/alineación o sustitución según diagnóstico.");
-            Set(varFLTaskInterval,21);
-            Set(varFLTaskIntervalUnit,"días");
-            Set(varFLPFFactor,0.5);
-            Set(varFLPlanningWindowDays,14);
-            Set(varFLDiscipline,"Mecánica");
-            Set(varFLWorkCenter,"Técnico de mantenimiento predictivo");
-            Set(varFLCrew,1);
-            Set(varFLTools,"Analizador de vibraciones, termómetro IR, tablet y puntos marcados.");
-            Set(varFLSpare,"Kit de rodamiento disponible bajo condición.");
-            Set(varFLShutdown,"No para medición; sí para intervención correctiva.");
-            Set(varFLPermit,"Permiso rutinario y control de partes giratorias.");
-            Set(varFLGrouping,"Ruta predictiva del tren P-101");
-            Set(varFLExportModel,"Modelo interno neutro con mapeo posterior al CMMS destino.");
-            Set(varFLTraceConfirmed,"Sí");
-            Set(varFLQualityDecision,"Resolver advertencia antes de publicación");
-            Set(varFLReviewResolution,"Mantener intervalo de 21 días durante seis meses y revisar con datos reales.");
-            Set(varFLReviewOwner,"Ingeniería de Fiabilidad");
-            Set(varFLMaintenanceApproval,"Aprobado");
-            Set(varFLOperationsApproval,"Aprobado");
-            Set(varFLReliabilityApproval,"Aprobado");
-            Set(varFLAssetOwnerApproval,"Aprobado");
-            Set(varFLActualDetectionDays,28);
-            Set(varFLActualAnnualCostEur,11200);
-            Set(varFLActualFailures,1);
-            Set(varFLReviewDecision,"Abrir solicitud de cambio");
-            Set(varFLReopenScope,"Revisar P–F, intervalo de tarea y baseline; mantener estrategia RCM mientras se valida.");
-            Set(varFLV2Initialized,true)
+            Set(varFLRCMRecommendedStrategy,"Mantenimiento basado en condición");
+            Set(varFLRCMHumanStrategy,"Mantenimiento basado en condición");
+            Set(varFLActiveProposedTaskId,"PT-01");
+            Set(varFLActiveTaskVariantId,"TPV-P101-01");
+            Set(varFLMaintenanceTaskName,"Medir vibración y temperatura de rodamientos");
+            Set(varFLMaintenanceTaskType,"ConditionBased");
+            Set(varFLMaintenanceIntervalValue,1);
+            Set(varFLMaintenanceIntervalUnit,"Mes");
+            Set(varFLRequiredOperatingState,"En servicio");
+            Set(varFLRequiresShutdown,false);
+            Set(varFLIsolationRequirement,"No requerida para la medición normal");
+            Set(varFLPermitRequirement,"Permiso según procedimiento local de acceso");
+            Set(varFLEstimatedDurationHours,0.75);
+            Set(varFLCrewSize,1);
+            Set(varFLEstimatedManHours,varFLEstimatedDurationHours*varFLCrewSize);
+            Set(varFLDiscipline,"Mecánica / Predictivo");
+            Set(varFLWorkCenter,"Predictivo");
+            Set(varFLProcedureRequired,false);
+            ClearCollect(colFLProcedures,{ProcedureId:"PROC-LUBE-01",ProcedureCode:"PROC-LUBE-PUMP-01",Name:"Lubricación de rodamientos de bomba centrífuga",ProcedureType:"Procedure",Revision:"R02",Status:"Approved"},{ProcedureId:"CHK-PUMP-OPS-01",ProcedureCode:"CHK-PUMP-OPS-01",Name:"Checklist de ronda operacional de bomba",ProcedureType:"Checklist",Revision:"R01",Status:"Approved"});
+            ClearCollect(colFLResourceRequirements,{ResourceType:"Labor",Description:"Técnico predictivo",Discipline:"Predictivo",Quantity:0.75,Unit:"h",UnitCost:45},{ResourceType:"Tool",Description:"Colector de vibraciones",Discipline:"Predictivo",Quantity:1,Unit:"ud",UnitCost:0});
+            Set(varFLEstimatedLaborCost,Sum(Filter(colFLResourceRequirements,ResourceType="Labor"),Quantity*UnitCost));
+            Set(varFLEstimatedMaterialCost,0);
+            Set(varFLEstimatedAnnualCost,varFLEstimatedLaborCost*12);
+            Set(varFLActualAnnualCost,465);
+            ClearCollect(colFLPlanScopeItems,{PlanScopeItemId:"PSI-01",TechnicalObjectCode:"P-101",RoleInScope:"MainEquipment",TaskCode:"PT-VIB-01",Included:true},{PlanScopeItemId:"PSI-02",TechnicalObjectCode:"M-101",RoleInScope:"SupportEquipment",TaskCode:"PT-VIB-01",Included:true},{PlanScopeItemId:"PSI-03",TechnicalObjectCode:"P-102",RoleInScope:"RedundantEquipment",TaskCode:"",Included:false});
+            ClearCollect(colFLGroupingRules,{RuleCode:"GRP-FREQ-01",Name:"Agrupar por frecuencia compatible",GroupingDimension:"Frequency",Priority:1,Status:"Demo"},{RuleCode:"GRP-ACT-01",Name:"Agrupar por técnica/actividad",GroupingDimension:"Activity",Priority:2,Status:"Demo"},{RuleCode:"GRP-LOC-01",Name:"Agrupar por ubicación y ejecutor",GroupingDimension:"Location",Priority:3,Status:"Demo"});
+            ClearCollect(colFLJobPlans,{JobPlanCode:"JP-VIB-PUMP-A",Name:"Ruta de vibraciones · bombas área A",Revision:"R01",Discipline:"Predictivo",WorkCenter:"Predictivo",Status:"Draft"});
+            ClearCollect(colFLPmPlans,{PlanCode:"PM-PUMP-A-MONTHLY",Name:"Predictivo mensual · bombas área A",JobPlanCode:"JP-VIB-PUMP-A",Cycle:"1 mes",Status:"Draft"});
+            ClearCollect(colFLWorkOrders,{WorkOrderCode:"WO-260701-P101",PlanCode:"PM-PUMP-A-MONTHLY",TechnicalObjectCode:"P-101",JobPlanCode:"JP-VIB-PUMP-A",Status:"Completed",ScheduledDate:"2026-07-01",ActualDurationHours:0.70});
+            ClearCollect(colFLExecutionResults,{WorkOrderCode:"WO-260701-P101",TechnicalObjectCode:"P-101",TaskCode:"PT-VIB-01",ResultCode:"OK",ResultText:"Vibración dentro de baseline; ligera tendencia creciente sin alarma",MeasurementValue:3.1,MeasurementUnit:"mm/s",ActualCost:38.50});
+            Set(varFLAlignedInitialized,true)
         );
         Set(varFLNavKey,"Home")
 
     Children:
-      - conFLHomeRoot:
+      - conFLHomeAlignedRoot:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
@@ -216,9 +222,8 @@ Screens:
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =App.Width
-
           Children:
-            - cmpFL_Nav:
+            - cmpFLHomeAlignedNav:
                 Control: CanvasComponent
                 ComponentName: cmp_FL_SidebarPro
                 Properties:
@@ -233,9 +238,9 @@ Screens:
                   NavItems: =colFLV2NavItems
                   OnSelectItem: |-
                     =
-                    Set(varFLNavKey,cmpFL_Nav.SelectedKey);
+                    Set(varFLNavKey,cmpFLHomeAlignedNav.SelectedKey);
                     Switch(
-                        cmpFL_Nav.SelectedKey,
+                        cmpFLHomeAlignedNav.SelectedKey,
                         "Home",Navigate(scr_FL_Home,ScreenTransition.None),
                         "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
                         "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
@@ -247,8 +252,7 @@ Screens:
                   Width: =If(varFLSidebarCollapsed,76,220)
                   X: =0
                   Y: =0
-
-            - conFLHomeMain:
+            - conFLHomeAlignedMain:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -261,252 +265,46 @@ Screens:
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =Parent.Width-cmpFL_Nav.Width
-                  X: =cmpFL_Nav.Width
+                  Width: =Parent.Width-cmpFLHomeAlignedNav.Width
+                  X: =cmpFLHomeAlignedNav.Width
                   Y: =0
-
                 Children:
-                  - lblFLHomeEyebrow:
-                      Control: ModernText@1.0.0
+                  - cmpFLHomeAlignedHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
                       Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#0284C7")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =9
-                        Text: ="CMMS 2.0 · FUNCTIONAL LAB"
+                        Archetype: ="CMMS 2.0 FUNCTIONAL LAB"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: ="Bomba centrífuga"
+                        Height: =132
+                        JourneyHint: ="Biblioteca → Aplicación → Plan → Ejecución"
+                        JourneyPosition: ="MODELO ALINEADO"
+                        ProgressCurrent: =7
+                        ProgressTotal: =28
+                        ReviewHint: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                        ReviewState: =varFLCaseLifecycleStatus
+                        Subtitle: ="Validamos cómo una ingeniería AMEF/RCM reutilizable se aplica a activos concretos y termina en trabajo ejecutable sin perder trazabilidad."
+                        Title: ="Inicio"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="HOME"
+                        X: =0
+                        Y: =0
+                  - cmpFLHomeAlignedLineage:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_LineagePanelPro
+                      Properties:
+                        ApplicationCode: =varFLActiveApplicationCode
+                        AssetCode: =varFLActiveAssetCode
+                        CriticalityLabel: =varFLActiveCriticality
+                        ExecutionLabel: ="Job Plan / PM en preparación"
+                        Height: =126
+                        LibraryCode: =varFLActiveFmeaCode
+                        RevisionCode: =varFLActiveFmeaRevisionCode
+                        Title: ="Hilo conductor del laboratorio"
                         Width: =Parent.Width-48
-                        Wrap: =false
                         X: =24
-                        Y: =22
-
-                  - lblFLHomeTitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#0F172A")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =24
-                        Text: =LookUp(colFLText,Key="SCREEN_HOME_TITLE",If(varFLLocale="en",EN,ES))
-                        Width: =Parent.Width-48
-                        Wrap: =false
-                        X: =24
-                        Y: =48
-
-                  - lblFLHomeSubtitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#64748B")
-                        Size: =11
-                        Text: =LookUp(colFLText,Key="SCREEN_HOME_SUBTITLE",If(varFLLocale="en",EN,ES))
-                        Width: =Parent.Width-48
-                        Wrap: =false
-                        X: =24
-                        Y: =88
-
-                  - conFLHomeKpiCases:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#FFFFFF")
-                        Height: =104
-                        RadiusBottomLeft: =12
-                        RadiusBottomRight: =12
-                        RadiusTopLeft: =12
-                        RadiusTopRight: =12
-                        Width: =(Parent.Width-84)/4
-                        X: =24
-                        Y: =126
-                      Children:
-                        - lblFLHomeKpiCasesLabel:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="CASOS DE ANÁLISIS"
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =14
-                        - lblFLHomeKpiCasesValue:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =24
-                              Text: =Text(CountRows(colFLAnalysisCases))
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =40
-                        - lblFLHomeKpiCasesHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: ="1 en revisión · 1 aprobado"
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =76
-
-                  - conFLHomeKpiStage:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#FFFFFF")
-                        Height: =104
-                        RadiusBottomLeft: =12
-                        RadiusBottomRight: =12
-                        RadiusTopLeft: =12
-                        RadiusTopRight: =12
-                        Width: =conFLHomeKpiCases.Width
-                        X: =conFLHomeKpiCases.X+conFLHomeKpiCases.Width+12
-                        Y: =126
-                      Children:
-                        - lblFLHomeKpiStageLabel:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="ETAPA ACTUAL"
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =14
-                        - lblFLHomeKpiStageValue:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0284C7")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =20
-                              Text: =varFLCurrentStageId
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =42
-                        - lblFLHomeKpiStageHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
-                              Width: =Parent.Width-28
-                              Wrap: =false
-                              X: =14
-                              Y: =76
-
-                  - conFLHomeKpiRole:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#FFFFFF")
-                        Height: =104
-                        RadiusBottomLeft: =12
-                        RadiusBottomRight: =12
-                        RadiusTopLeft: =12
-                        RadiusTopRight: =12
-                        Width: =conFLHomeKpiCases.Width
-                        X: =conFLHomeKpiStage.X+conFLHomeKpiStage.Width+12
-                        Y: =126
-                      Children:
-                        - lblFLHomeKpiRoleLabel:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="ROL ACTIVO"
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =14
-                        - lblFLHomeKpiRoleValue:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =13
-                              Text: =varFLCurrentRole
-                              Width: =Parent.Width-28
-                              Wrap: =true
-                              X: =14
-                              Y: =43
-                        - lblFLHomeKpiRoleHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#7C3AED")
-                              Size: =9
-                              Text: ="Autoridad funcional simulada"
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =78
-
-                  - conFLHomeKpiDraft:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =ColorValue("#BAE6FD")
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#F0F9FF")
-                        Height: =104
-                        RadiusBottomLeft: =12
-                        RadiusBottomRight: =12
-                        RadiusTopLeft: =12
-                        RadiusTopRight: =12
-                        Width: =conFLHomeKpiCases.Width
-                        X: =conFLHomeKpiRole.X+conFLHomeKpiRole.Width+12
-                        Y: =126
-                      Children:
-                        - lblFLHomeKpiDraftLabel:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0369A1")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="ESTADO DEL CASO"
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =14
-                        - lblFLHomeKpiDraftValue:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =17
-                              Text: =If(varFLCaseDraft,"Borrador activo","Sin cambios")
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =42
-                        - lblFLHomeKpiDraftHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: ="v" & varFLCaseVersion & " · " & varFLCaseLifecycleStatus
-                              Width: =Parent.Width-28
-                              X: =14
-                              Y: =76
-
-                  - conFLHomeWork:
+                        Y: =148
+                  - conFLHomeAlignedLibrary:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -514,270 +312,206 @@ Screens:
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
-                        Height: =206
+                        Height: =190
                         RadiusBottomLeft: =14
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
-                        Width: =(Parent.Width-60)*0.58
+                        Width: =(Parent.Width-72)/3
                         X: =24
-                        Y: =246
+                        Y: =288
                       Children:
-                        - lblFLHomeWorkEyebrow:
+                        - lblFLHomeAlignedLibraryTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#0284C7")
                               FontWeight: =FontWeight.Semibold
                               Size: =9
-                              Text: ="MI TRABAJO"
+                              Text: ="1 · BIBLIOTECA AMEF"
                               Width: =Parent.Width-36
                               X: =18
-                              Y: =16
-                        - lblFLHomeWorkTitle:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =18
-                              Text: ="Continuar AMEF de P-101"
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =45
-                        - lblFLHomeWorkStage:
+                              Y: =18
+                        - lblFLHomeAlignedLibraryText:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#334155")
-                              Size: =11
-                              Text: =varFLCurrentStageId & " · " & LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                              Size: =9
+                              Text: ="Ingeniería común por familia de equipo. Funciones, fallos, modos, causas, efectos y tareas propuestas se mantienen una sola vez."
                               Width: =Parent.Width-36
-                              Wrap: =false
-                              X: =18
-                              Y: =80
-                        - lblFLHomeWorkHint:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =10
-                              Text: ="Las etapas FL-01 a FL-06 están confirmadas. El siguiente trabajo real es describir los efectos de FM-03 y evaluar el riesgo."
-                              Width: =Parent.Width-210
                               Wrap: =true
                               X: =18
-                              Y: =112
-                        - btnFLHomeOpenCase:
+                              Y: =48
+                        - btnFLHomeAlignedLibrary:
                             Control: Classic/Button@2.2.0
                             Properties:
                               BorderColor: =ColorValue("#0284C7")
                               BorderThickness: =1
                               Color: =Color.White
                               Fill: =ColorValue("#0284C7")
-                              Font: =Font.'Segoe UI'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              HoverFill: =ColorValue("#0369A1")
-                              OnSelect: =Navigate(scr_FL_CaseOverview,ScreenTransition.None)
-                              PressedFill: =ColorValue("#075985")
-                              RadiusBottomLeft: =9
-                              RadiusBottomRight: =9
-                              RadiusTopLeft: =9
-                              RadiusTopRight: =9
-                              Size: =10
-                              Text: ="Abrir caso"
-                              Width: =146
-                              X: =Parent.Width-Self.Width-18
-                              Y: =Parent.Height-Self.Height-18
-
-                  - conFLHomeQuick:
+                              Height: =36
+                              OnSelect: =Navigate(scr_FL_FmeaLibrary,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Abrir biblioteca"
+                              Width: =140
+                              X: =18
+                              Y: =134
+                  - conFLHomeAlignedApplication:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderColor: =ColorValue("#DDD6FE")
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
-                        Height: =206
+                        Height: =190
                         RadiusBottomLeft: =14
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
-                        Width: =Parent.Width-conFLHomeWork.Width-60
-                        X: =conFLHomeWork.X+conFLHomeWork.Width+12
-                        Y: =246
+                        Width: =conFLHomeAlignedLibrary.Width
+                        X: =conFLHomeAlignedLibrary.X+conFLHomeAlignedLibrary.Width+12
+                        Y: =288
                       Children:
-                        - lblFLHomeQuickEyebrow:
+                        - lblFLHomeAlignedApplicationTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
-                              Color: =ColorValue("#64748B")
+                              Color: =ColorValue("#7C3AED")
                               FontWeight: =FontWeight.Semibold
                               Size: =9
-                              Text: ="ACTIVOS · ACCESOS RÁPIDOS"
+                              Text: ="2 · APLICACIÓN A ACTIVOS"
                               Width: =Parent.Width-36
                               X: =18
-                              Y: =16
-                        - lblFLHomeQuickTitle:
+                              Y: =18
+                        - lblFLHomeAlignedApplicationText:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =16
-                              Text: ="Contexto estructural de P-101"
+                              Color: =ColorValue("#334155")
+                              Size: =9
+                              Text: ="La misma revisión R01 se aplica a P-101, P-102 y P-103. Criticidad y contexto pueden cambiar frecuencia o aplicabilidad sin duplicar el AMEF."
                               Width: =Parent.Width-36
+                              Wrap: =true
                               X: =18
-                              Y: =45
-                        - btnFLHomeFLH:
+                              Y: =48
+                        - btnFLHomeAlignedApplication:
                             Control: Classic/Button@2.2.0
                             Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderColor: =ColorValue("#7C3AED")
                               BorderThickness: =1
-                              Color: =ColorValue("#0F172A")
-                              Fill: =ColorValue("#FFFFFF")
-                              Font: =Font.'Segoe UI'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =38
-                              HoverFill: =ColorValue("#F8FAFC")
-                              OnSelect: =Navigate(scr_FL_FLH,ScreenTransition.None)
+                              Color: =Color.White
+                              Fill: =ColorValue("#7C3AED")
+                              Height: =36
+                              OnSelect: =Navigate(scr_FL_AssetApplication,ScreenTransition.None)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
                               RadiusTopLeft: =8
                               RadiusTopRight: =8
-                              Size: =10
-                              Text: ="Árbol FLH"
-                              Width: =Parent.Width-36
+                              Size: =9
+                              Text: ="Ver aplicaciones"
+                              Width: =140
                               X: =18
-                              Y: =82
-                        - btnFLHomeTaxonomy:
-                            Control: Classic/Button@2.2.0
-                            Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
-                              BorderThickness: =1
-                              Color: =ColorValue("#0F172A")
-                              Fill: =ColorValue("#FFFFFF")
-                              Font: =Font.'Segoe UI'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =38
-                              HoverFill: =ColorValue("#F8FAFC")
-                              OnSelect: =Navigate(scr_FL_Taxonomy,ScreenTransition.None)
-                              RadiusBottomLeft: =8
-                              RadiusBottomRight: =8
-                              RadiusTopLeft: =8
-                              RadiusTopRight: =8
-                              Size: =10
-                              Text: ="Taxonomía"
-                              Width: =(Parent.Width-48)*0.5
-                              X: =18
-                              Y: =130
-                        - btnFLHomeADR:
-                            Control: Classic/Button@2.2.0
-                            Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
-                              BorderThickness: =1
-                              Color: =ColorValue("#0F172A")
-                              Fill: =ColorValue("#FFFFFF")
-                              Font: =Font.'Segoe UI'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =38
-                              HoverFill: =ColorValue("#F8FAFC")
-                              OnSelect: =Navigate(scr_FL_ADR,ScreenTransition.None)
-                              RadiusBottomLeft: =8
-                              RadiusBottomRight: =8
-                              RadiusTopLeft: =8
-                              RadiusTopRight: =8
-                              Size: =10
-                              Text: ="Árbol ADR"
-                              Width: =(Parent.Width-48)*0.5
-                              X: =btnFLHomeTaxonomy.X+btnFLHomeTaxonomy.Width+12
-                              Y: =130
-
-                  - conFLHomeCases:
+                              Y: =134
+                  - conFLHomeAlignedCase:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderColor: =ColorValue("#BBF7D0")
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
-                        Height: =230
+                        Height: =190
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =conFLHomeAlignedLibrary.Width
+                        X: =conFLHomeAlignedApplication.X+conFLHomeAlignedApplication.Width+12
+                        Y: =288
+                      Children:
+                        - lblFLHomeAlignedCaseTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#15803D")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="3 · CASO Y HANDOFF"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =18
+                        - lblFLHomeAlignedCaseText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              Size: =9
+                              Text: ="El caso P-101 valida el contexto, ejecuta AMEF/RCM, confirma tarea, recursos y alcance y prepara el handoff hacia Job Plan, PM y WO."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =48
+                        - btnFLHomeAlignedCase:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#15803D")
+                              BorderThickness: =1
+                              Color: =Color.White
+                              Fill: =ColorValue("#15803D")
+                              Height: =36
+                              OnSelect: =Navigate(scr_FL_CaseOverview,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Abrir caso P-101"
+                              Width: =150
+                              X: =18
+                              Y: =134
+                  - conFLHomeAlignedPrinciple:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#FED7AA")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFF7ED")
+                        Height: =Parent.Height-502
                         RadiusBottomLeft: =14
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
                         Width: =Parent.Width-48
                         X: =24
-                        Y: =468
+                        Y: =490
                       Children:
-                        - lblFLHomeCasesTitle:
+                        - lblFLHomeAlignedPrincipleTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
-                              Color: =ColorValue("#0F172A")
+                              Color: =ColorValue("#C2410C")
                               FontWeight: =FontWeight.Semibold
-                              Size: =15
-                              Text: ="Casos recientes"
+                              Size: =9
+                              Text: ="PRINCIPIO QUE PROTEGE EL MODELO"
                               Width: =Parent.Width-36
                               X: =18
                               Y: =16
-                        - galFLHomeCases:
-                            Control: Gallery@2.15.0
-                            Variant: Vertical
+                        - lblFLHomeAlignedPrincipleText:
+                            Control: ModernText@1.0.0
                             Properties:
-                              BorderColor: =Color.Transparent
-                              Height: =164
-                              Items: =colFLAnalysisCases
-                              ShowScrollbar: =false
-                              TemplatePadding: =2
-                              TemplateSize: =50
+                              AutoHeight: =true
+                              Color: =ColorValue("#7C2D12")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =11
+                              Text: ="P-101 no posee el AMEF. Hereda una revisión reutilizable, aporta contexto y decisiones propias y conserva trazabilidad hasta la ejecución real."
                               Width: =Parent.Width-36
+                              Wrap: =true
                               X: =18
-                              Y: =50
-                            Children:
-                              - lblFLHomeCaseCode:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0284C7")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: =ThisItem.CaseCode
-                                    Width: =70
-                                    X: =4
-                                    Y: =8
-                              - lblFLHomeCaseTitle:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0F172A")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =10
-                                    Text: =ThisItem.Title
-                                    Width: =Parent.TemplateWidth*0.46
-                                    Wrap: =false
-                                    X: =82
-                                    Y: =8
-                              - lblFLHomeCaseStage:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =9
-                                    Text: =ThisItem.CurrentStageId & " · " & ThisItem.LifecycleStatus
-                                    Width: =180
-                                    Wrap: =false
-                                    X: =Parent.TemplateWidth*0.62
-                                    Y: =8
-                              - lblFLHomeCaseProgress:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    Align: =Align.Right
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: =Text(ThisItem.ProgressPct) & "%"
-                                    Width: =50
-                                    X: =Parent.TemplateWidth-58
-                                    Y: =8
+                              Y: =44
