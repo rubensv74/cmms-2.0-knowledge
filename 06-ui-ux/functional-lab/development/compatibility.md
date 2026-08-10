@@ -8,13 +8,14 @@
 Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 
 1. leer la versión vigente de este documento;
-2. confirmar control y versión exactos contra referencias ya probadas cuando sea posible;
+2. confirmar control y versión exactos contra referencias ya probadas;
 3. comparar con ejemplos validados;
 4. no asumir que un componente existe en la app porque exista en GitHub;
-5. no reutilizar un componente de Pulse sin revisar acoplamientos;
-6. registrar cualquier error nuevo y convertirlo en regla preventiva;
-7. para CanvasComponent, separar siempre aceptación de definición y seguridad de instancia;
-8. no declarar `CustomProperties:` dentro del YAML pegable mientras esta superficie no haya sido demostrada como instance-safe.
+5. registrar cualquier error nuevo y convertirlo en regla preventiva;
+6. separar aceptación de definición y seguridad de instancia;
+7. no declarar `CustomProperties:` dentro del YAML pegable de esta superficie;
+8. crear primero en Studio toda propiedad pública nueva y validarla por instancia;
+9. probar el binding desde YAML como gate independiente.
 
 ## Niveles de validación obligatorios
 
@@ -36,114 +37,106 @@ READY_FOR_INTEGRATION
 | `Label@2.5.1` + `Radius*` | `PA2108` | Radios en el contenedor, no en Label. |
 | `Classic/Button@2.2.0` + `AccessibleLabel` | `PA2108` | No declarar sin validación específica. |
 | `TabList@2.2.30` + `Reset()` | error de fórmula | Gestionar selección mediante variable. |
-| CanvasComponent solo existente en GitHub | `PA2301` | Confirmar instalación real en la app. |
-| CanvasComponent con definición aceptada | puede cerrar Studio al instanciar | Smoke test de instancia aislada obligatorio. |
+| CanvasComponent solo en GitHub | `PA2301` | Confirmar instalación real en la app. |
+| Definición aceptada | puede cerrar Studio al instanciar | Smoke test aislado obligatorio. |
 | SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático. |
-| `ModernText@1.0.0` estático | riesgo de clipping con altura rígida | `AutoHeight=true` por defecto. |
-| `CustomProperties:` inyectado en el YAML pegable probado | definición aceptada pero cierre de Studio al instanciar | No crear el contrato público desde esta superficie; crear custom properties en Studio. |
+| `ModernText@1.0.0` estático | clipping con altura rígida | `AutoHeight=true` por defecto. |
+| `CustomProperties:` inyectado en el YAML pegable probado | definición aceptada pero cierre al instanciar | Crear el contrato público en Studio. |
+| Propiedad pública creada en Studio + binding desde YAML | `Input/Text` validado estable en R5-TB | Patrón permitido, pero revalidar por tipo de propiedad. |
 
-## Evidencia específica de Functional Lab
+## Evidencia Functional Lab
 
 ```text
 FL-EVID-001  R1 root-only                                         PASS
 FL-EVID-002  R2 ModernText estático                               PASS
 FL-EVID-003  R3 AutoLayout + contenedores anidados                PASS
-FL-EVID-004  R4 Rectangle/Icon/Label/Button estáticos             PASS
-FL-EVID-005  R5 Input Text+Boolean+Color via CustomProperties     FAIL
-FL-EVID-006  R5-T Input/Text declarado+consumido                  FAIL
-FL-EVID-007  R5-TD Input/Text declarado, no consumido             FAIL
-FL-EVID-008  R5-TM mismo Input/Text creado manualmente en Studio  PASS
-FL-EVID-009  R5-TS Source Code visible tras R5-TM                 OMITE AppTitle
+FL-EVID-004  R4 controles de navegación estáticos                 PASS
+FL-EVID-005  R5 CustomProperties Text+Boolean+Color               FAIL
+FL-EVID-006  R5-T Input/Text declarado+consumido por YAML         FAIL
+FL-EVID-007  R5-TD Input/Text solo declarado por YAML             FAIL
+FL-EVID-008  R5-TM Input/Text creado manualmente en Studio        PASS
+FL-EVID-009  R5-TS Studio Source Code omite AppTitle              CONFIRMED
+FL-EVID-010  R5-TB YAML consume AppTitle creado en Studio         PASS
 ```
 
-### FL-EVID-009 — la superficie Source Code visible no representa el contrato completo
+### FL-EVID-010 — estrategia híbrida validada para Input/Text
 
-Tras crear manualmente `AppTitle` en Studio y comprobar `INSTANCE_SAFE = PASS`, se capturó el Source Code completo mostrado por Studio.
-
-El código visible contiene:
+Configuración:
 
 ```text
-DefinitionType
-Properties
-Children
+AppTitle → Data / Input / Text creado manualmente en Studio
+YAML     → SIN CustomProperties
+Binding  → ModernText.Text = cmp_FL_SidebarPro.AppTitle
 ```
 
-y no contiene:
+Resultado real:
 
 ```text
-CustomProperties
-AppTitle
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
 ```
-
-aunque `AppTitle` existe funcionalmente en el componente.
 
 Interpretación permitida:
 
-> En la superficie concreta de Source Code usada por este flujo, una propiedad custom creada por Studio puede existir sin aparecer en el código visible. Por tanto, no se puede reconstruir el contrato público añadiendo manualmente `CustomProperties:` y asumir equivalencia con Studio.
+> Para `Input/Text`, el contrato creado en Studio puede ser consumido desde el cuerpo Source Code sin comprometer la seguridad de instancia.
 
-Esto es coherente con la documentación de Microsoft, que advierte que el YAML de canvas apps está en desarrollo activo y puede ser incompleto.
+No extrapolar todavía esta evidencia automáticamente a Boolean, Color, Table, Output o Event.
 
-## Decisiones Functional Lab
-
-### FL-COMP-001 — Foundation premium por componentes propios
-Los componentes premium pertenecen al Functional Lab y no dependen de PULSE.
-
-### FL-COMP-002 — Incorporación secuencial
+## Estrategia de autoría Functional Lab
 
 ```text
-F01-00A  cmp_FL_SidebarPro
-F01-00B  cmp_FL_PageHeaderPro
-F01-01   Premium App Shell Foundation
+PUBLIC CONTRACT
+  Studio first
+      ↓
+  instance smoke test
+      ↓
+BODY / LAYOUT / FORMULAS
+  Source Code incremental
+      ↓
+BINDING
+  reference Studio-created contract
+      ↓
+  instance smoke test
 ```
 
-### FL-COMP-003 — Studio-first para el contrato público
+### Regla Studio-first
 
-A partir de FL-SC-001:
+No incluir `CustomProperties:` en el YAML pegable hasta nueva evidencia explícita de soporte para esa superficie.
+
+### Regla por tipo
+
+Cada nuevo tipo de contrato público se valida de forma independiente antes de usarlo en el Sidebar completo:
 
 ```text
-Custom property / public contract
-        ↓
-crear en Studio
-        ↓
-INSTANCE_SAFE
-        ↓
-probar binding desde cuerpo Source Code
-        ↓
-PUBLIC_CONTRACT_VALIDATED
+Text     PASS
+Boolean  CURRENT
+Color    PENDING
+Table    PENDING
+Output   PENDING
+Event    PENDING
 ```
-
-No incluir `CustomProperties:` en bloques YAML pegables hasta nueva evidencia explícita.
-
-### FL-COMP-004 — Source Code para cuerpo visual, no para inventar metadatos invisibles
-
-El YAML pegable puede seguir utilizándose incrementalmente para controles, layout y fórmulas demostradas. No se utilizará para reconstruir metadatos que Studio no expone en esa superficie.
-
-### FL-COMP-005 — Sin estado global oculto
-El estado deberá entrar/salir por contratos públicos una vez creados y validados en Studio.
-
-### FL-COMP-006 — Reducir antes de reescribir
-El primer estadio que reproduce el fallo se subdivide; no se avanza al siguiente.
 
 ## Incidente FL-SC-001
 
-**Estado:** `OPEN — BLOCKING`.  
-**Superficie técnica:** `CustomProperties` inyectado en Source Code es suficiente para reproducir; el mismo Input/Text creado en Studio es instance-safe.  
-**Hallazgo R5-TS:** Studio no muestra `AppTitle` en el Source Code visible.  
-**Correctivo actual:** `F01-00A-R5-TB`, probar binding desde YAML sin `CustomProperties` hacia `AppTitle` creado manualmente.
+**Estado:** `OPEN — BLOCKING UNTIL FULL SIDEBAR RECOVERY`.  
+**Superficie problemática:** metadatos `CustomProperties` inyectados mediante el Source Code pegable probado.  
+**Workaround demostrado:** Studio-first contract + YAML binding para `Input/Text`.  
+**Correctivo actual:** `F01-00A-R5-BM`, Boolean Studio-first + binding simple.
 
-## Estado de validación
+## Estado
 
 ```text
 R1 root-only                                     PASS
 R2 identity/text                                 PASS
 R3 static containers                             PASS
 R4 static navigation                             PASS
-R5 primitive custom inputs via CustomProperties  FAIL
-R5-T Text declared+consumed                      FAIL
-R5-TD Text declaration only                      FAIL
+R5 primitive CustomProperties                    FAIL
+R5-T Text declared+consumed via YAML             FAIL
+R5-TD Text declaration only via YAML             FAIL
 R5-TM manual Text input in Studio                PASS
-R5-TS visible Studio source                      AppTitle omitted
-R5-TB bind to Studio-created property            PENDING
-FL-SC-001                                        OPEN — BLOCKING
+R5-TS Studio visible source                      AppTitle omitted
+R5-TB binding to Studio-created Text property    PASS
+R5-BM Boolean Studio-first                       PENDING
+FL-SC-001                                        OPEN
 F01-00B                                          BLOCKED
 ```
