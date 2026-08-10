@@ -41,6 +41,55 @@ Texto visible   Resumen
 
 Esta regla se aplica desde Foundation y debe comprobarse en el QA visual de cada componente y pantalla.
 
+### 2.1 Principio future-ready para aplicaciones bilingües
+
+Para futuras aplicaciones, el estándar objetivo será **Español / Inglés con cambio de idioma en runtime**, sin duplicar pantallas ni componentes.
+
+Idiomas iniciales previstos:
+
+```text
+Español  es-ES
+Inglés   en-GB o en-US según contexto del producto
+```
+
+La arquitectura deberá separar los textos visibles de la lógica mediante claves semánticas estables:
+
+```text
+CLAVE SEMÁNTICA
+      ↓
+CATÁLOGO DE TRADUCCIONES
+      ↓
+IDIOMA ACTIVO
+      ↓
+TEXTO VISIBLE
+```
+
+Ejemplo:
+
+```text
+NAV_CONTEXT
+es → Caso y contexto
+en → Case & Context
+
+STATUS_READY_REVIEW
+es → Listo para revisión
+en → Ready for review
+```
+
+El selector de idioma pertenecerá al **App Shell** y afectará a toda la aplicación. No se crearán pantallas duplicadas por idioma.
+
+Además del texto, la localización deberá contemplar:
+
+- formato de fecha y hora;
+- separadores numéricos y decimales;
+- moneda cuando aplique;
+- mensajes con variables y pluralización;
+- mayor longitud de algunos textos entre idiomas;
+- fallback cuando falte una traducción;
+- persistencia de la preferencia de idioma del usuario cuando exista soporte para ello.
+
+Para el Functional Lab actual esta capacidad queda documentada como **future-ready** y no se incorpora al alcance inmediato de F01.
+
 ## 3. Regla de diseño
 
 Antes del Bloque 01 de cada pantalla o workspace se deben declarar:
