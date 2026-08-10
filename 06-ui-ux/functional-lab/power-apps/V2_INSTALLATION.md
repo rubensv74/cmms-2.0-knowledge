@@ -18,7 +18,7 @@ Navegación de producto
 
 ## 2. Componentes requeridos
 
-Crear o sustituir primero estos seis componentes con su Source Code completo:
+Crear o sustituir primero estos siete componentes con su Source Code completo:
 
 1. `components/cmp_FL_SidebarPro.pa.yaml`
 2. `components/cmp_FL_PageHeaderPro.pa.yaml`
@@ -26,8 +26,9 @@ Crear o sustituir primero estos seis componentes con su Source Code completo:
 4. `components/cmp_FL_ProcessRailPro.pa.yaml`
 5. `components/cmp_FL_DecisionPanelPro.pa.yaml`
 6. `components/cmp_FL_GatePanelPro.pa.yaml`
+7. `components/cmp_FL_RiskMatrixPro.pa.yaml`
 
-No insertar todavía pantallas que los consuman hasta que las seis definiciones estén guardadas en la app.
+No insertar todavía pantallas que los consuman hasta que las siete definiciones estén guardadas en la app.
 
 ## 3. Crear primero las 21 pantallas vacías
 
@@ -133,11 +134,12 @@ La navegación experta permite consultar cualquier etapa, pero los gates control
 
 ### Smoke 1 — Foundation
 
-1. guardar los seis componentes;
-2. insertar una instancia aislada de los tres componentes nuevos:
+1. guardar los siete componentes;
+2. insertar una instancia aislada de los cuatro componentes nuevos de arquitectura v2:
    - `cmp_FL_ProcessRailPro`;
    - `cmp_FL_DecisionPanelPro`;
    - `cmp_FL_GatePanelPro`;
+   - `cmp_FL_RiskMatrixPro`;
 3. comprobar que Studio permanece estable.
 
 ### Smoke 2 — Shell real
@@ -179,14 +181,30 @@ Abrir `scr_FL_FailureModes` y verificar:
 - un override exige motivo;
 - Gate permite continuar solo con decisión completa.
 
-### Smoke 6 — cálculo + decisión + gate
+### Smoke 6 — AMEF completo con matriz
 
-Abrir `scr_FL_AMEF` y verificar:
+Abrir `scr_FL_AMEF` y verificar en un único recorrido:
 
-- efectos editables;
-- S/O/D y NPR visibles como cálculo del sistema;
-- consecuencia recomendada y decisión humana diferenciadas;
-- gate AMEF explicable.
+1. los tres efectos son editables;
+2. la matriz 10×10 representa Severidad × Ocurrencia;
+3. la celda actual queda resaltada;
+4. seleccionar otra celda actualiza S y O;
+5. Detección se mantiene separada y editable entre 1 y 10;
+6. el NPR se recalcula como `S × O × D`;
+7. la banda de la matriz se muestra por separado del NPR;
+8. la recomendación de consecuencia y la decisión humana permanecen diferenciadas;
+9. el gate explica qué falta y permite continuar a RCM cuando el AMEF está completo.
+
+Configuración demostrativa del laboratorio para la matriz S×O:
+
+```text
+Bajo       1..20
+Moderado   21..40
+Alto       41..70
+Crítico    71..100
+```
+
+Estos umbrales son inputs de `cmp_FL_RiskMatrixPro`; **no son una regla corporativa aprobada** y podrán sustituirse por configuración persistente sin modificar el componente.
 
 Si los seis smokes funcionan, la arquitectura v2 se considera suficientemente validada para continuar correcciones visuales por pantalla sin volver a discutir el modelo de navegación.
 
@@ -210,6 +228,8 @@ El control estático previo sí ha comprobado:
 - ausencia de `Classic/Button@2.2.0 + AccessibleLabel`;
 - ausencia de la clase conocida de scalars inline con `: `;
 - ausencia del patrón que provocó el último TreePro: `GroupContainer` con `Children` dentro de una Gallery.
+
+El incremento RiskMatrix se validó además con parser YAML antes de publicar el componente y la sustitución de `scr_FL_AMEF`.
 
 ## 8. Bilingüismo
 
