@@ -1,27 +1,24 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00B — PREMIUM PAGE HEADER
+# CMMS 2.0 FUNCTIONAL LAB — F01-00B — CABECERA PREMIUM
 #
-# Status: INSTANCE_SAFE PASS — COMFORTABLE SCALE QA PENDING
-# Target component: cmp_FL_PageHeaderPro
+# Estado: INSTANCE_SAFE PASS — QA ESCALA COMFORTABLE PENDIENTE
+# Componente: cmp_FL_PageHeaderPro
 #
-# REFERENCE STRATEGY
-# - Visual/body reference: PULSE cmp_PageHeaderPro.
-# - Public-contract reference: PULSE cmp_HeatMapPro + cmp_FL_SidebarPro RC2.
-# - Inputs preserve the full proven metadata shape:
+# ESTRATEGIA DE REFERENCIA
+# - Referencia visual/cuerpo: PULSE cmp_PageHeaderPro.
+# - Referencia de contrato público: PULSE cmp_HeatMapPro + cmp_FL_SidebarPro RC2.
+# - Los Inputs conservan la forma contractual validada:
 #   PropertyKind + DisplayName + Description + DataType + Default.
-# - No globals, external assets or hidden business logic.
+# - Sin variables globales, assets externos ni lógica de negocio oculta.
 #
-# COMFORTABLE BASE SCALE
-# - Typography increased for desktop readability.
-# - Geometry increased proportionally to avoid clipping/overlap.
-# - This is the default visual density for Functional Lab.
-# - Future Normal / Comfortable / Large switching belongs to the App Shell.
+# IDIOMA
+# - Toda la interfaz visible se presenta en español.
+# - Los identificadores internos permanecen estables para evitar refactorizaciones sin valor funcional.
 #
-# QA GATE
-# 1. Replace complete component Source Code.
-# 2. Save.
-# 3. Confirm readable typography and no clipping/overlap.
-# 4. Save/reopen.
-# 5. If stable, continue directly to F01-01 Premium App Shell.
+# ESCALA BASE COMFORTABLE
+# - Tipografía aumentada para mejorar la legibilidad en escritorio.
+# - Geometría aumentada proporcionalmente para evitar clipping y solapamientos.
+# - Es la densidad visual por defecto del Functional Lab.
+# - El futuro selector Normal / Cómodo / Grande pertenece al App Shell.
 
 ComponentDefinitions:
   cmp_FL_PageHeaderPro:
@@ -31,161 +28,161 @@ ComponentDefinitions:
       WorkspaceCode:
         PropertyKind: Input
         DisplayName: WorkspaceCode
-        Description: Functional Lab workspace code shown in the header eyebrow
+        Description: Código del espacio de trabajo mostrado en la cabecera
         DataType: Text
         Default: ="WS-01"
 
       Archetype:
         PropertyKind: Input
         DisplayName: Archetype
-        Description: Primary SaaS interaction archetype for the current workspace
+        Description: Arquetipo principal de interacción del espacio de trabajo
         DataType: Text
-        Default: ="OBJECT 360"
+        Default: ="OBJETO 360"
 
       Title:
         PropertyKind: Input
         DisplayName: Title
-        Description: Primary workspace title
+        Description: Título principal del espacio de trabajo
         DataType: Text
-        Default: ="Case & Context"
+        Default: ="Caso y contexto"
 
       Subtitle:
         PropertyKind: Input
         DisplayName: Subtitle
-        Description: Short description of the current workspace purpose
+        Description: Descripción breve del propósito del espacio de trabajo
         DataType: Text
-        Default: ="Understand the asset, boundaries and operating context before defining functions"
+        Default: ="Comprender el activo, sus límites y el contexto operativo antes de definir sus funciones"
 
       CaseCode:
         PropertyKind: Input
         DisplayName: CaseCode
-        Description: Code of the current Functional Lab case
+        Description: Código del caso actual del Laboratorio Funcional
         DataType: Text
         Default: ="P-101"
 
       CaseType:
         PropertyKind: Input
         DisplayName: CaseType
-        Description: Short asset or case type description
+        Description: Descripción breve del tipo de activo o caso
         DataType: Text
-        Default: ="Centrifugal pump"
+        Default: ="Bomba centrífuga"
 
       JourneyPosition:
         PropertyKind: Input
         DisplayName: JourneyPosition
-        Description: Human-readable current position in the Functional Journey
+        Description: Posición actual dentro del recorrido funcional
         DataType: Text
         Default: ="01 / 28"
 
       JourneyHint:
         PropertyKind: Input
         DisplayName: JourneyHint
-        Description: Short label for the current journey stage
+        Description: Nombre breve de la etapa actual del recorrido
         DataType: Text
-        Default: ="Context"
+        Default: ="Contexto"
 
       ReviewState:
         PropertyKind: Input
         DisplayName: ReviewState
-        Description: Current functional review state
+        Description: Estado actual de revisión funcional
         DataType: Text
-        Default: ="Ready for review"
+        Default: ="Listo para revisión"
 
       ReviewHint:
         PropertyKind: Input
         DisplayName: ReviewHint
-        Description: Secondary explanation of the current review state
+        Description: Explicación secundaria del estado de revisión
         DataType: Text
-        Default: ="Evidence available"
+        Default: ="Evidencia disponible"
 
       ProgressCurrent:
         PropertyKind: Input
         DisplayName: ProgressCurrent
-        Description: Current numeric stage used by the progress indicator
+        Description: Etapa numérica actual utilizada por el indicador de progreso
         DataType: Number
         Default: =1
 
       ProgressTotal:
         PropertyKind: Input
         DisplayName: ProgressTotal
-        Description: Total number of stages used by the progress indicator
+        Description: Número total de etapas utilizado por el indicador de progreso
         DataType: Number
         Default: =28
 
       SurfaceColor:
         PropertyKind: Input
         DisplayName: SurfaceColor
-        Description: Main page-header surface color
+        Description: Color de la superficie principal de la cabecera
         DataType: Color
         Default: =ColorValue("#FFFFFF")
 
       SurfaceAltColor:
         PropertyKind: Input
         DisplayName: SurfaceAltColor
-        Description: Alternate surface used by context cards
+        Description: Superficie alternativa utilizada por las tarjetas de contexto
         DataType: Color
         Default: =ColorValue("#F8FAFC")
 
       BorderColor:
         PropertyKind: Input
         DisplayName: BorderColor
-        Description: Neutral border and progress-track color
+        Description: Color neutro de bordes y pista de progreso
         DataType: Color
         Default: =ColorValue("#E2E8F0")
 
       TextColor:
         PropertyKind: Input
         DisplayName: TextColor
-        Description: Primary page-header text color
+        Description: Color del texto principal de la cabecera
         DataType: Color
         Default: =ColorValue("#0F172A")
 
       MutedTextColor:
         PropertyKind: Input
         DisplayName: MutedTextColor
-        Description: Secondary page-header text color
+        Description: Color del texto secundario de la cabecera
         DataType: Color
         Default: =ColorValue("#64748B")
 
       AccentColor:
         PropertyKind: Input
         DisplayName: AccentColor
-        Description: Functional Lab accent color for eyebrow and progress
+        Description: Color de acento del Laboratorio Funcional
         DataType: Color
         Default: =ColorValue("#0284C7")
 
       SuccessColor:
         PropertyKind: Input
         DisplayName: SuccessColor
-        Description: Success-state accent color
+        Description: Color de acento para estados satisfactorios
         DataType: Color
         Default: =ColorValue("#22C55E")
 
       SuccessTextColor:
         PropertyKind: Input
         DisplayName: SuccessTextColor
-        Description: Success-state primary text color
+        Description: Color principal del texto de estado satisfactorio
         DataType: Color
         Default: =ColorValue("#14532D")
 
       SuccessMutedTextColor:
         PropertyKind: Input
         DisplayName: SuccessMutedTextColor
-        Description: Success-state secondary text color
+        Description: Color secundario del texto de estado satisfactorio
         DataType: Color
         Default: =ColorValue("#166534")
 
       SuccessSoftColor:
         PropertyKind: Input
         DisplayName: SuccessSoftColor
-        Description: Success-state soft background color
+        Description: Fondo suave para estados satisfactorios
         DataType: Color
         Default: =ColorValue("#F0FDF4")
 
       SuccessBorderColor:
         PropertyKind: Input
         DisplayName: SuccessBorderColor
-        Description: Success-state border color
+        Description: Color de borde para estados satisfactorios
         DataType: Color
         Default: =ColorValue("#BBF7D0")
 
@@ -292,7 +289,7 @@ ComponentDefinitions:
                         Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =9
-                        Text: ="CURRENT CASE"
+                        Text: ="CASO ACTUAL"
                         Width: =Parent.Width-28
                         Wrap: =false
                         X: =14
@@ -336,7 +333,7 @@ ComponentDefinitions:
                         Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =9
-                        Text: ="JOURNEY"
+                        Text: ="RECORRIDO"
                         Width: =Parent.Width-28
                         Wrap: =false
                         X: =14
@@ -397,7 +394,7 @@ ComponentDefinitions:
                         Color: =cmp_FL_PageHeaderPro.SuccessMutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =9
-                        Text: ="REVIEW STATE"
+                        Text: ="ESTADO DE REVISIÓN"
                         Width: =Parent.Width-42
                         Wrap: =false
                         X: =32
