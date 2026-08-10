@@ -67,6 +67,34 @@ Estas reglas se aplican cuando el Functional Lab utilice las mismas versiones de
 | SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático; preferir componente validado. |
 | `ModernText@1.0.0` estático con altura rígida | mini-scrollbars/clipping | `AutoHeight=true` por defecto y validación visual real. |
 
+## Evidencia específica de Functional Lab
+
+### FL-EVID-001 — Baseline CanvasComponent mínimo
+
+Validado en Studio mediante `F01-00A-R1`:
+
+```text
+CanvasComponent
+└── GroupContainer@1.5.0 / ManualLayout
+```
+
+Resultado real: `INSTANCE_SAFE = PASS`.
+
+Interpretación limitada: este patrón concreto no reproduce FL-SC-001. No implica seguridad universal de toda composición con GroupContainer.
+
+### FL-EVID-002 — ModernText estático sobre root seguro
+
+Validado en Studio mediante `F01-00A-R2`:
+
+- cuatro `ModernText@1.0.0`;
+- texto constante;
+- `AutoHeight=true`;
+- hijos directos del root ManualLayout validado.
+
+Resultado real: `INSTANCE_SAFE = PASS`.
+
+Interpretación limitada: esta configuración concreta de ModernText estático no es suficiente para reproducir FL-SC-001.
+
 ## Decisiones para Functional Lab
 
 ### FL-COMP-001 — Foundation premium por componentes propios
@@ -152,23 +180,25 @@ El primer estadio que reproduce el fallo delimita la superficie sospechosa.
 
 **Fecha:** 2026-08-10  
 **Bloque:** F01-00A  
-**Efecto:** la definición fue aceptada; al insertar una instancia, Power Apps Studio se cierra.  
+**Efecto inicial:** la definición completa fue aceptada; al insertar una instancia, Power Apps Studio se cerró.  
 **Session ID:** no disponible en el cierre observado.  
-**Causa técnica:** `UNKNOWN`.  
+**Causa técnica:** `UNKNOWN — INVESTIGATION ACTIVE`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Correctivo actual:** `F01-00A-R1`, reducción a root-only.  
+**Resultados diagnósticos:** `R1 PASS`, `R2 PASS`.  
+**Correctivo actual:** `F01-00A-R3`, contenedores estáticos.  
 **Registro completo:** `development/incidents/FL-SC-001-component-instance-crash.md`.
 
-No se promueve ninguna hipótesis (`Gallery`, `Table`, `Event`, `Output`, `ModernText`, AutoLayout, etc.) a causa hasta obtener un reproducer reducido.
+No se promueve ninguna hipótesis (`Gallery`, `Table`, `Event`, `Output`, AutoLayout, etc.) a causa hasta obtener un reproducer reducido.
 
 ## Estado de validación
 
 ```text
 Static inheritance / central standard: COMPLETE
 Premium component strategy: ACTIVE
-cmp_FL_SidebarPro definition: ACCEPTED
-cmp_FL_SidebarPro instance: FAIL
+cmp_FL_SidebarPro complete initial instance: FAIL
+R1 root-only instance: PASS
+R2 identity/text instance: PASS
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
-Current diagnostic: F01-00A-R1 root-only
+Current diagnostic: F01-00A-R3 static containers
 ```
