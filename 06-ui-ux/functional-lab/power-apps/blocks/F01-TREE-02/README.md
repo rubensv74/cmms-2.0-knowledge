@@ -13,9 +13,25 @@ Esta versión corrige específicamente los problemas visibles de F01-TREE-01:
 - poco contraste entre selección, jerarquía normal y P-101 resaltado;
 - falta de una capa semántica reutilizable para FLH / Taxonomía / ADR.
 
+## Corrección PA1001 — 2026-08-10
+
+La primera publicación de F01-TREE-02 contenía el badge `ACTIVO` como un `GroupContainer` con `Children` dentro de la plantilla de `Gallery@2.15.0`.
+
+Power Apps devolvió:
+
+```text
+PA1001
+YamlInvalidSyntax
+Expected 'Scalar', got 'SequenceStart'
+```
+
+El error apuntaba al inicio de la secuencia hija del badge. La corrección aplicada mantiene el mismo resultado visual pero aplana la plantilla: el badge pasa a ser un `Classic/Button@2.2.0` directo, sin `Children` anidados.
+
+No se modifica el contrato público, el modelo de datos ni la pantalla de prueba.
+
 ## Archivos
 
-1. Componente canónico actualizado:
+1. Componente canónico actualizado y corregido:
    `../../components/cmp_FL_TreePro.pa.yaml`
 2. Pantalla de validación completa:
    `01_scr_FL_TreeLab.pa.yaml`
@@ -26,8 +42,9 @@ Esta versión corrige específicamente los problemas visibles de F01-TREE-01:
 
 1. Sustituir el Source Code completo de `cmp_FL_TreePro` por la versión canónica actualizada.
 2. Guardar el componente.
-3. Sustituir el Source Code completo de `scr_FL_TreeLab` por `01_scr_FL_TreeLab.pa.yaml`.
-4. Guardar y abrir la pantalla.
+3. La pantalla `scr_FL_TreeLab` no necesita cambios si ya se aplicó la versión F01-TREE-02.
+4. Si todavía no se había aplicado, sustituir su Source Code completo por `01_scr_FL_TreeLab.pa.yaml`.
+5. Guardar y abrir la pantalla.
 
 ## Única validación
 
