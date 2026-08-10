@@ -8,17 +8,17 @@
 
 ## 1. Efecto confirmado
 
-La definición Source Code de `cmp_FL_SidebarPro` fue integrada en Power Apps Studio sin errores aparentes.
+La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue integrada en Power Apps Studio sin errores aparentes.
 
-Al insertar una instancia del componente en la app `CMMS 2.0 Functional Lab`, Power Apps Studio se cierra.
+Al insertar una instancia del componente completo inicial en la app `CMMS 2.0 Functional Lab`, Power Apps Studio se cerró.
 
-Por tanto, el componente alcanza únicamente:
+Estado de aquella versión:
 
 ```text
-SOURCE_VALID                 PASS
+SOURCE_VALID                  PASS
 COMPONENT_DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE                FAIL
-READY_FOR_INTEGRATION        NO
+INSTANCE_SAFE                 FAIL
+READY_FOR_INTEGRATION         NO
 ```
 
 ## 2. Acción exacta anterior al cierre
@@ -28,11 +28,11 @@ Insertar una instancia de cmp_FL_SidebarPro
 → Power Apps Studio se cierra
 ```
 
-No se ha reportado mensaje de error ni Session ID porque el síntoma observado es un cierre de Studio.
+No se reportó mensaje de error ni Session ID porque el síntoma observado fue un cierre de Studio.
 
 ## 3. Fuente afectada
 
-Fuente que reproduce el incidente:
+Fuente completa inicial que produjo el incidente:
 
 ```text
 06-ui-ux/functional-lab/power-apps/components/cmp_FL_SidebarPro.pa.yaml
@@ -50,12 +50,12 @@ c8e3ac6bc2ef81c1fffdc90a8ec60807b75e9500
 
 La aceptación de `ComponentDefinitions:` fue tratada como un gate insuficiente para demostrar seguridad de instancia.
 
-El proyecto ya disponía del concepto de validación en Studio, pero F01-00A debe registrar explícitamente el estado `INSTANCE_SAFE` antes de considerarse validado.
+El protocolo se ha corregido para exigir explícitamente `INSTANCE_SAFE` antes de integrar un CanvasComponent en una pantalla funcional.
 
 ### Causa técnica concreta
 
 ```text
-UNKNOWN
+UNKNOWN — INVESTIGATION ACTIVE
 ```
 
 No se atribuye todavía el cierre a:
@@ -87,7 +87,7 @@ Este segundo caso refuerza la obligatoriedad del gate `INSTANCE_SAFE`, pero no c
 
 ## 6. Estrategia de diagnóstico
 
-Aplicar reducción incremental manteniendo el mismo nombre de componente:
+Aplicar reconstrucción incremental manteniendo el mismo nombre de componente:
 
 ```text
 R1 root only
@@ -104,40 +104,62 @@ El primer estadio que vuelva a cerrar Studio delimitará la superficie sospechos
 
 No se preparará F01-00B mientras este incidente permanezca abierto.
 
-## 7. Primer correctivo
+## 7. Resultados de reducción
 
-`F01-00A-R1` sustituirá temporalmente la fuente completa por un componente mínimo:
+### R1 — Root only
 
+**Resultado real comunicado:** `R1 instancia OK`.
+
+Configuración probada:
+
+- `CanvasComponent`;
+- propiedades `Fill`, `Height`, `Width`;
+- un único `GroupContainer@1.5.0` ManualLayout;
 - sin custom properties;
+- sin controles de texto;
 - sin Gallery;
 - sin Event;
 - sin Output;
 - sin Table;
-- sin controles modernos;
-- un único `GroupContainer@1.5.0` raíz.
+- sin AutoLayout anidado.
 
-Objetivo: comprobar si una definición CanvasComponent mínima creada por Source Code puede instanciarse de forma estable en esta app.
-
-## 8. Resultado esperado R1
+Resultado:
 
 ```text
-Definition accepted
-Instance inserts without closing Studio
-Save succeeds
-App Checker has no new error attributable to component
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
 ```
 
-### Interpretación
+### Interpretación R1
 
-Si R1 falla:
+El mecanismo básico de CanvasComponent Source Code en la app activa **no es suficiente para reproducir el cierre**.
 
-> la investigación se desplaza desde la complejidad interna del sidebar hacia el mecanismo/baseline de CanvasComponent Source Code en la app activa.
+El patrón mínimo `CanvasComponent + GroupContainer@1.5.0` raíz también resulta seguro en esta prueba.
 
-Si R1 pasa:
+Por tanto, la investigación continúa únicamente sobre responsabilidades añadidas respecto a R1.
 
-> la infraestructura mínima es segura y se reconstruirá el sidebar por responsabilidades hasta aislar el primer incremento que reproduce el cierre.
+Esto no demuestra todavía que cualquier uso de `GroupContainer@1.5.0` sea universalmente seguro; demuestra que el patrón concreto de R1 no reproduce FL-SC-001.
 
-## 9. Regla preventiva inmediata
+### R2 — Identidad / texto
+
+**Estado:** PENDING STUDIO VALIDATION.
+
+Se añaden únicamente cuatro controles `ModernText@1.0.0` estáticos, con texto constante y `AutoHeight=true`, directamente dentro del root ya validado.
+
+Se mantienen excluidos:
+
+- custom properties;
+- Gallery / Table;
+- Output / Event;
+- Label / Button / Icon;
+- navegación;
+- geometría condicional;
+- contenedores anidados;
+- AutoLayout anidado.
+
+Objetivo: comprobar si la capa de controles hijos de texto estático es suficiente para reproducir el cierre.
+
+## 8. Regla preventiva inmediata
 
 Todo CanvasComponent nuevo debe registrar estados separados:
 
@@ -152,12 +174,14 @@ READY_FOR_INTEGRATION
 
 Nunca usar `validado`, `listo` o equivalente mientras `INSTANCE_SAFE` no haya pasado.
 
-## 10. Criterio de cierre
+Cuando se diagnostique un cierre de instancia, reconstruir desde un baseline mínimo que ya haya demostrado `INSTANCE_SAFE`, añadiendo una sola responsabilidad por iteración.
+
+## 9. Criterio de cierre
 
 FL-SC-001 solo podrá cerrarse cuando:
 
 1. exista un reproducer reducido o una causa técnica suficientemente delimitada;
-2. la fuente corregida pueda instanciarse de forma estable;
+2. la fuente corregida completa pueda instanciarse de forma estable;
 3. guardar/reabrir no rompa la instancia;
 4. la regla preventiva esté reflejada en `development/compatibility.md`;
 5. el aprendizaje reutilizable central quede actualizado si aporta evidencia nueva respecto al estándar existente.
