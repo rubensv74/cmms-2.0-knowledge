@@ -30,24 +30,6 @@ Regla crítica:
 
 > `DEFINITION_ACCEPTED` no implica `INSTANCE_SAFE`.
 
-Antes de consumir cualquier componente en una pantalla funcional se debe:
-
-1. integrar/crear la definición;
-2. guardar y comprobar App Checker;
-3. insertar una instancia por defecto en una superficie aislada;
-4. guardar;
-5. reabrir cuando sea razonable;
-6. solo después probar contrato y visual QA.
-
-Si Studio se cierra al insertar la instancia:
-
-```text
-INSTANCE_SAFE = FAIL
-READY_FOR_INTEGRATION = NO
-```
-
-y se detiene cualquier bloque dependiente.
-
 ## Reglas heredadas y confirmadas por conocimiento previo
 
 | Patrón | Riesgo / efecto confirmado | Regla preventiva |
@@ -64,60 +46,44 @@ y se detiene cualquier bloque dependiente.
 ## Evidencia específica de Functional Lab
 
 ### FL-EVID-001 — Baseline CanvasComponent mínimo
+`F01-00A-R1`: `INSTANCE_SAFE = PASS`.
 
-Validado en Studio mediante `F01-00A-R1`:
-
-```text
-CanvasComponent
-└── GroupContainer@1.5.0 / ManualLayout
-```
-
-Resultado real: `INSTANCE_SAFE = PASS`.
-
-### FL-EVID-002 — ModernText estático sobre root seguro
-
-Validado mediante `F01-00A-R2`:
-
-- cuatro `ModernText@1.0.0`;
-- texto constante;
-- `AutoHeight=true`;
-- hijos directos del root validado.
-
-Resultado real: `INSTANCE_SAFE = PASS`.
+### FL-EVID-002 — ModernText estático
+`F01-00A-R2`: `INSTANCE_SAFE = PASS`.
 
 ### FL-EVID-003 — AutoLayout y contenedores anidados estáticos
-
-Validado mediante `F01-00A-R3`:
-
-- root `GroupContainer@1.5.0` AutoLayout vertical;
-- tres `GroupContainer@1.5.0` ManualLayout anidados;
-- textos estáticos repartidos en Brand, Workspace y Footer;
-- sin propiedades custom, Gallery, Table, Output, Event ni navegación.
-
-Resultado real: `INSTANCE_SAFE = PASS`.
+`F01-00A-R3`: `INSTANCE_SAFE = PASS`.
 
 ### FL-EVID-004 — Controles visuales de navegación sin eventos
+`F01-00A-R4`: `INSTANCE_SAFE = PASS`.
 
-Validado mediante `F01-00A-R4`:
+Incluyó `Rectangle@2.3.0`, `Classic/Icon@2.5.0`, `Label@2.5.1` y `Classic/Button@2.2.0`, todos en configuración estática y sin `OnSelect`.
 
-- `Rectangle@2.3.0`;
-- `Classic/Icon@2.5.0`;
-- `Label@2.5.1` sin `Radius*`;
-- `Classic/Button@2.2.0` sin `AccessibleLabel`;
-- tres filas estáticas;
-- sin `OnSelect`, Gallery, Table, custom properties, Output ni Event.
+### FL-EVID-005 — CustomProperties primitivas combinadas
 
-Resultado real: `INSTANCE_SAFE = PASS`.
+`F01-00A-R5` introdujo sobre R4 únicamente:
 
-Interpretación limitada: esta combinación estática de controles visuales tampoco es suficiente para reproducir FL-SC-001.
+- Input / Text (`AppTitle`), consumido en `ModernText.Text`;
+- Input / Boolean (`ShowEnvironment`), consumido en `ModernText.Visible`;
+- Input / Color (`AccentColor`), consumido en `ModernText.Color` y `Rectangle.Fill`.
+
+Resultado real:
+
+```text
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       FAIL — Studio closes on insertion
+```
+
+Interpretación obligatoria:
+
+> R5 reduce la superficie problemática al delta de propiedades custom primitivas o a su consumo, pero NO identifica todavía un tipo concreto como causa.
+
+No promover `Text`, `Boolean` o `Color` individualmente a causa hasta aislarlos.
 
 ## Decisiones para Functional Lab
 
 ### FL-COMP-001 — Foundation premium por componentes propios
-
 El Functional Lab tendrá una biblioteca propia de componentes premium.
-
-Los componentes podrán inspirarse en patrones y contratos probados en Pulse, pero su fuente canónica pertenecerá al Functional Lab y no deberá depender de assets, variables, pantallas, SQL/flows o semántica específica de PULSE.
 
 ### FL-COMP-002 — Incorporación secuencial antes del shell
 
@@ -127,24 +93,19 @@ F01-00B  cmp_FL_PageHeaderPro
 F01-01   Premium App Shell Foundation
 ```
 
-Un componente no se considerará disponible por existir en GitHub ni por aceptar su definición. Debe alcanzar `INSTANCE_SAFE`.
+Un componente debe alcanzar `INSTANCE_SAFE` antes de ser consumido.
 
 ### FL-COMP-003 — Componentes Pulse son referencias, no dependencias
-
-- `cmp_SidebarNav` está acoplado a PULSE y no se reutiliza directamente.
-- `cmp_PageHeaderPro` es conceptualmente reusable, pero existe evidencia de cierre de Studio durante una prueba de instancia; se usa solo como referencia hasta comprender la causa.
+Los componentes de Pulse se usan como referencia, no como dependencia directa.
 
 ### FL-COMP-004 — No copiar propiedades por apariencia
-
-Una propiedad válida en un control o componente no se trasladará a otro por similitud visual.
+Una propiedad válida en un control no se trasladará a otro por similitud visual.
 
 ### FL-COMP-005 — Sin estado global oculto dentro de componentes
-
-Los componentes premium del Functional Lab deberán recibir estado mediante inputs y exponer selección/acciones mediante outputs y events. No usarán variables globales como estado de instancia salvo justificación y validación explícitas.
+El estado deberá entrar por inputs y salir por outputs/events, una vez demostrada su compatibilidad.
 
 ### FL-COMP-006 — Premium no significa sobrecarga visual
-
-Los componentes deben priorizar jerarquía, legibilidad, densidad correcta, estados claros, accesibilidad, feedback, consistencia y comportamiento realista.
+Priorizar jerarquía, legibilidad, densidad, estados, accesibilidad, feedback y consistencia.
 
 ### FL-COMP-007 — Reducir antes de reescribir cuando falla una instancia
 
@@ -159,19 +120,21 @@ root only
 → geometría completa
 ```
 
-El primer estadio que reproduce el fallo delimita la superficie sospechosa.
+El primer estadio que reproduce el fallo se subdivide; no se avanza al siguiente.
 
-### FL-COMP-008 — R5 prueba solo propiedades custom primitivas
+### FL-COMP-008 — R5 se subdivide por tipo de propiedad
 
-Para mantener el diagnóstico discriminante, R5 introducirá únicamente `CustomProperties` primitivas:
+R5 combinado ha fallado. La secuencia diagnóstica pasa a:
 
-- `Text`;
-- `Boolean`;
-- `Color`.
+```text
+R5-T  Input/Text solamente
+R5-B  Input/Boolean solamente
+R5-C  Input/Color solamente
+```
 
-Estas propiedades deberán consumirse por controles ya validados. R5 no debe introducir `Table`, Gallery, Output, Event, OnSelect ni geometría condicional compleja.
+Cada variante debe partir del baseline R4 validado y añadir un único tipo de propiedad.
 
-Si R5 falla, se subdividirá por tipo de propiedad antes de continuar.
+Si una variante falla, separar después **declaración** de la propiedad frente a **consumo**.
 
 ## Incidentes Functional Lab
 
@@ -179,26 +142,22 @@ Si R5 falla, se subdividirá por tipo de propiedad antes de continuar.
 
 **Fecha:** 2026-08-10  
 **Bloque:** F01-00A  
-**Efecto inicial:** la definición completa fue aceptada; al insertar una instancia, Power Apps Studio se cerró.  
-**Session ID:** no disponible.  
-**Causa técnica:** `UNKNOWN — INVESTIGATION ACTIVE`.  
+**Causa técnica:** `UNKNOWN — SURFACE NARROWED TO R5 DELTA`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Resultados diagnósticos:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`.  
-**Correctivo actual:** `F01-00A-R5`, custom inputs simples.  
+**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`.  
+**Correctivo actual:** `F01-00A-R5-T`, Input/Text solamente.  
 **Registro completo:** `development/incidents/FL-SC-001-component-instance-crash.md`.
 
 ## Estado de validación
 
 ```text
-Static inheritance / central standard: COMPLETE
-Premium component strategy: ACTIVE
 cmp_FL_SidebarPro complete initial instance: FAIL
 R1 root-only instance: PASS
 R2 identity/text instance: PASS
 R3 static containers instance: PASS
 R4 static navigation instance: PASS
-R5 simple custom inputs: PENDING
+R5 primitive custom inputs combined: FAIL
+R5-T Text input only: PENDING
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
-Current diagnostic: F01-00A-R5 simple custom inputs
 ```
