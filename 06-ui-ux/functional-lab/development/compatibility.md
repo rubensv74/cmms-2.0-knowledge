@@ -12,7 +12,8 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 3. comparar con componentes reales que ya funcionen en PULSE cuando exista un equivalente;
 4. no asumir que una hipótesis diagnóstica es una regla general;
 5. separar aceptación de definición y seguridad de instancia;
-6. registrar cualquier error nuevo y corregir también cualquier conclusión previa que quede refutada.
+6. registrar cualquier error nuevo y corregir también cualquier conclusión previa que quede refutada;
+7. para nuevas `CustomProperties`, copiar el contrato completo del componente estable de referencia por `PropertyKind`.
 
 ## Niveles de validación obligatorios
 
@@ -38,82 +39,90 @@ READY_FOR_INTEGRATION
 | Definición aceptada | puede cerrar Studio al instanciar | Smoke test aislado obligatorio. |
 | SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático. |
 | `ModernText@1.0.0` estático | clipping/mini-scroll con altura rígida | `AutoHeight=true` por defecto. |
+| `CustomProperties:` en Source Code | es compatible cuando el contrato está bien formado; `cmp_HeatMapPro` y RC2 lo demuestran | No prohibirlo; usar un componente instance-safe como plantilla estructural. |
+| Input nuevo de componente reutilizable | una forma reducida puede no ser equivalente a la referencia estable | Preservar `PropertyKind + DisplayName + Description + DataType + Default` cuando ese sea el patrón de referencia. |
 
-## FL-SC-001 — corrección del diagnóstico
+## FL-SC-001 — diagnóstico corregido
 
-Las pruebas R5 demostraron que **nuestra declaración concreta** de `CustomProperties` podía ser aceptada y aun cerrar Studio al insertar una instancia. Eso NO demuestra que `CustomProperties` sea inseguro en Source Code.
+Las pruebas R5 demostraron que **la declaración concreta** de `CustomProperties` usada inicialmente por el Sidebar podía ser aceptada y aun cerrar Studio al insertar una instancia. Eso nunca fue prueba suficiente para invalidar `CustomProperties` como característica.
 
-El componente `cmp_HeatMapPro` de PULSE aporta una referencia real más fuerte:
+`cmp_HeatMapPro` de PULSE aportó el contraejemplo decisivo:
 
-- usa `CustomProperties` extensamente;
-- contiene Inputs Text, Boolean, Number, Color y Table;
-- contiene Outputs y Events;
-- consume esas propiedades desde el cuerpo del componente;
-- se integra y funciona correctamente en PULSE.
+- numerosos Inputs Text, Boolean, Number, Color y Table;
+- Outputs de varios tipos;
+- Events;
+- bindings internos;
+- componente integrado y estable en PULSE.
 
-Por tanto queda retirada la regla anterior:
-
-```text
-NO VÁLIDA COMO REGLA GENERAL:
-"CustomProperties en YAML pegable es inseguro"
-```
-
-## Diferencial estructural encontrado
-
-Comparando el Sidebar original que fallaba con `cmp_HeatMapPro`, el primer diferencial sistemático es el contrato de los Inputs.
-
-Patrón validado en HeatMap:
-
-```yaml
-AccentColor:
-  PropertyKind: Input
-  DisplayName: AccentColor
-  Description: Selection and interaction accent color
-  DataType: Color
-  Default: =ColorValue("#1677FF")
-```
-
-Patrón usado en el Sidebar fallido:
-
-```yaml
-AppTitle:
-  PropertyKind: Input
-  DataType: Text
-  Default: ="CMMS 2.0"
-```
-
-El Sidebar omitía `DisplayName` y `Description` en sus Inputs.
-
-Microsoft documenta la creación de una propiedad custom indicando explícitamente `Display name`, `Property name` y `Description` como parte de la definición del contrato en Studio. Esto no prueba por sí solo que su ausencia sea la causa del cierre, pero convierte ese delta en el candidato principal que debe contrastarse antes de culpar a `CustomProperties`.
-
-## Estrategia actual
-
-No habrá más micro-pruebas por tipo.
-
-Se realizará una única prueba de alto valor:
+La regla anterior queda definitivamente retirada:
 
 ```text
-Sidebar completo original
-+
-mismo contrato funcional
-+
-Inputs declarados con DisplayName y Description siguiendo cmp_HeatMapPro
-+
-Output/Event conservados según patrón ya funcional
-→ insertar instancia
+FALSO COMO REGLA GENERAL:
+"CustomProperties en Source Code es inseguro"
 ```
 
-Interpretación:
+## RC2 — patrón HeatMap aplicado al Sidebar
 
-- PASS → la causa queda fuertemente asociada al contrato incompleto de propiedades custom del Sidebar original;
-- FAIL → comparar el siguiente delta estructural con `cmp_HeatMapPro` sin volver a generalizar prematuramente.
+Se reconstruyó el Sidebar completo con su contrato público completo, conservando:
+
+- Inputs;
+- `NavItems` Table;
+- `SelectedKey` Output;
+- `OnSelectItem` Event;
+- Gallery y bindings internos;
+- comportamiento expandido/colapsado.
+
+Los Inputs se normalizaron siguiendo la forma observada en `cmp_HeatMapPro`:
+
+```yaml
+PropertyKind: Input
+DisplayName: ...
+Description: ...
+DataType: ...
+Default: ...
+```
+
+Resultado comunicado por el usuario:
+
+```text
+RC2 — definición aceptada
+RC2 — instancia insertada correctamente
+RC2 — Studio estable
+```
+
+Por tanto:
+
+> `CustomProperties` queda validado para el Functional Lab cuando se usa un contrato completo modelado a partir de una referencia real instance-safe.
+
+### Alcance exacto del hallazgo
+
+RC2 se probó sobre un componente limpio y con el contrato HeatMap-style. Por ello se considera **patrón correctivo validado**, pero no se afirma que `DisplayName` o `Description` sean por sí solos requisitos universales del motor ni que su omisión sea la única causa técnica posible del cierre original.
+
+La conclusión práctica es más útil y más segura:
+
+> Para nuevos CanvasComponents reutilizables, no simplificar la declaración de propiedades respecto de un componente estable equivalente. Copiar el contrato completo por `PropertyKind` y validar la instancia.
+
+## Evidencia Functional Lab
+
+```text
+R1 root-only                                      PASS
+R2 identidad/texto                                PASS
+R3 contenedores estáticos                         PASS
+R4 navegación visual                              PASS
+R5 contrato reducido de CustomProperties          FAIL_INSTANCE
+R5-TM propiedad manual Studio                     PASS
+R5-TB binding a propiedad manual                  PASS
+cmp_HeatMapPro referencia PULSE                   PASS / integrated
+RC2 Sidebar + contrato HeatMap-style              PASS / INSTANCE_SAFE
+```
 
 ## Estado actual
 
 ```text
-cmp_HeatMapPro                 REFERENCE — CUSTOM PROPERTIES WORKING
-cmp_FL_SidebarPro original     INSTANCE FAIL
-FL-SC-001                      REOPENED — ROOT CAUSE NOT CONFIRMED
-Next                           RC2 full sidebar with HeatMap-style property metadata
-F01-00B                        BLOCKED UNTIL SIDEBAR RC2 RESULT
+cmp_FL_SidebarPro RC2       INSTANCE_SAFE PASS
+PUBLIC CONTRACT             RESTORED AND VALIDATED AT INSTANCE LEVEL
+FL-SC-001                   RESOLVED — CORRECTIVE PATTERN VALIDATED
+Next                        F01-00B cmp_FL_PageHeaderPro
 ```
+
+El PageHeader deberá tomar como referencia contractual un componente PULSE estable antes de declarar sus CustomProperties; no se volverá a eliminar el contrato público por defecto como workaround.
