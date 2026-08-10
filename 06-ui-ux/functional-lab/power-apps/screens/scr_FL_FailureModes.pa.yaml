@@ -8,7 +8,8 @@ Screens:
         Set(varFLNavKey,"Strategy");
         Set(varFLCurrentStageId,"FL-06");
         If(IsBlank(varFLSelectedFailureMode),Set(varFLSelectedFailureMode,"FM-03"));
-        If(IsBlank(varFLFailureModeDecisionReason),Set(varFLFailureModeDecisionReason,"Se confirma la recomendación del sistema para el caso P-101."))
+        If(IsBlank(varFLSelectedFailureCause),Set(varFLSelectedFailureCause,LookUp(colFLFmeaFailureCauses,FailureModeId=varFLSelectedFailureMode,FailureCauseId)));
+        If(IsBlank(varFLFailureModeDecisionReason),Set(varFLFailureModeDecisionReason,"Se confirma la aplicabilidad del modo recomendado para P-101."))
 
     Children:
       - conFLFMRoot:
@@ -42,7 +43,15 @@ Screens:
                   OnSelectItem: |-
                     =
                     Set(varFLNavKey,cmpFLFMNav.SelectedKey);
-                    Switch(cmpFLFMNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                    Switch(
+                        cmpFLFMNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
                   UserRole: =varFLCurrentRole
                   Width: =If(varFLSidebarCollapsed,76,220)
                   X: =0
@@ -68,18 +77,18 @@ Screens:
                       Control: CanvasComponent
                       ComponentName: cmp_FL_PageHeaderPro
                       Properties:
-                        Archetype: ="SELECCIÓN CAUSAL"
-                        CaseCode: =varFLActiveCaseCode
-                        CaseType: ="AMEF + RCM"
+                        Archetype: ="APLICACIÓN AMEF"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
                         Height: =132
-                        JourneyHint: ="Seleccionar modos de fallo relevantes"
+                        JourneyHint: ="FL-06 · seleccionar modos y causas aplicables"
                         JourneyPosition: ="06 / 28"
                         ProgressCurrent: =6
                         ProgressTotal: =28
-                        ReviewHint: ="Decisión humana requerida"
-                        ReviewState: =If(varFLSelectedFailureMode="FM-03","Recomendación confirmada","Override en borrador")
-                        Subtitle: ="Revisa los mecanismos plausibles, la recomendación del sistema y confirma qué modo continuará al AMEF."
-                        Title: ="Modos de fallo"
+                        ReviewHint: =varFLActiveApplicationCode
+                        ReviewState: =If(varFLSelectedFailureMode="FM-03","Recomendación confirmada","Override contextual")
+                        Subtitle: ="Los modos y sus causas proceden de la revisión AMEF. Aquí decidimos cuáles son aplicables a P-101; no los redefinimos dentro del caso."
+                        Title: ="Modos y causas de fallo"
                         Width: =Parent.Width
                         WorkspaceCode: ="ESTRATEGIA"
                         X: =0
@@ -95,7 +104,20 @@ Screens:
                         OnSelectStage: |-
                           =
                           Set(varFLCurrentStageId,cmpFLFMRail.SelectedStageIdOut);
-                          Switch(cmpFLFMRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                          Switch(
+                              cmpFLFMRail.SelectedScreenKeyOut,
+                              "Context",Navigate(scr_FL_Context,ScreenTransition.None),
+                              "Functions",Navigate(scr_FL_Functions,ScreenTransition.None),
+                              "FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),
+                              "AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),
+                              "RCM",Navigate(scr_FL_RCM,ScreenTransition.None),
+                              "Economics",Navigate(scr_FL_Economics,ScreenTransition.None),
+                              "Task",Navigate(scr_FL_Task,ScreenTransition.None),
+                              "PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),
+                              "Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),
+                              "ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),
+                              "Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None)
+                          )
                         ShowPhaseHeaders: =true
                         Width: =300
                         X: =24
@@ -117,73 +139,37 @@ Screens:
                         X: =cmpFLFMRail.X+cmpFLFMRail.Width+12
                         Y: =cmpFLFMHeader.Height+12
                       Children:
-                        - conFLFMInput:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
+                        - cmpFLFMLineage:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_LineagePanelPro
                             Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
-                              BorderThickness: =1
-                              DropShadow: =DropShadow.None
-                              Fill: =ColorValue("#FFFFFF")
-                              Height: =120
-                              RadiusBottomLeft: =12
-                              RadiusBottomRight: =12
-                              RadiusTopLeft: =12
-                              RadiusTopRight: =12
+                              ApplicationCode: =varFLActiveApplicationCode
+                              AssetCode: =varFLActiveAssetCode
+                              CriticalityLabel: =varFLActiveCriticality
+                              ExecutionLabel: ="Modo aplicable pendiente de confirmación"
+                              Height: =126
+                              LibraryCode: =varFLActiveFmeaCode
+                              RevisionCode: =varFLActiveFmeaRevisionCode
+                              Title: ="Origen de los modos y causas"
                               Width: =Parent.Width
                               X: =0
                               Y: =0
-                            Children:
-                              - lblFLFMInputLabel:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#7C3AED")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =8
-                                    Text: ="INPUT CONFIRMADO · MODELO FUNCIONAL"
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =14
-                              - lblFLFMFunction:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0F172A")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =11
-                                    Text: =LookUp(colFLFunctions,FunctionType="Principal",Statement)
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =40
-                              - lblFLFMFailure:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =9
-                                    Text: =LookUp(colFLFunctionalFailures,FailureType="Parcial",Statement)
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =76
                         - conFLFMList:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
                             Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderColor: =ColorValue("#BAE6FD")
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =ColorValue("#FFFFFF")
-                              Height: =282
+                              Height: =278
                               RadiusBottomLeft: =14
                               RadiusBottomRight: =14
                               RadiusTopLeft: =14
                               RadiusTopRight: =14
                               Width: =(Parent.Width-12)*0.42
                               X: =0
-                              Y: =132
+                              Y: =138
                             Children:
                               - lblFLFMListLabel:
                                   Control: ModernText@1.0.0
@@ -192,24 +178,35 @@ Screens:
                                     Color: =ColorValue("#0284C7")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =9
-                                    Text: ="MODOS CANDIDATOS"
+                                    Text: ="MODOS DE LA REVISIÓN " & varFLActiveFmeaRevisionCode
                                     Width: =Parent.Width-36
                                     X: =18
                                     Y: =14
+                              - lblFLFMListHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Seleccionar un modo no modifica la biblioteca; registra su aplicabilidad dentro de " & varFLActiveApplicationCode
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =36
                               - galFLFMModes:
                                   Control: Gallery@2.15.0
                                   Variant: Vertical
                                   Properties:
                                     BorderColor: =Color.Transparent
-                                    Height: =216
-                                    Items: =colFLFailureModes
+                                    Height: =204
+                                    Items: =Filter(colFLFailureModes,FmeaRevisionId=varFLActiveFmeaRevisionId)
                                     ShowScrollbar: =false
                                     TemplateFill: =Color.Transparent
                                     TemplatePadding: =3
-                                    TemplateSize: =48
+                                    TemplateSize: =54
                                     Width: =Parent.Width-28
                                     X: =14
-                                    Y: =46
+                                    Y: =64
                                   Children:
                                     - btnFLFMMode:
                                         Control: Classic/Button@2.2.0
@@ -219,13 +216,13 @@ Screens:
                                           Color: =If(ThisItem.Code=varFLSelectedFailureMode,Color.White,ColorValue("#0F172A"))
                                           Fill: =If(ThisItem.Code=varFLSelectedFailureMode,ColorValue("#0284C7"),If(ThisItem.SystemRecommended,ColorValue("#F0F9FF"),ColorValue("#FFFFFF")))
                                           FontWeight: =If(ThisItem.SystemRecommended,FontWeight.Semibold,FontWeight.Normal)
-                                          Height: =40
+                                          Height: =46
                                           HoverFill: =ColorValue("#E0F2FE")
                                           OnSelect: |-
                                             =
                                             Set(varFLSelectedFailureMode,ThisItem.Code);
-                                            Set(varFLFailureModeDecisionReason,If(ThisItem.SystemRecommended,"Se confirma la recomendación del sistema para el caso P-101.",""));
-                                            Reset(txtFLFMReason);
+                                            Set(varFLSelectedFailureCause,LookUp(colFLFmeaFailureCauses,FailureModeId=ThisItem.FailureModeId,FailureCauseId));
+                                            Set(varFLFailureModeDecisionReason,If(ThisItem.SystemRecommended,"Se confirma la aplicabilidad del modo recomendado para P-101.",""));
                                             Set(varFLCaseDraft,true);
                                             UpdateIf(colFLStageExecutions,StageId="FL-06",{Status:"draft"})
                                           RadiusBottomLeft: =8
@@ -237,107 +234,187 @@ Screens:
                                           Width: =Parent.TemplateWidth
                                           X: =0
                                           Y: =1
-                        - conFLFMDecisionHost:
+                        - conFLFMCauses:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
                             Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderThickness: =0
+                              BorderColor: =ColorValue("#DDD6FE")
+                              BorderThickness: =1
                               DropShadow: =DropShadow.None
-                              Fill: =Color.Transparent
-                              Height: =282
-                              RadiusBottomLeft: =0
-                              RadiusBottomRight: =0
-                              RadiusTopLeft: =0
-                              RadiusTopRight: =0
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =278
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
                               Width: =Parent.Width-conFLFMList.Width-12
                               X: =conFLFMList.Width+12
-                              Y: =132
+                              Y: =138
                             Children:
-                              - cmpFLFMDecision:
+                              - lblFLFMCausesTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="CAUSAS / MECANISMOS DE " & varFLSelectedFailureMode
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLFMCausesExplain:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="El modo describe cómo se manifiesta la pérdida de función. La causa o mecanismo explica por qué puede ocurrir."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =36
+                              - galFLFMCauses:
+                                  Control: Gallery@2.15.0
+                                  Variant: Vertical
+                                  Properties:
+                                    BorderColor: =Color.Transparent
+                                    Height: =190
+                                    Items: =Filter(colFLFmeaFailureCauses,FailureModeId=LookUp(colFLFmeaFailureModes,Code=varFLSelectedFailureMode,FailureModeId))
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =2
+                                    TemplateSize: =76
+                                    Width: =Parent.Width-28
+                                    X: =14
+                                    Y: =72
+                                  Children:
+                                    - btnFLFMCause:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =If(ThisItem.FailureCauseId=varFLSelectedFailureCause,ColorValue("#A78BFA"),ColorValue("#E2E8F0"))
+                                          BorderThickness: =If(ThisItem.FailureCauseId=varFLSelectedFailureCause,2,1)
+                                          Color: =Color.Transparent
+                                          Fill: =If(ThisItem.FailureCauseId=varFLSelectedFailureCause,ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                                          Height: =Parent.TemplateHeight-4
+                                          HoverFill: =ColorValue("#FAFAFF")
+                                          OnSelect: =Set(varFLSelectedFailureCause,ThisItem.FailureCauseId)
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Text: =""
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =2
+                                    - lblFLFMCauseStatement:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: =ThisItem.CauseCode & " · " & ThisItem.Statement
+                                          Width: =Parent.TemplateWidth-24
+                                          Wrap: =true
+                                          X: =12
+                                          Y: =10
+                                    - lblFLFMCauseMechanism:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =8
+                                          Text: =ThisItem.Mechanism
+                                          Width: =Parent.TemplateWidth-24
+                                          Wrap: =true
+                                          X: =12
+                                          Y: =38
+                        - conFLFMDecision:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =Parent.Height-428
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =428
+                            Children:
+                              - cmpFLFMDecisionPanel:
                                   Control: CanvasComponent
                                   ComponentName: cmp_FL_DecisionPanelPro
                                   Properties:
-                                    CanConfirm: =!IsBlank(varFLSelectedFailureMode) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason)))
+                                    CanConfirm: =!IsBlank(varFLSelectedFailureMode) && !IsBlank(varFLSelectedFailureCause) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason)))
                                     CanOverride: =true
-                                    ConfirmLabel: ="Confirmar modo"
-                                    ContextText: ="El sistema propone el modo con mejor evidencia para continuar el análisis. La autoridad final pertenece a Ingeniería de Fiabilidad."
+                                    ConfirmLabel: ="Confirmar aplicabilidad"
+                                    ContextText: ="La recomendación prioriza un modo de biblioteca para este contexto. La persona confirma si es aplicable a P-101 y conserva el motivo cuando existe override."
                                     DecisionReason: =varFLFailureModeDecisionReason
-                                    Height: =282
-                                    HumanDecisionValue: =LookUp(colFLFailureModes,Code=varFLSelectedFailureMode,Code & " · " & Name)
+                                    Height: =190
+                                    HumanDecisionValue: =varFLSelectedFailureMode & " · " & LookUp(colFLFmeaFailureModes,Code=varFLSelectedFailureMode,Name)
                                     IsOverride: =varFLSelectedFailureMode<>"FM-03"
                                     OnConfirmDecision: =false
                                     OnOverrideDecision: =false
-                                    RecommendationExplanation: ="El histórico y el caso de uso priorizan la degradación de rodamientos como mecanismo detectable y relevante."
+                                    RecommendationExplanation: ="El caso ilustrativo prioriza FM-03 por evidencia y capacidad de detección, sin convertir la recomendación en autoridad automática."
                                     RecommendationLabel: ="Modo recomendado"
-                                    RecommendationValue: ="FM-03 · Degradación de rodamientos"
+                                    RecommendationValue: ="FM-03 · Degradación de rodamiento"
                                     RequiredRole: ="Ingeniería de Fiabilidad"
                                     ShowDecision: =true
                                     ShowRecommendation: =true
                                     ShowSystemResult: =false
-                                    Title: ="Seleccionar el modo a analizar"
-                                    Width: =Parent.Width
-                                    X: =0
-                                    Y: =0
-                        - lblFLFMReasonLabel:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#475569")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =9
-                              Text: =If(varFLSelectedFailureMode="FM-03","Motivo registrado","Motivo obligatorio del override")
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =426
-                        - txtFLFMReason:
-                            Control: Classic/TextInput@2.3.2
-                            Properties:
-                              BorderColor: =If(varFLSelectedFailureMode<>"FM-03" && IsBlank(Trim(varFLFailureModeDecisionReason)),ColorValue("#F97316"),ColorValue("#E2E8F0"))
-                              BorderThickness: =1
-                              Color: =ColorValue("#0F172A")
-                              Default: =varFLFailureModeDecisionReason
-                              Fill: =ColorValue("#FFFFFF")
-                              Height: =54
-                              HoverBorderColor: =ColorValue("#0284C7")
-                              Mode: =TextMode.MultiLine
-                              OnChange: |-
-                                =
-                                Set(varFLFailureModeDecisionReason,Trim(Self.Text));
-                                Set(varFLCaseDraft,true)
-                              PaddingBottom: =7
-                              PaddingLeft: =10
-                              PaddingRight: =10
-                              PaddingTop: =7
-                              RadiusBottomLeft: =7
-                              RadiusBottomRight: =7
-                              RadiusTopLeft: =7
-                              RadiusTopRight: =7
-                              Size: =9
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =448
-                        - cmpFLFMGate:
-                            Control: CanvasComponent
-                            ComponentName: cmp_FL_GatePanelPro
-                            Properties:
-                              CanContinue: =!IsBlank(varFLSelectedFailureMode) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason)))
-                              ContinueLabel: ="Confirmar selección"
-                              GateStatus: =If(!IsBlank(varFLSelectedFailureMode) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason))),"passed","blocked")
-                              GateTitle: ="Gate FL-06 · Modo relevante"
-                              Height: =154
-                              OnContinue: |-
-                                =
-                                UpdateIf(colFLFailureModes,true,{HumanSelected:Code=varFLSelectedFailureMode});
-                                UpdateIf(colFLStageExecutions,StageId="FL-06",{Status:"confirmed"});
-                                Set(varFLCaseDraft,false);
-                                Set(varFLCurrentStageId,"FL-07");
-                                Navigate(scr_FL_AMEF,ScreenTransition.None)
-                              OutputLabel: ="Modo seleccionado y trazable para AMEF"
-                              Reason: =If(varFLSelectedFailureMode="FM-03","La decisión confirma la recomendación original.",If(IsBlank(Trim(varFLFailureModeDecisionReason)),"El override necesita un motivo trazable.","La recomendación original y el override quedarán conservados."))
-                              RequiredAction: ="Confirmar la selección humana"
-                              ResponsibleRole: ="Ingeniería de Fiabilidad"
-                              Summary: =If(!IsBlank(varFLSelectedFailureMode) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason))),"Preparado para AMEF","Decisión incompleta")
-                              Width: =Parent.Width
-                              X: =0
-                              Y: =516
+                                    Title: ="Aplicabilidad del modo"
+                                    Width: =Parent.Width*0.62-18
+                                    X: =12
+                                    Y: =12
+                              - txtFLFMReason:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =If(varFLSelectedFailureMode<>"FM-03" && IsBlank(Trim(varFLFailureModeDecisionReason)),ColorValue("#F97316"),ColorValue("#DDD6FE"))
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =varFLFailureModeDecisionReason
+                                    Fill: =ColorValue("#FAFAFF")
+                                    Height: =62
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: |-
+                                      =
+                                      Set(varFLFailureModeDecisionReason,Trim(Self.Text));
+                                      Set(varFLCaseDraft,true)
+                                    PaddingLeft: =10
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =8
+                                    Width: =Parent.Width*0.62-42
+                                    X: =18
+                                    Y: =210
+                              - cmpFLFMGate:
+                                  Control: CanvasComponent
+                                  ComponentName: cmp_FL_GatePanelPro
+                                  Properties:
+                                    CanContinue: =!IsBlank(varFLSelectedFailureMode) && !IsBlank(varFLSelectedFailureCause) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason)))
+                                    ContinueLabel: ="Continuar a AMEF"
+                                    GateStatus: =If(!IsBlank(varFLSelectedFailureMode) && !IsBlank(varFLSelectedFailureCause) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason))),"passed","blocked")
+                                    GateTitle: ="Control de avance FL-06"
+                                    Height: =Parent.Height-24
+                                    OnContinue: |-
+                                      =
+                                      UpdateIf(colFLFailureModes,true,{HumanSelected:Code=varFLSelectedFailureMode});
+                                      UpdateIf(colFLStageExecutions,StageId="FL-06",{Status:"confirmed",IsCurrent:false});
+                                      Set(varFLCurrentStageId,"FL-07");
+                                      UpdateIf(colFLStageExecutions,StageId="FL-07",{IsCurrent:true});
+                                      Set(varFLCaseDraft,true);
+                                      Navigate(scr_FL_AMEF,ScreenTransition.None)
+                                    OutputLabel: ="FailureModeApplication + causa/mecanismo contextual"
+                                    Reason: =If(IsBlank(varFLSelectedFailureCause),"Selecciona una causa o mecanismo asociado al modo.",If(varFLSelectedFailureMode<>"FM-03" && IsBlank(Trim(varFLFailureModeDecisionReason)),"El override necesita un motivo trazable.","Modo y causa quedan preparados para la evaluación AMEF."))
+                                    RequiredAction: ="Confirmar modo, causa y motivo cuando exista override"
+                                    ResponsibleRole: ="Ingeniería de Fiabilidad"
+                                    Summary: =If(!IsBlank(varFLSelectedFailureMode) && !IsBlank(varFLSelectedFailureCause) && (varFLSelectedFailureMode="FM-03" || !IsBlank(Trim(varFLFailureModeDecisionReason))),"Preparado para evaluar efectos y riesgo","Aplicabilidad incompleta")
+                                    Width: =Parent.Width*0.38-18
+                                    X: =Parent.Width*0.62+6
+                                    Y: =12
