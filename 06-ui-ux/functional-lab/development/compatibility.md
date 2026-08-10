@@ -13,7 +13,8 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 4. no asumir que una hipótesis diagnóstica es una regla general;
 5. separar aceptación de definición y seguridad de instancia;
 6. registrar cualquier error nuevo y corregir también cualquier conclusión previa que quede refutada;
-7. para nuevas `CustomProperties`, copiar el contrato completo del componente estable de referencia por `PropertyKind`.
+7. para nuevas `CustomProperties`, copiar el contrato completo del componente estable de referencia por `PropertyKind`;
+8. revisar las fórmulas inline que contengan `: ` dentro de literales de texto y convertirlas a bloque YAML `|-`.
 
 ## Niveles de validación obligatorios
 
@@ -41,6 +42,47 @@ READY_FOR_INTEGRATION
 | `ModernText@1.0.0` estático | clipping/mini-scroll con altura rígida | `AutoHeight=true` por defecto. |
 | `CustomProperties:` en Source Code | es compatible cuando el contrato está bien formado; `cmp_HeatMapPro` y RC2 lo demuestran | No prohibirlo; usar un componente instance-safe como plantilla estructural. |
 | Input nuevo de componente reutilizable | una forma reducida puede no ser equivalente a la referencia estable | Preservar `PropertyKind + DisplayName + Description + DataType + Default` cuando ese sea el patrón de referencia. |
+| Fórmula Power Fx inline cuyo literal contiene `: ` | `PA1001 YamlInvalidSyntax / invalid mapping` | Expresar la fórmula como bloque YAML `|-` y colocar `=` en la línea siguiente. |
+
+## PA1001 — literales con `: ` dentro de fórmulas inline
+
+Durante F01-02/03 el candidato de `scr_FL_WorkspaceShell` incluía fórmulas como:
+
+```yaml
+Text: ="Unidad: " & varFL_Plant
+```
+
+Studio devolvió:
+
+```text
+PA1001
+YamlInvalidSyntax
+While scanning a plain scalar value, found invalid mapping
+```
+
+La fórmula Power Fx era válida; el problema estaba en la representación YAML. Al comenzar el valor con `=`, el contenido se interpreta como un scalar YAML no entrecomillado. La secuencia `: ` dentro del literal puede ser interpretada por el parser como un separador de mapping.
+
+Patrón preventivo:
+
+```yaml
+Text: |-
+  ="Unidad: " & varFL_Plant
+```
+
+En el mismo candidato se corrigió preventivamente toda la clase de ocurrencias, no una a una:
+
+```text
+Unidad:
+Servicio:
+Límite:
+Modos:
+Redundancia:
+Fuentes:
+```
+
+Regla de eficiencia:
+
+> Ante un `PA1001 invalid mapping`, revisar primero toda la clase de scalars inline con `: ` y corregirlos en bloque antes de pedir otra validación de Studio.
 
 ## FL-SC-001 — diagnóstico corregido
 
@@ -114,15 +156,17 @@ R5-TM propiedad manual Studio                     PASS
 R5-TB binding a propiedad manual                  PASS
 cmp_HeatMapPro referencia PULSE                   PASS / integrated
 RC2 Sidebar + contrato HeatMap-style              PASS / INSTANCE_SAFE
+F01-02/03 inline Power Fx con ': '                PA1001 / YAML_INVALID
+F01-02/03 mismas fórmulas como bloque `|-`        CANDIDATE FIX
 ```
 
 ## Estado actual
 
 ```text
 cmp_FL_SidebarPro RC2       INSTANCE_SAFE PASS
-PUBLIC CONTRACT             RESTORED AND VALIDATED AT INSTANCE LEVEL
+cmp_FL_PageHeaderPro        INSTANCE_SAFE PASS
+F01-01 Premium App Shell    VALIDATED PASS
+F01-02/03 Runtime P-101     PA1001 CORRECTED / PENDING STUDIO VALIDATION
 FL-SC-001                   RESOLVED — CORRECTIVE PATTERN VALIDATED
-Next                        F01-00B cmp_FL_PageHeaderPro
+Next                        Validate corrected Runtime P-101 candidate
 ```
-
-El PageHeader deberá tomar como referencia contractual un componente PULSE estable antes de declarar sus CustomProperties; no se volverá a eliminar el contrato público por defecto como workaround.
