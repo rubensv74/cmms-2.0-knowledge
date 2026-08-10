@@ -477,10 +477,9 @@ ComponentDefinitions:
                   Y: =81
                 Children:
                   - lblFLRiskColumnScale:
-                      Control: ModernText@1.0.0
+                      Control: Label@2.5.1
                       Properties:
                         Align: =Align.Center
-                        AutoHeight: =false
                         Color: =cmp_FL_RiskMatrixPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Height: =Parent.TemplateHeight
@@ -506,10 +505,9 @@ ComponentDefinitions:
                   Y: =103
                 Children:
                   - lblFLRiskRowScale:
-                      Control: ModernText@1.0.0
+                      Control: Label@2.5.1
                       Properties:
                         Align: =Align.Center
-                        AutoHeight: =false
                         Color: =cmp_FL_RiskMatrixPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Height: =Parent.TemplateHeight
