@@ -8,17 +8,9 @@
 
 La arquitectura v2 sustituye como dirección de producto al modelo v1 de un único `WorkspaceShell` con nueve workspaces agrupados.
 
-La evidencia v1 se conserva porque validó correctamente:
+La evidencia v1 se conserva porque validó correctamente Sidebar, PageHeader, App Shell, Runtime P-101, WS-01, WS-02 y el motor profundo de TreePro.
 
-- Sidebar;
-- PageHeader;
-- App Shell;
-- Runtime P-101;
-- WS-01 contexto;
-- WS-02 funciones/fallos;
-- TreePro profundo.
-
-Pero **no se añadirá funcionalidad nueva al WorkspaceShell v1**.
+No se añadirá funcionalidad nueva al WorkspaceShell v1.
 
 ## 2. Decisiones cerradas
 
@@ -42,37 +34,48 @@ Autoridad               humano salvo automatización aprobada
 IA                      recomendación explicable, no autoridad implícita
 ```
 
-Los ADR viven en `adr/`.
-
 ## 3. Foundation de componentes
 
 | Componente | Estado |
 |---|---|
-| `cmp_FL_SidebarPro` | INSTANCE_SAFE PASS, v2 reutiliza contrato |
-| `cmp_FL_PageHeaderPro` | INSTANCE_SAFE PASS, v2 reutiliza contrato |
-| `cmp_FL_TreePro` | motor profundo cargado; premium candidate corregido; QA visual final pendiente |
+| `cmp_FL_SidebarPro` | INSTANCE_SAFE PASS |
+| `cmp_FL_PageHeaderPro` | INSTANCE_SAFE PASS |
+| `cmp_FL_TreePro` | motor profundo cargado; QA visual final pendiente |
 | `cmp_FL_ProcessRailPro` | PASS_STATIC / Studio pending |
 | `cmp_FL_DecisionPanelPro` | PASS_STATIC / Studio pending |
 | `cmp_FL_GatePanelPro` | PASS_STATIC / Studio pending |
 | `cmp_FL_RiskMatrixPro` | PASS_STATIC / Studio pending |
 
-`cmp_FL_RiskMatrixPro` representa una matriz S×O de 10×10, permite seleccionar Severidad y Ocurrencia, muestra Detección de forma separada y recibe desde el host los umbrales que determinan las bandas de criticidad. La configuración demostrativa del laboratorio no constituye todavía una escala corporativa aprobada.
+`cmp_FL_RiskMatrixPro` es dimensionalmente configurable. No impone 5×5 ni 10×10.
+
+**Configuración canónica actual de P-101:**
+
+```text
+Severidad     1..5
+Ocurrencia    1..5
+Matriz        5×5 = 25 celdas
+Detección     1..5, separada de la matriz
+S inicial     4
+O inicial     3
+D inicial     3
+S×O inicial  12
+NPR inicial   36
+```
+
+La escala 1–5 procede del modelo ya utilizado en los prototipos AMEF. Los umbrales de color siguen siendo demostrativos y pendientes de validación corporativa.
 
 ## 4. Pantallas v2 generadas
 
 ### Inicio
-
 - `scr_FL_Home`
 
 ### Activos
-
 - `scr_FL_FLH`
 - `scr_FL_Taxonomy`
 - `scr_FL_ADR`
 - `scr_FL_Asset360`
 
 ### Estrategia de mantenimiento
-
 - `scr_FL_AnalysisRegister`
 - `scr_FL_CaseOverview`
 - `scr_FL_Context`
@@ -88,7 +91,6 @@ Los ADR viven en `adr/`.
 - `scr_FL_Effectiveness`
 
 ### Shell de producto
-
 - `scr_FL_MaintenancePlans`
 - `scr_FL_Governance`
 - `scr_FL_Settings`
@@ -115,63 +117,40 @@ No se ha eliminado ninguna etapa para ahorrar pantallas.
 
 ### FL-09 — criticidad y NPR
 
-La pantalla `scr_FL_AMEF` distingue ahora explícitamente:
+La pantalla `scr_FL_AMEF` distingue:
 
 ```text
-Severidad + Ocurrencia
+Selección humana S + O (1..5)
         ↓
-Matriz visual S×O
+Matriz visual 5×5 S×O
         ↓
-banda de criticidad
+score de matriz y banda visual
 
-Severidad × Ocurrencia × Detección
+Valoración humana D (1..5)
+        ↓
+S × O × D
         ↓
 NPR calculado por el sistema
 ```
 
-La matriz y el NPR son representaciones relacionadas, pero no se presentan como el mismo indicador.
+La matriz S×O y el NPR están relacionados, pero no son el mismo indicador.
 
 ## 6. Runtime v2
 
 `power-apps/runtime/functional-lab-v2-bootstrap.powerfx`
 
-El runtime usa colecciones y variables solamente como adapter del laboratorio. La UI se ha diseñado alrededor de contratos persistentes:
+El runtime conserva los valores AMEF originales del prototipo P-101:
 
 ```text
-TechnicalObject
-AssetHierarchyNode
-AssetClassification
-ADRRelation
-AnalysisCase
-AnalysisStageExecution
-Evidence
-Function
-FunctionalFailure
-FailureModeSelection
-FailureEffect
-RiskAssessment
-RCMAnalysis
-SystemRecommendation
-HumanDecision
-EconomicAssessment
-MaintenanceStrategy
-MaintenanceTask
-IntervalJustification
-ResourceRequirement
-MaintenancePlanPackage
-TraceLink
-QualityFinding
-Review
-Approval
-VersionSnapshot
-EffectivenessMeasurement
-ChangeRequest
-AuditEvent
+Set(varFLSeverity,4)
+Set(varFLOccurrence,3)
+Set(varFLDetection,3)
+NPR = 36
 ```
 
-## 7. Estado P-101 de arranque
+Las colecciones y variables actúan como adapter del laboratorio. La UI está orientada a contratos persistentes para una futura conexión de datos.
 
-La v2 conserva la validación funcional ya obtenida:
+## 7. Estado P-101 de arranque
 
 ```text
 FL-01..FL-06   confirmed
@@ -179,11 +158,7 @@ FL-07          draft / current
 FL-08..FL-28   not_started
 ```
 
-Esto no fuerza al usuario a repetir WS-01/WS-02 para entrar en AMEF, aunque las pantallas reconstruidas permanecen disponibles y editables como draft.
-
 ## 8. Responsabilidad visual
-
-La v2 utiliza una gramática explícita:
 
 ```text
 Slate / neutral     dato maestro / referencia
@@ -191,56 +166,30 @@ Cyan / blue         cálculo o información del sistema
 Purple              autoridad / decisión humana
 Amber / orange      advertencia / override / excepción
 Red                 bloqueo / error
-Green               confirmado / aprobado / gate superado
+Green               confirmado / aprobado / control superado
 ```
 
-`DecisionPanelPro` separa:
+`DecisionPanelPro` separa resultado/recomendación del sistema de decisión humana.
 
-```text
-systemResult
-systemRecommendation
-humanDecision
-reason
-requiredRole
-```
+`GatePanelPro` separa estado, motivo, acción requerida, responsable y output.
 
-`GatePanelPro` separa:
-
-```text
-status
-reason
-requiredAction
-responsibleRole
-output
-```
-
-`RiskMatrixPro` separa:
-
-```text
-human severity / occurrence selection
-matrix position and band
-human detection value
-system NPR calculation
-critical override information
-```
+`RiskMatrixPro` separa selección humana S/O, posición y banda de matriz, valor humano D y NPR calculado por software.
 
 ## 9. Validación estática
 
-`development/V2_STATIC_VALIDATION_2026-08-10.md`
-
-Resultado base:
+Resultado actual:
 
 ```text
 PASS_STATIC
 ```
 
-El incremento RiskMatrix se validó además con parser YAML antes de publicar tanto el componente como la pantalla AMEF de sustitución. Esto NO sustituye Studio.
+La sustitución de `scr_FL_AMEF` por la configuración 5×5 se validó con parser YAML antes de publicarse. Esto no sustituye Power Apps Studio.
 
 ## 10. Gate actual
 
 Ejecutar `power-apps/V2_INSTALLATION.md`.
 
-La validación se hace mediante seis smoke tests representativos, no 21 pruebas aisladas:
+Los seis smoke tests representativos son:
 
 ```text
 1 Foundation components
@@ -248,24 +197,20 @@ La validación se hace mediante seis smoke tests representativos, no 21 pruebas 
 3 FLH / TreePro
 4 CaseOverview / ProcessRail
 5 FailureModes / DecisionPanel
-6 AMEF / RiskMatrix + calculation + decision + gate
+6 AMEF / RiskMatrix 5×5 + NPR + decision + GatePanel
 ```
 
-Si estos seis pasan, se considera validado el esqueleto de arquitectura v2 y se continúa con Visual QA y correcciones funcionales por pantalla.
+## 11. Definición de terminado de la reconstrucción
 
-## 11. Definición de terminado para esta reconstrucción
+Completados:
 
-La reconstrucción arquitectónica se considera terminada cuando:
+- decisiones y ADR versionados;
+- mapa de pantallas;
+- contratos de dominio;
+- siete componentes Foundation;
+- 21 pantallas;
+- runtime v2;
+- PASS_STATIC;
+- instalación y smoke plan.
 
-- decisiones y ADR están versionados;
-- mapa de pantallas existe;
-- contratos de dominio existen;
-- siete componentes Foundation existen;
-- 21 pantallas están generadas;
-- runtime v2 está generado;
-- PASS_STATIC completado;
-- instalación y smoke plan están documentados.
-
-**Todos estos puntos están completados.**
-
-Lo único pendiente antes de declarar `INSTANCE_SAFE / VISUAL_QA` para v2 es la validación integrada en Power Apps Studio.
+Pendiente para declarar `INSTANCE_SAFE / VISUAL_QA`: validación integrada en Power Apps Studio.
