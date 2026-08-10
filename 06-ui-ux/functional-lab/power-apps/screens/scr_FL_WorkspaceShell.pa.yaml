@@ -1,7 +1,8 @@
 # CMMS 2.0 FUNCTIONAL LAB — F01-02/03 — APP SHELL + P-101 RUNTIME BOOTSTRAP
-# Estado: CANDIDATO PARA VALIDACIÓN EN STUDIO
+# Estado: CANDIDATO CORREGIDO PARA VALIDACIÓN EN STUDIO
 # Idioma visible: Español (es-ES)
 # Adaptador: Power Fx generado desde fixture canónico P-101
+# Corrección: fórmulas Text con ': ' se expresan mediante bloque YAML |-
 
 Screens:
   scr_FL_WorkspaceShell:
@@ -395,7 +396,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#475569")
                                     Size: =10
-                                    Text: ="Unidad: " & varFL_Plant
+                                    Text: |-
+                                      ="Unidad: " & varFL_Plant
                                     Width: =Parent.Width-36
                                     Wrap: =false
                                     X: =18
@@ -408,7 +410,8 @@ Screens:
                                     Color: =ColorValue("#334155")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =10
-                                    Text: ="Servicio: " & varFL_Service
+                                    Text: |-
+                                      ="Servicio: " & varFL_Service
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
@@ -420,7 +423,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#64748B")
                                     Size: =10
-                                    Text: ="Límite: " & varFL_Boundary
+                                    Text: |-
+                                      ="Límite: " & varFL_Boundary
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
@@ -476,7 +480,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#475569")
                                     Size: =10
-                                    Text: ="Modos: " & Concat(colFL_OperatingModes,Mode," · ")
+                                    Text: |-
+                                      ="Modos: " & Concat(colFL_OperatingModes,Mode," · ")
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
@@ -489,7 +494,8 @@ Screens:
                                     Color: =ColorValue("#334155")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =10
-                                    Text: ="Redundancia: " & varFL_Redundancy
+                                    Text: |-
+                                      ="Redundancia: " & varFL_Redundancy
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
@@ -544,7 +550,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#334155")
                                     Size: =10
-                                    Text: ="Fuentes: " & Concat(colFL_EvidenceSources,Source," · ")
+                                    Text: |-
+                                      ="Fuentes: " & Concat(colFL_EvidenceSources,Source," · ")
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
