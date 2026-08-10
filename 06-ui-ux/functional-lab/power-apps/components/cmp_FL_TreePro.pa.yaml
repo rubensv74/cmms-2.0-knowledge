@@ -192,14 +192,14 @@ ComponentDefinitions:
       ShowDescriptions:
         PropertyKind: Input
         DisplayName: ShowDescriptions
-        Description: Muestra descripciones secundarias dentro del árbol. Se recomienda false en árboles densos.
+        Description: Muestra descripciones secundarias dentro del árbol.
         DataType: Boolean
         Default: =false
 
       ShowHighlightBadge:
         PropertyKind: Input
         DisplayName: ShowHighlightBadge
-        Description: Muestra un pequeño distintivo junto al nodo resaltado.
+        Description: Muestra un distintivo junto al nodo resaltado.
         DataType: Boolean
         Default: =true
 
@@ -612,35 +612,27 @@ ComponentDefinitions:
                         X: =lblFLTreeRow.X
                         Y: =27
 
-                  - conFLTreeHighlightBadge:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
+                  - btnFLTreeHighlightBadge:
+                      Control: Classic/Button@2.2.0
                       Properties:
                         BorderColor: =ColorValue("#FED7AA")
+                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
-                        DropShadow: =DropShadow.None
+                        Color: =ColorValue("#C2410C")
                         Fill: =ColorValue("#FFF7ED")
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
                         Height: =22
+                        HoverFill: =ColorValue("#FFF7ED")
+                        OnSelect: =Select(Parent)
+                        PressedFill: =ColorValue("#FFEDD5")
                         RadiusBottomLeft: =11
                         RadiusBottomRight: =11
                         RadiusTopLeft: =11
                         RadiusTopRight: =11
+                        Size: =8
+                        Text: =cmp_FL_TreePro.HighlightBadgeText
                         Visible: =cmp_FL_TreePro.ShowHighlightBadge && Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId)
                         Width: =60
                         X: =Parent.TemplateWidth-Self.Width-8
                         Y: =If(cmp_FL_TreePro.CompactMode,8,10)
-
-                        Children:
-                          - lblFLTreeHighlightBadge:
-                              Control: ModernText@1.0.0
-                              Properties:
-                                Align: =Align.Center
-                                AutoHeight: =true
-                                Color: =ColorValue("#C2410C")
-                                FontWeight: =FontWeight.Semibold
-                                Size: =8
-                                Text: =cmp_FL_TreePro.HighlightBadgeText
-                                Width: =Parent.Width
-                                Wrap: =false
-                                X: =0
-                                Y: =4
