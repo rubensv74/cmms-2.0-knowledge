@@ -15,7 +15,8 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 6. separar aceptación de definición y seguridad de instancia;
 7. no declarar `CustomProperties:` dentro del YAML pegable de esta superficie;
 8. crear primero en Studio toda propiedad pública nueva y validarla por instancia;
-9. probar el binding desde YAML como gate independiente.
+9. confirmar el **nombre interno exacto y el componente propietario** antes de escribir un binding YAML;
+10. probar el binding desde YAML como gate independiente.
 
 ## Niveles de validación obligatorios
 
@@ -43,6 +44,7 @@ READY_FOR_INTEGRATION
 | `ModernText@1.0.0` estático | clipping con altura rígida | `AutoHeight=true` por defecto. |
 | `CustomProperties:` inyectado en el YAML pegable probado | definición aceptada pero cierre al instanciar | Crear el contrato público en Studio. |
 | Propiedad pública creada en Studio + binding desde YAML | `Input/Text` validado estable en R5-TB | Patrón permitido, pero revalidar por tipo de propiedad. |
+| Binding a propiedad pública no reconocida | `Name isn't valid. '<property>' isn't recognized.` | Detener el bloque; verificar en Studio propietario, nombre interno exacto y persistencia de la propiedad antes de modificar YAML. |
 
 ## Evidencia Functional Lab
 
@@ -57,11 +59,10 @@ FL-EVID-007  R5-TD Input/Text solo declarado por YAML             FAIL
 FL-EVID-008  R5-TM Input/Text creado manualmente en Studio        PASS
 FL-EVID-009  R5-TS Studio Source Code omite AppTitle              CONFIRMED
 FL-EVID-010  R5-TB YAML consume AppTitle creado en Studio         PASS
+FL-EVID-011  R5-BM ShowEnvironment binding                        BLOCKED — PROPERTY NOT RECOGNIZED
 ```
 
 ### FL-EVID-010 — estrategia híbrida validada para Input/Text
-
-Configuración:
 
 ```text
 AppTitle → Data / Input / Text creado manualmente en Studio
@@ -69,24 +70,43 @@ YAML     → SIN CustomProperties
 Binding  → ModernText.Text = cmp_FL_SidebarPro.AppTitle
 ```
 
-Resultado real:
-
 ```text
 DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       PASS
 ```
 
+### FL-EVID-011 — resolver contrato antes del binding
+
+R5-BM contiene:
+
+```powerfx
+Visible = cmp_FL_SidebarPro.ShowEnvironment
+```
+
+Power Apps Studio permanece abierto, pero informa:
+
+```text
+Name isn't valid. 'ShowEnvironment' isn't recognized.
+```
+
 Interpretación permitida:
 
-> Para `Input/Text`, el contrato creado en Studio puede ser consumido desde el cuerpo Source Code sin comprometer la seguridad de instancia.
+> La prueba Boolean no ha llegado todavía al gate de binding. `ShowEnvironment` no está disponible con ese nombre en el contrato público observable de `cmp_FL_SidebarPro` en el momento de la prueba.
 
-No extrapolar todavía esta evidencia automáticamente a Boolean, Color, Table, Output o Event.
+No afirmar incompatibilidad de Boolean. Antes de cualquier corrección YAML se debe verificar en Studio:
+
+- que la propiedad se creó sobre `cmp_FL_SidebarPro`;
+- el nombre interno exacto;
+- que persiste después de guardar;
+- si `AppTitle` sigue también presente.
 
 ## Estrategia de autoría Functional Lab
 
 ```text
 PUBLIC CONTRACT
   Studio first
+      ↓
+  confirm owner + internal name
       ↓
   instance smoke test
       ↓
@@ -95,6 +115,8 @@ BODY / LAYOUT / FORMULAS
       ↓
 BINDING
   reference Studio-created contract
+      ↓
+  formula resolution gate
       ↓
   instance smoke test
 ```
@@ -105,11 +127,9 @@ No incluir `CustomProperties:` en el YAML pegable hasta nueva evidencia explíci
 
 ### Regla por tipo
 
-Cada nuevo tipo de contrato público se valida de forma independiente antes de usarlo en el Sidebar completo:
-
 ```text
 Text     PASS
-Boolean  CURRENT
+Boolean  BLOCKED — contract/name resolution
 Color    PENDING
 Table    PENDING
 Output   PENDING
@@ -119,24 +139,14 @@ Event    PENDING
 ## Incidente FL-SC-001
 
 **Estado:** `OPEN — BLOCKING UNTIL FULL SIDEBAR RECOVERY`.  
-**Superficie problemática:** metadatos `CustomProperties` inyectados mediante el Source Code pegable probado.  
 **Workaround demostrado:** Studio-first contract + YAML binding para `Input/Text`.  
-**Correctivo actual:** `F01-00A-R5-BM`, Boolean Studio-first + binding simple.
+**Correctivo actual:** resolver `ShowEnvironment` en Studio sin modificar el YAML.
 
 ## Estado
 
 ```text
-R1 root-only                                     PASS
-R2 identity/text                                 PASS
-R3 static containers                             PASS
-R4 static navigation                             PASS
-R5 primitive CustomProperties                    FAIL
-R5-T Text declared+consumed via YAML             FAIL
-R5-TD Text declaration only via YAML             FAIL
-R5-TM manual Text input in Studio                PASS
-R5-TS Studio visible source                      AppTitle omitted
 R5-TB binding to Studio-created Text property    PASS
-R5-BM Boolean Studio-first                       PENDING
+R5-BM Boolean binding                            BLOCKED — ShowEnvironment not recognized
 FL-SC-001                                        OPEN
 F01-00B                                          BLOCKED
 ```
