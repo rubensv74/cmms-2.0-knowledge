@@ -1,8 +1,8 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-02/03 — APP SHELL + P-101 RUNTIME BOOTSTRAP
-# Estado: CANDIDATO CORREGIDO PARA VALIDACIÓN EN STUDIO
+# CMMS 2.0 FUNCTIONAL LAB — F01-05 — WS-01 CASO Y CONTEXTO / OBJETO 360
+# Estado: CANDIDATO PARA VALIDACIÓN EN STUDIO
 # Idioma visible: Español (es-ES)
-# Adaptador: Power Fx generado desde fixture canónico P-101
-# Corrección: fórmulas Text con ': ' se expresan mediante bloque YAML |-
+# Baseline: App Shell + Runtime P-101 validados
+# Alcance: FL-01 activo/límites + FL-02 contexto operacional + FL-03 preparación de datos
 
 Screens:
   scr_FL_WorkspaceShell:
@@ -90,6 +90,16 @@ Screens:
             {Order:20, Code:"FM-03", Name:"Degradación de rodamientos", IsFocus:true},
             {Order:30, Code:"FM-06", Name:"Fallo oculto de la bomba de reserva", IsFocus:false},
             {Order:40, Code:"FM-07", Name:"Obstrucción parcial en aspiración", IsFocus:false}
+        );
+
+        If(
+            IsBlank(varFL_WS01EvidenceConfirmed),
+            Set(varFL_WS01EvidenceConfirmed,false)
+        );
+
+        If(
+            IsBlank(varFL_WS01OutputReady),
+            Set(varFL_WS01OutputReady,false)
         );
 
         Set(varFL_CaseLoaded,true);
@@ -190,37 +200,66 @@ Screens:
                           Switch(
                               varFL_ActiveKey,
                               "Overview","00 / 28",
-                              "Context","01 / 28",
-                              "Functions","04 / 28",
-                              "Risk","07 / 28",
-                              "Decision","12 / 28",
-                              "Plan","17 / 28",
-                              "Governance","23 / 28",
-                              "Improve","27 / 28",
-                              "01 / 28"
+                              "Context","01–03 / 28",
+                              "Functions","04–06 / 28",
+                              "Risk","07–11 / 28",
+                              "Decision","12–16 / 28",
+                              "Plan","17–22 / 28",
+                              "Governance","23–26 / 28",
+                              "Improve","27–28 / 28",
+                              "01–03 / 28"
                           )
                         ProgressCurrent: |-
                           =
                           Switch(
                               varFL_ActiveKey,
                               "Overview",0,
-                              "Context",1,
-                              "Functions",4,
-                              "Risk",7,
-                              "Decision",12,
-                              "Plan",17,
-                              "Governance",23,
-                              "Improve",27,
-                              1
+                              "Context",3,
+                              "Functions",6,
+                              "Risk",11,
+                              "Decision",16,
+                              "Plan",22,
+                              "Governance",26,
+                              "Improve",28,
+                              3
                           )
                         ProgressTotal: =28
-                        ReviewState: =If(varFL_CaseLoaded,"Caso cargado","Cargando caso")
+                        ReviewHint: |-
+                          =
+                          If(
+                              varFL_ActiveKey="Context",
+                              If(
+                                  !IsBlank(varFL_Service) &&
+                                  !IsBlank(varFL_Boundary) &&
+                                  !IsBlank(varFL_Constraints) &&
+                                  CountRows(colFL_EvidenceSources)>=3 &&
+                                  varFL_WS01EvidenceConfirmed,
+                                  "Gate WS-01 superado",
+                                  "Validación pendiente"
+                              ),
+                              "Caso cargado"
+                          )
+                        ReviewState: |-
+                          =
+                          If(
+                              varFL_ActiveKey="Context",
+                              If(
+                                  !IsBlank(varFL_Service) &&
+                                  !IsBlank(varFL_Boundary) &&
+                                  !IsBlank(varFL_Constraints) &&
+                                  CountRows(colFL_EvidenceSources)>=3 &&
+                                  varFL_WS01EvidenceConfirmed,
+                                  "Preparado para continuar",
+                                  "En revisión"
+                              ),
+                              "Caso cargado"
+                          )
                         Subtitle: |-
                           =
                           Switch(
                               varFL_ActiveKey,
                               "Overview","Visión general del recorrido funcional y del caso utilizado para validar el modelo.",
-                              "Context","Comprender el activo, sus límites y el contexto operativo antes de definir sus funciones.",
+                              "Context","Definir el objeto de análisis, su contexto operacional y comprobar que existe evidencia suficiente.",
                               "Functions","Definir qué debe hacer el activo y cómo puede dejar de cumplir sus funciones.",
                               "Risk","Analizar efectos, consecuencias y riesgo antes de decidir la estrategia.",
                               "Decision","Aplicar el razonamiento RCM y justificar técnicamente la política de mantenimiento.",
@@ -253,8 +292,8 @@ Screens:
                               "Functions","WS-02",
                               "Risk","WS-03",
                               "Decision","WS-04",
-                              "Plan","WS-05",
-                              "Governance","WS-07",
+                              "Plan","WS-05/06",
+                              "Governance","WS-07/08",
                               "Improve","WS-09",
                               "WS-01"
                           )
@@ -279,74 +318,628 @@ Screens:
                         Y: =cmpFL_Header.Height
 
                       Children:
-                        - conFL_RuntimeStatus:
+                        - conFL_WS01:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
                             Properties:
-                              BorderColor: =ColorValue("#BBF7D0")
-                              BorderThickness: =1
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
                               DropShadow: =DropShadow.None
-                              Fill: =ColorValue("#F0FDF4")
-                              Height: =62
-                              RadiusBottomLeft: =12
-                              RadiusBottomRight: =12
-                              RadiusTopLeft: =12
-                              RadiusTopRight: =12
-                              Width: =Parent.Width-48
-                              X: =24
-                              Y: =20
+                              Fill: =Color.Transparent
+                              Height: =Parent.Height
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Visible: =varFL_ActiveKey="Context"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
 
                             Children:
-                              - lblFL_RuntimeStatus:
-                                  Control: ModernText@1.0.0
+                              - conFL_WS01_Toolbar:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
                                   Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#166534")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =11
-                                    Text: =If(varFL_CaseLoaded,"P-101 cargado correctamente","Cargando caso P-101")
-                                    Width: =Parent.Width-260
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =11
-
-                              - lblFL_RuntimeMeta:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#15803D")
-                                    Size: =9
-                                    Text: =varFL_CaseId & "  ·  Confianza " & varFL_DataConfidence & "  ·  Fixture v1.0.0"
-                                    Width: =Parent.Width-260
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =34
-
-                              - btnFL_ToggleSidebar:
-                                  Control: Classic/Button@2.2.0
-                                  Properties:
-                                    BorderColor: =ColorValue("#BBF7D0")
-                                    BorderStyle: =BorderStyle.Solid
+                                    BorderColor: =ColorValue("#E2E8F0")
                                     BorderThickness: =1
-                                    Color: =ColorValue("#14532D")
+                                    DropShadow: =DropShadow.None
                                     Fill: =ColorValue("#FFFFFF")
-                                    Font: =Font.'Segoe UI'
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =36
-                                    HoverFill: =ColorValue("#F0FDF4")
-                                    OnSelect: =Set(varFL_SidebarCollapsed,!varFL_SidebarCollapsed)
-                                    PressedFill: =ColorValue("#DCFCE7")
-                                    RadiusBottomLeft: =9
-                                    RadiusBottomRight: =9
-                                    RadiusTopLeft: =9
-                                    RadiusTopRight: =9
-                                    Size: =10
-                                    Text: =If(varFL_SidebarCollapsed,"Expandir menú","Contraer menú")
-                                    Width: =150
-                                    X: =Parent.Width-Self.Width-14
-                                    Y: =13
+                                    Height: =54
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                    Width: =Parent.Width-48
+                                    X: =24
+                                    Y: =18
 
-                        - conFL_AssetCard:
+                                  Children:
+                                    - lblFL_WS01_Toolbar:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =11
+                                          Text: ="FL-01 Activo y límites  ·  FL-02 Contexto operacional  ·  FL-03 Preparación de datos"
+                                          Width: =Parent.Width-230
+                                          Wrap: =false
+                                          X: =16
+                                          Y: =10
+
+                                    - lblFL_WS01_ToolbarMeta:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =9
+                                          Text: =varFL_AssetCode & "  ·  " & Text(CountRows(colFL_EvidenceSources)) & " fuentes  ·  Confianza " & varFL_DataConfidence
+                                          Width: =Parent.Width-230
+                                          Wrap: =false
+                                          X: =16
+                                          Y: =31
+
+                                    - btnFL_WS01_ToggleSidebar:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =ColorValue("#E2E8F0")
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#0F172A")
+                                          Fill: =ColorValue("#FFFFFF")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =34
+                                          HoverFill: =ColorValue("#F8FAFC")
+                                          OnSelect: =Set(varFL_SidebarCollapsed,!varFL_SidebarCollapsed)
+                                          PressedFill: =ColorValue("#EFF6FF")
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =10
+                                          Text: =If(varFL_SidebarCollapsed,"Expandir menú","Contraer menú")
+                                          Width: =150
+                                          X: =Parent.Width-Self.Width-10
+                                          Y: =10
+
+                              - conFL_WS01_Object:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#E2E8F0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#FFFFFF")
+                                    Height: =450
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Width: =(Parent.Width-60)*0.64
+                                    X: =24
+                                    Y: =86
+
+                                  Children:
+                                    - lblFL_WS01_ObjectEyebrow:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0284C7")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="OBJETO 360 · ALCANCE DEL ANÁLISIS"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =16
+
+                                    - lblFL_WS01_ObjectTitle:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =18
+                                          Text: =varFL_AssetCode & " · " & varFL_AssetName
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =43
+
+                                    - lblFL_WS01_Existing:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="INFORMACIÓN EXISTENTE"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =78
+
+                                    - lblFL_WS01_Unit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#334155")
+                                          Size: =10
+                                          Text: |-
+                                            ="Unidad: " & varFL_Plant
+                                          Width: =(Parent.Width-52)*0.34
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =101
+
+                                    - lblFL_WS01_Duty:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#334155")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =10
+                                          Text: =Text(varFL_DutyFlowM3h) & " m³/h  ·  " & Text(varFL_DutyPressureBar) & " bar"
+                                          Width: =(Parent.Width-52)*0.28
+                                          Wrap: =false
+                                          X: =Parent.Width*0.37
+                                          Y: =101
+
+                                    - lblFL_WS01_Redundancy:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#334155")
+                                          Size: =10
+                                          Text: =varFL_Redundancy
+                                          Width: =Parent.Width*0.34
+                                          Wrap: =false
+                                          X: =Parent.Width*0.64
+                                          Y: =101
+
+                                    - lblFL_WS01_EditableHint:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0369A1")
+                                          Size: =9
+                                          Text: ="Los siguientes campos pueden ajustarse durante la revisión funcional."
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =132
+
+                                    - lblFL_WS01_ServiceLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#475569")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="Servicio requerido"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =158
+
+                                    - txtFL_WS01_Service:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =ColorValue("#BAE6FD")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#0F172A")
+                                          Default: =varFL_Service
+                                          Fill: =ColorValue("#F8FCFF")
+                                          Font: =Font.'Segoe UI'
+                                          Height: =36
+                                          HintText: ="Describe el servicio que debe prestar el activo"
+                                          HoverBorderColor: =ColorValue("#0284C7")
+                                          OnChange: |-
+                                            =Set(varFL_Service,Trim(Self.Text));
+                                            Set(varFL_CaseDirty,true);
+                                            Set(varFL_WS01OutputReady,false)
+                                          PaddingLeft: =10
+                                          RadiusBottomLeft: =7
+                                          RadiusBottomRight: =7
+                                          RadiusTopLeft: =7
+                                          RadiusTopRight: =7
+                                          Size: =10
+                                          Width: =Parent.Width-36
+                                          X: =18
+                                          Y: =180
+
+                                    - lblFL_WS01_BoundaryLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#475569")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="Límite físico del análisis"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =226
+
+                                    - txtFL_WS01_Boundary:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =ColorValue("#BAE6FD")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#0F172A")
+                                          Default: =varFL_Boundary
+                                          Fill: =ColorValue("#F8FCFF")
+                                          Font: =Font.'Segoe UI'
+                                          Height: =66
+                                          HintText: ="Define desde dónde hasta dónde llega el objeto del análisis"
+                                          HoverBorderColor: =ColorValue("#0284C7")
+                                          Mode: =TextMode.MultiLine
+                                          OnChange: |-
+                                            =Set(varFL_Boundary,Trim(Self.Text));
+                                            Set(varFL_CaseDirty,true);
+                                            Set(varFL_WS01OutputReady,false)
+                                          PaddingBottom: =8
+                                          PaddingLeft: =10
+                                          PaddingRight: =10
+                                          PaddingTop: =8
+                                          RadiusBottomLeft: =7
+                                          RadiusBottomRight: =7
+                                          RadiusTopLeft: =7
+                                          RadiusTopRight: =7
+                                          Size: =10
+                                          Width: =Parent.Width-36
+                                          X: =18
+                                          Y: =248
+
+                                    - lblFL_WS01_ConstraintsLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#475569")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="Restricciones operativas relevantes"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =324
+
+                                    - txtFL_WS01_Constraints:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =ColorValue("#BAE6FD")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#0F172A")
+                                          Default: =varFL_Constraints
+                                          Fill: =ColorValue("#F8FCFF")
+                                          Font: =Font.'Segoe UI'
+                                          Height: =76
+                                          HintText: ="Describe restricciones que condicionen el análisis"
+                                          HoverBorderColor: =ColorValue("#0284C7")
+                                          Mode: =TextMode.MultiLine
+                                          OnChange: |-
+                                            =Set(varFL_Constraints,Trim(Self.Text));
+                                            Set(varFL_CaseDirty,true);
+                                            Set(varFL_WS01OutputReady,false)
+                                          PaddingBottom: =8
+                                          PaddingLeft: =10
+                                          PaddingRight: =10
+                                          PaddingTop: =8
+                                          RadiusBottomLeft: =7
+                                          RadiusBottomRight: =7
+                                          RadiusTopLeft: =7
+                                          RadiusTopRight: =7
+                                          Size: =10
+                                          Width: =Parent.Width-36
+                                          X: =18
+                                          Y: =346
+
+                              - conFL_WS01_Evidence:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#E2E8F0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#FFFFFF")
+                                    Height: =236
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Width: =Parent.Width-conFL_WS01_Object.Width-60
+                                    X: =conFL_WS01_Object.X+conFL_WS01_Object.Width+12
+                                    Y: =86
+
+                                  Children:
+                                    - lblFL_WS01_EvidenceEyebrow:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0284C7")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="PREPARACIÓN DE DATOS"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =16
+
+                                    - lblFL_WS01_EvidenceTitle:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =15
+                                          Text: ="Evidencia disponible"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =43
+
+                                    - galFL_WS01_Evidence:
+                                        Control: Gallery@2.15.0
+                                        Variant: Vertical
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Height: =104
+                                          Items: =SortByColumns(colFL_EvidenceSources,"Order",SortOrder.Ascending)
+                                          ShowScrollbar: =false
+                                          TemplatePadding: =0
+                                          TemplateSize: =20
+                                          Width: =Parent.Width-36
+                                          X: =18
+                                          Y: =74
+
+                                        Children:
+                                          - lblFL_WS01_EvidenceItem:
+                                              Control: ModernText@1.0.0
+                                              Properties:
+                                                AutoHeight: =true
+                                                Color: =ColorValue("#334155")
+                                                Size: =9
+                                                Text: ="✓  " & ThisItem.Source
+                                                Width: =Parent.TemplateWidth
+                                                Wrap: =false
+                                                X: =0
+                                                Y: =1
+
+                                    - lblFL_WS01_Confidence:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: |-
+                                            ="Confianza declarada: " & varFL_DataConfidence
+                                          Width: =Parent.Width-164
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =184
+
+                                    - btnFL_WS01_ConfirmEvidence:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =If(varFL_WS01EvidenceConfirmed,ColorValue("#BBF7D0"),ColorValue("#BAE6FD"))
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =1
+                                          Color: =If(varFL_WS01EvidenceConfirmed,ColorValue("#166534"),ColorValue("#075985"))
+                                          DisplayMode: =If(varFL_WS01EvidenceConfirmed,DisplayMode.Disabled,DisplayMode.Edit)
+                                          Fill: =If(varFL_WS01EvidenceConfirmed,ColorValue("#F0FDF4"),ColorValue("#F0F9FF"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =34
+                                          HoverFill: =ColorValue("#E0F2FE")
+                                          OnSelect: |-
+                                            =Set(varFL_WS01EvidenceConfirmed,true);
+                                            Set(varFL_CaseDirty,true);
+                                            Set(varFL_WS01OutputReady,false)
+                                          PressedFill: =ColorValue("#BAE6FD")
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =9
+                                          Text: =If(varFL_WS01EvidenceConfirmed,"Evidencia confirmada","Confirmar evidencia")
+                                          Width: =136
+                                          X: =Parent.Width-Self.Width-14
+                                          Y: =187
+
+                              - conFL_WS01_Gate:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: |-
+                                      =
+                                      If(
+                                          !IsBlank(varFL_Service) &&
+                                          !IsBlank(varFL_Boundary) &&
+                                          !IsBlank(varFL_Constraints) &&
+                                          CountRows(colFL_EvidenceSources)>=3 &&
+                                          varFL_WS01EvidenceConfirmed,
+                                          ColorValue("#BBF7D0"),
+                                          ColorValue("#FED7AA")
+                                      )
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: |-
+                                      =
+                                      If(
+                                          !IsBlank(varFL_Service) &&
+                                          !IsBlank(varFL_Boundary) &&
+                                          !IsBlank(varFL_Constraints) &&
+                                          CountRows(colFL_EvidenceSources)>=3 &&
+                                          varFL_WS01EvidenceConfirmed,
+                                          ColorValue("#F0FDF4"),
+                                          ColorValue("#FFF7ED")
+                                      )
+                                    Height: =202
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Width: =conFL_WS01_Evidence.Width
+                                    X: =conFL_WS01_Evidence.X
+                                    Y: =334
+
+                                  Children:
+                                    - lblFL_WS01_GateEyebrow:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: |-
+                                            =
+                                            If(
+                                                !IsBlank(varFL_Service) &&
+                                                !IsBlank(varFL_Boundary) &&
+                                                !IsBlank(varFL_Constraints) &&
+                                                CountRows(colFL_EvidenceSources)>=3 &&
+                                                varFL_WS01EvidenceConfirmed,
+                                                ColorValue("#15803D"),
+                                                ColorValue("#C2410C")
+                                            )
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="GATE WS-01 · PREPARACIÓN"
+                                          Width: =Parent.Width-36
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =16
+
+                                    - lblFL_WS01_GateState:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =15
+                                          Text: |-
+                                            =
+                                            If(
+                                                !IsBlank(varFL_Service) &&
+                                                !IsBlank(varFL_Boundary) &&
+                                                !IsBlank(varFL_Constraints) &&
+                                                CountRows(colFL_EvidenceSources)>=3 &&
+                                                varFL_WS01EvidenceConfirmed,
+                                                "Preparado para definir funciones",
+                                                "Requiere completar la revisión"
+                                            )
+                                          Width: =Parent.Width-36
+                                          Wrap: =true
+                                          X: =18
+                                          Y: =43
+
+                                    - lblFL_WS01_GateReason:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =9
+                                          Text: |-
+                                            =
+                                            If(
+                                                IsBlank(varFL_Service),
+                                                "Falta describir el servicio requerido.",
+                                                If(
+                                                    IsBlank(varFL_Boundary),
+                                                    "Falta confirmar el límite físico del análisis.",
+                                                    If(
+                                                        IsBlank(varFL_Constraints),
+                                                        "Falta documentar las restricciones operativas.",
+                                                        If(
+                                                            CountRows(colFL_EvidenceSources)<3,
+                                                            "La evidencia disponible es insuficiente para continuar.",
+                                                            If(
+                                                                !varFL_WS01EvidenceConfirmed,
+                                                                "El revisor funcional debe confirmar que la evidencia es suficiente.",
+                                                                "Activo, contexto y evidencia quedan preparados como entrada estructurada para WS-02."
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                          Width: =Parent.Width-36
+                                          Wrap: =true
+                                          X: =18
+                                          Y: =82
+
+                                    - lblFL_WS01_Output:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#475569")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="OUTPUT → contexto confirmado para Funciones y fallos"
+                                          Width: =Parent.Width-160
+                                          Wrap: =false
+                                          X: =18
+                                          Y: =137
+
+                                    - btnFL_WS01_Continue:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =ColorValue("#0284C7")
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =1
+                                          Color: =Color.White
+                                          DisplayMode: |-
+                                            =
+                                            If(
+                                                !IsBlank(varFL_Service) &&
+                                                !IsBlank(varFL_Boundary) &&
+                                                !IsBlank(varFL_Constraints) &&
+                                                CountRows(colFL_EvidenceSources)>=3 &&
+                                                varFL_WS01EvidenceConfirmed,
+                                                DisplayMode.Edit,
+                                                DisplayMode.Disabled
+                                            )
+                                          Fill: =ColorValue("#0284C7")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =38
+                                          HoverFill: =ColorValue("#0369A1")
+                                          OnSelect: |-
+                                            =
+                                            ClearCollect(
+                                                colFL_WS01Output,
+                                                {
+                                                    CaseId:varFL_CaseId,
+                                                    AssetCode:varFL_AssetCode,
+                                                    AssetName:varFL_AssetName,
+                                                    Plant:varFL_Plant,
+                                                    Service:varFL_Service,
+                                                    Boundary:varFL_Boundary,
+                                                    DutyFlowM3h:varFL_DutyFlowM3h,
+                                                    DutyPressureBar:varFL_DutyPressureBar,
+                                                    Redundancy:varFL_Redundancy,
+                                                    Constraints:varFL_Constraints,
+                                                    DataConfidence:varFL_DataConfidence,
+                                                    EvidenceCount:CountRows(colFL_EvidenceSources),
+                                                    EvidenceConfirmed:varFL_WS01EvidenceConfirmed,
+                                                    StageStatus:"passed",
+                                                    ConfirmedAt:Now()
+                                                }
+                                            );
+                                            Set(varFL_WS01OutputReady,true);
+                                            Set(varFL_CaseDirty,false);
+                                            Set(varFL_ActiveKey,"Functions")
+                                          PressedFill: =ColorValue("#075985")
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =10
+                                          Text: ="Continuar a funciones y fallos"
+                                          Width: =210
+                                          X: =Parent.Width-Self.Width-14
+                                          Y: =150
+
+                        - conFL_WorkspacePending:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
                             Properties:
@@ -354,229 +947,63 @@ Screens:
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =ColorValue("#FFFFFF")
-                              Height: =224
+                              Height: =190
                               RadiusBottomLeft: =14
                               RadiusBottomRight: =14
                               RadiusTopLeft: =14
                               RadiusTopRight: =14
-                              Width: =(Parent.Width-60)*0.56
+                              Visible: =varFL_ActiveKey<>"Context"
+                              Width: =Min(860,Parent.Width-48)
                               X: =24
-                              Y: =98
+                              Y: =24
 
                             Children:
-                              - lblFL_AssetEyebrow:
+                              - lblFL_WorkspacePendingEyebrow:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#0284C7")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =9
-                                    Text: ="ACTIVO Y CONTEXTO"
+                                    Text: ="RECORRIDO FUNCIONAL"
                                     Width: =Parent.Width-36
                                     Wrap: =false
                                     X: =18
-                                    Y: =16
+                                    Y: =18
 
-                              - lblFL_AssetTitle:
+                              - lblFL_WorkspacePendingTitle:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#0F172A")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =18
-                                    Text: =varFL_AssetCode & " · " & varFL_AssetName
+                                    Text: |-
+                                      =
+                                      Switch(
+                                          varFL_ActiveKey,
+                                          "Overview","Resumen",
+                                          "Functions","Funciones y fallos",
+                                          "Risk","Efectos y riesgo",
+                                          "Decision","Decisión RCM",
+                                          "Plan","Diseño del plan",
+                                          "Governance","Gobernanza",
+                                          "Improve","Efectividad y mejora",
+                                          "Siguiente workspace"
+                                      )
                                     Width: =Parent.Width-36
                                     Wrap: =false
                                     X: =18
-                                    Y: =43
+                                    Y: =50
 
-                              - lblFL_AssetPlant:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#475569")
-                                    Size: =10
-                                    Text: |-
-                                      ="Unidad: " & varFL_Plant
-                                    Width: =Parent.Width-36
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =78
-
-                              - lblFL_AssetService:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =10
-                                    Text: |-
-                                      ="Servicio: " & varFL_Service
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =106
-
-                              - lblFL_AssetBoundary:
+                              - lblFL_WorkspacePendingText:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#64748B")
-                                    Size: =10
-                                    Text: |-
-                                      ="Límite: " & varFL_Boundary
+                                    Size: =11
+                                    Text: ="Este workspace se habilitará en el siguiente incremento validado. El Shell mantiene la navegación para conservar la visión completa del recorrido."
                                     Width: =Parent.Width-36
                                     Wrap: =true
                                     X: =18
-                                    Y: =145
-
-                        - conFL_OperatingCard:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
-                            Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
-                              BorderThickness: =1
-                              DropShadow: =DropShadow.None
-                              Fill: =ColorValue("#FFFFFF")
-                              Height: =224
-                              RadiusBottomLeft: =14
-                              RadiusBottomRight: =14
-                              RadiusTopLeft: =14
-                              RadiusTopRight: =14
-                              Width: =Parent.Width-conFL_AssetCard.Width-60
-                              X: =conFL_AssetCard.X+conFL_AssetCard.Width+12
-                              Y: =98
-
-                            Children:
-                              - lblFL_OperatingEyebrow:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0284C7")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: ="CONTEXTO OPERATIVO"
-                                    Width: =Parent.Width-36
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =16
-
-                              - lblFL_Duty:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0F172A")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =18
-                                    Text: =Text(varFL_DutyFlowM3h) & " m³/h  ·  " & Text(varFL_DutyPressureBar) & " bar"
-                                    Width: =Parent.Width-36
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =43
-
-                              - lblFL_Modes:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#475569")
-                                    Size: =10
-                                    Text: |-
-                                      ="Modos: " & Concat(colFL_OperatingModes,Mode," · ")
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =82
-
-                              - lblFL_Redundancy:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =10
-                                    Text: |-
-                                      ="Redundancia: " & varFL_Redundancy
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =118
-
-                              - lblFL_Constraints:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =10
-                                    Text: =varFL_Constraints
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =154
-
-                        - conFL_EvidenceCard:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
-                            Properties:
-                              BorderColor: =ColorValue("#E2E8F0")
-                              BorderThickness: =1
-                              DropShadow: =DropShadow.None
-                              Fill: =ColorValue("#FFFFFF")
-                              Height: =156
-                              RadiusBottomLeft: =14
-                              RadiusBottomRight: =14
-                              RadiusTopLeft: =14
-                              RadiusTopRight: =14
-                              Width: =Parent.Width-48
-                              X: =24
-                              Y: =338
-
-                            Children:
-                              - lblFL_EvidenceEyebrow:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0284C7")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: ="EVIDENCIA Y COBERTURA DEL ADAPTADOR"
-                                    Width: =Parent.Width-36
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =16
-
-                              - lblFL_EvidenceSources:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    Size: =10
-                                    Text: |-
-                                      ="Fuentes: " & Concat(colFL_EvidenceSources,Source," · ")
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =45
-
-                              - lblFL_RuntimeCoverage:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =10
-                                    Text: =Text(CountRows(colFL_Functions)) & " funciones · " & Text(CountRows(colFL_FunctionalFailures)) & " fallos funcionales · " & Text(CountRows(colFL_FailureModes)) & " modos de fallo · foco " & LookUp(colFL_FailureModes,IsFocus,Code)
-                                    Width: =Parent.Width-36
-                                    Wrap: =false
-                                    X: =18
-                                    Y: =88
-
-                              - lblFL_Disclaimer:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#94A3B8")
-                                    Size: =9
-                                    Text: =varFL_CaseDisclaimer
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =116
+                                    Y: =92
