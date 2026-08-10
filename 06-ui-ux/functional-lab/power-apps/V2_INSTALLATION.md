@@ -7,14 +7,7 @@
 
 Instalar la arquitectura v2 como una aplicación coherente, evitando validar 21 pantallas una por una.
 
-La arquitectura v2 sustituye el enfoque anterior de un único Workspace Shell por:
-
-```text
-Navegación de producto
-+ pantallas por objeto/proceso real
-+ Process Rail de FL-01...FL-28
-+ decisiones y gates explícitos
-```
+La arquitectura v2 utiliza navegación de producto, pantallas por objeto/proceso real, Process Rail FL-01…FL-28, decisiones explícitas y controles de avance explicables.
 
 ## 2. Componentes requeridos
 
@@ -28,11 +21,9 @@ Crear o sustituir primero estos siete componentes con su Source Code completo:
 6. `components/cmp_FL_GatePanelPro.pa.yaml`
 7. `components/cmp_FL_RiskMatrixPro.pa.yaml`
 
-No insertar todavía pantallas que los consuman hasta que las siete definiciones estén guardadas en la app.
+No insertar pantallas que los consuman hasta que las siete definiciones estén guardadas en la app.
 
 ## 3. Crear primero las 21 pantallas vacías
-
-Antes de pegar cualquier pantalla v2, crear pantallas vacías con exactamente estos nombres:
 
 ```text
 scr_FL_Home
@@ -58,28 +49,15 @@ scr_FL_Governance
 scr_FL_Settings
 ```
 
-Motivo: las fórmulas `Navigate(...)` deben resolver los nombres de pantalla aunque su contenido todavía no esté pegado.
+Esto permite que todas las fórmulas `Navigate(...)` resuelvan los nombres de pantalla.
 
-## 4. Orden de pegado recomendado
+## 4. Orden recomendado
 
 ### Lote A — arranque
 
-```text
-scr_FL_Home.pa.yaml
-```
+`scr_FL_Home.pa.yaml`
 
-`Home.OnVisible` contiene el bootstrap v2 protegido por `varFLV2Initialized`.
-
-Abrir Home una vez después de guardar para inicializar:
-
-- locale;
-- rol activo;
-- navegación;
-- P-101;
-- `AnalysisCase`;
-- 28 `AnalysisStageExecution`;
-- funciones/fallos/modos;
-- variables AMEF/RCM/economía/tarea/plan/gobernanza/efectividad.
+Abrir Home una vez para inicializar el runtime v2.
 
 ### Lote B — Activos
 
@@ -116,9 +94,7 @@ scr_FL_Governance.pa.yaml
 scr_FL_Settings.pa.yaml
 ```
 
-## 5. Estado inicial intencional del caso P-101
-
-La v2 comienza en:
+## 5. Estado inicial de P-101
 
 ```text
 FL-01..FL-06   confirmed
@@ -126,87 +102,72 @@ FL-07          draft / current
 FL-08..FL-28   not_started
 ```
 
-Esto conserva la evidencia ya validada durante WS-01 y WS-02 y sitúa el trabajo real siguiente en AMEF.
+El runtime conserva la valoración AMEF del prototipo:
 
-La navegación experta permite consultar cualquier etapa, pero los gates controlan la progresión formal.
+```text
+Severidad     4/5
+Ocurrencia    3/5
+Detección     3/5
+S×O           12
+NPR           36
+```
 
-## 6. Validación integrada — no validar 21 pantallas por separado
+## 6. Validación integrada
 
 ### Smoke 1 — Foundation
 
-1. guardar los siete componentes;
-2. insertar una instancia aislada de los cuatro componentes nuevos de arquitectura v2:
-   - `cmp_FL_ProcessRailPro`;
-   - `cmp_FL_DecisionPanelPro`;
-   - `cmp_FL_GatePanelPro`;
-   - `cmp_FL_RiskMatrixPro`;
-3. comprobar que Studio permanece estable.
+Guardar los siete componentes e insertar de forma aislada los cuatro componentes nuevos de arquitectura v2:
 
-### Smoke 2 — Shell real
+- `cmp_FL_ProcessRailPro`
+- `cmp_FL_DecisionPanelPro`
+- `cmp_FL_GatePanelPro`
+- `cmp_FL_RiskMatrixPro`
 
-Abrir `scr_FL_Home` y verificar:
+Studio debe permanecer estable.
 
-- Sidebar muestra módulos de producto;
-- P-101 aparece como caso activo;
-- botón `Abrir caso` abre Case Overview;
-- accesos FLH / Taxonomía / ADR navegan correctamente.
+### Smoke 2 — Shell
 
-### Smoke 3 — Activos representativo
+Abrir `scr_FL_Home` y comprobar navegación, caso P-101 y accesos a FLH, Taxonomía y ADR.
 
-Abrir `scr_FL_FLH` y verificar:
+### Smoke 3 — Activos
 
-- TreePro carga;
-- P-101 resaltado;
-- búsqueda;
-- selección;
-- expandir/contraer;
-- panel derecho;
-- tabs navegan a Taxonomía, ADR y Ficha 360.
+Abrir `scr_FL_FLH` y comprobar TreePro, P-101 resaltado, búsqueda, selección, expandir/contraer y navegación entre vistas de Activos.
 
-### Smoke 4 — AnalysisCase representativo
+### Smoke 4 — AnalysisCase
 
-Abrir `scr_FL_CaseOverview` y verificar:
+Abrir `scr_FL_CaseOverview` y comprobar 28 etapas, FL-01..06 confirmadas, FL-07 actual y navegación desde Process Rail.
 
-- Process Rail muestra 28 etapas;
-- FL-01..06 confirmadas;
-- FL-07 actual;
-- seleccionar una etapa navega a su pantalla de negocio.
+### Smoke 5 — Decisión
 
-### Smoke 5 — decisión representativa
-
-Abrir `scr_FL_FailureModes` y verificar:
-
-- FM-03 aparece recomendado;
-- selección humana separada de recomendación;
-- un override exige motivo;
-- Gate permite continuar solo con decisión completa.
+Abrir `scr_FL_FailureModes` y comprobar recomendación FM-03, decisión humana separada, override con motivo y control de avance.
 
 ### Smoke 6 — AMEF completo con matriz
 
-Abrir `scr_FL_AMEF` y verificar en un único recorrido:
+Abrir `scr_FL_AMEF` y comprobar en un único recorrido:
 
 1. los tres efectos son editables;
-2. la matriz 10×10 representa Severidad × Ocurrencia;
-3. la celda actual queda resaltada;
-4. seleccionar otra celda actualiza S y O;
-5. Detección se mantiene separada y editable entre 1 y 10;
-6. el NPR se recalcula como `S × O × D`;
-7. la banda de la matriz se muestra por separado del NPR;
-8. la recomendación de consecuencia y la decisión humana permanecen diferenciadas;
-9. el gate explica qué falta y permite continuar a RCM cuando el AMEF está completo.
+2. la matriz representa **Severidad × Ocurrencia en escala 1–5**;
+3. existen **25 celdas (5×5)**;
+4. la celda inicial corresponde a `S=4`, `O=3` y `S×O=12`;
+5. seleccionar otra celda actualiza S y O;
+6. Detección se mantiene separada y editable entre 1 y 5;
+7. el NPR se recalcula como `S × O × D`, con valor inicial 36;
+8. la banda visual se muestra separada del NPR;
+9. recomendación de consecuencia y decisión humana permanecen diferenciadas;
+10. `GatePanelPro` explica qué falta y permite continuar a RCM cuando el AMEF está completo.
 
-Configuración demostrativa del laboratorio para la matriz S×O:
+Bandas visuales provisionales del laboratorio:
 
 ```text
-Bajo       1..20
-Moderado   21..40
-Alto       41..70
-Crítico    71..100
+Bajo       S×O <= 5
+Moderado   S×O <= 10
+Alto       S×O <= 15
+Crítico    S×O > 15
 ```
 
-Estos umbrales son inputs de `cmp_FL_RiskMatrixPro`; **no son una regla corporativa aprobada** y podrán sustituirse por configuración persistente sin modificar el componente.
+Estas bandas **no son una regla corporativa aprobada**. El componente permite sustituirlas sin reconstrucción.
 
-Si los seis smokes funcionan, la arquitectura v2 se considera suficientemente validada para continuar correcciones visuales por pantalla sin volver a discutir el modelo de navegación.
+Si los seis smokes pasan, la arquitectura v2 queda suficientemente validada para Visual QA por pantalla.
 
 ## 7. Qué no se considera validado todavía
 
@@ -219,48 +180,12 @@ VISUAL_QA_VALIDATED          pending para nuevas pantallas
 READY_FOR_INTEGRATION        no
 ```
 
-El control estático previo sí ha comprobado:
-
-- sintaxis YAML;
-- referencias de pantallas;
-- referencias de componentes;
-- ausencia de `Label@2.5.1 + Radius*`;
-- ausencia de `Classic/Button@2.2.0 + AccessibleLabel`;
-- ausencia de la clase conocida de scalars inline con `: `;
-- ausencia del patrón que provocó el último TreePro: `GroupContainer` con `Children` dentro de una Gallery.
-
-El incremento RiskMatrix se validó además con parser YAML antes de publicar el componente y la sustitución de `scr_FL_AMEF`.
+El control estático previo comprueba sintaxis YAML, referencias de pantallas/componentes y las incompatibilidades Source Code ya documentadas.
 
 ## 8. Bilingüismo
 
-La v2 mantiene español como idioma visible actual.
-
-Existe catálogo estructural ES/EN (`colFLText`) y la arquitectura no depende del idioma para keys o reglas.
-
-No se activará selector ES/EN hasta migrar todos los textos visibles al catálogo. Esto evita una app parcialmente traducida.
+La v2 mantiene español como idioma visible actual y estructura preparada para ES/EN.
 
 ## 9. Backend
 
-El runtime actual utiliza Power Fx y colecciones.
-
-No representa el backend final.
-
-La futura conexión debe sustituir el adapter respetando los contratos de:
-
-```text
-AnalysisCase
-AnalysisStageExecution
-Function
-FunctionalFailure
-FailureModeSelection
-RiskAssessment
-RCMAnalysis
-SystemRecommendation
-HumanDecision
-MaintenanceTask
-MaintenancePlanPackage
-Review / Approval / VersionSnapshot
-EffectivenessMeasurement / ChangeRequest
-```
-
-La arquitectura está orientada a una futura implementación Azure SQL sin convertir Azure SQL en dependencia del laboratorio.
+El runtime actual utiliza Power Fx y colecciones como adapter del laboratorio. La futura persistencia deberá respetar los contratos de dominio documentados y puede orientarse a Azure SQL sin convertirlo en dependencia del prototipo.
