@@ -1,21 +1,29 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R5-BM — STUDIO BOOLEAN INPUT BINDING
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-RC1 — PREMIUM SIDEBAR RECOVERY
 #
-# Status: CORRECTIVE DIAGNOSTIC — PENDING POWER APPS STUDIO VALIDATION
+# Status: FULL VISUAL RECOVERY — PENDING ONE FINAL STUDIO SMOKE TEST
 # Incident: FL-SC-001
 # Target component: cmp_FL_SidebarPro
 #
-# PREREQUISITES
-# - AppTitle exists as Data / Input / Text, created manually in Studio.
-# - ShowEnvironment exists as Data / Input / Boolean, created manually in Studio.
-# - ShowEnvironment default value = true.
+# AUTHORING RULE
+# - NO CustomProperties block in this pasteable Source Code surface.
+# - Public component contract will be created in Studio only when required.
+# - This recovery validates the complete premium visual body in one step.
 #
-# IMPORTANT
-# This YAML intentionally contains NO CustomProperties block.
-# It tests only whether Source Code can consume a Studio-created Boolean input
-# through a simple Visible binding.
+# INCLUDED
+# - final brand block
+# - 10-item Functional Lab journey navigation
+# - Gallery with local selection state
+# - premium active/hover states
+# - P-101 current case footer
+# - no external assets, globals or host navigation dependencies
 #
-# PASS -> Text and Boolean public inputs support the hybrid authoring strategy.
-# FAIL -> reduce Boolean declaration vs binding behavior before adding Color.
+# VALIDATION
+# 1. Replace complete component Source Code.
+# 2. Save.
+# 3. Insert ONE NEW instance on an isolated screen.
+# 4. Click several journey rows and confirm local selected state changes.
+# 5. Save and reopen.
+# 6. Confirm no new App Checker errors attributable to the component.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
@@ -23,47 +31,391 @@ ComponentDefinitions:
 
     Properties:
       Fill: =ColorValue("#07111F")
-      Height: =700
-      Width: =220
+      Height: =768
+      Width: =232
 
     Children:
       - conFLSB_Root:
           Control: GroupContainer@1.5.0
-          Variant: ManualLayout
+          Variant: AutoLayout
           Properties:
             BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
             DropShadow: =DropShadow.None
             Fill: =ColorValue("#07111F")
             Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
             RadiusBottomLeft: =0
             RadiusBottomRight: =0
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =Parent.Width
-          Children:
-            - lblFLSB_R5BM_Title:
-                Control: ModernText@1.0.0
-                Properties:
-                  AutoHeight: =true
-                  Color: =ColorValue("#F8FAFC")
-                  FontWeight: =FontWeight.Semibold
-                  Size: =13
-                  Text: =cmp_FL_SidebarPro.AppTitle
-                  Width: =180
-                  Wrap: =false
-                  X: =17
-                  Y: =20
 
-            - lblFLSB_R5BM_Environment:
-                Control: ModernText@1.0.0
+          Children:
+            - conFLSB_Brand:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
                 Properties:
-                  AutoHeight: =true
-                  Color: =ColorValue("#94A3B8")
-                  FontWeight: =FontWeight.Semibold
-                  Size: =9
-                  Text: ="CONCEPT LAB"
-                  Visible: =cmp_FL_SidebarPro.ShowEnvironment
-                  Width: =180
-                  Wrap: =false
-                  X: =17
-                  Y: =54
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#07111F")
+                  FillPortions: =0
+                  Height: =108
+                  LayoutMinHeight: =108
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+
+                Children:
+                  - conFLSB_Mark:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(125,211,252,0.22)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#0B1B2E")
+                        Height: =44
+                        RadiusBottomLeft: =11
+                        RadiusBottomRight: =11
+                        RadiusTopLeft: =11
+                        RadiusTopRight: =11
+                        Width: =44
+                        X: =16
+                        Y: =20
+
+                      Children:
+                        - lblFLSB_Mark:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              Color: =ColorValue("#38BDF8")
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="C2"
+                              Width: =Parent.Width
+                              Wrap: =false
+                              X: =0
+                              Y: =10
+
+                  - lblFLSB_AppTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#F8FAFC")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =13
+                        Text: ="CMMS 2.0"
+                        Width: =146
+                        Wrap: =false
+                        X: =72
+                        Y: =20
+
+                  - lblFLSB_AppSubtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        Size: =9
+                        Text: ="Functional Lab"
+                        Width: =146
+                        Wrap: =false
+                        X: =72
+                        Y: =47
+
+                  - conFLSB_Environment:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(56,189,248,0.18)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#0B2A43")
+                        Height: =22
+                        RadiusBottomLeft: =11
+                        RadiusBottomRight: =11
+                        RadiusTopLeft: =11
+                        RadiusTopRight: =11
+                        Width: =92
+                        X: =72
+                        Y: =72
+
+                      Children:
+                        - lblFLSB_Environment:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              Color: =ColorValue("#7DD3FC")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =7
+                              Text: ="CONCEPT LAB"
+                              Width: =Parent.Width
+                              Wrap: =false
+                              X: =0
+                              Y: =5
+
+            - recFLSB_DividerTop:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  Fill: =RGBA(255,255,255,0.07)
+                  FillPortions: =0
+                  Height: =1
+                  LayoutMinHeight: =1
+                  Width: =Parent.Width
+
+            - conFLSB_Menu:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#07111F")
+                  FillPortions: =1
+                  LayoutMinHeight: =470
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+
+                Children:
+                  - lblFLSB_MenuTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =7
+                        Text: ="FUNCTIONAL JOURNEY"
+                        Width: =196
+                        Wrap: =false
+                        X: =18
+                        Y: =12
+
+                  - galFLNav:
+                      Control: Gallery@2.15.0
+                      Variant: Vertical
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Height: =Parent.Height-38
+                        Items: |-
+                          =
+                          Table(
+                              {Order:0, Key:"Overview", Label:"Overview", IconKey:"Overview"},
+                              {Order:10, Key:"Context", Label:"Case & Context", IconKey:"Context"},
+                              {Order:20, Key:"Functions", Label:"Functions & Failures", IconKey:"Functions"},
+                              {Order:30, Key:"Risk", Label:"AMEF & Risk", IconKey:"Risk"},
+                              {Order:40, Key:"Decision", Label:"RCM Decision", IconKey:"Decision"},
+                              {Order:50, Key:"Economics", Label:"Economics & Task", IconKey:"Plan"},
+                              {Order:60, Key:"Execution", Label:"Interval & Execution", IconKey:"Plan"},
+                              {Order:70, Key:"Traceability", Label:"Traceability & QA", IconKey:"Governance"},
+                              {Order:80, Key:"Publication", Label:"Review & Publication", IconKey:"Governance"},
+                              {Order:90, Key:"Improve", Label:"Effectiveness", IconKey:"Improve"}
+                          )
+                        ShowScrollbar: =false
+                        TemplateFill: =Color.Transparent
+                        TemplatePadding: =2
+                        TemplateSize: =44
+                        Width: =Parent.Width-12
+                        X: =6
+                        Y: =38
+
+                      Children:
+                        - conFLSB_RowSurface:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),RGBA(56,189,248,0.18),RGBA(0,0,0,0))
+                              BorderThickness: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),1,0)
+                              DropShadow: =DropShadow.None
+                              Fill: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),ColorValue("#12395A"),Color.Transparent)
+                              Height: =Parent.TemplateHeight-4
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Width: =Parent.TemplateWidth-4
+                              X: =2
+                              Y: =2
+
+                        - recFLSB_ActiveBar:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Fill: =ColorValue("#38BDF8")
+                              Height: =Parent.TemplateHeight-14
+                              Visible: =ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview")
+                              Width: =3
+                              X: =2
+                              Y: =7
+
+                        - icoFLSB_Item:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),Color.White,ColorValue("#C7D6E8"))
+                              Height: =20
+                              HoverColor: =Color.White
+                              Icon: |-
+                                =
+                                Switch(
+                                    ThisItem.IconKey,
+                                    "Overview", Icon.Home,
+                                    "Context", Icon.Document,
+                                    "Functions", Icon.Document,
+                                    "Risk", Icon.Flag,
+                                    "Decision", Icon.Message,
+                                    "Plan", Icon.Trending,
+                                    "Governance", Icon.Lock,
+                                    "Improve", Icon.TrendingUpwards,
+                                    Icon.Home
+                                )
+                              Width: =20
+                              X: =16
+                              Y: =12
+
+                        - lblFLSB_Item:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),Color.White,ColorValue("#C7D6E8"))
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =If(ThisItem.Key=Coalesce(galFLNav.Selected.Key,"Overview"),FontWeight.Semibold,FontWeight.Normal)
+                              Height: =Parent.TemplateHeight
+                              Size: =9
+                              Text: =ThisItem.Label
+                              Width: =Parent.TemplateWidth-58
+                              Wrap: =false
+                              X: =48
+                              Y: =0
+
+                        - btnFLSB_Hit:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =Color.Transparent
+                              Fill: =Color.Transparent
+                              Height: =Parent.TemplateHeight-4
+                              HoverFill: =RGBA(255,255,255,0.05)
+                              OnSelect: =Select(Parent)
+                              PressedFill: =RGBA(56,189,248,0.10)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Text: =""
+                              Width: =Parent.TemplateWidth-4
+                              X: =2
+                              Y: =2
+
+            - recFLSB_DividerBottom:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  Fill: =RGBA(255,255,255,0.07)
+                  FillPortions: =0
+                  Height: =1
+                  LayoutMinHeight: =1
+                  Width: =Parent.Width
+
+            - conFLSB_Footer:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#0B1B2E")
+                  FillPortions: =0
+                  Height: =136
+                  LayoutMinHeight: =136
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+
+                Children:
+                  - lblFLSB_CaseLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =7
+                        Text: ="CURRENT CASE"
+                        Width: =198
+                        Wrap: =false
+                        X: =16
+                        Y: =14
+
+                  - lblFLSB_CaseCode:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#F8FAFC")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="P-101"
+                        Width: =198
+                        Wrap: =false
+                        X: =16
+                        Y: =38
+
+                  - lblFLSB_CaseName:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        Size: =8
+                        Text: ="Cooling water centrifugal pump"
+                        Width: =198
+                        Wrap: =true
+                        X: =16
+                        Y: =64
+
+                  - conFLSB_StatusDot:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(34,197,94,0.22)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#22C55E")
+                        Height: =8
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =8
+                        X: =16
+                        Y: =112
+
+                  - lblFLSB_Status:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#7DD3FC")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =7
+                        Text: ="FUNCTIONAL REVIEW · AMEF + RCM"
+                        Width: =184
+                        Wrap: =false
+                        X: =32
+                        Y: =106
