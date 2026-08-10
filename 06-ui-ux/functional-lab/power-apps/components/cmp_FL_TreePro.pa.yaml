@@ -1,0 +1,485 @@
+ComponentDefinitions:
+  cmp_FL_TreePro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Color principal de acento.
+        DataType: Color
+        Default: =ColorValue("#1677FF")
+
+      AllowSearch:
+        PropertyKind: Input
+        DisplayName: AllowSearch
+        Description: Muestra u oculta la búsqueda interna.
+        DataType: Boolean
+        Default: =true
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Color de borde del componente.
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      CompactMode:
+        PropertyKind: Input
+        DisplayName: CompactMode
+        Description: Reduce la altura de fila para árboles densos.
+        DataType: Boolean
+        Default: =true
+
+      HighlightFill:
+        PropertyKind: Input
+        DisplayName: HighlightFill
+        Description: Fondo aplicado al nodo resaltado sin seleccionarlo.
+        DataType: Color
+        Default: =ColorValue("#FFF7ED")
+
+      HighlightNodeId:
+        PropertyKind: Input
+        DisplayName: HighlightNodeId
+        Description: Identificador del nodo que debe permanecer resaltado.
+        DataType: Text
+        Default: =""
+
+      IndentSize:
+        PropertyKind: Input
+        DisplayName: IndentSize
+        Description: Sangría horizontal en píxeles por nivel jerárquico.
+        DataType: Number
+        Default: =18
+
+      Items:
+        PropertyKind: Input
+        DisplayName: Items
+        Description: Tabla plana de nodos padre-hijo con estado visible y expandido.
+        DataType: Table
+        Default: |-
+          =
+          Table(
+              {
+                  RowNodeId:"",
+                  RowParentNodeId:"",
+                  RowLevel:1,
+                  RowLabel:"",
+                  RowDescription:"",
+                  RowSortPath:"",
+                  RowPath:"",
+                  RowNodeType:"",
+                  RowHasChildren:false,
+                  RowIsExpanded:false,
+                  RowIsVisible:true
+              }
+          )
+
+      MaxVisualDepth:
+        PropertyKind: Input
+        DisplayName: MaxVisualDepth
+        Description: Profundidad máxima usada para calcular la sangría visual.
+        DataType: Number
+        Default: =11
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Color de texto secundario.
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      OnSelectNode:
+        PropertyKind: Event
+        DisplayName: OnSelectNode
+        Description: Se ejecuta cuando la persona selecciona un nodo.
+        ReturnType: None
+        Default: =false
+
+      OnToggleNode:
+        PropertyKind: Event
+        DisplayName: OnToggleNode
+        Description: Se ejecuta cuando se solicita expandir o contraer un nodo.
+        ReturnType: None
+        Default: =false
+
+      SearchText:
+        PropertyKind: Input
+        DisplayName: SearchText
+        Description: Texto de búsqueda externo; vacío permite usar la búsqueda interna.
+        DataType: Text
+        Default: =""
+
+      SelectedNodeId:
+        PropertyKind: Input
+        DisplayName: SelectedNodeId
+        Description: Identificador seleccionado desde el host.
+        DataType: Text
+        Default: =""
+
+      SelectedLabelOut:
+        PropertyKind: Output
+        DisplayName: SelectedLabelOut
+        Description: Etiqueta del nodo seleccionado.
+        DataType: Text
+
+      SelectedLevelOut:
+        PropertyKind: Output
+        DisplayName: SelectedLevelOut
+        Description: Nivel del nodo seleccionado.
+        DataType: Number
+
+      SelectedNodeIdOut:
+        PropertyKind: Output
+        DisplayName: SelectedNodeIdOut
+        Description: Identificador del nodo seleccionado.
+        DataType: Text
+
+      SelectedParentIdOut:
+        PropertyKind: Output
+        DisplayName: SelectedParentIdOut
+        Description: Identificador del padre del nodo seleccionado.
+        DataType: Text
+
+      SelectedPathOut:
+        PropertyKind: Output
+        DisplayName: SelectedPathOut
+        Description: Ruta legible completa del nodo seleccionado.
+        DataType: Text
+
+      SelectedRecordOut:
+        PropertyKind: Output
+        DisplayName: SelectedRecordOut
+        Description: Registro completo del nodo seleccionado.
+        DataType: Record
+
+      SelectionFill:
+        PropertyKind: Input
+        DisplayName: SelectionFill
+        Description: Fondo del nodo seleccionado.
+        DataType: Color
+        Default: =ColorValue("#E0F7FF")
+
+      ShowBreadcrumb:
+        PropertyKind: Input
+        DisplayName: ShowBreadcrumb
+        Description: Muestra la ruta del nodo seleccionado sobre el árbol.
+        DataType: Boolean
+        Default: =true
+
+      ShowIcons:
+        PropertyKind: Input
+        DisplayName: ShowIcons
+        Description: Muestra iconos de tipo de nodo.
+        DataType: Boolean
+        Default: =true
+
+      ShowLines:
+        PropertyKind: Input
+        DisplayName: ShowLines
+        Description: Muestra guías jerárquicas.
+        DataType: Boolean
+        Default: =true
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Color de fondo del componente.
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Color de texto principal.
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      ToggleNodeIdOut:
+        PropertyKind: Output
+        DisplayName: ToggleNodeIdOut
+        Description: Nodo sobre el que se solicita expansión o contracción.
+        DataType: Text
+
+      ToggleTargetExpandedOut:
+        PropertyKind: Output
+        DisplayName: ToggleTargetExpandedOut
+        Description: Estado expandido solicitado por la acción de toggle.
+        DataType: Boolean
+
+    Properties:
+      Fill: =cmp_FL_TreePro.SurfaceColor
+      Height: =560
+      SelectedLabelOut: =Text(Coalesce(galFLTreeRows.Selected.RowLabel,""))
+      SelectedLevelOut: =Value(Coalesce(galFLTreeRows.Selected.RowLevel,0))
+      SelectedNodeIdOut: =Text(Coalesce(galFLTreeRows.Selected.RowNodeId,cmp_FL_TreePro.SelectedNodeId,""))
+      SelectedParentIdOut: =Text(Coalesce(galFLTreeRows.Selected.RowParentNodeId,""))
+      SelectedPathOut: =Text(Coalesce(galFLTreeRows.Selected.RowPath,""))
+      SelectedRecordOut: =galFLTreeRows.Selected
+      ToggleNodeIdOut: =Text(Coalesce(galFLTreeRows.Selected.RowNodeId,""))
+      ToggleTargetExpandedOut: =!Coalesce(galFLTreeRows.Selected.RowIsExpanded,false)
+      Width: =520
+
+    Children:
+      - conFLTreeRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =cmp_FL_TreePro.BorderColor
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =cmp_FL_TreePro.SurfaceColor
+            Height: =Parent.Height
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            Width: =Parent.Width
+
+          Children:
+            - conFLTreeBreadcrumb:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F8FAFC")
+                  Height: =38
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Visible: =cmp_FL_TreePro.ShowBreadcrumb
+                  Width: =Parent.Width-28
+                  X: =14
+                  Y: =14
+
+                Children:
+                  - lblFLTreeBreadcrumb:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_FL_TreePro.MutedTextColor
+                        FontWeight: =FontWeight.Semibold
+                        Size: =9
+                        Text: =If(IsBlank(cmp_FL_TreePro.SelectedPathOut),"Selecciona un nodo para ver su ruta",cmp_FL_TreePro.SelectedPathOut)
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                        X: =10
+                        Y: =9
+
+            - txtFLTreeSearch:
+                Control: ModernTextInput@1.1.1
+                Properties:
+                  Appearance: =Appearance.Outline
+                  Default: =cmp_FL_TreePro.SearchText
+                  Height: =36
+                  Placeholder: ="Buscar por código, nombre o descripción..."
+                  Visible: =cmp_FL_TreePro.AllowSearch
+                  Width: =Parent.Width-28
+                  X: =14
+                  Y: =If(cmp_FL_TreePro.ShowBreadcrumb,60,14)
+
+            - galFLTreeRows:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  BorderColor: =Color.Transparent
+                  Height: =Parent.Height-Self.Y-12
+                  Items: |-
+                    =
+                    With(
+                        {
+                            _search:Lower(
+                                Trim(
+                                    If(
+                                        !IsBlank(cmp_FL_TreePro.SearchText),
+                                        cmp_FL_TreePro.SearchText,
+                                        txtFLTreeSearch.Text
+                                    )
+                                )
+                            )
+                        },
+                        SortByColumns(
+                            Filter(
+                                cmp_FL_TreePro.Items,
+                                Coalesce(RowIsVisible,true) &&
+                                (
+                                    IsBlank(_search) ||
+                                    _search in Lower(Text(RowLabel)) ||
+                                    _search in Lower(Text(RowDescription)) ||
+                                    _search in Lower(Text(RowPath))
+                                )
+                            ),
+                            "RowSortPath",
+                            SortOrder.Ascending
+                        )
+                    )
+                  OnSelect: =cmp_FL_TreePro.OnSelectNode()
+                  ShowScrollbar: =true
+                  TemplateFill: |-
+                    =
+                    If(
+                        Text(ThisItem.RowNodeId)=Text(galFLTreeRows.Selected.RowNodeId) ||
+                        Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.SelectedNodeId),
+                        cmp_FL_TreePro.SelectionFill,
+                        If(
+                            Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),
+                            cmp_FL_TreePro.HighlightFill,
+                            Color.Transparent
+                        )
+                    )
+                  TemplatePadding: =0
+                  TemplateSize: =If(cmp_FL_TreePro.CompactMode,34,54)
+                  Width: =Parent.Width-28
+                  X: =14
+                  Y: |-
+                    =
+                    If(
+                        cmp_FL_TreePro.AllowSearch,
+                        txtFLTreeSearch.Y+txtFLTreeSearch.Height+10,
+                        If(cmp_FL_TreePro.ShowBreadcrumb,60,14)
+                    )
+
+                Children:
+                  - recFLTreeGuide:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(148,163,184,0.28)
+                        Height: =Parent.TemplateHeight
+                        OnSelect: =Select(Parent)
+                        Visible: =cmp_FL_TreePro.ShowLines && Value(ThisItem.RowLevel)>1
+                        Width: =1
+                        X: =14+((Min(Max(1,Value(ThisItem.RowLevel)),cmp_FL_TreePro.MaxVisualDepth)-2)*cmp_FL_TreePro.IndentSize)
+
+                  - recFLTreeBranch:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(148,163,184,0.28)
+                        Height: =1
+                        OnSelect: =Select(Parent)
+                        Visible: =cmp_FL_TreePro.ShowLines && Value(ThisItem.RowLevel)>1
+                        Width: =12
+                        X: =14+((Min(Max(1,Value(ThisItem.RowLevel)),cmp_FL_TreePro.MaxVisualDepth)-2)*cmp_FL_TreePro.IndentSize)
+                        Y: =If(cmp_FL_TreePro.CompactMode,16,19)
+
+                  - btnFLTreeToggle:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =cmp_FL_TreePro.MutedTextColor
+                        Fill: =Color.Transparent
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        HoverFill: =ColorValue("#F1F5F9")
+                        OnSelect: |-
+                          =
+                          Select(Parent);
+                          cmp_FL_TreePro.OnToggleNode()
+                        PressedFill: =ColorValue("#E2E8F0")
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =11
+                        Text: =If(Coalesce(ThisItem.RowIsExpanded,false),"−","+")
+                        Visible: =Coalesce(ThisItem.RowHasChildren,false)
+                        Width: =22
+                        X: =4+((Min(Max(1,Value(ThisItem.RowLevel)),cmp_FL_TreePro.MaxVisualDepth)-1)*cmp_FL_TreePro.IndentSize)
+                        Y: =If(cmp_FL_TreePro.CompactMode,6,8)
+
+                  - icoFLTreeRow:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        Color: |-
+                          =
+                          Switch(
+                              Lower(Text(ThisItem.RowNodeType)),
+                              "plant",cmp_FL_TreePro.AccentColor,
+                              "area",ColorValue("#0EA5E9"),
+                              "unit",ColorValue("#0EA5E9"),
+                              "system",ColorValue("#0284C7"),
+                              "subsystem",ColorValue("#0284C7"),
+                              "asset",ColorValue("#475569"),
+                              "equipment",ColorValue("#475569"),
+                              "tag",ColorValue("#475569"),
+                              If(Value(ThisItem.RowLevel)=1,cmp_FL_TreePro.AccentColor,cmp_FL_TreePro.MutedTextColor)
+                          )
+                        Height: =If(cmp_FL_TreePro.CompactMode,16,18)
+                        Icon: |-
+                          =
+                          Switch(
+                              Lower(Text(ThisItem.RowNodeType)),
+                              "plant",Icon.Database,
+                              "area",Icon.Folder,
+                              "unit",Icon.Folder,
+                              "system",Icon.Folder,
+                              "subsystem",Icon.Folder,
+                              "asset",Icon.Document,
+                              "equipment",Icon.Document,
+                              "tag",Icon.Document,
+                              If(Value(ThisItem.RowLevel)=1,Icon.Database,Icon.Document)
+                          )
+                        OnSelect: =Select(Parent)
+                        Visible: =cmp_FL_TreePro.ShowIcons
+                        Width: =If(cmp_FL_TreePro.CompactMode,16,18)
+                        X: =30+((Min(Max(1,Value(ThisItem.RowLevel)),cmp_FL_TreePro.MaxVisualDepth)-1)*cmp_FL_TreePro.IndentSize)
+                        Y: =If(cmp_FL_TreePro.CompactMode,9,11)
+
+                  - lblFLTreeRow:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: |-
+                          =
+                          If(
+                              Text(ThisItem.RowNodeId)=Text(galFLTreeRows.Selected.RowNodeId) ||
+                              Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.SelectedNodeId),
+                              cmp_FL_TreePro.AccentColor,
+                              cmp_FL_TreePro.TextColor
+                          )
+                        Fill: =Color.Transparent
+                        Font: =Font.'Segoe UI'
+                        FontWeight: |-
+                          =
+                          If(
+                              Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId) ||
+                              Text(ThisItem.RowNodeId)=Text(galFLTreeRows.Selected.RowNodeId) ||
+                              Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.SelectedNodeId),
+                              FontWeight.Semibold,
+                              If(Value(ThisItem.RowLevel)=1,FontWeight.Semibold,FontWeight.Normal)
+                          )
+                        Height: =If(cmp_FL_TreePro.CompactMode,Parent.TemplateHeight,28)
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =If(cmp_FL_TreePro.CompactMode,10,11)
+                        Text: =Text(ThisItem.RowLabel)
+                        Width: =Parent.TemplateWidth-Self.X-10
+                        Wrap: =false
+                        X: |-
+                          =
+                          If(
+                              cmp_FL_TreePro.ShowIcons,
+                              icoFLTreeRow.X+24,
+                              32+((Min(Max(1,Value(ThisItem.RowLevel)),cmp_FL_TreePro.MaxVisualDepth)-1)*cmp_FL_TreePro.IndentSize)
+                          )
+                        Y: =If(cmp_FL_TreePro.CompactMode,0,4)
+
+                  - lblFLTreeDescription:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_FL_TreePro.MutedTextColor
+                        Size: =9
+                        Text: =Text(ThisItem.RowDescription)
+                        Visible: =!cmp_FL_TreePro.CompactMode && !IsBlank(Text(ThisItem.RowDescription))
+                        Width: =Parent.TemplateWidth-Self.X-10
+                        Wrap: =false
+                        X: =lblFLTreeRow.X
+                        Y: =29
