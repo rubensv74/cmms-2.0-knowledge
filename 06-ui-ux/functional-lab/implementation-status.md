@@ -2,8 +2,8 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
-**Último gate superado:** `F01-00A-R1 root-only` — INSTANCE_SAFE PASS  
-**Gate actual:** `F01-00A-R2 identidad/texto` — PENDING STUDIO VALIDATION
+**Último gate superado:** `F01-00A-R2 identidad/texto` — INSTANCE_SAFE PASS  
+**Gate actual:** `F01-00A-R3 contenedores estáticos` — PENDING STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
@@ -20,8 +20,9 @@
 | F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
 | F01-00 Auditoría Power Apps Foundation | partial | App creada y diagnóstico real de seguridad de instancia en curso. |
 | F01-00A cmp_FL_SidebarPro | review-required | La versión completa inicial cerraba Studio al insertar instancia; FL-SC-001 abierto. |
-| F01-00A-R1 root-only diagnostic | validated-pass | Definición e instancia correctas; baseline CanvasComponent + root GroupContainer seguro en esta prueba. |
-| F01-00A-R2 identity/text diagnostic | pending-user-validation | Añade únicamente cuatro ModernText estáticos sobre R1. |
+| F01-00A-R1 root-only diagnostic | validated-pass | CanvasComponent + root GroupContainer ManualLayout es instance-safe en la prueba realizada. |
+| F01-00A-R2 identity/text diagnostic | validated-pass | Cuatro ModernText estáticos sobre R1 son instance-safe; no reproducen el cierre. |
+| F01-00A-R3 static-containers diagnostic | pending-user-validation | Reintroduce composición estática con contenedores anidados/AutoLayout, sin navegación ni contrato público. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara hasta resolver seguridad de instancia del Sidebar. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | Depende de componentes fundacionales `INSTANCE_SAFE`. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
@@ -39,7 +40,6 @@ Observación inicial confirmada en `CMMS 2.0 Functional Lab`:
 
 ```text
 F01-00A complete source pasted / definition created: PASS
-Save / no immediate Source Code error: PASS
 Insert complete component instance: Studio closes
 INSTANCE_SAFE: FAIL
 READY_FOR_INTEGRATION: NO
@@ -48,11 +48,17 @@ READY_FOR_INTEGRATION: NO
 Resultado de reducción actual:
 
 ```text
-R1 root-only definition: PASS
-R1 root-only instance: PASS
-R1 save after insertion: PASS reported
-R2 identity/text: PENDING
+R1 root-only: PASS
+R2 identity/text: PASS
+R3 static containers: PENDING
 ```
+
+Interpretación vigente:
+
+- el mecanismo básico de CanvasComponent no reproduce el cierre;
+- `GroupContainer@1.5.0` raíz ManualLayout no reproduce el cierre;
+- cuatro `ModernText@1.0.0` estáticos con `AutoHeight=true` tampoco lo reproducen;
+- la causa técnica concreta sigue `UNKNOWN`.
 
 Registro:
 
@@ -60,16 +66,14 @@ Registro:
 development/incidents/FL-SC-001-component-instance-crash.md
 ```
 
-La causa técnica se mantiene como `UNKNOWN` hasta obtener un reproducer reducido.
-
 ## 3. Estrategia de corrección
 
-La reconstrucción seguirá desde el último baseline seguro:
+La reconstrucción continúa desde el último baseline seguro:
 
 ```text
 R1 root only                         PASS
-→ R2 identidad/texto                CURRENT
-→ R3 contenedores estáticos
+→ R2 identidad/texto                PASS
+→ R3 contenedores estáticos         CURRENT
 → R4 navegación visual sin eventos
 → R5 custom inputs simples
 → R6 Gallery + Table
@@ -77,7 +81,7 @@ R1 root only                         PASS
 → R8 geometría completa
 ```
 
-Solo el primer estadio que reproduce el cierre se considera evidencia útil para aislar la causa.
+Si R3 falla, se subdividirá R3 para aislar AutoLayout frente a anidación antes de avanzar.
 
 ## 4. Arquitectura de interfaz de WS-01
 
