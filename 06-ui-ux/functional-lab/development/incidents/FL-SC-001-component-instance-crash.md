@@ -1,16 +1,14 @@
 # FL-SC-001 — Studio se cierra al insertar instancia de CanvasComponent
 
 **Fecha:** 2026-08-10  
-**Estado:** OPEN — BLOCKING  
+**Estado:** OPEN — BLOCKING UNTIL FULL COMPONENT RECOVERY  
 **Severidad:** alta para el flujo de autoría  
 **Bloque afectado:** F01-00A  
 **Componente:** `cmp_FL_SidebarPro`
 
-## 1. Efecto confirmado
+## 1. Efecto inicial
 
 La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue aceptada por Power Apps Studio, pero Studio se cerró al insertar una instancia.
-
-La reducción incremental ha aislado una diferencia crítica entre dos caminos de autoría del mismo contrato `Data / Input / Text`.
 
 ## 2. Evidencia acumulada
 
@@ -19,136 +17,86 @@ R1 root-only                                  PASS
 R2 identidad/texto                           PASS
 R3 contenedores estáticos                    PASS
 R4 navegación visual sin eventos             PASS
-R5 Text+Boolean+Color por Source Code         FAIL
+R5 Text+Boolean+Color por CustomProperties    FAIL
 R5-T Input/Text declarado+consumido           FAIL
 R5-TD Input/Text declarado, no consumido      FAIL
 R5-TM Input/Text creado manualmente en Studio PASS
-R5-TS Source Code visible tras R5-TM           CAPTURED
+R5-TS Source Code visible tras R5-TM           AppTitle OMITIDO
+R5-TB binding YAML → AppTitle manual           PASS
 ```
 
-### R5-TD — Source Code
+## 3. Hallazgo demostrado
 
-Baseline mínimo R1 + una única CustomProperty `AppTitle` (`Input/Text`), no consumida.
+R5-TB prueba que un control definido mediante Source Code puede consumir de forma estable una propiedad pública `Data / Input / Text` creada manualmente en Studio:
 
 ```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       FAIL — Studio closes on insertion
+Contrato público AppTitle → creado en Studio
+ModernText.Text            → =cmp_FL_SidebarPro.AppTitle
+CustomProperties:          → NO presente en YAML pegable
+INSTANCE_SAFE              → PASS
 ```
 
-### R5-TM — creación manual en Studio
+Por tanto:
 
-Se creó desde la interfaz de Studio:
+1. `Input/Text` es viable en la app activa.
+2. El binding desde el cuerpo Source Code hacia una propiedad creada por Studio es viable.
+3. El cierre se reproduce cuando el contrato público se intenta crear inyectando `CustomProperties:` en la superficie YAML pegable probada.
+4. El Source Code visible de Studio no representa completamente el contrato público, porque `AppTitle` existe pero no aparece serializado en esa superficie.
 
-```text
-Display name: App Title
-Property name: AppTitle
-Property type: Data
-Definition: Input
-Data type: Text
-```
-
-La propiedad no se consumió.
-
-```text
-INSTANCE_SAFE PASS
-```
-
-### R5-TS — captura del Source Code visible
-
-Después de R5-TM, el Source Code mostrado por Studio fue capturado completo.
-
-Hallazgo:
-
-```text
-NO aparece CustomProperties:
-NO aparece AppTitle
-```
-
-El código visible contiene únicamente `DefinitionType`, `Properties` y `Children`, aunque `AppTitle` existe funcionalmente en el componente y la instancia es estable.
-
-## 3. Interpretación actual
+## 4. Causa
 
 ### Causa de proceso confirmada
 
-`DEFINITION_ACCEPTED` no demuestra seguridad de instancia. `INSTANCE_SAFE` es un gate independiente y obligatorio.
+`DEFINITION_ACCEPTED` no demuestra `INSTANCE_SAFE`.
 
-Además, el Source Code visible de esta superficie no puede tratarse como representación completa del contrato público del CanvasComponent.
-
-### Superficie técnica delimitada
+### Causa operativa suficientemente delimitada
 
 ```text
-SOURCE-CODE-INJECTED CustomProperties BLOCK IS SUFFICIENT TO REPRODUCE
-STUDIO-CREATED Input/Text IS INSTANCE-SAFE
-STUDIO VISIBLE SOURCE OMITS THAT CUSTOM PROPERTY
+UNSAFE AUTHORING PATH:
+CustomProperties metadata injected through the tested pasteable Source Code surface
+
+SAFE AUTHORING PATH DEMONSTRATED FOR TEXT INPUT:
+public property created in Studio
++
+visual/body YAML consumes that property
 ```
 
-No está demostrado el detalle interno exacto de serialización/hidratación que provoca el cierre, pero sí existe una frontera operativa suficiente para corregir el método de trabajo.
-
-## 4. Evidencia oficial relevante
-
-Microsoft documenta `Data/Input` como capacidad soportada de Canvas Components.
-
-Microsoft también indica que el YAML de canvas apps está en desarrollo activo, puede estar incompleto y está orientado a revisión/control de código fuente; la edición externa soportada se vincula a Power Platform Git Integration.
-
-Referencias oficiales:
-
-- `https://learn.microsoft.com/power-apps/maker/canvas-apps/component-properties`
-- `https://learn.microsoft.com/power-apps/maker/canvas-apps/power-apps-yaml`
+El detalle interno exacto de serialización/hidratación permanece no observable en esta superficie, pero ya existe un workaround estable y reproducible para continuar el desarrollo.
 
 ## 5. Estrategia de autoría corregida
 
-A partir de R5-TS:
-
 ```text
-CONTRATO PÚBLICO DEL COMPONENTE
-Custom properties → crear/configurar en Studio
+CONTRATO PÚBLICO
+Inputs / Outputs / Events → crear/configurar primero en Studio
 
-CUERPO VISUAL DEL COMPONENTE
-Controls / layout / fórmulas → puede construirse incrementalmente con Source Code validado
+CUERPO DEL COMPONENTE
+Controls / layout / formulas → Source Code incremental validado
+
+BINDING
+Source Code puede referenciar propiedades ya creadas en Studio, tras smoke test
 ```
 
-No volver a inyectar un bloque `CustomProperties:` en el YAML pegable del Functional Lab mientras no exista evidencia explícita de soporte para esa superficie de autoría.
+No volver a introducir `CustomProperties:` en el YAML pegable del Functional Lab salvo nueva evidencia explícita de compatibilidad.
 
-## 6. Siguiente prueba — R5-TB
+## 6. Siguiente validación
 
-Objetivo: comprobar si un control definido por Source Code puede consumir de forma estable una propiedad `AppTitle` que ya fue creada manualmente en Studio.
+Antes de reconstruir el Sidebar completo se validarán los tipos públicos que realmente necesita, uno por uno y Studio-first.
 
-R5-TB:
-
-1. mantener `AppTitle` creado manualmente;
-2. pegar Source Code **sin `CustomProperties:`**;
-3. añadir un único `ModernText` cuyo `Text` sea `cmp_FL_SidebarPro.AppTitle`;
-4. guardar;
-5. insertar instancia nueva;
-6. comprobar save/reopen.
-
-Interpretación:
-
-- PASS → queda demostrada una estrategia híbrida estable: contrato en Studio + cuerpo por Source Code;
-- FAIL → el binding desde código hacia una propiedad manual requiere una reducción adicional.
-
-No se avanza a R6 ni F01-00B antes de esta prueba.
-
-## 7. Regla preventiva inmediata
+Siguiente incremento:
 
 ```text
-PASS_STATIC
-DEFINITION_ACCEPTED
-INSTANCE_SAFE
-PUBLIC_CONTRACT_VALIDATED
-VISUAL_QA_VALIDATED
-READY_FOR_INTEGRATION
+R5-BM — Data / Input / Boolean creado manualmente en Studio
+         + binding simple Visible desde YAML
 ```
 
-Para CustomProperties en el flujo actual:
+No se introduce todavía geometría condicional compleja.
 
-> No declarar `CustomProperties:` en YAML pegable. Crear primero el contrato en Studio, probar instancia y después validar por separado cualquier fórmula Source Code que consuma ese contrato.
+## 7. Gate de cierre
 
-## 8. Criterio de cierre
+FL-SC-001 permanecerá abierto hasta que:
 
-FL-SC-001 podrá cerrarse cuando:
-
-1. exista una estrategia de autoría reproduciblemente instance-safe;
-2. el componente completo sea estable al insertar, guardar y reabrir;
-3. el contrato público y Visual QA pasen;
-4. el aprendizaje reutilizable central quede actualizado.
+1. el Sidebar completo reconstruido sea `INSTANCE_SAFE`;
+2. guardar/reabrir sea estable;
+3. el contrato público requerido quede validado;
+4. Visual QA pase;
+5. el aprendizaje central permanezca actualizado.
