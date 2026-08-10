@@ -3,7 +3,7 @@
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
 **Último gate superado:** `F01-00A-R5-TB hybrid Text binding` — INSTANCE_SAFE PASS  
-**Gate actual:** `F01-00A-R5-BM Boolean contract` — PENDING STUDIO VALIDATION
+**Gate actual:** `F01-00A-R5-BM Boolean contract` — BLOCKED BY PROPERTY RESOLUTION
 
 ## 1. Estado de incrementos
 
@@ -22,7 +22,7 @@
 | F01-00A-R5-TM | validated-pass | Input/Text creado manualmente en Studio es instance-safe. |
 | F01-00A-R5-TS | completed | Studio Source Code visible omite la propiedad pública manual. |
 | F01-00A-R5-TB | validated-pass | YAML puede consumir `AppTitle` creado en Studio; estrategia híbrida demostrada. |
-| F01-00A-R5-BM | pending-user-validation | Validar Boolean Studio-first + binding simple. |
+| F01-00A-R5-BM | blocked-contract-resolution | Studio no se cierra, pero `cmp_FL_SidebarPro.ShowEnvironment` devuelve `Name isn't valid`; verificar contrato/nombre exacto en Studio antes de continuar. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara todavía. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | No se prepara todavía. |
 
@@ -38,30 +38,30 @@ Para `Input/Text` este patrón ha alcanzado `INSTANCE_SAFE = PASS`.
 
 No volver a inyectar `CustomProperties:` dentro del YAML pegable de esta superficie.
 
-## 3. Incidente FL-SC-001
+## 3. R5-BM — estado real
 
-El incidente sigue abierto porque el Sidebar completo aún no ha sido recuperado, pero la superficie problemática y el workaround están suficientemente delimitados para continuar.
-
-```text
-Source-created CustomProperties  FAIL
-Studio-created Text property     PASS
-YAML binding to Studio property  PASS
-```
-
-## 4. Siguiente incremento
-
-`R5-BM` validará un único contrato Boolean:
+El cuerpo R5-BM está cargado y Studio permanece abierto, pero el binding Boolean no es válido:
 
 ```text
-ShowEnvironment
-Property type: Data
-Definition: Input
-Data type: Boolean
-Default: true
+Visible = cmp_FL_SidebarPro.ShowEnvironment
+          ↓
+Name isn't valid. 'ShowEnvironment' isn't recognized.
 ```
 
-El YAML solo lo consumirá en `ModernText.Visible`. No habrá todavía cambios de Width, X, layout o navegación derivados del Boolean.
+Por tanto:
+
+```text
+Boolean manual creation  NO CONFIRMADA
+Boolean binding          FAIL FORMULA RESOLUTION
+Instance crash           NO
+```
+
+La prueba queda detenida. Antes de corregir código debe verificarse el contrato real en Studio: componente propietario, nombre interno exacto y persistencia de la propiedad después de guardar.
+
+## 4. Incidente FL-SC-001
+
+El incidente sigue abierto porque el Sidebar completo aún no ha sido recuperado, pero la superficie problemática y el workaround para Text están suficientemente delimitados.
 
 ## 5. Regla de continuidad
 
-> F01-00B y el App Shell siguen bloqueados hasta que `cmp_FL_SidebarPro` completo recupere `INSTANCE_SAFE`, contrato público y Visual QA.
+> No se genera otro YAML ni se avanza a Color mientras `ShowEnvironment` no exista y sea reconocida como propiedad pública de `cmp_FL_SidebarPro`.
