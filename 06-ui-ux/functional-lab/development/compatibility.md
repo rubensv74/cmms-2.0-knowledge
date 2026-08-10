@@ -11,7 +11,7 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 2. confirmar control y versión exactos contra referencias ya probadas cuando sea posible;
 3. comparar con ejemplos validados;
 4. no asumir que un componente existe en la app porque exista en GitHub;
-5. no reutilizar un componente de Pulse sin revisar acoplamientos de marca, variables, assets y contratos;
+5. no reutilizar un componente de Pulse sin revisar acoplamientos;
 6. registrar cualquier error nuevo y convertirlo en regla preventiva;
 7. para CanvasComponent, separar siempre aceptación de definición y seguridad de instancia.
 
@@ -37,45 +37,36 @@ Regla crítica:
 | `Label@2.5.1` + `Radius*` | `PA2108` | Aplicar radios al contenedor, no a la etiqueta. |
 | `Classic/Button@2.2.0` + `AccessibleLabel` | `PA2108` | No declarar esa propiedad sin validación específica. |
 | `TabList@2.2.30` + `Reset()` | error de fórmula | Controlar selección mediante variable. |
-| variable numérica inicializada solo con `Blank()` | tipo/nombre no establecido | Primera asignación numérica inequívoca, por ejemplo `0`. |
 | `CanvasComponent` solo existente en GitHub | `PA2301` | Confirmar que el componente está añadido a la app activa. |
-| CanvasComponent con definición aceptada | puede cerrar Studio al insertar instancia | Smoke test de instancia aislada obligatorio antes de integración. |
-| SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático; preferir componente validado. |
-| `ModernText@1.0.0` estático con altura rígida | mini-scrollbars/clipping | `AutoHeight=true` por defecto y validación visual real. |
+| CanvasComponent con definición aceptada | puede cerrar Studio al insertar instancia | Smoke test de instancia aislada obligatorio. |
+| SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático. |
+| `ModernText@1.0.0` estático con altura rígida | mini-scrollbars/clipping | `AutoHeight=true` por defecto. |
 
 ## Evidencia específica de Functional Lab
 
-### FL-EVID-001 — Baseline CanvasComponent mínimo
-`F01-00A-R1`: `INSTANCE_SAFE = PASS`.
-
-### FL-EVID-002 — ModernText estático
-`F01-00A-R2`: `INSTANCE_SAFE = PASS`.
-
-### FL-EVID-003 — AutoLayout y contenedores anidados estáticos
-`F01-00A-R3`: `INSTANCE_SAFE = PASS`.
-
-### FL-EVID-004 — Controles visuales de navegación sin eventos
-`F01-00A-R4`: `INSTANCE_SAFE = PASS`.
-
-Incluyó `Rectangle@2.3.0`, `Classic/Icon@2.5.0`, `Label@2.5.1` y `Classic/Button@2.2.0`, todos en configuración estática y sin `OnSelect`.
-
-### FL-EVID-005 — CustomProperties primitivas combinadas
-
-`F01-00A-R5` introdujo `Input/Text`, `Input/Boolean` e `Input/Color`, consumidos por controles ya validados.
-
 ```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       FAIL — Studio closes on insertion
+FL-EVID-001  R1 root-only                                      PASS
+FL-EVID-002  R2 ModernText estático                            PASS
+FL-EVID-003  R3 AutoLayout + contenedores anidados             PASS
+FL-EVID-004  R4 Rectangle/Icon/Label/Button estáticos          PASS
+FL-EVID-005  R5 Input Text+Boolean+Color                       FAIL
+FL-EVID-006  R5-T Input/Text declarado+consumido               FAIL
+FL-EVID-007  R5-TD Input/Text declarado, NO consumido          FAIL
 ```
 
-### FL-EVID-006 — Input/Text declarado y consumido
+### FL-EVID-007 — Input/Text declarado por Source Code, sin consumo
 
-`F01-00A-R5-T` volvió al baseline R4 y añadió únicamente:
+R5-TD usa el baseline mínimo R1 y añade exclusivamente:
 
-- `AppTitle` — `PropertyKind: Input`;
-- `DataType: Text`;
-- `Default: ="CMMS 2.0"`;
-- consumo: `ModernText.Text = cmp_FL_SidebarPro.AppTitle`.
+```yaml
+CustomProperties:
+  AppTitle:
+    PropertyKind: Input
+    DataType: Text
+    Default: ="CMMS 2.0"
+```
+
+Ningún control referencia la propiedad.
 
 Resultado real:
 
@@ -84,11 +75,24 @@ DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       FAIL — Studio closes on insertion
 ```
 
-Interpretación obligatoria:
+Interpretación permitida:
 
-> El fallo ya puede acotarse al patrón `Input/Text` declarado + consumido, pero todavía NO distingue si el problema está en la mera declaración de la CustomProperty o en el binding/consumo desde un control hijo.
+> En el baseline y mecanismo de autoría probados, la mera declaración **mediante Source Code** de una CustomProperty `Input/Text` es suficiente para reproducir FL-SC-001.
 
-La documentación oficial de Microsoft considera soportadas las propiedades Data de tipo Input para valores como texto y color; por tanto, el cierre observado se trata como incompatibilidad/incidente de autoría, no como comportamiento esperado.
+Interpretaciones NO permitidas todavía:
+
+- afirmar que `Input/Text` sea inseguro cuando se crea manualmente en Studio;
+- afirmar que Canvas Components no soporte custom inputs de texto;
+- extrapolar el fallo a Boolean, Color, Table, Output o Event;
+- atribuir el fallo al consumo/binding, porque R5-TD no consume la propiedad.
+
+## Evidencia oficial Microsoft relevante
+
+Microsoft documenta las propiedades Data/Input como mecanismo soportado para componentes Canvas, incluyendo valores como texto y color. citeturn310826view1
+
+Microsoft también indica que el esquema `.pa.yaml` está en desarrollo activo, que el Source Code actual está orientado a control de código fuente y que la edición externa se soporta únicamente mediante Power Platform Git Integration. citeturn310826view0
+
+Por tanto, FL-SC-001 se sigue tratando como incidente de compatibilidad/autoría; no como comportamiento funcional esperado.
 
 ## Decisiones para Functional Lab
 
@@ -112,59 +116,42 @@ Los componentes de Pulse se usan como referencia, no como dependencia directa.
 Una propiedad válida en un control no se trasladará a otro por similitud visual.
 
 ### FL-COMP-005 — Sin estado global oculto dentro de componentes
-El estado deberá entrar por inputs y salir por outputs/events, una vez demostrada su compatibilidad.
+El estado deberá entrar por inputs y salir por outputs/events una vez demostrada su compatibilidad.
 
 ### FL-COMP-006 — Premium no significa sobrecarga visual
 Priorizar jerarquía, legibilidad, densidad, estados, accesibilidad, feedback y consistencia.
 
 ### FL-COMP-007 — Reducir antes de reescribir cuando falla una instancia
-
-```text
-root only
-→ identidad/texto
-→ contenedores estáticos
-→ acciones sin eventos
-→ custom inputs simples
-→ colecciones/Table/Gallery
-→ outputs/events
-→ geometría completa
-```
-
 El primer estadio que reproduce el fallo se subdivide; no se avanza al siguiente.
 
-### FL-COMP-008 — R5 se subdivide por tipo y después por declaración/consumo
+### FL-COMP-008 — Separar contrato de componente y mecanismo de autoría
 
-Resultados:
+R5-TD obliga a añadir un nuevo gate:
 
-```text
-R5    Text+Boolean+Color              FAIL
-R5-T  Input/Text declarado+consumido  FAIL
-```
+> Cuando una CustomProperty creada mediante Source Code provoque `FAIL_INSTANCE`, antes de descartar el contrato funcional debe recrearse el mismo contrato **manualmente en Studio** sobre un baseline instance-safe.
 
-Siguiente reducción obligatoria:
+Diagnóstico actual:
 
 ```text
-R5-TD  Input/Text declarado, NO consumido
+R5-TM — Data / Input / Text creado manualmente en Studio, sin consumo
 ```
-
-Para maximizar poder diagnóstico, R5-TD usará el baseline mínimo R1 ya validado y añadirá exclusivamente la declaración `Input/Text`, sin referencias a esa propiedad desde ningún control hijo.
 
 Interpretación:
 
-- si R5-TD falla: la mera declaración `Input/Text` es suficiente para reproducir el cierre en este baseline;
-- si R5-TD pasa: el foco se desplaza al binding/consumo de la propiedad o a su interacción con una composición más compleja.
+- `R5-TM PASS` → el contrato `Input/Text` es viable y el problema queda concentrado en el camino de autoría Source Code/serialización/hidratación;
+- `R5-TM FAIL` → investigar Enhanced component properties/app baseline/Studio antes de continuar.
+
+Hasta obtener este resultado, no preparar R6, PageHeader ni App Shell.
 
 ## Incidentes Functional Lab
 
 ### FL-SC-001 — `cmp_FL_SidebarPro` cierra Studio al insertar instancia
 
 **Fecha:** 2026-08-10  
-**Bloque:** F01-00A  
-**Causa técnica:** `UNKNOWN — SURFACE NARROWED TO INPUT/TEXT DECLARATION VS CONSUMPTION`.  
+**Causa técnica:** `UNKNOWN — SOURCE-CODE INPUT/TEXT DECLARATION PATH IS SUFFICIENT TO REPRODUCE`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`, `R5-T FAIL`.  
-**Correctivo actual:** `F01-00A-R5-TD`, Input/Text declarado sin consumo.  
-**Registro completo:** `development/incidents/FL-SC-001-component-instance-crash.md`.
+**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`, `R5-T FAIL`, `R5-TD FAIL`.  
+**Correctivo actual:** `F01-00A-R5-TM`, creación manual de Input/Text en Studio.
 
 ## Estado de validación
 
@@ -176,7 +163,8 @@ R3 static containers instance: PASS
 R4 static navigation instance: PASS
 R5 primitive custom inputs combined: FAIL
 R5-T Text input declared+consumed: FAIL
-R5-TD Text input declaration only: PENDING
+R5-TD Text input declaration only via Source Code: FAIL
+R5-TM manual Text input: PENDING
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
 ```
