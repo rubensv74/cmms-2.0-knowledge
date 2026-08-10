@@ -8,11 +8,9 @@
 
 ## 1. Efecto confirmado
 
-La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue integrada en Power Apps Studio sin errores aparentes.
+La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue aceptada por Power Apps Studio, pero Studio se cerró al insertar una instancia.
 
-Al insertar una instancia del componente completo inicial en la app `CMMS 2.0 Functional Lab`, Power Apps Studio se cerró.
-
-La reducción incremental ha reproducido de nuevo el cierre en `F01-00A-R5`, después de que R1–R4 fueran `INSTANCE_SAFE`.
+La reducción incremental ha reproducido el cierre de nuevo en R5 y R5-T después de que R1–R4 fueran `INSTANCE_SAFE`.
 
 ## 2. Evidencia acumulada
 
@@ -21,82 +19,87 @@ R1 root-only                         PASS
 R2 identidad/texto                  PASS
 R3 contenedores estáticos           PASS
 R4 navegación visual sin eventos    PASS
-R5 custom inputs Text+Boolean+Color FAIL — Studio closes on instance
+R5 Text+Boolean+Color                FAIL
+R5-T Input/Text declarado+consumido FAIL
 ```
 
-R5 introducía únicamente estas propiedades custom primitivas sobre el baseline R4 ya validado:
+### R5-T
 
-- `AppTitle` — Input / Text;
-- `ShowEnvironment` — Input / Boolean;
-- `AccentColor` — Input / Color.
+R5-T volvió al baseline R4 validado y añadió una única CustomProperty:
 
-Las tres propiedades eran consumidas por controles ya validados:
+```text
+AppTitle
+PropertyKind: Input
+DataType: Text
+Default: ="CMMS 2.0"
+```
 
-- Text → `ModernText.Text`;
-- Boolean → `ModernText.Visible`;
-- Color → `ModernText.Color` y `Rectangle.Fill`.
+La propiedad se consumía únicamente en:
 
-R5 seguía sin contener:
+```text
+ModernText.Text = cmp_FL_SidebarPro.AppTitle
+```
 
-- `Table`;
-- `Gallery`;
-- `Output`;
-- `Event`;
-- `OnSelect`;
-- `ThisItem`;
-- navegación real.
+Resultado real comunicado:
+
+```text
+R5-T cierra Studio
+```
 
 ## 3. Causa
 
 ### Causa de proceso confirmada
 
-`DEFINITION_ACCEPTED` no es suficiente para integrar un CanvasComponent. El gate `INSTANCE_SAFE` es obligatorio.
+`DEFINITION_ACCEPTED` no demuestra `INSTANCE_SAFE`.
 
 ### Causa técnica concreta
 
 ```text
-UNKNOWN — SURFACE NARROWED TO R5 DELTA
+UNKNOWN — SURFACE NARROWED TO INPUT/TEXT DECLARATION VS CONSUMPTION
 ```
 
-R5 demuestra únicamente que **algún elemento dentro del delta de propiedades custom primitivas o su consumo** es necesario en esta reproducción.
+R5-T permite descartar que sea necesaria la combinación Text+Boolean+Color para reproducir el problema: `Input/Text` declarado y consumido ya basta en ese baseline.
 
-Todavía NO puede afirmarse que:
+Todavía NO puede afirmarse si la causa está en:
 
-- todas las CustomProperties sean inseguras;
-- `Text` sea la causa;
-- `Boolean` sea la causa;
-- `Color` sea la causa;
-- el problema sea declarar la propiedad frente a consumirla.
+- declarar una CustomProperty `Input/Text`;
+- consumirla desde un control hijo;
+- el binding concreto `ModernText.Text`;
+- una interacción entre la propiedad y la composición R4.
 
 ## 4. Superficies descartadas como suficientes
 
-R1–R4 permiten afirmar, para las configuraciones concretas probadas, que no reproducen el cierre por sí solas:
+R1–R4 no reproducen el cierre por sí solos en las configuraciones probadas:
 
 - CanvasComponent mínimo;
 - `GroupContainer@1.5.0` ManualLayout;
 - `ModernText@1.0.0` estático;
 - AutoLayout vertical;
 - contenedores anidados estáticos;
-- `Rectangle@2.3.0` estático;
-- `Classic/Icon@2.5.0` estático;
-- `Label@2.5.1` sin `Radius*`;
-- `Classic/Button@2.2.0` sin `AccessibleLabel` y sin `OnSelect`.
+- Rectangle/Icon/Label/Button estáticos sin eventos.
 
-## 5. Estrategia de diagnóstico actual
+## 5. Diagnóstico actual
 
-R5 se subdivide por tipo de propiedad antes de introducir cualquier otra responsabilidad:
+Siguiente correctivo:
 
 ```text
-R5-T  Text input only
-→ si PASS: probar Boolean y Color por separado
-→ si FAIL: subdividir declaración vs consumo de Text
+R5-TD — Input/Text DECLARADO, NO CONSUMIDO
 ```
 
-El siguiente correctivo es `F01-00A-R5-T` y partirá del baseline R4 validado, añadiendo exclusivamente una propiedad custom `Text` consumida por el título.
+Para aumentar el poder diagnóstico, R5-TD parte del baseline mínimo R1 `INSTANCE_SAFE` y añade únicamente la declaración `Input/Text`, sin ningún control que la referencie.
+
+Interpretación:
+
+- **FAIL** → la mera declaración `Input/Text` es suficiente para reproducir el cierre en este baseline;
+- **PASS** → la declaración aislada es segura y el foco se desplaza al consumo/binding o a la interacción con la composición R4.
 
 No se prepara R6 ni F01-00B mientras FL-SC-001 permanezca abierto.
 
-## 6. Regla preventiva inmediata
+## 6. Referencia Microsoft
+
+La documentación vigente de Microsoft describe las propiedades Data/Input de componentes Canvas como mecanismo soportado para pasar valores como texto o color entre la app y el componente. El cierre observado se registra por tanto como incidente/incompatibilidad de autoría y no como comportamiento esperado.
+
+## 7. Regla preventiva inmediata
 
 Todo CanvasComponent debe atravesar:
 
@@ -109,14 +112,14 @@ VISUAL_QA_VALIDATED
 READY_FOR_INTEGRATION
 ```
 
-Cuando una etapa falle, reducir únicamente el delta de esa etapa. No avanzar a nuevas responsabilidades ni promover hipótesis a causa sin reproducer reducido.
+Cuando una etapa falla, reducir exclusivamente su delta antes de avanzar.
 
-## 7. Criterio de cierre
+## 8. Criterio de cierre
 
 FL-SC-001 solo podrá cerrarse cuando:
 
 1. la superficie técnica esté suficientemente delimitada;
 2. la fuente completa corregida sea `INSTANCE_SAFE`;
 3. guardar/reabrir sea estable;
-4. el contrato público y Visual QA pasen;
-5. el aprendizaje reutilizable central se actualice si aparece una regla nueva demostrada.
+4. contrato público y Visual QA pasen;
+5. el aprendizaje central se actualice si aparece una regla reusable demostrada.
