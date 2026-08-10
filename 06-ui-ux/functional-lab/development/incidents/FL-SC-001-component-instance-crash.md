@@ -1,7 +1,7 @@
 # FL-SC-001 — Studio se cierra al insertar instancia de CanvasComponent
 
 **Fecha:** 2026-08-10  
-**Estado:** OPEN — ROOT CAUSE UNDER REVIEW  
+**Estado:** RESOLVED — CORRECTIVE PATTERN VALIDATED  
 **Bloque afectado:** F01-00A  
 **Componente:** `cmp_FL_SidebarPro`
 
@@ -16,27 +16,22 @@ R1 root-only                                  PASS
 R2 identidad/texto                           PASS
 R3 contenedores estáticos                    PASS
 R4 navegación visual sin eventos             PASS
-R5 Text+Boolean+Color por CustomProperties    FAIL
+R5 Text+Boolean+Color por contrato reducido   FAIL
 R5-T Input/Text declarado+consumido           FAIL
 R5-TD Input/Text declarado, no consumido      FAIL
 R5-TM Input/Text creado manualmente en Studio PASS
 R5-TB binding YAML → AppTitle manual           PASS
+cmp_HeatMapPro PULSE                          PASS / integrated
+RC2 Sidebar contrato HeatMap-style             PASS / INSTANCE_SAFE
 ```
 
-## 3. Corrección de una conclusión anterior
+## 3. Corrección de diagnóstico
 
-Se había promovido demasiado pronto la hipótesis de que `CustomProperties` dentro del Source Code pegable era el problema.
+Se había promovido demasiado pronto la hipótesis de que `CustomProperties` dentro del Source Code era la causa.
 
-Esa generalización queda **retirada**.
+Esa generalización queda retirada de forma definitiva.
 
-El usuario aporta como contraejemplo real `cmp_HeatMapPro`, componente usado en PULSE que contiene un contrato público mucho más complejo con:
-
-- Inputs Text, Boolean, Number, Color y Table;
-- Outputs;
-- Events;
-- fórmulas que consumen esas propiedades;
-- Gallery y controles complejos;
-- instancia e integración funcional en PULSE.
+`cmp_HeatMapPro` aporta un contraejemplo real y mucho más fuerte: utiliza numerosos Inputs Text, Boolean, Number, Color y Table, además de Outputs y Events, y se integra correctamente en PULSE.
 
 Por tanto:
 
@@ -44,11 +39,17 @@ Por tanto:
 CustomProperties != causa demostrada
 ```
 
-## 4. Nuevo contraste principal
+## 4. Diferencial estructural relevante
 
-El primer diferencial sistemático entre el HeatMap funcional y el Sidebar fallido está en los metadatos de los Inputs.
+La declaración original del Sidebar simplificaba sus Inputs:
 
-HeatMap funcional:
+```yaml
+PropertyKind: Input
+DataType: ...
+Default: ...
+```
+
+La referencia estable `cmp_HeatMapPro` utiliza de forma sistemática:
 
 ```yaml
 PropertyKind: Input
@@ -58,42 +59,69 @@ DataType: ...
 Default: ...
 ```
 
-Sidebar original:
+Esta diferencia se utilizó para construir RC2.
 
-```yaml
-PropertyKind: Input
-DataType: ...
-Default: ...
-```
+## 5. RC2 — correctivo aplicado
 
-El Sidebar omitía `DisplayName` y `Description` en todos sus Inputs.
+RC2 restauró el Sidebar completo con:
 
-La documentación de Microsoft sobre propiedades de componentes trata `Display name`, `Property name` y `Description` como parte del contrato definido por el maker. Esto no demuestra todavía causalidad técnica, pero convierte la omisión en el candidato principal para una prueba comparativa directa.
+- `CustomProperties`;
+- Inputs Text, Boolean, Color y Table;
+- `SelectedKey` Output;
+- `OnSelectItem` Event;
+- Gallery y bindings internos;
+- geometría expandida/colapsada;
+- metadatos de Input siguiendo el patrón `cmp_HeatMapPro`.
 
-## 5. Próxima prueba — RC2
+La prueba se realizó sobre un componente limpio para evitar contaminación de las propiedades manuales creadas durante el diagnóstico R5.
 
-Se abandona el laboratorio por tipos. Se reconstruirá el Sidebar completo original con una única modificación de contrato:
+Resultado comunicado por el usuario:
 
 ```text
-Todos los Inputs reciben DisplayName + Description
-siguiendo el patrón de cmp_HeatMapPro.
+RC2 funciona correctamente
+la instancia se inserta
+Studio permanece estable
 ```
 
-No se eliminarán `CustomProperties`, `NavItems`, Output ni Event para esta prueba.
+## 6. Causa y alcance
 
-Resultado esperado:
-
-- **PASS** → fuerte evidencia de que el fallo estaba en la forma incompleta del contrato de propiedades custom;
-- **FAIL** → continuar comparación diferencial con `cmp_HeatMapPro` buscando el siguiente delta estructural.
-
-## 6. Regla de proceso que sí permanece confirmada
+### Causa de proceso confirmada
 
 ```text
 DEFINITION_ACCEPTED != INSTANCE_SAFE
 ```
 
-Todo CanvasComponent debe superar un smoke test de instancia antes de integrarse.
+### Patrón correctivo confirmado
 
-## 7. Criterio de cierre
+> Un contrato público completo modelado a partir de un componente real `INSTANCE_SAFE`, incluyendo los metadatos que usa esa referencia para los Inputs, permite instanciar correctamente el Sidebar completo con `CustomProperties`.
 
-FL-SC-001 solo se cerrará cuando el Sidebar completo con contrato público alcance `INSTANCE_SAFE` de forma reproducible y la diferencia causal o el patrón correctivo estén suficientemente demostrados.
+### Causa técnica exacta
+
+No se declara que `DisplayName` o `Description` sean individualmente la causa única del cierre original porque RC2 también se creó sobre una definición limpia. El detalle interno de hidratación/estado anterior no se aisló y no aporta valor suficiente para seguir investigándolo.
+
+## 7. Regla preventiva
+
+Para nuevos CanvasComponents:
+
+```text
+1. elegir referencia instance-safe equivalente
+2. copiar el patrón completo de CustomProperties por PropertyKind
+3. no simplificar metadatos por intuición
+4. validar definición
+5. insertar instancia aislada
+6. guardar/reabrir
+7. validar contrato y comportamiento
+```
+
+Una evidencia negativa aislada no debe convertirse en prohibición de una característica si existen contraejemplos positivos en el mismo entorno.
+
+## 8. Cierre
+
+FL-SC-001 queda cerrado porque:
+
+1. el Sidebar completo con contrato público vuelve a ser `INSTANCE_SAFE`;
+2. `CustomProperties` queda rehabilitado como patrón válido;
+3. existe un correctivo reproducible basado en una referencia estable de PULSE;
+4. el aprendizaje queda documentado localmente y en la base de conocimiento central.
+
+Si un futuro componente falla con propiedades custom, se abrirá un incidente nuevo y se comparará directamente contra el componente estable más cercano.
