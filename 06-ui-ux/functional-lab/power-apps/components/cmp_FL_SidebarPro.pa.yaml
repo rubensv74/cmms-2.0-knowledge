@@ -1,21 +1,21 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R5-TB — BIND TO STUDIO-CREATED INPUT
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R5-BM — STUDIO BOOLEAN INPUT BINDING
 #
 # Status: CORRECTIVE DIAGNOSTIC — PENDING POWER APPS STUDIO VALIDATION
 # Incident: FL-SC-001
 # Target component: cmp_FL_SidebarPro
 #
-# PREREQUISITE
-# AppTitle already exists as a Data / Input / Text custom property created
-# manually in Power Apps Studio and has passed R5-TM INSTANCE_SAFE.
+# PREREQUISITES
+# - AppTitle exists as Data / Input / Text, created manually in Studio.
+# - ShowEnvironment exists as Data / Input / Boolean, created manually in Studio.
+# - ShowEnvironment default value = true.
 #
 # IMPORTANT
 # This YAML intentionally contains NO CustomProperties block.
-# It tests only whether Source Code controls can consume a public property
-# whose metadata was created by Studio.
+# It tests only whether Source Code can consume a Studio-created Boolean input
+# through a simple Visible binding.
 #
-# PASS -> viable hybrid authoring strategy:
-#         public contract in Studio + visual/body Source Code.
-# FAIL -> reduce the binding/reference path further.
+# PASS -> Text and Boolean public inputs support the hybrid authoring strategy.
+# FAIL -> reduce Boolean declaration vs binding behavior before adding Color.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
@@ -41,7 +41,7 @@ ComponentDefinitions:
             RadiusTopRight: =0
             Width: =Parent.Width
           Children:
-            - lblFLSB_R5TB_Title:
+            - lblFLSB_R5BM_Title:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
@@ -53,3 +53,17 @@ ComponentDefinitions:
                   Wrap: =false
                   X: =17
                   Y: =20
+
+            - lblFLSB_R5BM_Environment:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#94A3B8")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="CONCEPT LAB"
+                  Visible: =cmp_FL_SidebarPro.ShowEnvironment
+                  Width: =180
+                  Wrap: =false
+                  X: =17
+                  Y: =54
