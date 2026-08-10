@@ -64,12 +64,11 @@ No se atribuye todavía el cierre a:
 - propiedad custom `Table`;
 - propiedad `Event`;
 - propiedad `Output`;
-- `ModernText@1.0.0`;
 - AutoLayout;
 - fórmulas de geometría;
-- ningún control individual.
+- ningún control individual todavía no aislado.
 
-Promover cualquiera de esas hipótesis a causa sin reproducer mínimo produciría una regla preventiva falsa.
+Tras R2 sí puede afirmarse de forma limitada que cuatro controles `ModernText@1.0.0` estáticos, con texto constante y `AutoHeight=true`, directamente dentro del root ManualLayout validado, **no son suficientes por sí solos para reproducir el cierre**.
 
 ## 5. Evidencia transversal ya existente
 
@@ -132,32 +131,48 @@ INSTANCE_SAFE       PASS
 
 ### Interpretación R1
 
-El mecanismo básico de CanvasComponent Source Code en la app activa **no es suficiente para reproducir el cierre**.
+El mecanismo básico de CanvasComponent Source Code en la app activa no es suficiente para reproducir el cierre.
 
 El patrón mínimo `CanvasComponent + GroupContainer@1.5.0` raíz también resulta seguro en esta prueba.
 
-Por tanto, la investigación continúa únicamente sobre responsabilidades añadidas respecto a R1.
-
-Esto no demuestra todavía que cualquier uso de `GroupContainer@1.5.0` sea universalmente seguro; demuestra que el patrón concreto de R1 no reproduce FL-SC-001.
-
 ### R2 — Identidad / texto
+
+**Resultado real comunicado:** `R2 instancia OK`.
+
+Configuración probada sobre R1:
+
+- cuatro controles `ModernText@1.0.0` estáticos;
+- texto constante;
+- `AutoHeight=true`;
+- hijos directos del root ManualLayout;
+- sin custom properties;
+- sin Gallery / Table;
+- sin Output / Event;
+- sin Label / Button / Icon;
+- sin navegación;
+- sin geometría condicional;
+- sin contenedores anidados.
+
+Resultado:
+
+```text
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
+```
+
+### Interpretación R2
+
+La capa de identidad/texto estático probada no reproduce FL-SC-001.
+
+Por tanto, `ModernText@1.0.0` estático en esta configuración concreta deja de ser una hipótesis suficiente para explicar el cierre inicial.
+
+### R3 — Contenedores estáticos
 
 **Estado:** PENDING STUDIO VALIDATION.
 
-Se añaden únicamente cuatro controles `ModernText@1.0.0` estáticos, con texto constante y `AutoHeight=true`, directamente dentro del root ya validado.
+Objetivo: reintroducir composición estructural estática mediante contenedores anidados y AutoLayout, manteniendo fuera Gallery, propiedades custom, outputs, eventos, botones, iconos y lógica de navegación.
 
-Se mantienen excluidos:
-
-- custom properties;
-- Gallery / Table;
-- Output / Event;
-- Label / Button / Icon;
-- navegación;
-- geometría condicional;
-- contenedores anidados;
-- AutoLayout anidado.
-
-Objetivo: comprobar si la capa de controles hijos de texto estático es suficiente para reproducir el cierre.
+Si R3 falla, se subdividirá esta etapa para separar AutoLayout de la anidación de contenedores antes de introducir cualquier otra responsabilidad.
 
 ## 8. Regla preventiva inmediata
 
