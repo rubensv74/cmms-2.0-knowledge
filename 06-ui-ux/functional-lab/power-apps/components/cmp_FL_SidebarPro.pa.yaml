@@ -1,24 +1,27 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R2 — SIDEBAR IDENTITY/TEXT REPRODUCER
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R3 — SIDEBAR STATIC CONTAINER REPRODUCER
 #
 # Status: CORRECTIVE DIAGNOSTIC — PENDING POWER APPS STUDIO VALIDATION
 # Incident: FL-SC-001
 # Operation: REPLACE COMPLETE COMPONENT SOURCE
 # Target component: cmp_FL_SidebarPro
-# Previous result: R1 root-only = PASS / INSTANCE_SAFE
+# Previous results:
+# - R1 root-only = PASS / INSTANCE_SAFE
+# - R2 identity/text = PASS / INSTANCE_SAFE
 #
 # PURPOSE
-# Add only static identity/text controls on top of the R1-safe root to determine
-# whether static ModernText children are sufficient to reproduce the Studio crash.
+# Reintroduce only static container composition on top of the validated text
+# baseline. This tests nested GroupContainer composition and AutoLayout without
+# navigation controls, custom properties, outputs, events or dynamic data.
 #
 # IMPORTANT
 # Replace the COMPLETE current cmp_FL_SidebarPro source with this content,
 # beginning at `ComponentDefinitions:`.
 # Do not keep CustomProperties or children from any previous version.
 #
-# ADDED IN R2
-# - four static ModernText@1.0.0 controls
-# - fixed text only
-# - AutoHeight=true
+# ADDED IN R3
+# - root GroupContainer@1.5.0 switched to AutoLayout / Vertical
+# - three nested static GroupContainer@1.5.0 sections
+# - static ModernText moved into Brand / Menu / Footer sections
 #
 # STILL EXCLUDED
 # - CustomProperties
@@ -29,22 +32,21 @@
 # - Label / Button / Icon
 # - navigation logic
 # - conditional geometry
-# - nested containers
-# - AutoLayout nesting
+# - dynamic Items
 #
 # VALIDATION
 # 1. Source definition is accepted.
 # 2. Save succeeds.
-# 3. Insert ONE instance of cmp_FL_SidebarPro on an otherwise empty screen.
+# 3. Insert ONE NEW instance of cmp_FL_SidebarPro on an otherwise empty screen.
 # 4. Studio must remain open and responsive.
-# 5. The instance shows C2 / CMMS 2.0 / Functional Lab / CONCEPT LAB.
+# 5. The instance renders three vertical sections: Brand / Workspace / Case.
 # 6. Save again.
 # 7. App Checker shows no new error attributable to the component.
 #
 # INTERPRETATION
-# PASS -> static ModernText identity layer is not sufficient to reproduce the crash;
-#         continue with R3 static container composition.
-# FAIL -> reduce within the ModernText/child-control layer before adding anything else.
+# PASS -> nested static containers + this AutoLayout composition are not sufficient
+#         to reproduce the crash; continue with R4 navigation visuals without events.
+# FAIL -> stop and subdivide R3 to isolate AutoLayout from nested containers.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
@@ -58,69 +60,183 @@ ComponentDefinitions:
     Children:
       - conFLSB_Root:
           Control: GroupContainer@1.5.0
-          Variant: ManualLayout
+          Variant: AutoLayout
           Properties:
             BorderColor: =RGBA(0,0,0,0)
             BorderThickness: =0
             DropShadow: =DropShadow.None
             Fill: =ColorValue("#07111F")
             Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
             RadiusBottomLeft: =0
             RadiusBottomRight: =0
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =Parent.Width
-            X: =0
-            Y: =0
           Children:
-            - lblFLSB_R2_Mark:
-                Control: ModernText@1.0.0
+            - conFLSB_R3_Brand:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
                 Properties:
-                  Align: =Align.Center
-                  AutoHeight: =true
-                  Color: =ColorValue("#38BDF8")
-                  FontWeight: =FontWeight.Bold
-                  Size: =13
-                  Text: ="C2"
-                  Width: =42
-                  Wrap: =false
-                  X: =17
-                  Y: =20
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#07111F")
+                  FillPortions: =0
+                  Height: =104
+                  LayoutMinHeight: =104
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                Children:
+                  - lblFLSB_R3_Mark:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =ColorValue("#38BDF8")
+                        FontWeight: =FontWeight.Bold
+                        Size: =13
+                        Text: ="C2"
+                        Width: =42
+                        Wrap: =false
+                        X: =17
+                        Y: =20
 
-            - lblFLSB_R2_Title:
-                Control: ModernText@1.0.0
-                Properties:
-                  AutoHeight: =true
-                  Color: =ColorValue("#F8FAFC")
-                  FontWeight: =FontWeight.Semibold
-                  Size: =13
-                  Text: ="CMMS 2.0"
-                  Width: =132
-                  Wrap: =false
-                  X: =70
-                  Y: =19
+                  - lblFLSB_R3_Title:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#F8FAFC")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =13
+                        Text: ="CMMS 2.0"
+                        Width: =132
+                        Wrap: =false
+                        X: =70
+                        Y: =19
 
-            - lblFLSB_R2_Subtitle:
-                Control: ModernText@1.0.0
-                Properties:
-                  AutoHeight: =true
-                  Color: =ColorValue("#94A3B8")
-                  Size: =9
-                  Text: ="Functional Lab"
-                  Width: =132
-                  Wrap: =false
-                  X: =70
-                  Y: =45
+                  - lblFLSB_R3_Subtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        Size: =9
+                        Text: ="Functional Lab"
+                        Width: =132
+                        Wrap: =false
+                        X: =70
+                        Y: =45
 
-            - lblFLSB_R2_Environment:
-                Control: ModernText@1.0.0
+                  - lblFLSB_R3_Environment:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: ="CONCEPT LAB"
+                        Width: =186
+                        Wrap: =false
+                        X: =17
+                        Y: =74
+
+            - conFLSB_R3_Workspace:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
                 Properties:
-                  AutoHeight: =true
-                  Color: =ColorValue("#94A3B8")
-                  FontWeight: =FontWeight.Semibold
-                  Size: =8
-                  Text: ="CONCEPT LAB"
-                  Width: =186
-                  Wrap: =false
-                  X: =17
-                  Y: =72
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#0B1B2E")
+                  FillPortions: =1
+                  LayoutMinHeight: =280
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                Children:
+                  - lblFLSB_R3_WorkspaceLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: ="WORKSPACES"
+                        Width: =186
+                        Wrap: =false
+                        X: =17
+                        Y: =18
+
+                  - lblFLSB_R3_WorkspaceHint:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#F8FAFC")
+                        Size: =10
+                        Text: ="Static container composition test"
+                        Width: =186
+                        Wrap: =true
+                        X: =17
+                        Y: =46
+
+            - conFLSB_R3_Footer:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#07111F")
+                  FillPortions: =0
+                  Height: =132
+                  LayoutMinHeight: =132
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                Children:
+                  - lblFLSB_R3_CaseLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =8
+                        Text: ="CURRENT CASE"
+                        Width: =186
+                        Wrap: =false
+                        X: =17
+                        Y: =18
+
+                  - lblFLSB_R3_CaseCode:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#F8FAFC")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =10
+                        Text: ="P-101"
+                        Width: =186
+                        Wrap: =false
+                        X: =17
+                        Y: =46
+
+                  - lblFLSB_R3_CaseName:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        Size: =8
+                        Text: ="Cooling water centrifugal pump"
+                        Width: =186
+                        Wrap: =true
+                        X: =17
+                        Y: =72
