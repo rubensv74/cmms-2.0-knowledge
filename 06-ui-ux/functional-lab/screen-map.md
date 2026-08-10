@@ -1,76 +1,99 @@
-# CMMS 2.0 Functional Lab — Mapa real de pantallas
+# CMMS 2.0 Functional Lab — Mapa real de pantallas alineado
 
-**Estado:** aprobado para implementación  
+**Estado:** canónico tras auditoría de reuniones  
 **Fecha:** 2026-08-10
 
 ## 1. Regla
 
-Las pantallas representan objetos o trabajos reconocibles. No se fusionan únicamente para reducir su número.
+Las pantallas representan objetos o trabajos reconocibles. El usuario debe distinguir si está trabajando sobre:
+
+```text
+biblioteca de ingeniería
+contexto del activo
+aplicación a activo
+planificación / ejecución
+gobernanza / mejora
+```
 
 ## 2. Mapa
 
-| Orden | Pantalla | Módulo | Trabajo principal | Estado objetivo |
-|---:|---|---|---|---|
-| 01 | `scr_FL_Home` | Inicio | Ver trabajo, casos activos, alertas y accesos recientes | Foundation |
-| 02 | `scr_FL_FLH` | Activos | Navegar la jerarquía FLH y situar P-101 | Foundation |
-| 03 | `scr_FL_Taxonomy` | Activos | Navegar clasificación/taxonomía del activo | Foundation |
-| 04 | `scr_FL_ADR` | Activos | Navegar relaciones/dependencias ADR | Foundation |
-| 05 | `scr_FL_Asset360` | Activos | Ver ficha 360 de P-101 y enlaces a análisis/planes | Foundation |
-| 06 | `scr_FL_AnalysisRegister` | Estrategia | Buscar, filtrar y abrir AnalysisCase | Foundation |
-| 07 | `scr_FL_CaseOverview` | Estrategia | Ver estado integral del caso y journey 28 etapas | Foundation |
-| 08 | `scr_FL_Context` | Estrategia | FL-01..03: alcance, contexto y preparación | Rebuild de WS-01 |
-| 09 | `scr_FL_Functions` | Estrategia | FL-04..05: funciones y fallos funcionales | Rebuild de WS-02 |
-| 10 | `scr_FL_FailureModes` | Estrategia | FL-06: modos relevantes, recomendación y decisión | Rebuild de WS-02 |
-| 11 | `scr_FL_AMEF` | Estrategia | FL-07..11: efectos, consecuencias, S/O/D, controles y gate | Journey |
-| 12 | `scr_FL_RCM` | Estrategia | FL-12..16: lógica RCM y estrategia explicable | Journey |
-| 13 | `scr_FL_Economics` | Estrategia | FL-17: comparación económica de alternativas | Journey |
-| 14 | `scr_FL_Task` | Estrategia | FL-18..19: tarea ejecutable e intervalo | Journey |
-| 15 | `scr_FL_PlanPackage` | Estrategia | FL-20..22: recursos, alcance y gate del plan | Journey |
-| 16 | `scr_FL_Traceability` | Estrategia | FL-23..24: trazabilidad y calidad | Journey |
-| 17 | `scr_FL_ReviewApproval` | Estrategia | FL-25..26: revisión multidisciplinar, aprobación, snapshot | Journey |
-| 18 | `scr_FL_Effectiveness` | Estrategia | FL-27..28: datos reales y mejora/cambio | Journey |
-| 19 | `scr_FL_MaintenancePlans` | Planes | Ver planes derivados y estado de publicación | Preview inicial |
-| 20 | `scr_FL_Governance` | Gobernanza | Versiones, aprobaciones, findings y cambios | Preview inicial |
-| 21 | `scr_FL_Settings` | Configuración | Preferencias y catálogos conceptuales | Preview inicial |
+| Orden | Pantalla | Módulo | Trabajo principal |
+|---:|---|---|---|
+| 01 | `scr_FL_Home` | Inicio | Ver trabajo, revisiones, aplicaciones y casos activos |
+| 02 | `scr_FL_FLH` | Activos | Navegar jerarquía FLH y situar P-101 |
+| 03 | `scr_FL_Taxonomy` | Activos | Navegar clasificación del activo |
+| 04 | `scr_FL_ADR` | Activos | Navegar relaciones/dependencias ADR |
+| 05 | `scr_FL_AssetCriticality` | Activos | Ver criticidad contextual del activo y su fuente |
+| 06 | `scr_FL_Asset360` | Activos | Ver ficha 360, revisión AMEF aplicada y planes asociados |
+| 07 | `scr_FL_FmeaLibrary` | Estrategia | Buscar AMEF reutilizables por familia/tipo de equipo |
+| 08 | `scr_FL_FmeaRevision` | Estrategia | Revisar ingeniería base: funciones, fallos, modos, causas, efectos y tareas propuestas |
+| 09 | `scr_FL_AssetApplication` | Estrategia | Aplicar una revisión AMEF a uno o varios activos y gestionar perfiles/overrides |
+| 10 | `scr_FL_AnalysisRegister` | Estrategia | Buscar y abrir casos contextuales de análisis |
+| 11 | `scr_FL_CaseOverview` | Estrategia | Ver revisión heredada, activo, criticidad, aplicación y journey de 28 etapas |
+| 12 | `scr_FL_Context` | Estrategia | FL-01..03: alcance, contexto, aplicabilidad y preparación |
+| 13 | `scr_FL_Functions` | Estrategia | FL-04..05: revisar funciones/fallos heredados y registrar override contextual si procede |
+| 14 | `scr_FL_FailureModes` | Estrategia | FL-06: seleccionar modos aplicables de biblioteca y causas/mecanismos asociados |
+| 15 | `scr_FL_AMEF` | Estrategia | FL-07..11: efectos heredados/contextuales, consecuencias, S/O/D, riesgo AMEF y control de avance |
+| 16 | `scr_FL_RCM` | Estrategia | FL-12..16: ejecutar lógica RCM versionada y emitir decisión explicable |
+| 17 | `scr_FL_Economics` | Estrategia | FL-17: comparar económicamente alternativas técnicamente válidas |
+| 18 | `scr_FL_Task` | Estrategia | FL-18..19: convertir tarea propuesta en tarea ejecutable, intervalo, recursos y procedimiento opcional |
+| 19 | `scr_FL_PlanPackage` | Estrategia | FL-20..22: alcance físico, H-H, restricciones y agrupación candidata |
+| 20 | `scr_FL_Traceability` | Estrategia | FL-23..24: trazabilidad Biblioteca → Aplicación → Plan → Ejecución y control de calidad |
+| 21 | `scr_FL_ReviewApproval` | Estrategia | FL-25..26: revisión multidisciplinar, aprobación y snapshot |
+| 22 | `scr_FL_Effectiveness` | Estrategia | FL-27..28: comparar hipótesis con ejecución real y abrir cambio |
+| 23 | `scr_FL_MaintenancePlans` | Planes | Ver Job Plan/Route, PM, objetos y trazabilidad por tag |
+| 24 | `scr_FL_Governance` | Gobernanza | Versiones, aprobaciones, findings y cambios de biblioteca/aplicación |
+| 25 | `scr_FL_Settings` | Configuración | Preferencias, catálogos y reglas conceptuales configurables |
+
+**Total: 25 pantallas canónicas.**
 
 ## 3. Navegación principal
-
-Sidebar:
 
 ```text
 Inicio
 Activos
-Estrategia
-Planes
+Estrategia de mantenimiento
+Planes de mantenimiento
 Gobernanza
 Configuración
 ```
 
-Cada módulo puede abrir un landing o recordar la última pantalla visitada. En Foundation se utilizará navegación explícita y comprensible.
-
 ## 4. Navegación dentro de Activos
 
-Subnavegación visible en cabecera/toolbar:
-
 ```text
-FLH | Taxonomía | ADR | Ficha 360
+FLH | Taxonomía | ADR | Criticidad | Ficha 360
 ```
 
-Las tres primeras son pantallas separadas y usan `cmp_FL_TreePro` con datasets distintos.
+La criticidad se muestra como análisis de contexto de planta independiente del AMEF.
 
-## 5. Navegación dentro de AnalysisCase
+## 5. Navegación dentro de Estrategia
 
-Toda pantalla de las posiciones 07–18 debe incluir:
+Antes de abrir un `AnalysisCase`, el usuario debe poder distinguir:
 
-- identificación de caso;
+```text
+Biblioteca AMEF
+      ↓
+Revisión de biblioteca
+      ↓
+Aplicación a activos
+      ↓
+Caso de análisis contextual
+```
+
+## 6. Navegación dentro de AnalysisCase
+
+Las pantallas 11–22 incluyen:
+
+- activo y aplicación actuales;
+- revisión AMEF de origen;
+- criticidad contextual utilizada;
 - estado Draft/Confirmed/Approved cuando aplique;
 - `cmp_FL_ProcessRailPro`;
-- acceso a Overview del caso;
 - responsabilidad actual;
-- gate/estado de etapa;
-- navegación hacia etapas accesibles.
+- control de avance;
+- lineage Biblioteca → Aplicación → Plan/ejecución.
 
-## 6. Mapeo de etapas a pantallas
+## 7. Mapeo FL-01…FL-28
 
 ```text
 FL-01 ─┐
@@ -95,20 +118,92 @@ FL-15  │
 FL-16 ─┘
 
 FL-17 ─── scr_FL_Economics
+
 FL-18 ─┐
 FL-19 ─┴─ scr_FL_Task
+
 FL-20 ─┐
 FL-21  ├─ scr_FL_PlanPackage
 FL-22 ─┘
+
 FL-23 ─┐
 FL-24 ─┴─ scr_FL_Traceability
+
 FL-25 ─┐
 FL-26 ─┴─ scr_FL_ReviewApproval
+
 FL-27 ─┐
 FL-28 ─┴─ scr_FL_Effectiveness
 ```
 
-## 7. Estados visuales de pantalla
+## 8. Interpretación corregida de FL-01…FL-06
+
+Estas etapas **no vuelven a crear el AMEF desde cero**.
+
+El usuario:
+
+```text
+confirma activo y alcance
+→ revisa contexto de operación
+→ confirma preparación/evidencia
+→ revisa funciones y fallos heredados
+→ registra override si existe una excepción real
+→ confirma qué modos/cusas son aplicables al activo
+```
+
+La fuente sigue siendo `FmeaRevision`.
+
+## 9. AMEF
+
+`scr_FL_AMEF` debe mostrar simultáneamente:
+
+```text
+criticidad del activo        → contexto externo
+modo/causa/efecto AMEF       → biblioteca + aplicación
+S/O/D                         → valoración humana contextual
+matriz S×O                    → cálculo de riesgo AMEF
+NPR                           → cálculo automático
+consecuencia                  → recomendación + decisión humana
+```
+
+Nunca llamar `Matriz de criticidad` a S×O.
+
+## 10. Task / Plan Package
+
+`scr_FL_Task` debe diferenciar:
+
+```text
+ProposedMaintenanceTask      ingeniería base
+TaskProfileVariant           ajuste por aplicación/criticidad
+MaintenanceTask              tarea ejecutable confirmada
+MaintenanceProcedure         procedimiento/checklist opcional
+```
+
+`scr_FL_PlanPackage` debe mostrar:
+
+```text
+PlanScopeItem                tags incluidos
+EstimatedDuration / H-H      carga
+RequiredOperatingState       restricción
+Grouping rule                criterio de agrupación
+Job Plan / Route candidate   salida
+```
+
+## 11. Maintenance Plans
+
+La pantalla de Planes no debe tratar como sinónimos:
+
+```text
+MaintenanceTask
+MaintenanceProcedure
+JobPlan / Route
+PreventiveMaintenancePlan
+WorkOrder
+```
+
+Debe conservar identidad y resultados por `TechnicalObject` aunque varios objetos compartan una ruta o plan.
+
+## 12. Estados visuales
 
 Toda pantalla productiva soportará conceptualmente:
 
@@ -123,17 +218,23 @@ warning
 confirmed
 approved
 read-only
+superseded
 ```
 
-No todos requieren una implementación visual completa en el primer bloque, pero el layout no debe impedirlos.
-
-## 8. Criterios de autenticidad
+## 13. Criterios de autenticidad
 
 Una pantalla no se acepta si:
 
-- su contenido principal explica el prototipo en lugar de permitir trabajo;
-- usa `WS-xx` como concepto dominante visible;
-- oculta la procedencia de una recomendación;
-- no distingue input, cálculo, recomendación y decisión;
-- usa el botón Siguiente como única representación de un gate;
-- no deja claro qué objeto quedará persistido.
+- convierte P-101 en propietario de la ingeniería AMEF genérica;
+- confunde criticidad de activo con riesgo AMEF;
+- duplica una revisión completa para cambiar solo frecuencia/aplicabilidad;
+- oculta causas/mecanismos;
+- fuerza relación 1:1 entre tarea y modo;
+- obliga a disponer de procedimiento para toda tarea;
+- coloca parada/permiso únicamente en el paquete de plan;
+- omite duración, cuadrilla o H-H cuando la tarea se vuelve ejecutable;
+- mezcla coste preliminar, estimado y real;
+- codifica el árbol RCM como una secuencia irreversible de campos;
+- agrupa equipos perdiendo trazabilidad por tag;
+- usa Job Plan, PM y WO como sinónimos;
+- no muestra cómo el resultado de ejecución vuelve a la ingeniería.
