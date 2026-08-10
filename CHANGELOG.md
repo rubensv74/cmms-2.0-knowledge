@@ -2,6 +2,26 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [0.9.1] - 2026-08-10
+
+### Añadido
+
+- Auditoría estática `F01-00 — Power Apps Foundation`.
+- Registro propio de compatibilidad Power Apps Source Code para el Functional Lab.
+- Secuencia técnica F01-01 a F01-09 para construir y validar `WS-01 Caso y contexto` por incrementos.
+
+### Decisiones
+
+- El primer shell Power Apps no dependerá de componentes premium no confirmados en la app activa.
+- Los componentes de Pulse son candidatos a reutilización, pero no se considerarán instalados hasta validarlos en Power Apps Studio.
+- Las lecciones de compatibilidad de Pulse se heredan como reglas preventivas y deberán confirmarse contra las versiones reales de control del Functional Lab.
+- No se generará `F01-01` hasta disponer de una Canvas app real y obtener el baseline de Power Apps Studio / App Checker.
+
+### Pendiente
+
+- Crear o identificar la Canvas app `CMMS 2.0 Functional Lab`.
+- Completar el gate F01-00 en la herramienta real.
+
 ## [0.9.0] - 2026-08-10
 
 ### Añadido
