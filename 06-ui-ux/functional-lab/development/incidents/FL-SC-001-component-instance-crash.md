@@ -1,14 +1,13 @@
 # FL-SC-001 — Studio se cierra al insertar instancia de CanvasComponent
 
 **Fecha:** 2026-08-10  
-**Estado:** RESOLVED — OPERATIONAL WORKAROUND VALIDATED  
-**Severidad original:** alta para el flujo de autoría  
+**Estado:** OPEN — ROOT CAUSE UNDER REVIEW  
 **Bloque afectado:** F01-00A  
 **Componente:** `cmp_FL_SidebarPro`
 
 ## 1. Efecto inicial
 
-La definición Source Code completa inicial de `cmp_FL_SidebarPro` fue aceptada por Power Apps Studio, pero Studio se cerró al insertar una instancia.
+La definición completa inicial de `cmp_FL_SidebarPro` fue aceptada por Power Apps Studio, pero Studio se cerró al insertar una instancia.
 
 ## 2. Evidencia acumulada
 
@@ -21,82 +20,80 @@ R5 Text+Boolean+Color por CustomProperties    FAIL
 R5-T Input/Text declarado+consumido           FAIL
 R5-TD Input/Text declarado, no consumido      FAIL
 R5-TM Input/Text creado manualmente en Studio PASS
-R5-TS Source Code visible tras R5-TM           AppTitle OMITIDO
 R5-TB binding YAML → AppTitle manual           PASS
-R5-BM Boolean micro-test                       STOPPED — no aporta valor proporcional
-RC1 Sidebar premium completo                   PASS — user validated in Studio
 ```
 
-## 3. Causa operativa delimitada
+## 3. Corrección de una conclusión anterior
 
-El detalle interno de serialización/hidratación de Microsoft no es observable desde la superficie Source Code usada por el maker. Sin embargo, la frontera operativa quedó demostrada:
+Se había promovido demasiado pronto la hipótesis de que `CustomProperties` dentro del Source Code pegable era el problema.
+
+Esa generalización queda **retirada**.
+
+El usuario aporta como contraejemplo real `cmp_HeatMapPro`, componente usado en PULSE que contiene un contrato público mucho más complejo con:
+
+- Inputs Text, Boolean, Number, Color y Table;
+- Outputs;
+- Events;
+- fórmulas que consumen esas propiedades;
+- Gallery y controles complejos;
+- instancia e integración funcional en PULSE.
+
+Por tanto:
 
 ```text
-UNSAFE AUTHORING PATH OBSERVED
-CustomProperties metadata injected through the tested pasteable Source Code surface
-
-SAFE AUTHORING PATH
-public properties created/maintained in Studio when required
-+
-visual/body YAML without CustomProperties
+CustomProperties != causa demostrada
 ```
 
-La propiedad `Input/Text` creada manualmente en Studio fue instance-safe y pudo ser consumida desde YAML. El Source Code visible de Studio no mostraba esa propiedad pública, por lo que no debe tratarse como representación completa del contrato.
+## 4. Nuevo contraste principal
 
-## 4. Correctivo aplicado
+El primer diferencial sistemático entre el HeatMap funcional y el Sidebar fallido está en los metadatos de los Inputs.
 
-Se abandonó la validación microscópica por tipo de propiedad y se reconstruyó el Sidebar premium completo como RC1:
+HeatMap funcional:
 
-- identidad CMMS 2.0 / Functional Lab;
-- 10 destinos del Functional Journey;
-- `Gallery@2.15.0` con selección local;
-- estados active/hover/pressed;
-- caso P-101;
-- sin `CustomProperties:`;
-- sin globals;
-- sin assets externos.
+```yaml
+PropertyKind: Input
+DisplayName: ...
+Description: ...
+DataType: ...
+Default: ...
+```
 
-Resultado comunicado por el usuario:
+Sidebar original:
+
+```yaml
+PropertyKind: Input
+DataType: ...
+Default: ...
+```
+
+El Sidebar omitía `DisplayName` y `Description` en todos sus Inputs.
+
+La documentación de Microsoft sobre propiedades de componentes trata `Display name`, `Property name` y `Description` como parte del contrato definido por el maker. Esto no demuestra todavía causalidad técnica, pero convierte la omisión en el candidato principal para una prueba comparativa directa.
+
+## 5. Próxima prueba — RC2
+
+Se abandona el laboratorio por tipos. Se reconstruirá el Sidebar completo original con una única modificación de contrato:
 
 ```text
-RC1 funciona
+Todos los Inputs reciben DisplayName + Description
+siguiendo el patrón de cmp_HeatMapPro.
 ```
 
-Se considera por tanto `INSTANCE_SAFE` para continuar la Foundation.
+No se eliminarán `CustomProperties`, `NavItems`, Output ni Event para esta prueba.
 
-## 5. Regla preventiva permanente
+Resultado esperado:
 
-Para el flujo de Source Code pegable usado en Functional Lab:
+- **PASS** → fuerte evidencia de que el fallo estaba en la forma incompleta del contrato de propiedades custom;
+- **FAIL** → continuar comparación diferencial con `cmp_HeatMapPro` buscando el siguiente delta estructural.
+
+## 6. Regla de proceso que sí permanece confirmada
 
 ```text
-PUBLIC CONTRACT
-→ Studio, solo cuando se necesite
-
-VISUAL BODY / LAYOUT / FORMULAS
-→ Source Code incremental
-
-CustomProperties:
-→ NO inyectar en YAML pegable salvo nueva evidencia explícita de soporte
+DEFINITION_ACCEPTED != INSTANCE_SAFE
 ```
 
-Todo componente reutilizable sigue obligado a superar:
+Todo CanvasComponent debe superar un smoke test de instancia antes de integrarse.
 
-```text
-PASS_STATIC
-DEFINITION_ACCEPTED
-INSTANCE_SAFE
-PUBLIC_CONTRACT_VALIDATED
-VISUAL_QA_VALIDATED
-READY_FOR_INTEGRATION
-```
+## 7. Criterio de cierre
 
-## 6. Cierre
-
-FL-SC-001 queda cerrado operacionalmente porque:
-
-1. existe una estrategia de autoría estable y reproducible;
-2. el Sidebar completo RC1 ha sido validado en Studio por el usuario;
-3. el patrón inseguro queda documentado y excluido del flujo normal;
-4. el aprendizaje está incorporado en la compatibilidad local y la base de conocimiento central.
-
-Si un futuro contrato público concreto falla, se abrirá un incidente nuevo y acotado; no se reabre FL-SC-001 por defecto.
+FL-SC-001 solo se cerrará cuando el Sidebar completo con contrato público alcance `INSTANCE_SAFE` de forma reproducible y la diferencia causal o el patrón correctivo estén suficientemente demostrados.
