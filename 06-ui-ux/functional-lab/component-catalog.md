@@ -1,42 +1,31 @@
 # CMMS 2.0 Functional Lab — Catálogo de componentes premium
 
-**Estado:** foundation v2  
+**Estado:** foundation alineada  
 **Fecha:** 2026-08-10
 
 ## 1. Principio
 
-Un componente se crea cuando resuelve una necesidad repetible y visual. Las reglas de negocio permanecen en host/runtime y documentación funcional.
+Un componente se crea cuando resuelve una necesidad visual repetible. Las reglas de negocio permanecen en host/runtime y documentación funcional.
 
 ## 2. Foundation
 
 | Componente | Propósito | Estado |
 |---|---|---|
-| `cmp_FL_SidebarPro` | Navegación global de producto | Validado / reutilizar con nuevo dataset |
-| `cmp_FL_PageHeaderPro` | Cabecera de objeto/proceso | Validado / adaptar contenidos desde host |
-| `cmp_FL_TreePro` | Árbol jerárquico profundo | Candidato premium en QA |
+| `cmp_FL_SidebarPro` | Navegación global | INSTANCE_SAFE PASS |
+| `cmp_FL_PageHeaderPro` | Cabecera de objeto/proceso | INSTANCE_SAFE PASS |
+| `cmp_FL_TreePro` | Árbol profundo FLH/Taxonomía/ADR | candidato premium / QA pendiente |
 | `cmp_FL_ProcessRailPro` | Journey de 28 etapas | PASS_STATIC / Studio pending |
-| `cmp_FL_DecisionPanelPro` | Diferenciar sistema/recomendación/decisión humana | PASS_STATIC / Studio pending |
-| `cmp_FL_GatePanelPro` | Control de avance explicable y acción necesaria | PASS_STATIC / Studio pending |
+| `cmp_FL_DecisionPanelPro` | Sistema vs decisión humana | PASS_STATIC / Studio pending |
+| `cmp_FL_GatePanelPro` | Control de avance explicable | PASS_STATIC / Studio pending |
 | `cmp_FL_RiskMatrixPro` | Matriz de riesgo configurable | PASS_STATIC / Studio pending |
+| `cmp_FL_LineagePanelPro` | Biblioteca → aplicación → activo → handoff | PASS_STATIC / Studio pending |
+| `cmp_FL_ApplicabilityMatrixPro` | Aplicación de una revisión a múltiples activos/perfiles | PASS_STATIC / Studio pending |
 
-## 3. cmp_FL_SidebarPro
+## 3. Sidebar y PageHeader
 
-El contrato actual se conserva. El host suministra los módulos:
+Se conservan sus contratos actuales. El host sigue siendo responsable de navegación, títulos y contexto.
 
-```text
-Home        Inicio
-Assets      Activos
-Strategy    Estrategia de mantenimiento
-Plans       Planes de mantenimiento
-Governance  Gobernanza
-Settings    Configuración
-```
-
-## 4. cmp_FL_PageHeaderPro
-
-Cabecera contextual reutilizable para objeto, caso y proceso.
-
-## 5. cmp_FL_TreePro
+## 4. TreePro
 
 Contrato principal:
 
@@ -55,13 +44,15 @@ RowIsExpanded
 RowIsVisible
 ```
 
-No se limita estructuralmente a tres niveles y se reutiliza en FLH, Taxonomía y ADR.
+No se limita estructuralmente a tres niveles.
 
-## 6. cmp_FL_ProcessRailPro
+En ADR el árbol es una **representación visual** de relaciones; la persistencia ADR sigue siendo origen → relación → destino.
 
-Muestra las 28 etapas sin convertirse en motor de workflow. El host decide navegación, accesibilidad y reglas de avance.
+## 5. ProcessRailPro
 
-## 7. cmp_FL_DecisionPanelPro
+Muestra FL-01…FL-28 sin convertirse en motor de workflow. El host suministra estado, accesibilidad, responsable y navegación.
+
+## 6. DecisionPanelPro
 
 Hace inequívoca la separación:
 
@@ -73,81 +64,24 @@ reason
 requiredRole
 ```
 
-## 8. cmp_FL_GatePanelPro
+## 7. GatePanelPro
 
-Representa de forma explícita:
+El término técnico `gate` se mantiene internamente. Para usuario visible se prefiere `Control de avance`, `Requisitos para continuar` o `Estado de la etapa`.
 
-```text
-status
-summary
-reason
-requiredAction
-responsibleRole
-output
-```
+## 8. RiskMatrixPro
 
-En interfaz puede mostrarse como `Control de avance`, `Estado de la etapa` o expresión equivalente; `Gate` queda como término técnico interno.
-
-## 9. cmp_FL_RiskMatrixPro
-
-### Responsabilidad
-
-Representar una matriz de riesgo sin acoplarla a una dimensión fija ni a una única metodología.
-
-### Escalas
+No está acoplado a una dimensión fija.
 
 Recibe:
 
 ```text
 RowScale
 ColumnScale
+MatrixMode
+MatrixCells
 ```
 
-Cada escala contiene:
-
-```text
-ScaleIndex
-ScaleLabel
-ScaleScore
-```
-
-La dimensión real se deriva de:
-
-```text
-CountRows(RowScale) × CountRows(ColumnScale)
-```
-
-Ejemplos soportados:
-
-```text
-5×5
-10×10
-4×5
-categorías con score numérico subyacente
-```
-
-### Modos
-
-`MatrixMode="PRODUCT"`
-
-```text
-CellScore = RowScore × ColumnScore
-```
-
-`MatrixMode="CONFIGURED"`
-
-El host suministra:
-
-```text
-RowIndex
-ColumnIndex
-CellScore
-BandKey
-```
-
-### Configuración canónica P-101
-
-El Functional Lab utiliza la escala ya empleada en los prototipos AMEF:
+Para P-101:
 
 ```text
 RowAxisTitle       Severidad
@@ -155,36 +89,82 @@ ColumnAxisTitle    Ocurrencia
 RowScale           1..5
 ColumnScale        1..5
 MatrixMode         PRODUCT
-DetectionValue     1..5, separada
+DetectionValue     D separada
 RiskScore          NPR calculado por host
 ```
 
-Valores iniciales:
+Regla de lenguaje:
+
+> La matriz S×O se denomina `Matriz de riesgo AMEF`, nunca `criticidad del activo`.
+
+## 9. LineagePanelPro
+
+### Responsabilidad
+
+Hacer visible la procedencia de la información y evitar que el usuario interprete que P-101 es propietario del AMEF.
+
+Presenta:
 
 ```text
-S=4
-O=3
-D=3
-S×O=12
-NPR=36
+FmeaDefinition / FmeaRevision
+        ↓
+FmeaAssetApplication
+        ↓
+TechnicalObject + AssetCriticality
+        ↓
+Handoff / ejecución
 ```
 
-Los outputs `SelectedSeverityOut` y `SelectedOccurrenceOut` se conservan para AMEF. También se exponen:
+Inputs:
 
 ```text
-SelectedRowLabelOut
-SelectedColumnLabelOut
-MatrixScoreOut
-MatrixBandOut
+LibraryCode
+RevisionCode
+ApplicationCode
+AssetCode
+CriticalityLabel
+ExecutionLabel
 ```
 
-### Regla arquitectónica
+No modifica datos ni decide aplicabilidad.
 
-**5×5 es la configuración actual de P-101 porque mantiene continuidad con los prototipos revisados. No es una limitación del componente.**
+## 10. ApplicabilityMatrixPro
 
-Una futura configuración corporativa podrá adoptar otra dimensión, categorías u otra distribución de celdas sin reconstruir `RiskMatrixPro`.
+### Responsabilidad
 
-## 10. Componentes candidatos posteriores
+Mostrar cómo una revisión AMEF se aplica a distintos activos sin duplicar ingeniería.
+
+Contrato `Items`:
+
+```text
+AssetCode
+AssetName
+Criticality
+ApplicabilityStatus
+ProfileCode
+IntervalSummary
+ApplicationCode
+```
+
+Outputs:
+
+```text
+SelectedAssetCodeOut
+SelectedApplicationCodeOut
+SelectedRecordOut
+```
+
+Event:
+
+```text
+OnSelectApplication
+```
+
+El host calcula reglas, perfiles y overrides.
+
+## 11. Componentes candidatos posteriores
+
+Solo se crearán cuando exista repetición real:
 
 ```text
 cmp_FL_ObjectSummaryPro
@@ -193,11 +173,11 @@ cmp_FL_EvidenceListPro
 cmp_FL_TraceTimelinePro
 cmp_FL_ApprovalMatrixPro
 cmp_FL_ComparisonTablePro
+cmp_FL_TaskCoveragePro
+cmp_FL_ExecutionChainPro
 ```
 
-Se crearán cuando aparezca repetición real en dos o más pantallas.
-
-## 11. Regla de promoción
+## 12. Regla de promoción
 
 ```text
 PASS_STATIC
@@ -208,4 +188,4 @@ VISUAL_QA_VALIDATED
 READY_FOR_INTEGRATION
 ```
 
-La Component Library se aborda cuando varios componentes hayan alcanzado `READY_FOR_INTEGRATION`.
+No se declara seguridad de instancia únicamente por aceptar YAML.
