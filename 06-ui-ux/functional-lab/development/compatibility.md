@@ -1,7 +1,8 @@
 # Functional Lab — Power Apps Source Code Compatibility
 
 **Estado:** activo antes de cualquier YAML  
-**Origen:** evidencia real de Functional Lab, PULSE y conocimiento curado central.
+**Origen:** evidencia real de Functional Lab, PULSE y conocimiento curado central.  
+**Actualizado:** 2026-08-10
 
 ## Gate obligatorio pre-YAML
 
@@ -14,7 +15,8 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 5. separar aceptación de definición y seguridad de instancia;
 6. registrar cualquier error nuevo y corregir también cualquier conclusión previa que quede refutada;
 7. para nuevas `CustomProperties`, copiar el contrato completo del componente estable de referencia por `PropertyKind`;
-8. revisar las fórmulas inline que contengan `: ` dentro de literales de texto y convertirlas a bloque YAML `|-`.
+8. revisar las fórmulas inline que contengan `: ` dentro de literales de texto y convertirlas a bloque YAML `|-`;
+9. dentro de plantillas `Gallery`, evitar `GroupContainer` con `Children` anidados; usar controles planos para badges/chips salvo validación específica.
 
 ## Niveles de validación obligatorios
 
@@ -33,35 +35,34 @@ READY_FOR_INTEGRATION
 
 | Patrón | Riesgo / efecto confirmado | Regla preventiva |
 |---|---|---|
-| `Label@2.5.1` + `Radius*` | `PA2108` | Radios en el contenedor, no en Label. |
-| `Classic/Button@2.2.0` + `AccessibleLabel` | `PA2108` | No declarar sin validación específica. |
-| `TabList@2.2.30` + `Reset()` | error de fórmula | Gestionar selección mediante variable. |
+| `Label@2.5.1` + Radius* | `PA2108` | Radios en el contenedor, no en Label. |
+| `Classic/Button@2.2.0` + AccessibleLabel | `PA2108` | No declarar sin validación específica. |
+| `TabList@2.2.30` + Reset() | error de fórmula | Gestionar selección mediante variable. |
 | CanvasComponent solo en GitHub | `PA2301` | Confirmar instalación real en la app. |
 | Definición aceptada | puede cerrar Studio al instanciar | Smoke test aislado obligatorio. |
 | SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático. |
 | `ModernText@1.0.0` estático | clipping/mini-scroll con altura rígida | `AutoHeight=true` por defecto. |
-| `CustomProperties:` en Source Code | es compatible cuando el contrato está bien formado; `cmp_HeatMapPro` y RC2 lo demuestran | No prohibirlo; usar un componente instance-safe como plantilla estructural. |
-| Input nuevo de componente reutilizable | una forma reducida puede no ser equivalente a la referencia estable | Preservar `PropertyKind + DisplayName + Description + DataType + Default` cuando ese sea el patrón de referencia. |
-| Fórmula Power Fx inline cuyo literal contiene `: ` | `PA1001 YamlInvalidSyntax / invalid mapping` | Expresar la fórmula como bloque YAML `|-` y colocar `=` en la línea siguiente. |
-| `Classic/TextInput@2.3.2` | patrón real estable encontrado en PULSE PunchReview | Reutilizar para edición WS-01 antes de introducir otro control de entrada. |
+| `CustomProperties:` en Source Code | compatible cuando el contrato está bien formado | No prohibir; usar componente instance-safe como plantilla. |
+| Input nuevo reutilizable | contrato reducido puede no ser equivalente | Preservar `PropertyKind + DisplayName + Description + DataType + Default` cuando ese sea el patrón de referencia. |
+| Fórmula Power Fx inline cuyo literal contiene `: ` | `PA1001 YamlInvalidSyntax / invalid mapping` | Bloque YAML `|-` con `=` en la línea siguiente. |
+| `Classic/TextInput@2.3.2` | patrón estable PULSE PunchReview | Reutilizar para edición. |
+| `GroupContainer` con `Children` dentro de `Gallery` | `PA1001 Expected Scalar, got SequenceStart` observado en TreePro | usar badge/chip plano dentro de la plantilla; no anidar hasta tener contraejemplo positivo. |
 
 ## PA1001 — literales con `: ` dentro de fórmulas inline
 
-Durante F01-02/03 el candidato de `scr_FL_WorkspaceShell` incluía fórmulas como:
+Durante F01-02/03 una fórmula como:
 
 ```yaml
 Text: ="Unidad: " & varFL_Plant
 ```
 
-Studio devolvió:
+produjo:
 
 ```text
 PA1001
 YamlInvalidSyntax
 While scanning a plain scalar value, found invalid mapping
 ```
-
-La fórmula Power Fx era válida; el problema estaba en la representación YAML. Al comenzar el valor con `=`, el contenido se interpreta como un scalar YAML no entrecomillado. La secuencia `: ` dentro del literal puede ser interpretada por el parser como un separador de mapping.
 
 Patrón preventivo:
 
@@ -70,34 +71,43 @@ Text: |-
   ="Unidad: " & varFL_Plant
 ```
 
-En el mismo candidato se corrigió preventivamente toda la clase de ocurrencias, no una a una:
+Ante un `PA1001 invalid mapping`, revisar toda la clase de scalars inline con `: ` y corregirla en bloque antes de pedir otra validación.
+
+## PA1001 — contenedor anidado en plantilla Gallery
+
+Durante `F01-TREE-02` el badge visual `ACTIVO` estaba implementado mediante un `GroupContainer` con `Children` dentro de la plantilla de una Gallery.
+
+Studio devolvió:
 
 ```text
-Unidad:
-Servicio:
-Límite:
-Modos:
-Redundancia:
-Fuentes:
+PA1001
+Expected 'Scalar', got 'SequenceStart'
 ```
 
-Regla de eficiencia:
+La línea indicada correspondía a `Children:` del badge.
 
-> Ante un `PA1001 invalid mapping`, revisar primero toda la clase de scalars inline con `: ` y corregirlos en bloque antes de pedir otra validación de Studio.
+Corrección validada estáticamente:
+
+- sustituir el badge anidado por un `Classic/Button@2.2.0` plano;
+- conservar geometría y aspecto sin introducir una segunda jerarquía de controles en el template.
+
+Alcance de la regla:
+
+> No se afirma que cualquier anidación futura sea universalmente imposible. En este Functional Lab se evita este patrón hasta disponer de un contraejemplo `INSTANCE_SAFE` en el mismo schema.
 
 ## FL-SC-001 — diagnóstico corregido
 
-Las pruebas R5 demostraron que **la declaración concreta** de `CustomProperties` usada inicialmente por el Sidebar podía ser aceptada y aun cerrar Studio al insertar una instancia. Eso nunca fue prueba suficiente para invalidar `CustomProperties` como característica.
+Las primeras pruebas del Sidebar demostraron que una definición podía ser aceptada y aun cerrar Studio al instanciar. Eso nunca fue prueba suficiente para invalidar `CustomProperties` como característica.
 
 `cmp_HeatMapPro` de PULSE aportó el contraejemplo decisivo:
 
-- numerosos Inputs Text, Boolean, Number, Color y Table;
+- Inputs Text, Boolean, Number, Color y Table;
 - Outputs de varios tipos;
 - Events;
 - bindings internos;
-- componente integrado y estable en PULSE.
+- instancia estable.
 
-La regla anterior queda definitivamente retirada:
+Regla retirada:
 
 ```text
 FALSO COMO REGLA GENERAL:
@@ -106,16 +116,7 @@ FALSO COMO REGLA GENERAL:
 
 ## RC2 — patrón HeatMap aplicado al Sidebar
 
-Se reconstruyó el Sidebar completo con su contrato público completo, conservando:
-
-- Inputs;
-- `NavItems` Table;
-- `SelectedKey` Output;
-- `OnSelectItem` Event;
-- Gallery y bindings internos;
-- comportamiento expandido/colapsado.
-
-Los Inputs se normalizaron siguiendo la forma observada en `cmp_HeatMapPro`:
+El Sidebar se reconstruyó en un componente limpio con contrato completo:
 
 ```yaml
 PropertyKind: Input
@@ -128,48 +129,80 @@ Default: ...
 Resultado comunicado por el usuario:
 
 ```text
-RC2 — definición aceptada
-RC2 — instancia insertada correctamente
-RC2 — Studio estable
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE PASS
 ```
 
-Por tanto:
+Esto valida el patrón práctico, sin afirmar que DisplayName/Description sean por sí solos requisitos universales ni la única causa del fallo inicial.
 
-> `CustomProperties` queda validado para el Functional Lab cuando se usa un contrato completo modelado a partir de una referencia real instance-safe.
-
-### Alcance exacto del hallazgo
-
-RC2 se probó sobre un componente limpio y con el contrato HeatMap-style. Por ello se considera **patrón correctivo validado**, pero no se afirma que `DisplayName` o `Description` sean por sí solos requisitos universales del motor ni que su omisión sea la única causa técnica posible del cierre original.
-
-La conclusión práctica es más útil y más segura:
-
-> Para nuevos CanvasComponents reutilizables, no simplificar la declaración de propiedades respecto de un componente estable equivalente. Copiar el contrato completo por `PropertyKind` y validar la instancia.
-
-## Evidencia Functional Lab
+## Referencias positivas
 
 ```text
-R1 root-only                                      PASS
-R2 identidad/texto                                PASS
-R3 contenedores estáticos                         PASS
-R4 navegación visual                              PASS
-R5 contrato reducido de CustomProperties          FAIL_INSTANCE
-R5-TM propiedad manual Studio                     PASS
-R5-TB binding a propiedad manual                  PASS
-cmp_HeatMapPro referencia PULSE                   PASS / integrated
-RC2 Sidebar + contrato HeatMap-style              PASS / INSTANCE_SAFE
-F01-02/03 inline Power Fx con ': '                PA1001 / YAML_INVALID
-F01-02/03 mismas fórmulas como bloque `|-`        PASS / RUNTIME P-101 OK
-PULSE Classic/TextInput@2.3.2                     POSITIVE REFERENCE
+PULSE cmp_HeatMapPro
+PULSE cmp_SidebarNav / patrones de navegación
+PULSE Classic/TextInput@2.3.2
+CMMS cmp_FL_SidebarPro RC2
+CMMS cmp_FL_PageHeaderPro
+CMMS App Shell v1
+CMMS Runtime P-101
+CMMS WS-01
+CMMS WS-02
 ```
+
+## Architecture v2 — control estático
+
+El 2026-08-10 se descargó la rama `feature/f01-premium-foundation` y se revisaron los `.pa.yaml` del Functional Lab.
+
+Resultado:
+
+```text
+PASS_STATIC
+```
+
+Se comprobó:
+
+- parse YAML;
+- resolución de referencias `Navigate(scr_FL_...)` dentro del conjunto de pantallas;
+- resolución de `ComponentName: cmp_FL_...`;
+- ausencia de `Label@2.5.1 + Radius*`;
+- ausencia de `Classic/Button@2.2.0 + AccessibleLabel`;
+- ausencia de la clase conocida de fórmula inline con literal `: `;
+- ausencia de `GroupContainer` con `Children` dentro de Gallery en el conjunto revisado.
+
+Ver:
+
+`V2_STATIC_VALIDATION_2026-08-10.md`
 
 ## Estado actual
 
 ```text
-cmp_FL_SidebarPro RC2       INSTANCE_SAFE PASS
-cmp_FL_PageHeaderPro        INSTANCE_SAFE PASS
-F01-01 Premium App Shell    VALIDATED PASS
-F01-02/03 Runtime P-101     VALIDATED PASS
-F01-05 WS-01 Object 360     READY FOR STUDIO VALIDATION
-FL-SC-001                   RESOLVED — CORRECTIVE PATTERN VALIDATED
-Next                        Validate WS-01 complete vertical slice
+cmp_FL_SidebarPro          INSTANCE_SAFE PASS
+cmp_FL_PageHeaderPro       INSTANCE_SAFE PASS
+F01-01 App Shell v1        VALIDATED PASS
+F01-02/03 Runtime P-101    VALIDATED PASS
+WS-01 v1                   VALIDATED PASS
+WS-02 v1                   VALIDATED PASS
+TreePro motor 11 niveles   DEFINITION/PAGE LOAD observado; Premium visual candidate pendiente de nueva QA
+Architecture v2            PASS_STATIC
+ProcessRailPro             PASS_STATIC / Studio pending
+DecisionPanelPro           PASS_STATIC / Studio pending
+GatePanelPro               PASS_STATIC / Studio pending
+21 pantallas v2            PASS_STATIC / Studio integrated QA pending
 ```
+
+## Siguiente gate
+
+Seguir `../power-apps/V2_INSTALLATION.md`.
+
+La estrategia de validación es integrada:
+
+```text
+Foundation components
+→ Home
+→ FLH
+→ Case Overview / Process Rail
+→ Failure Modes / DecisionPanel
+→ AMEF / calculation + decision + gate
+```
+
+No solicitar 21 ciclos independientes si los smoke tests representativos pueden validar primero la arquitectura completa.
