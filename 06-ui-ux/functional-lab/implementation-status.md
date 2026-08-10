@@ -2,66 +2,83 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
-**Último gate superado:** `F01-00B cmp_FL_PageHeaderPro` — INSTANCE_SAFE PASS + compact layout visual correction PASS  
-**Gate actual:** `F01-00B Comfortable scale QA` — PENDING USER VALIDATION
+**Último gate superado:** `F01-01 Premium App Shell Foundation` — VALIDATED PASS  
+**Gate actual:** `F01-02/03 P-101 runtime bootstrap` — READY FOR STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
 | Incremento | Estado | Resultado |
 |---|---|---|
 | F00-01..F00-09 | completed | Base funcional, journey, fixture, arquitectura y handoff definidos. |
-| F01-00 Auditoría Power Apps Foundation | active | Compatibilidad contrastada con referencias reales PULSE. |
+| F01-00 Auditoría Power Apps Foundation | completed | Compatibilidad contrastada con referencias reales PULSE. |
 | F01-00A cmp_FL_SidebarPro | validated-pass | RC2 completo con CustomProperties y contrato HeatMap-style es instance-safe. |
-| F01-00A-RC2 | validated-pass | Sidebar completo: Inputs, Table, Output, Event y bindings; instancia estable. |
-| F01-00B cmp_FL_PageHeaderPro | instance-safe | Public contract RC2-style se inserta y renderiza sin cerrar Studio. |
-| F01-00B compact visual correction | validated-pass | Dos niveles por tarjeta; solapamiento eliminado. |
-| F01-00B Comfortable scale | pending-user-validation | Se aumenta tipografía y geometría como baseline desktop legible. |
-| F01-01 Premium App Shell Foundation | blocked-by-comfortable-qa | Se prepara inmediatamente tras validar la nueva escala. |
-| F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
-| F01-03 Adaptador P-101 | planned | JSON → colecciones Power Fx. |
-| F01-04 Navegación base | planned | Navegación real entre workspaces. |
-| F01-05 WS-01 Contexto visual premium | planned | Object 360 para caso/contexto. |
+| F01-00B cmp_FL_PageHeaderPro | validated-pass | Instance-safe, composición sin solapamiento, escala Comfortable y español validados. |
+| F01-01 Premium App Shell Foundation | validated-pass | Sidebar + Header integrados; navegación activa; colapsado; host responsive; interfaz española. |
+| F01-02 Runtime state mínimo | active | Inicialización del caso activo, estado de carga y estado de edición. |
+| F01-03 Adaptador P-101 | active | Fixture canónico P-101 convertido a variables/colecciones Power Fx para el laboratorio. |
+| F01-04 Navegación funcional | planned | Navegación condicionada por estado/gates. |
+| F01-05 WS-01 Caso y contexto | planned | Primer vertical slice Object 360 con datos reales del caso. |
 
-## 2. Resultado F01-00B
+## 2. Resultado F01-01
 
-```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       PASS
-COMPACT VISUAL QA   PASS
-```
-
-El PageHeader usa referencia visual PULSE y contrato público basado en `cmp_HeatMapPro` + `cmp_FL_SidebarPro RC2`.
-
-## 3. Nueva decisión de Design System
-
-La captura validada mostró que una composición técnicamente correcta seguía usando una escala demasiado pequeña para el espacio desktop disponible.
-
-Baseline adoptado:
+Validación comunicada por el usuario:
 
 ```text
-Functional Lab default density = COMFORTABLE
+APP SHELL OK
+Sidebar español                  PASS
+PageHeader español               PASS
+Escala Comfortable               PASS
+CanvasComponent integration      PASS
+Sidebar selection → Header       PASS
+Sidebar collapsed/expanded       PASS
+Studio stable                    PASS
 ```
 
-La escala base aumenta texto y geometría de forma coordinada. No se usa zoom del navegador como mecanismo de diseño.
+El patrón de instancia de componentes se basa en la forma observada en PULSE:
 
-El futuro Premium App Shell podrá exponer:
+```yaml
+Control: CanvasComponent
+ComponentName: <component>
+```
+
+## 3. Baseline vigente
 
 ```text
-Normal
-Comfortable
-Large
+Idioma visible           Español (es-ES)
+Densidad base            Comfortable
+Caso demostración        P-101
+Navegación interna       keys técnicas estables
+Shell                    Sidebar + Header + Workspace Host
+Persistencia productiva  no decidida
+Fuente canónica del caso JSON versionado
 ```
 
-mediante un control global `Aa`. Esa capacidad se implementará en el Shell, no dentro de cada componente de forma independiente.
+El bilingüismo ES/EN queda documentado como principio future-ready para aplicaciones futuras, pero no amplía el alcance actual del Functional Lab.
 
-## 4. Gate actual
+## 4. Gate actual — P-101 runtime bootstrap
+
+Objetivo del siguiente incremento:
 
 ```text
-pegar PageHeader Comfortable
-→ guardar/reabrir
-→ comprobar legibilidad + no clipping
-→ VISUAL_QA_VALIDATED
-→ F01-01 Premium App Shell Foundation
+fixture P-101
+→ adaptador Power Fx sustituible
+→ estado runtime separado
+→ variables + colecciones tipadas
+→ representación visible de datos reales
 ```
 
-No se requieren nuevas pruebas de instancia ni diagnóstico de CustomProperties salvo que aparezca un fallo real.
+Se utilizará inicialmente Power Fx generado desde el fixture canónico. Esta decisión es un adaptador de laboratorio sustituible y no define la persistencia ni la arquitectura productiva.
+
+Validación esperada:
+
+```text
+[ ] pantalla abre sin errores nuevos
+[ ] varFL_CaseLoaded = true
+[ ] caso activo P-101 visible
+[ ] contexto operativo visible
+[ ] evidencia visible
+[ ] colecciones de funciones/modos de fallo creadas
+[ ] shell y navegación siguen funcionando
+```
+
+No se abre ninguna decisión de backend, SQL, Dataverse, API o integración productiva.
