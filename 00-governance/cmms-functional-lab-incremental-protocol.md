@@ -1,9 +1,10 @@
 # CMMS 2.0 Functional Lab — Protocolo incremental
 
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Estado:** Activo  
 **Derivado de:** Protocolo de Implementación Incremental Asistida por IA v2.0 de Pulse  
-**Complemento:** Protocolo de Construcción Modular de Pantallas Power Apps v1.0 de Pulse
+**Complemento:** Protocolo de Construcción Modular de Pantallas Power Apps v1.0 de Pulse  
+**Actualización 1.1:** gate explícito de seguridad de instancia para CanvasComponent tras FL-SC-001.
 
 ## 1. Propósito
 
@@ -48,11 +49,21 @@ Para el Functional Lab se adopta este orden:
 3. contratos JSON y schemas vigentes;
 4. código canónico del Functional Lab;
 5. resultados reales en Power Apps Studio y App Checker;
-6. Experience Center y prototipos históricos;
-7. notas de reuniones no consolidadas;
-8. hipótesis.
+6. conocimiento reutilizable vigente en `rubensv74/functional-engineering-knowledge-base`;
+7. Experience Center y prototipos históricos;
+8. notas de reuniones no consolidadas;
+9. hipótesis.
 
 Una hipótesis nunca se presenta como requisito aprobado.
+
+Para trabajo Power Apps se consultarán además, cuando apliquen:
+
+- `15-standards/power-platform/power-apps-source-code-compatibility-standard.md`;
+- `15-standards/power-platform/reusable-power-apps-component-contract.md`;
+- `15-standards/ux-ui/power-apps-visual-quality-standard.md`;
+- `80-learning/power-platform/POWER_APPS_UI_LESSONS_LEARNED.md`.
+
+El conocimiento central no sustituye la revalidación en la app activa.
 
 ## 4. Gate funcional obligatorio
 
@@ -120,6 +131,64 @@ Cada bloque Power Apps debe superar:
 
 No se avanza sobre un bloque `failed`.
 
+### 6.1. Gate técnico adicional para CanvasComponent
+
+Un CanvasComponent no utiliza un estado genérico `validated`.
+
+Debe recorrer explícitamente:
+
+```text
+PASS_STATIC
+      ↓
+DEFINITION_ACCEPTED
+      ↓
+INSTANCE_SAFE
+      ↓
+PUBLIC_CONTRACT_VALIDATED
+      ↓
+VISUAL_QA_VALIDATED
+      ↓
+READY_FOR_INTEGRATION
+```
+
+Definiciones:
+
+- `PASS_STATIC`: revisión de schema, controles, propiedades, Power Fx y dependencias.
+- `DEFINITION_ACCEPTED`: Studio acepta/guarda la definición y App Checker no muestra error atribuible.
+- `INSTANCE_SAFE`: una instancia con valores por defecto puede insertarse en superficie aislada sin cierre, bloqueo o corrupción de Studio.
+- `PUBLIC_CONTRACT_VALIDATED`: inputs, outputs y eventos relevantes funcionan según contrato.
+- `VISUAL_QA_VALIDATED`: se ha observado el componente con contenido representativo y sin defectos visuales bloqueantes.
+- `READY_FOR_INTEGRATION`: todos los gates anteriores están superados.
+
+Regla:
+
+> `DEFINITION_ACCEPTED` nunca se interpreta como `INSTANCE_SAFE`.
+
+Todo componente nuevo se probará primero en una superficie aislada y solo después podrá aparecer como dependencia de una pantalla funcional.
+
+Si Studio se cierra al insertar la instancia:
+
+1. marcar `INSTANCE_SAFE = FAIL`;
+2. detener bloques dependientes;
+3. registrar incidente;
+4. mantener causa técnica como `UNKNOWN` mientras no exista evidencia suficiente;
+5. reducir el componente incrementalmente para obtener reproducer mínimo;
+6. actualizar compatibilidad y estado;
+7. revalidar desde el estadio mínimo.
+
+Orden de reducción recomendado:
+
+```text
+root only
+→ identidad/texto
+→ contenedores estáticos
+→ acciones sin eventos
+→ custom inputs simples
+→ colecciones/Table/Gallery
+→ outputs/events
+→ geometría completa
+```
+
 ## 7. Unidad mínima de incremento
 
 Un incremento tendrá una responsabilidad principal.
@@ -127,6 +196,7 @@ Un incremento tendrá una responsabilidad principal.
 Ejemplos:
 
 - crear shell del Functional Lab;
+- crear/validar una responsabilidad de un componente premium;
 - cargar fixture P-101;
 - mostrar contexto del caso;
 - implementar navegación entre workspaces;
@@ -169,6 +239,16 @@ Expected result:
 Documentation impacted:
 ```
 
+Para componentes se añadirá:
+
+```text
+Component validation level before test:
+Component validation level expected after test:
+Instance smoke test:
+Public contract smoke test:
+Visual QA:
+```
+
 ## 9. Datos de ejemplo
 
 Los casos se mantendrán como fixtures JSON versionados.
@@ -208,7 +288,8 @@ Cada incremento validado debe actualizar, cuando aplique:
 - contrato JSON;
 - registro de preguntas abiertas;
 - manual de uso del Functional Lab;
-- lecciones aprendidas técnicas.
+- lecciones aprendidas técnicas;
+- registro de compatibilidad Source Code.
 
 ## 12. Condiciones de parada
 
@@ -218,6 +299,7 @@ El trabajo se detiene cuando aparece cualquiera de estos casos:
 - decisión de arquitectura productiva irreversible;
 - contradicción entre dos fuentes de verdad relevantes;
 - error nuevo en Power Apps Studio;
+- cierre o bloqueo de Studio durante smoke test de instancia;
 - necesidad de un contrato remoto no confirmado;
 - cambio de modelo de datos que afecte a varios workspaces;
 - regla que el prototipo está a punto de convertir en automatismo sin validación suficiente.
@@ -226,12 +308,18 @@ El trabajo se detiene cuando aparece cualquiera de estos casos:
 
 Todo error reutilizable debe producir:
 
-1. corrección del bloque;
-2. actualización del registro de compatibilidad;
-3. regla preventiva;
-4. revisión de bloques futuros donde el mismo patrón pueda aparecer.
+1. parada del bloque dependiente;
+2. registro del efecto observado;
+3. separación explícita entre efecto confirmado, hipótesis y causa confirmada;
+4. corrección o reducción del bloque;
+5. actualización del registro de compatibilidad;
+6. regla preventiva solo cuando esté respaldada por evidencia;
+7. revisión de bloques futuros donde el mismo patrón pueda aparecer;
+8. promoción del aprendizaje a la base de conocimiento central cuando aporte conocimiento transversal nuevo.
 
-Antes de generar nuevos YAML se consultará siempre el registro de compatibilidad y lecciones aprendidas del Functional Lab.
+Antes de generar **cada nuevo YAML o corrección YAML** se consultará siempre la versión vigente de `development/compatibility.md`.
+
+Para CanvasComponent, una prueba de definición nunca sustituye al smoke test de instancia.
 
 ## 14. Handoff
 
@@ -246,7 +334,9 @@ Se mantendrá un estado con:
 - decisiones abiertas;
 - fixtures vigentes;
 - archivos canónicos;
-- validaciones pendientes en Power Apps Studio.
+- validaciones pendientes en Power Apps Studio;
+- incidentes técnicos abiertos;
+- nivel de validación real de cada componente reusable.
 
 ## 15. Criterio de éxito
 
@@ -262,3 +352,7 @@ Se considera exitoso si permite responder con claridad:
 - qué dato o decisión queda generado;
 - cómo se justifica posteriormente;
 - qué requisito funcional se entrega a IT.
+
+Y desde la perspectiva técnica del laboratorio:
+
+> ningún componente se integra por confianza estática; debe demostrar que su instancia es estable en Power Apps Studio.
