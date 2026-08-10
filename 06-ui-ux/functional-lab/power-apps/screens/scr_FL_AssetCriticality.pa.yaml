@@ -1,0 +1,343 @@
+Screens:
+  scr_FL_AssetCriticality:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Assets")
+
+    Children:
+      - conFLAssetCriticalityRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLAssetCriticalityNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Assets"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveAssetCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLAssetCriticalityNav.SelectedKey);
+                    Switch(
+                        cmpFLAssetCriticalityNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+
+            - conFLAssetCriticalityMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLAssetCriticalityNav.Width
+                  X: =cmpFLAssetCriticalityNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLAssetCriticalityHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="CONTEXTO DEL ACTIVO"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: ="Criticidad de planta"
+                        Height: =132
+                        JourneyHint: ="Input contextual independiente del AMEF"
+                        JourneyPosition: ="ACTIVOS"
+                        ProgressCurrent: =0
+                        ProgressTotal: =28
+                        ReviewHint: =varFLActiveCriticalityRevision
+                        ReviewState: =LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,Status)
+                        Subtitle: ="La criticidad expresa la importancia del activo en su posición y servicio concretos. No es el NPR ni la matriz S×O del AMEF."
+                        Title: ="Criticidad del activo"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ACTIVOS"
+                        X: =0
+                        Y: =0
+
+                  - conFLAssetCriticalityTabs:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =144
+                      Children:
+                        - btnFLAssetCriticalityFLH:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_FLH,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="FLH"
+                              Width: =80
+                              X: =12
+                              Y: =11
+                        - btnFLAssetCriticalityTaxonomy:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_Taxonomy,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Taxonomía"
+                              Width: =105
+                              X: =102
+                              Y: =11
+                        - btnFLAssetCriticalityADR:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_ADR,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="ADR"
+                              Width: =80
+                              X: =217
+                              Y: =11
+                        - btnFLAssetCriticalityCurrent:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
+                              BorderThickness: =1
+                              Color: =ColorValue("#0369A1")
+                              Fill: =ColorValue("#F0F9FF")
+                              Height: =32
+                              OnSelect: =false
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Criticidad"
+                              Width: =105
+                              X: =307
+                              Y: =11
+                        - btnFLAssetCriticality360:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_Asset360,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Ficha 360"
+                              Width: =105
+                              X: =422
+                              Y: =11
+
+                  - conFLAssetCriticalityCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#FED7AA")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-222
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width*0.46-30
+                        X: =24
+                        Y: =210
+                      Children:
+                        - lblFLAssetCriticalityEyebrow:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#C2410C")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =8
+                              Text: ="ASSET CRITICALITY ASSESSMENT"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =18
+                        - lblFLAssetCriticalityValue:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =24
+                              Text: =varFLActiveCriticality
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =48
+                        - lblFLAssetCriticalityScore:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =10
+                              Text: ="Score contextual " & Text(LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,CriticalityScore))
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =92
+                        - lblFLAssetCriticalityContext:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =9
+                              Text: ="Producción · " & LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,ProductionImpact) & Char(10) & "Seguridad · " & LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,SafetyImpact) & Char(10) & "Medioambiente · " & LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,EnvironmentalImpact) & Char(10) & "Redundancia · " & LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,RedundancyContext)
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =130
+                        - lblFLAssetCriticalitySource:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =8
+                              Text: ="Fuente / revisión · " & varFLActiveCriticalityRevision
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =236
+
+                  - conFLAssetCriticalityExplain:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#BAE6FD")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-222
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-conFLAssetCriticalityCard.Width-60
+                        X: =conFLAssetCriticalityCard.X+conFLAssetCriticalityCard.Width+12
+                        Y: =210
+                      Children:
+                        - lblFLAssetCriticalityExplainTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =11
+                              Text: ="Qué cambia en el AMEF aplicado"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =18
+                        - lblFLAssetCriticalityExplainText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              Size: =9
+                              Text: ="La criticidad no modifica las funciones ni los modos de fallo de la revisión R01. Puede influir en la aplicabilidad, prioridad o frecuencia de una tarea mediante un perfil contextual. Ese ajuste queda en FmeaAssetApplication / TaskProfileVariant."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =48
+                        - lblFLAssetCriticalityExampleTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =10
+                              Text: ="Ejemplo del laboratorio"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =118
+                        - lblFLAssetCriticalityExample:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =9
+                              Text: ="P-101 · Alta → vibración mensual" & Char(10) & "P-102 · Media → vibración bimestral" & Char(10) & "P-103 · Baja → vibración trimestral"
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =148
+                        - lblFLAssetCriticalityWarning:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#B45309")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =8
+                              Text: ="Los nombres de perfil y reglas de frecuencia son demostrativos hasta su validación corporativa."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =224
