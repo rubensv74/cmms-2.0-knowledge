@@ -2,8 +2,8 @@
 
 **Fecha:** 2026-08-10  
 **Estado general:** F01 — Power Apps Premium Foundation  
-**Último gate superado:** `F01-00A-R3 contenedores estáticos` — INSTANCE_SAFE PASS  
-**Gate actual:** `F01-00A-R4 navegación visual sin eventos` — PENDING STUDIO VALIDATION
+**Último gate superado:** `F01-00A-R4 navegación visual sin eventos` — INSTANCE_SAFE PASS  
+**Gate actual:** `F01-00A-R5 custom inputs simples` — PENDING STUDIO VALIDATION
 
 ## 1. Estado de incrementos
 
@@ -23,7 +23,8 @@
 | F01-00A-R1 root-only diagnostic | validated-pass | CanvasComponent + root GroupContainer ManualLayout instance-safe. |
 | F01-00A-R2 identity/text diagnostic | validated-pass | ModernText estático instance-safe. |
 | F01-00A-R3 static-containers diagnostic | validated-pass | AutoLayout + contenedores anidados estáticos instance-safe. |
-| F01-00A-R4 static-navigation diagnostic | pending-user-validation | Reintroduce controles visuales de navegación sin OnSelect, datos dinámicos ni contrato público. |
+| F01-00A-R4 static-navigation diagnostic | validated-pass | Rectangle + Icon + Label + Button estáticos, sin eventos, instance-safe. |
+| F01-00A-R5 simple-custom-inputs diagnostic | pending-user-validation | Prueba inputs custom primitivos sin Gallery/Table/Output/Event. |
 | F01-00B cmp_FL_PageHeaderPro | blocked-by-FL-SC-001 | No se prepara hasta resolver seguridad de instancia del Sidebar. |
 | F01-01 Premium App Shell Foundation | blocked-by-components | Depende de componentes fundacionales `INSTANCE_SAFE`. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
@@ -52,7 +53,8 @@ Reducción actual:
 R1 root-only: PASS
 R2 identity/text: PASS
 R3 static containers: PASS
-R4 static navigation controls: PENDING
+R4 static navigation controls: PASS
+R5 simple custom inputs: PENDING
 ```
 
 Interpretación vigente:
@@ -61,6 +63,7 @@ Interpretación vigente:
 - root `GroupContainer@1.5.0` ManualLayout no lo reproduce;
 - `ModernText@1.0.0` estático no lo reproduce;
 - AutoLayout vertical + contenedores anidados estáticos no lo reproduce;
+- Rectangle/Icon/Label/Button estáticos sin eventos no lo reproducen;
 - la causa técnica concreta sigue `UNKNOWN`.
 
 ## 3. Estrategia de corrección
@@ -69,16 +72,16 @@ Interpretación vigente:
 R1 root only                         PASS
 → R2 identidad/texto                PASS
 → R3 contenedores estáticos         PASS
-→ R4 navegación visual sin eventos  CURRENT
-→ R5 custom inputs simples
+→ R4 navegación visual sin eventos  PASS
+→ R5 custom inputs simples          CURRENT
 → R6 Gallery + Table
 → R7 Output/Event
 → R8 geometría completa
 ```
 
-R4 no incorpora navegación real. Solo prueba controles visuales del patrón original con valores estáticos y sin `OnSelect`.
+R5 prueba únicamente inputs primitivos `Text`, `Boolean` y `Color` consumidos por controles ya validados. No introduce `Gallery`, `Table`, `Output`, `Event` ni `OnSelect`.
 
-Si R4 falla, se subdividirá por tipo de control antes de avanzar.
+Si R5 falla, se subdividirá por tipo de propiedad custom antes de avanzar.
 
 ## 4. Arquitectura de interfaz de WS-01
 
