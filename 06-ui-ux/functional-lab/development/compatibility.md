@@ -43,6 +43,7 @@ READY_FOR_INTEGRATION
 | `CustomProperties:` en Source Code | es compatible cuando el contrato está bien formado; `cmp_HeatMapPro` y RC2 lo demuestran | No prohibirlo; usar un componente instance-safe como plantilla estructural. |
 | Input nuevo de componente reutilizable | una forma reducida puede no ser equivalente a la referencia estable | Preservar `PropertyKind + DisplayName + Description + DataType + Default` cuando ese sea el patrón de referencia. |
 | Fórmula Power Fx inline cuyo literal contiene `: ` | `PA1001 YamlInvalidSyntax / invalid mapping` | Expresar la fórmula como bloque YAML `|-` y colocar `=` en la línea siguiente. |
+| `Classic/TextInput@2.3.2` | patrón real estable encontrado en PULSE PunchReview | Reutilizar para edición WS-01 antes de introducir otro control de entrada. |
 
 ## PA1001 — literales con `: ` dentro de fórmulas inline
 
@@ -157,7 +158,8 @@ R5-TB binding a propiedad manual                  PASS
 cmp_HeatMapPro referencia PULSE                   PASS / integrated
 RC2 Sidebar + contrato HeatMap-style              PASS / INSTANCE_SAFE
 F01-02/03 inline Power Fx con ': '                PA1001 / YAML_INVALID
-F01-02/03 mismas fórmulas como bloque `|-`        CANDIDATE FIX
+F01-02/03 mismas fórmulas como bloque `|-`        PASS / RUNTIME P-101 OK
+PULSE Classic/TextInput@2.3.2                     POSITIVE REFERENCE
 ```
 
 ## Estado actual
@@ -166,7 +168,8 @@ F01-02/03 mismas fórmulas como bloque `|-`        CANDIDATE FIX
 cmp_FL_SidebarPro RC2       INSTANCE_SAFE PASS
 cmp_FL_PageHeaderPro        INSTANCE_SAFE PASS
 F01-01 Premium App Shell    VALIDATED PASS
-F01-02/03 Runtime P-101     PA1001 CORRECTED / PENDING STUDIO VALIDATION
+F01-02/03 Runtime P-101     VALIDATED PASS
+F01-05 WS-01 Object 360     READY FOR STUDIO VALIDATION
 FL-SC-001                   RESOLVED — CORRECTIVE PATTERN VALIDATED
-Next                        Validate corrected Runtime P-101 candidate
+Next                        Validate WS-01 complete vertical slice
 ```
