@@ -7,14 +7,15 @@ Screens:
         =
         Set(varFLNavKey,"Strategy");
         Set(varFLCurrentStageId,"FL-17");
-        Set(varFLFailureAnnualCost,varFLFailRatePerYear*(varFLRepairCostPerFailureEur+(varFLDowntimeHoursPerFailure*varFLDowntimeRateEurPerHour)+varFLAdditionalImpactCostEur));
-        Set(varFLTaskAnnualCost,varFLAnnualRuns*((varFLLaborHoursPerRun*varFLLaborRateEurPerHour)+varFLMaterialPerRunEur)+varFLFixedAnnualCostEur);
-        Set(varFLResidualFailureCost,varFLFailureAnnualCost*(1-varFLProbabilityReductionPct/100)*(1-varFLConsequenceReductionPct/100));
-        Set(varFLStrategyAnnualCost,varFLTaskAnnualCost+varFLResidualFailureCost);
-        Set(varFLAnnualBenefit,varFLFailureAnnualCost-varFLStrategyAnnualCost)
+        ClearCollect(
+            colFLEconomicAlternatives,
+            {AlternativeCode:"ALT-CBM",AlternativeName:"Mantenimiento basado en condición",TechnicalStatus:"Válida",ExpectedAnnualCost:4050,InvestmentCost:2500,AvoidedRiskValue:14500,SystemRank:1,HumanSelected:varFLRCMHumanStrategy="Mantenimiento basado en condición"},
+            {AlternativeCode:"ALT-TBM",AlternativeName:"Preventivo por tiempo",TechnicalStatus:"Válida con reservas",ExpectedAnnualCost:6200,InvestmentCost:900,AvoidedRiskValue:11800,SystemRank:2,HumanSelected:varFLRCMHumanStrategy="Preventivo por tiempo"},
+            {AlternativeCode:"ALT-RTF",AlternativeName:"Operar hasta fallo",TechnicalStatus:"No válida para el caso ilustrativo",ExpectedAnnualCost:9300,InvestmentCost:0,AvoidedRiskValue:0,SystemRank:3,HumanSelected:false}
+        )
 
     Children:
-      - conFLEcoRoot:
+      - conFLEconomicsRoot:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
@@ -29,7 +30,7 @@ Screens:
             RadiusTopRight: =0
             Width: =App.Width
           Children:
-            - cmpFLEcoNav:
+            - cmpFLEconomicsNav:
                 Control: CanvasComponent
                 ComponentName: cmp_FL_SidebarPro
                 Properties:
@@ -44,13 +45,21 @@ Screens:
                   NavItems: =colFLV2NavItems
                   OnSelectItem: |-
                     =
-                    Set(varFLNavKey,cmpFLEcoNav.SelectedKey);
-                    Switch(cmpFLEcoNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                    Set(varFLNavKey,cmpFLEconomicsNav.SelectedKey);
+                    Switch(
+                        cmpFLEconomicsNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
                   UserRole: =varFLCurrentRole
                   Width: =If(varFLSidebarCollapsed,76,220)
                   X: =0
                   Y: =0
-            - conFLEcoMain:
+            - conFLEconomicsMain:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -63,47 +72,60 @@ Screens:
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =Parent.Width-cmpFLEcoNav.Width
-                  X: =cmpFLEcoNav.Width
+                  Width: =Parent.Width-cmpFLEconomicsNav.Width
+                  X: =cmpFLEconomicsNav.Width
                   Y: =0
                 Children:
-                  - cmpFLEcoHeader:
+                  - cmpFLEconomicsHeader:
                       Control: CanvasComponent
                       ComponentName: cmp_FL_PageHeaderPro
                       Properties:
-                        Archetype: ="COMPARACIÓN ECONÓMICA"
-                        CaseCode: =varFLActiveCaseCode
-                        CaseType: =varFLRecommendedStrategy
+                        Archetype: ="EVALUACIÓN ECONÓMICA"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLRCMHumanStrategy
                         Height: =132
-                        JourneyHint: ="Comparar el coste esperado"
+                        JourneyHint: ="FL-17 · comparar alternativas técnicamente válidas"
                         JourneyPosition: ="17 / 28"
                         ProgressCurrent: =17
                         ProgressTotal: =28
-                        ReviewHint: ="FL-17"
-                        ReviewState: =If(varFLCaseDraft,"Borrador","En revisión")
-                        Subtitle: ="Compara alternativas técnicamente válidas sin permitir que el criterio económico sustituya la decisión RCM."
+                        ReviewHint: ="Tres capas de coste"
+                        ReviewState: ="Preliminar"
+                        Subtitle: ="Aquí comparamos alternativas RCM. El coste detallado de mantenimiento se calcula después con tarea, frecuencia y recursos; el coste real llega desde ejecución."
                         Title: ="Evaluación económica"
                         Width: =Parent.Width
                         WorkspaceCode: ="ESTRATEGIA"
                         X: =0
                         Y: =0
-                  - cmpFLEcoRail:
+                  - cmpFLEconomicsRail:
                       Control: CanvasComponent
                       ComponentName: cmp_FL_ProcessRailPro
                       Properties:
                         ActiveStageId: ="FL-17"
                         CompactMode: =true
-                        Height: =Parent.Height-cmpFLEcoHeader.Height-24
+                        Height: =Parent.Height-cmpFLEconomicsHeader.Height-24
                         Items: =colFLStageExecutions
                         OnSelectStage: |-
                           =
-                          Set(varFLCurrentStageId,cmpFLEcoRail.SelectedStageIdOut);
-                          Switch(cmpFLEcoRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                          Set(varFLCurrentStageId,cmpFLEconomicsRail.SelectedStageIdOut);
+                          Switch(
+                              cmpFLEconomicsRail.SelectedScreenKeyOut,
+                              "Context",Navigate(scr_FL_Context,ScreenTransition.None),
+                              "Functions",Navigate(scr_FL_Functions,ScreenTransition.None),
+                              "FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),
+                              "AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),
+                              "RCM",Navigate(scr_FL_RCM,ScreenTransition.None),
+                              "Economics",Navigate(scr_FL_Economics,ScreenTransition.None),
+                              "Task",Navigate(scr_FL_Task,ScreenTransition.None),
+                              "PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),
+                              "Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),
+                              "ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),
+                              "Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None)
+                          )
                         ShowPhaseHeaders: =true
                         Width: =300
                         X: =24
-                        Y: =cmpFLEcoHeader.Height+12
-                  - conFLEcoWork:
+                        Y: =cmpFLEconomicsHeader.Height+12
+                  - conFLEconomicsWork:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -111,16 +133,157 @@ Screens:
                         BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Fill: =Color.Transparent
-                        Height: =Parent.Height-cmpFLEcoHeader.Height-24
+                        Height: =Parent.Height-cmpFLEconomicsHeader.Height-24
                         RadiusBottomLeft: =0
                         RadiusBottomRight: =0
                         RadiusTopLeft: =0
                         RadiusTopRight: =0
-                        Width: =Parent.Width-cmpFLEcoRail.Width-60
-                        X: =cmpFLEcoRail.X+cmpFLEcoRail.Width+12
-                        Y: =cmpFLEcoHeader.Height+12
+                        Width: =Parent.Width-cmpFLEconomicsRail.Width-60
+                        X: =cmpFLEconomicsRail.X+cmpFLEconomicsRail.Width+12
+                        Y: =cmpFLEconomicsHeader.Height+12
                       Children:
-                        - conFLEcoAssumptions:
+                        - cmpFLEconomicsLineage:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_LineagePanelPro
+                            Properties:
+                              ApplicationCode: =varFLActiveApplicationCode
+                              AssetCode: =varFLActiveAssetCode
+                              CriticalityLabel: =varFLActiveCriticality
+                              ExecutionLabel: ="Coste real disponible como referencia"
+                              Height: =112
+                              LibraryCode: =varFLActiveFmeaCode
+                              RevisionCode: =varFLActiveFmeaRevisionCode
+                              Title: ="Qué coste estamos comparando"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                        - conFLEconomicsAlternatives:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =300
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =124
+                            Children:
+                              - lblFLEconomicsAlternativesTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="ECONOMIC ASSESSMENT · COMPARACIÓN PRELIMINAR"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLEconomicsAlternativesHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="La economía solo compara políticas que siguen siendo técnicamente defendibles. Una opción barata no recupera una estrategia descartada por seguridad o inviabilidad técnica."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =36
+                              - galFLEconomicAlternatives:
+                                  Control: Gallery@2.15.0
+                                  Variant: Vertical
+                                  Properties:
+                                    BorderColor: =Color.Transparent
+                                    Height: =218
+                                    Items: =SortByColumns(colFLEconomicAlternatives,"SystemRank",SortOrder.Ascending)
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =2
+                                    TemplateSize: =66
+                                    Width: =Parent.Width-28
+                                    X: =14
+                                    Y: =72
+                                  Children:
+                                    - btnFLEconomicAlternative:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =If(ThisItem.HumanSelected,ColorValue("#A78BFA"),ColorValue("#E2E8F0"))
+                                          BorderThickness: =If(ThisItem.HumanSelected,2,1)
+                                          Color: =Color.Transparent
+                                          Fill: =If(ThisItem.HumanSelected,ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                                          Height: =Parent.TemplateHeight-4
+                                          HoverFill: =ColorValue("#F8FAFC")
+                                          OnSelect: =false
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Text: =""
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =2
+                                    - lblFLEconomicAlternativeName:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: =ThisItem.AlternativeName
+                                          Width: =Parent.TemplateWidth*0.38
+                                          X: =12
+                                          Y: =10
+                                    - lblFLEconomicAlternativeTechnical:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =If(StartsWith(ThisItem.TechnicalStatus,"No válida"),ColorValue("#B91C1C"),ColorValue("#15803D"))
+                                          Size: =8
+                                          Text: =ThisItem.TechnicalStatus
+                                          Width: =Parent.TemplateWidth*0.20
+                                          X: =Parent.TemplateWidth*0.39
+                                          Y: =10
+                                    - lblFLEconomicAlternativeCost:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Right
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: =Text(ThisItem.ExpectedAnnualCost,"[$-es-ES]#,##0 €") & " / año"
+                                          Width: =Parent.TemplateWidth*0.18
+                                          X: =Parent.TemplateWidth*0.60
+                                          Y: =10
+                                    - lblFLEconomicAlternativeBenefit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Right
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#475569")
+                                          Size: =8
+                                          Text: ="Riesgo evitado " & Text(ThisItem.AvoidedRiskValue,"[$-es-ES]#,##0 €")
+                                          Width: =Parent.TemplateWidth*0.20-12
+                                          X: =Parent.TemplateWidth*0.79
+                                          Y: =10
+                                    - lblFLEconomicAlternativeState:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#7C3AED")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =7
+                                          Text: =If(ThisItem.HumanSelected,"DECISIÓN RCM ACTUAL","ALTERNATIVA")
+                                          Width: =Parent.TemplateWidth-24
+                                          X: =12
+                                          Y: =38
+                        - conFLEconomicsCostLayers:
                             Control: GroupContainer@1.5.0
                             Variant: ManualLayout
                             Properties:
@@ -128,245 +291,134 @@ Screens:
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =ColorValue("#FFFFFF")
-                              Height: =140
+                              Height: =154
                               RadiusBottomLeft: =14
                               RadiusBottomRight: =14
                               RadiusTopLeft: =14
                               RadiusTopRight: =14
                               Width: =Parent.Width
                               X: =0
-                              Y: =0
+                              Y: =436
                             Children:
-                              - lblFLEcoAssumptionsLabel:
+                              - lblFLEconomicsLayer1:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
+                                    Color: =ColorValue("#0284C7")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =8
-                                    Text: ="HIPÓTESIS ECONÓMICAS DEL CASO"
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =14
-                              - lblFLEcoFailRate:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    Size: =10
-                                    Text: =Text(varFLFailRatePerYear) & " fallos/año"
-                                    Width: =130
-                                    X: =18
-                                    Y: =48
-                              - lblFLEcoRepair:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    Size: =10
-                                    Text: =Text(varFLRepairCostPerFailureEur,"#,##0") & " € reparación"
-                                    Width: =170
-                                    X: =170
-                                    Y: =48
-                              - lblFLEcoDowntime:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    Size: =10
-                                    Text: =Text(varFLDowntimeHoursPerFailure) & " h parada · " & Text(varFLDowntimeRateEurPerHour,"#,##0") & " €/h"
-                                    Width: =220
-                                    X: =360
-                                    Y: =48
-                              - lblFLEcoReduction:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#166534")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: ="Reducción esperada de probabilidad " & Text(varFLProbabilityReductionPct) & "% · consecuencia " & Text(varFLConsequenceReductionPct) & "%"
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =88
-                              - lblFLEcoWarning:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#B45309")
-                                    Size: =8
-                                    Text: ="Los valores son hipótesis del laboratorio y deben poder sustituirse por datos reales de coste y fiabilidad."
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =114
-                        - conFLEcoFailure:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
-                            Properties:
-                              BorderColor: =ColorValue("#FECACA")
-                              BorderThickness: =1
-                              DropShadow: =DropShadow.None
-                              Fill: =ColorValue("#FEF2F2")
-                              Height: =198
-                              RadiusBottomLeft: =14
-                              RadiusBottomRight: =14
-                              RadiusTopLeft: =14
-                              RadiusTopRight: =14
-                              Width: =(Parent.Width-12)*0.5
-                              X: =0
-                              Y: =152
-                            Children:
-                              - lblFLEcoFailureLabel:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#B91C1C")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: ="ALTERNATIVA A · FALLO / REPARACIÓN"
-                                    Width: =Parent.Width-36
+                                    Text: ="1 · ECONOMIC ASSESSMENT"
+                                    Width: =Parent.Width/3-32
                                     X: =18
                                     Y: =16
-                              - lblFLEcoFailureValue:
+                              - lblFLEconomicsLayer1Value:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#0F172A")
                                     FontWeight: =FontWeight.Semibold
-                                    Size: =24
-                                    Text: =Text(varFLFailureAnnualCost,"€ #,##0")
-                                    Width: =Parent.Width-36
+                                    Size: =12
+                                    Text: =Text(LookUp(colFLEconomicAlternatives,HumanSelected,ExpectedAnnualCost),"[$-es-ES]#,##0 €") & " / año"
+                                    Width: =Parent.Width/3-32
                                     X: =18
-                                    Y: =48
-                              - lblFLEcoFailureHint:
+                                    Y: =42
+                              - lblFLEconomicsLayer1Hint:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#64748B")
-                                    Size: =9
-                                    Text: ="Coste esperado anual = tasa de fallo × (reparación + parada + impacto adicional)."
-                                    Width: =Parent.Width-36
+                                    Size: =8
+                                    Text: ="Estimación de alternativa RCM; todavía no es el coste detallado de la tarea."
+                                    Width: =Parent.Width/3-32
                                     Wrap: =true
                                     X: =18
-                                    Y: =90
-                              - lblFLEcoFailureInputs:
+                                    Y: =70
+                              - lblFLEconomicsLayer2:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
-                                    Color: =ColorValue("#991B1B")
-                                    Size: =9
-                                    Text: ="Impacto adicional por fallo " & Text(varFLAdditionalImpactCostEur,"€ #,##0")
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =144
-                        - conFLEcoStrategy:
-                            Control: GroupContainer@1.5.0
-                            Variant: ManualLayout
-                            Properties:
-                              BorderColor: =ColorValue("#BBF7D0")
-                              BorderThickness: =1
-                              DropShadow: =DropShadow.None
-                              Fill: =ColorValue("#F0FDF4")
-                              Height: =198
-                              RadiusBottomLeft: =14
-                              RadiusBottomRight: =14
-                              RadiusTopLeft: =14
-                              RadiusTopRight: =14
-                              Width: =Parent.Width-conFLEcoFailure.Width-12
-                              X: =conFLEcoFailure.Width+12
-                              Y: =152
-                            Children:
-                              - lblFLEcoStrategyLabel:
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="2 · MAINTENANCE COST ESTIMATE"
+                                    Width: =Parent.Width/3-32
+                                    X: =Parent.Width/3+6
+                                    Y: =16
+                              - lblFLEconomicsLayer2Value:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: =Text(varFLEstimatedAnnualCost,"[$-es-ES]#,##0 €") & " / año"
+                                    Width: =Parent.Width/3-32
+                                    X: =Parent.Width/3+6
+                                    Y: =42
+                              - lblFLEconomicsLayer2Hint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Se consolida con tarea, frecuencia, duración, H-H, materiales y servicios."
+                                    Width: =Parent.Width/3-32
+                                    Wrap: =true
+                                    X: =Parent.Width/3+6
+                                    Y: =70
+                              - lblFLEconomicsLayer3:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#15803D")
                                     FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: ="ALTERNATIVA B · BASADA EN CONDICIÓN"
-                                    Width: =Parent.Width-36
-                                    X: =18
+                                    Size: =8
+                                    Text: ="3 · ACTUAL MAINTENANCE COST"
+                                    Width: =Parent.Width/3-32
+                                    X: =2*Parent.Width/3-6
                                     Y: =16
-                              - lblFLEcoStrategyValue:
+                              - lblFLEconomicsLayer3Value:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =ColorValue("#0F172A")
                                     FontWeight: =FontWeight.Semibold
-                                    Size: =24
-                                    Text: =Text(varFLStrategyAnnualCost,"€ #,##0")
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =48
-                              - lblFLEcoStrategyTask:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#475569")
-                                    Size: =9
-                                    Text: ="Coste anual de tarea " & Text(varFLTaskAnnualCost,"€ #,##0") & " + riesgo residual " & Text(varFLResidualFailureCost,"€ #,##0")
-                                    Width: =Parent.Width-36
-                                    Wrap: =true
-                                    X: =18
-                                    Y: =92
-                              - lblFLEcoBenefit:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#166534")
-                                    FontWeight: =FontWeight.Semibold
                                     Size: =12
-                                    Text: ="Beneficio esperado: " & Text(varFLAnnualBenefit,"€ #,##0") & "/año"
-                                    Width: =Parent.Width-36
-                                    X: =18
-                                    Y: =144
-                        - cmpFLEcoDecision:
-                            Control: CanvasComponent
-                            ComponentName: cmp_FL_DecisionPanelPro
-                            Properties:
-                              CanConfirm: =varFLStrategyAnnualCost<varFLFailureAnnualCost
-                              CanOverride: =true
-                              ConfirmLabel: ="Confirmar alternativa"
-                              ContextText: ="La comparación económica se aplica solo entre alternativas que ya han superado la validez técnica RCM."
-                              DecisionReason: ="La estrategia basada en condición mantiene validez técnica y reduce el coste esperado anual en el caso ilustrativo."
-                              Height: =254
-                              HumanDecisionValue: =varFLRecommendedStrategy
-                              IsOverride: =false
-                              OnConfirmDecision: =UpdateIf(colFLStageExecutions,StageId="FL-17",{Status:"confirmed"});Set(varFLCaseDraft,false)
-                              OnOverrideDecision: =Set(varFLCaseDraft,true)
-                              RecommendationExplanation: ="El coste esperado total de la estrategia es inferior al escenario de fallo y reparación."
-                              RecommendationLabel: ="Alternativa preferente"
-                              RecommendationValue: =varFLRecommendedStrategy
-                              RequiredRole: ="Ingeniería de Fiabilidad + Mantenimiento / Planificación"
-                              ShowDecision: =true
-                              ShowRecommendation: =true
-                              ShowSystemResult: =true
-                              SystemResultLabel: ="Beneficio esperado anual"
-                              SystemResultValue: =Text(varFLAnnualBenefit,"€ #,##0")
-                              Title: ="FL-17 · Comparar coste esperado"
-                              Width: =Parent.Width*0.60
-                              X: =0
-                              Y: =362
-                        - cmpFLEcoGate:
+                                    Text: =Text(varFLActualAnnualCost,"[$-es-ES]#,##0 €") & " / año"
+                                    Width: =Parent.Width/3-32
+                                    X: =2*Parent.Width/3-6
+                                    Y: =42
+                              - lblFLEconomicsLayer3Hint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Referencia histórica de ejecución; no se confunde con una estimación."
+                                    Width: =Parent.Width/3-32
+                                    Wrap: =true
+                                    X: =2*Parent.Width/3-6
+                                    Y: =70
+                        - cmpFLEconomicsGate:
                             Control: CanvasComponent
                             ComponentName: cmp_FL_GatePanelPro
                             Properties:
-                              CanContinue: =varFLStrategyAnnualCost<varFLFailureAnnualCost
+                              CanContinue: =!IsBlank(varFLRCMHumanStrategy)
                               ContinueLabel: ="Continuar a tarea"
-                              GateStatus: =If(varFLStrategyAnnualCost<varFLFailureAnnualCost,"passed","warning")
-                              GateTitle: ="Salida de evaluación económica"
-                              Height: =254
+                              GateStatus: =If(!IsBlank(varFLRCMHumanStrategy),"passed","blocked")
+                              GateTitle: ="Control de avance FL-17"
+                              Height: =Parent.Height-602
                               OnContinue: |-
                                 =
-                                UpdateIf(colFLStageExecutions,StageId="FL-17",{Status:"confirmed"});
-                                Set(varFLCaseDraft,false);
+                                UpdateIf(colFLStageExecutions,StageId="FL-17",{Status:"confirmed",IsCurrent:false});
                                 Set(varFLCurrentStageId,"FL-18");
+                                UpdateIf(colFLStageExecutions,StageId="FL-18",{IsCurrent:true});
                                 Navigate(scr_FL_Task,ScreenTransition.None)
-                              OutputLabel: ="Alternativa económica confirmada para diseño de tarea"
-                              Reason: ="La economía respalda la política RCM; no sustituye su justificación técnica."
-                              RequiredAction: ="Confirmar las hipótesis económicas utilizadas"
-                              ResponsibleRole: ="Mantenimiento / Planificación"
-                              Summary: ="Comparación económica favorable"
-                              Width: =Parent.Width-cmpFLEcoDecision.Width-12
-                              X: =cmpFLEcoDecision.Width+12
-                              Y: =362
+                              OutputLabel: ="EconomicAssessment de alternativas válidas"
+                              Reason: ="El coste detallado se completará después de definir tarea, intervalo y recursos."
+                              RequiredAction: ="Mantener solo alternativas técnicamente válidas"
+                              ResponsibleRole: ="Mantenimiento / Planificación + Ingeniería de Fiabilidad"
+                              Summary: ="Comparación económica preliminar preparada"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =602
