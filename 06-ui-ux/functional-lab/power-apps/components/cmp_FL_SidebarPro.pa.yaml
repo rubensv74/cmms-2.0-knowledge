@@ -1,53 +1,39 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R5 — SIMPLE CUSTOM INPUTS
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R5-T — TEXT CUSTOM INPUT ONLY
 #
 # Status: CORRECTIVE DIAGNOSTIC — PENDING POWER APPS STUDIO VALIDATION
 # Incident: FL-SC-001
 # Operation: REPLACE COMPLETE COMPONENT SOURCE
 # Target component: cmp_FL_SidebarPro
+#
 # Previous results:
-# - R1 root-only = PASS / INSTANCE_SAFE
-# - R2 identity/text = PASS / INSTANCE_SAFE
-# - R3 static containers = PASS / INSTANCE_SAFE
-# - R4 static navigation controls = PASS / INSTANCE_SAFE
+# - R1 root-only = PASS
+# - R2 identity/text = PASS
+# - R3 static containers = PASS
+# - R4 static navigation = PASS
+# - R5 Text+Boolean+Color = FAIL / Studio closes on instance
 #
 # PURPOSE
-# Introduce only primitive custom input properties on top of the R4-safe baseline.
-# This stage tests CustomProperties without introducing Table, Gallery, Output,
-# Event, OnSelect or dynamic collection logic.
+# Return to the R4-safe baseline and add exactly one CustomProperty type:
+# Input / Text. No Boolean or Color custom properties are present.
 #
-# ADDED IN R5
+# ADDED
 # - AppTitle: Input / Text
-# - ShowEnvironment: Input / Boolean
-# - AccentColor: Input / Color
-#
-# CONSUMPTION
-# - AppTitle drives the title ModernText.Text
-# - ShowEnvironment drives environment ModernText.Visible
-# - AccentColor drives the C2 mark and active navigation bar colors
+# - consumed only by lblFLSB_R4_Title.Text
 #
 # STILL EXCLUDED
-# - Table inputs
+# - Boolean custom properties
+# - Color custom properties
+# - Table
 # - Gallery
-# - Output properties
-# - Event properties
+# - Output
+# - Event
 # - OnSelect
 # - ThisItem / dynamic Items
-# - navigation behavior
-# - complex conditional geometry
-#
-# VALIDATION
-# 1. Source definition is accepted.
-# 2. Save succeeds.
-# 3. Insert ONE NEW instance on an otherwise empty screen.
-# 4. Studio remains open and responsive.
-# 5. Title shows CMMS 2.0, environment is visible, accent is cyan.
-# 6. Save again.
-# 7. App Checker shows no new error attributable to the component.
 #
 # INTERPRETATION
-# PASS -> primitive Text/Boolean/Color custom inputs are not sufficient to
-#         reproduce FL-SC-001; continue with R6 Gallery + Table.
-# FAIL -> stop and subdivide R5 by custom property type before adding anything else.
+# PASS -> Text custom input in this declaration+consumption pattern is not sufficient
+#         to reproduce FL-SC-001; continue with the next primitive type.
+# FAIL -> reduce Text further by separating declaration from consumption.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
@@ -58,16 +44,6 @@ ComponentDefinitions:
         PropertyKind: Input
         DataType: Text
         Default: ="CMMS 2.0"
-
-      ShowEnvironment:
-        PropertyKind: Input
-        DataType: Boolean
-        Default: =true
-
-      AccentColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#38BDF8")
 
     Properties:
       Fill: =ColorValue("#07111F")
@@ -94,7 +70,7 @@ ComponentDefinitions:
             Width: =Parent.Width
 
           Children:
-            - conFLSB_R5_Brand:
+            - conFLSB_R4_Brand:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -112,12 +88,12 @@ ComponentDefinitions:
                   Width: =Parent.Width
 
                 Children:
-                  - lblFLSB_R5_Mark:
+                  - lblFLSB_R4_Mark:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
                         AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.AccentColor
+                        Color: =ColorValue("#38BDF8")
                         FontWeight: =FontWeight.Bold
                         Size: =13
                         Text: ="C2"
@@ -126,7 +102,7 @@ ComponentDefinitions:
                         X: =17
                         Y: =20
 
-                  - lblFLSB_R5_Title:
+                  - lblFLSB_R4_Title:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
@@ -139,7 +115,7 @@ ComponentDefinitions:
                         X: =70
                         Y: =19
 
-                  - lblFLSB_R5_Subtitle:
+                  - lblFLSB_R4_Subtitle:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
@@ -151,7 +127,7 @@ ComponentDefinitions:
                         X: =70
                         Y: =45
 
-                  - lblFLSB_R5_Environment:
+                  - lblFLSB_R4_Environment:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
@@ -159,13 +135,12 @@ ComponentDefinitions:
                         FontWeight: =FontWeight.Semibold
                         Size: =8
                         Text: ="CONCEPT LAB"
-                        Visible: =cmp_FL_SidebarPro.ShowEnvironment
                         Width: =186
                         Wrap: =false
                         X: =17
                         Y: =74
 
-            - conFLSB_R5_Workspace:
+            - conFLSB_R4_Workspace:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -182,7 +157,7 @@ ComponentDefinitions:
                   Width: =Parent.Width
 
                 Children:
-                  - lblFLSB_R5_WorkspaceLabel:
+                  - lblFLSB_R4_WorkspaceLabel:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
@@ -195,7 +170,7 @@ ComponentDefinitions:
                         X: =17
                         Y: =18
 
-                  - conFLSB_R5_NavOverview:
+                  - conFLSB_R4_NavOverview:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -213,18 +188,18 @@ ComponentDefinitions:
                         Y: =48
 
                       Children:
-                        - recFLSB_R5_ActiveBar:
+                        - recFLSB_R4_ActiveBar:
                             Control: Rectangle@2.3.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
                               BorderThickness: =0
-                              Fill: =cmp_FL_SidebarPro.AccentColor
+                              Fill: =ColorValue("#38BDF8")
                               Height: =36
                               Width: =3
                               X: =0
                               Y: =6
 
-                        - icoFLSB_R5_Overview:
+                        - icoFLSB_R4_Overview:
                             Control: Classic/Icon@2.5.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -236,7 +211,7 @@ ComponentDefinitions:
                               X: =16
                               Y: =13
 
-                        - lblFLSB_R5_Overview:
+                        - lblFLSB_R4_Overview:
                             Control: Label@2.5.1
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -253,7 +228,7 @@ ComponentDefinitions:
                               X: =48
                               Y: =0
 
-                        - btnFLSB_R5_OverviewHit:
+                        - btnFLSB_R4_OverviewHit:
                             Control: Classic/Button@2.2.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -273,7 +248,7 @@ ComponentDefinitions:
                               X: =0
                               Y: =0
 
-                  - conFLSB_R5_NavContext:
+                  - conFLSB_R4_NavContext:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -291,7 +266,7 @@ ComponentDefinitions:
                         Y: =100
 
                       Children:
-                        - icoFLSB_R5_Context:
+                        - icoFLSB_R4_Context:
                             Control: Classic/Icon@2.5.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -303,7 +278,7 @@ ComponentDefinitions:
                               X: =16
                               Y: =13
 
-                        - lblFLSB_R5_Context:
+                        - lblFLSB_R4_Context:
                             Control: Label@2.5.1
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -320,7 +295,7 @@ ComponentDefinitions:
                               X: =48
                               Y: =0
 
-                        - btnFLSB_R5_ContextHit:
+                        - btnFLSB_R4_ContextHit:
                             Control: Classic/Button@2.2.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -340,7 +315,7 @@ ComponentDefinitions:
                               X: =0
                               Y: =0
 
-                  - conFLSB_R5_NavRisk:
+                  - conFLSB_R4_NavRisk:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -358,7 +333,7 @@ ComponentDefinitions:
                         Y: =152
 
                       Children:
-                        - icoFLSB_R5_Risk:
+                        - icoFLSB_R4_Risk:
                             Control: Classic/Icon@2.5.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -370,7 +345,7 @@ ComponentDefinitions:
                               X: =16
                               Y: =13
 
-                        - lblFLSB_R5_Risk:
+                        - lblFLSB_R4_Risk:
                             Control: Label@2.5.1
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -387,7 +362,7 @@ ComponentDefinitions:
                               X: =48
                               Y: =0
 
-                        - btnFLSB_R5_RiskHit:
+                        - btnFLSB_R4_RiskHit:
                             Control: Classic/Button@2.2.0
                             Properties:
                               BorderColor: =RGBA(0,0,0,0)
@@ -407,7 +382,7 @@ ComponentDefinitions:
                               X: =0
                               Y: =0
 
-            - conFLSB_R5_Footer:
+            - conFLSB_R4_Footer:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -425,7 +400,7 @@ ComponentDefinitions:
                   Width: =Parent.Width
 
                 Children:
-                  - lblFLSB_R5_CaseLabel:
+                  - lblFLSB_R4_CaseLabel:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
@@ -438,7 +413,7 @@ ComponentDefinitions:
                         X: =17
                         Y: =18
 
-                  - lblFLSB_R5_CaseCode:
+                  - lblFLSB_R4_CaseCode:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
@@ -451,7 +426,7 @@ ComponentDefinitions:
                         X: =17
                         Y: =46
 
-                  - lblFLSB_R5_CaseName:
+                  - lblFLSB_R4_CaseName:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
