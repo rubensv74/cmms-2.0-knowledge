@@ -2,28 +2,189 @@
 #
 # Status: PENDING POWER APPS STUDIO VALIDATION
 # Target component: cmp_FL_PageHeaderPro
-# Authoring strategy: BODY-ONLY SOURCE CODE
 #
-# IMPORTANT
-# - NO CustomProperties block.
-# - NO Event / Output.
-# - NO globals.
-# - NO external assets.
-# - Public contract will be added in Studio only when the App Shell needs it.
+# REFERENCE STRATEGY
+# - Visual/body reference: PULSE cmp_PageHeaderPro.
+# - Public-contract reference: PULSE cmp_HeatMapPro + cmp_FL_SidebarPro RC2.
+# - Inputs preserve the full proven metadata shape:
+#   PropertyKind + DisplayName + Description + DataType + Default.
+# - No globals, external assets or hidden business logic.
 #
-# Current visual context:
-# - Workspace: WS-01 Case & Context
-# - Archetype: Object 360
-# - Case: P-101
-# - Journey position: 01 / 28
-# - Review state: Ready for review
+# SINGLE GATE
+# 1. Replace complete component Source Code.
+# 2. Save and confirm definition accepted.
+# 3. Insert ONE new instance on an isolated screen.
+# 4. Save and reopen.
+# 5. If stable, continue directly to F01-01 Premium App Shell.
 
 ComponentDefinitions:
   cmp_FL_PageHeaderPro:
     DefinitionType: CanvasComponent
 
+    CustomProperties:
+      WorkspaceCode:
+        PropertyKind: Input
+        DisplayName: WorkspaceCode
+        Description: Functional Lab workspace code shown in the header eyebrow
+        DataType: Text
+        Default: ="WS-01"
+
+      Archetype:
+        PropertyKind: Input
+        DisplayName: Archetype
+        Description: Primary SaaS interaction archetype for the current workspace
+        DataType: Text
+        Default: ="OBJECT 360"
+
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Primary workspace title
+        DataType: Text
+        Default: ="Case & Context"
+
+      Subtitle:
+        PropertyKind: Input
+        DisplayName: Subtitle
+        Description: Short description of the current workspace purpose
+        DataType: Text
+        Default: ="Understand the asset, boundaries and operating context before defining functions"
+
+      CaseCode:
+        PropertyKind: Input
+        DisplayName: CaseCode
+        Description: Code of the current Functional Lab case
+        DataType: Text
+        Default: ="P-101"
+
+      CaseType:
+        PropertyKind: Input
+        DisplayName: CaseType
+        Description: Short asset or case type description
+        DataType: Text
+        Default: ="Centrifugal pump"
+
+      JourneyPosition:
+        PropertyKind: Input
+        DisplayName: JourneyPosition
+        Description: Human-readable current position in the Functional Journey
+        DataType: Text
+        Default: ="01 / 28"
+
+      JourneyHint:
+        PropertyKind: Input
+        DisplayName: JourneyHint
+        Description: Short label for the current journey stage
+        DataType: Text
+        Default: ="Context"
+
+      ReviewState:
+        PropertyKind: Input
+        DisplayName: ReviewState
+        Description: Current functional review state
+        DataType: Text
+        Default: ="Ready for review"
+
+      ReviewHint:
+        PropertyKind: Input
+        DisplayName: ReviewHint
+        Description: Secondary explanation of the current review state
+        DataType: Text
+        Default: ="Evidence available"
+
+      ProgressCurrent:
+        PropertyKind: Input
+        DisplayName: ProgressCurrent
+        Description: Current numeric stage used by the progress indicator
+        DataType: Number
+        Default: =1
+
+      ProgressTotal:
+        PropertyKind: Input
+        DisplayName: ProgressTotal
+        Description: Total number of stages used by the progress indicator
+        DataType: Number
+        Default: =28
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Main page-header surface color
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      SurfaceAltColor:
+        PropertyKind: Input
+        DisplayName: SurfaceAltColor
+        Description: Alternate surface used by context cards
+        DataType: Color
+        Default: =ColorValue("#F8FAFC")
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Neutral border and progress-track color
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Primary page-header text color
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Secondary page-header text color
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Functional Lab accent color for eyebrow and progress
+        DataType: Color
+        Default: =ColorValue("#0284C7")
+
+      SuccessColor:
+        PropertyKind: Input
+        DisplayName: SuccessColor
+        Description: Success-state accent color
+        DataType: Color
+        Default: =ColorValue("#22C55E")
+
+      SuccessTextColor:
+        PropertyKind: Input
+        DisplayName: SuccessTextColor
+        Description: Success-state primary text color
+        DataType: Color
+        Default: =ColorValue("#14532D")
+
+      SuccessMutedTextColor:
+        PropertyKind: Input
+        DisplayName: SuccessMutedTextColor
+        Description: Success-state secondary text color
+        DataType: Color
+        Default: =ColorValue("#166534")
+
+      SuccessSoftColor:
+        PropertyKind: Input
+        DisplayName: SuccessSoftColor
+        Description: Success-state soft background color
+        DataType: Color
+        Default: =ColorValue("#F0FDF4")
+
+      SuccessBorderColor:
+        PropertyKind: Input
+        DisplayName: SuccessBorderColor
+        Description: Success-state border color
+        DataType: Color
+        Default: =ColorValue("#BBF7D0")
+
     Properties:
-      Fill: =ColorValue("#FFFFFF")
+      Fill: =cmp_FL_PageHeaderPro.SurfaceColor
       Height: =112
       Width: =1200
 
@@ -32,10 +193,10 @@ ComponentDefinitions:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
-            BorderColor: =ColorValue("#E2E8F0")
+            BorderColor: =cmp_FL_PageHeaderPro.BorderColor
             BorderThickness: =1
             DropShadow: =DropShadow.None
-            Fill: =ColorValue("#FFFFFF")
+            Fill: =cmp_FL_PageHeaderPro.SurfaceColor
             Height: =Parent.Height
             RadiusBottomLeft: =0
             RadiusBottomRight: =0
@@ -66,10 +227,10 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#0284C7")
+                        Color: =cmp_FL_PageHeaderPro.AccentColor
                         FontWeight: =FontWeight.Semibold
                         Size: =8
-                        Text: ="WS-01  ·  OBJECT 360"
+                        Text: =Upper(cmp_FL_PageHeaderPro.WorkspaceCode) & "  ·  " & Upper(cmp_FL_PageHeaderPro.Archetype)
                         Width: =Parent.Width
                         Wrap: =false
                         X: =0
@@ -79,10 +240,10 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#0F172A")
+                        Color: =cmp_FL_PageHeaderPro.TextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =20
-                        Text: ="Case & Context"
+                        Text: =cmp_FL_PageHeaderPro.Title
                         Width: =Parent.Width
                         Wrap: =false
                         X: =0
@@ -92,9 +253,9 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#64748B")
+                        Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         Size: =9
-                        Text: ="Understand the asset, boundaries and operating context before defining functions"
+                        Text: =cmp_FL_PageHeaderPro.Subtitle
                         Width: =Parent.Width
                         Wrap: =false
                         X: =0
@@ -104,10 +265,10 @@ ComponentDefinitions:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
-                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderColor: =cmp_FL_PageHeaderPro.BorderColor
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
-                  Fill: =ColorValue("#F8FAFC")
+                  Fill: =cmp_FL_PageHeaderPro.SurfaceAltColor
                   Height: =62
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
@@ -122,7 +283,7 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#64748B")
+                        Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =7
                         Text: ="CURRENT CASE"
@@ -135,10 +296,10 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#0F172A")
+                        Color: =cmp_FL_PageHeaderPro.TextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =11
-                        Text: ="P-101"
+                        Text: =cmp_FL_PageHeaderPro.CaseCode
                         Width: =Parent.Width-24
                         Wrap: =false
                         X: =12
@@ -148,9 +309,9 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#64748B")
+                        Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         Size: =7
-                        Text: ="Centrifugal pump"
+                        Text: =cmp_FL_PageHeaderPro.CaseType
                         Width: =Parent.Width-24
                         Wrap: =false
                         X: =12
@@ -160,10 +321,10 @@ ComponentDefinitions:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
-                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderColor: =cmp_FL_PageHeaderPro.BorderColor
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
-                  Fill: =ColorValue("#F8FAFC")
+                  Fill: =cmp_FL_PageHeaderPro.SurfaceAltColor
                   Height: =62
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
@@ -178,7 +339,7 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#64748B")
+                        Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =7
                         Text: ="JOURNEY"
@@ -191,10 +352,10 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#0F172A")
+                        Color: =cmp_FL_PageHeaderPro.TextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =11
-                        Text: ="01 / 28"
+                        Text: =cmp_FL_PageHeaderPro.JourneyPosition
                         Width: =Parent.Width-24
                         Wrap: =false
                         X: =12
@@ -204,9 +365,9 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#64748B")
+                        Color: =cmp_FL_PageHeaderPro.MutedTextColor
                         Size: =7
-                        Text: ="Context"
+                        Text: =cmp_FL_PageHeaderPro.JourneyHint
                         Width: =Parent.Width-24
                         Wrap: =false
                         X: =12
@@ -216,10 +377,10 @@ ComponentDefinitions:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
-                  BorderColor: =ColorValue("#BBF7D0")
+                  BorderColor: =cmp_FL_PageHeaderPro.SuccessBorderColor
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
-                  Fill: =ColorValue("#F0FDF4")
+                  Fill: =cmp_FL_PageHeaderPro.SuccessSoftColor
                   Height: =62
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
@@ -237,7 +398,7 @@ ComponentDefinitions:
                         BorderColor: =RGBA(0,0,0,0)
                         BorderThickness: =0
                         DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#22C55E")
+                        Fill: =cmp_FL_PageHeaderPro.SuccessColor
                         Height: =8
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
@@ -251,7 +412,7 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#166534")
+                        Color: =cmp_FL_PageHeaderPro.SuccessMutedTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =7
                         Text: ="REVIEW STATE"
@@ -264,10 +425,10 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#14532D")
+                        Color: =cmp_FL_PageHeaderPro.SuccessTextColor
                         FontWeight: =FontWeight.Semibold
                         Size: =10
-                        Text: ="Ready for review"
+                        Text: =cmp_FL_PageHeaderPro.ReviewState
                         Width: =Parent.Width-24
                         Wrap: =false
                         X: =12
@@ -277,9 +438,9 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =ColorValue("#16A34A")
+                        Color: =cmp_FL_PageHeaderPro.SuccessColor
                         Size: =7
-                        Text: ="Evidence available"
+                        Text: =cmp_FL_PageHeaderPro.ReviewHint
                         Width: =Parent.Width-24
                         Wrap: =false
                         X: =12
@@ -290,7 +451,7 @@ ComponentDefinitions:
                 Properties:
                   BorderColor: =RGBA(0,0,0,0)
                   BorderThickness: =0
-                  Fill: =ColorValue("#E2E8F0")
+                  Fill: =cmp_FL_PageHeaderPro.BorderColor
                   Height: =2
                   Width: =Parent.Width-48
                   X: =24
@@ -301,8 +462,19 @@ ComponentDefinitions:
                 Properties:
                   BorderColor: =RGBA(0,0,0,0)
                   BorderThickness: =0
-                  Fill: =ColorValue("#38BDF8")
+                  Fill: =cmp_FL_PageHeaderPro.AccentColor
                   Height: =2
-                  Width: =Max(44,(Parent.Width-48)/28)
+                  Width: |-
+                    =If(
+                        cmp_FL_PageHeaderPro.ProgressCurrent <= 0,
+                        0,
+                        Max(
+                            44,
+                            Min(
+                                Parent.Width-48,
+                                (Parent.Width-48) * cmp_FL_PageHeaderPro.ProgressCurrent / Max(1,cmp_FL_PageHeaderPro.ProgressTotal)
+                            )
+                        )
+                    )
                   X: =24
                   Y: =105
