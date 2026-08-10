@@ -89,14 +89,27 @@ Resultado real: `INSTANCE_SAFE = PASS`.
 
 Validado mediante `F01-00A-R3`:
 
-- root `GroupContainer@1.5.0` `AutoLayout` vertical;
+- root `GroupContainer@1.5.0` AutoLayout vertical;
 - tres `GroupContainer@1.5.0` ManualLayout anidados;
 - textos estáticos repartidos en Brand, Workspace y Footer;
 - sin propiedades custom, Gallery, Table, Output, Event ni navegación.
 
 Resultado real: `INSTANCE_SAFE = PASS`.
 
-Interpretación limitada: la composición concreta de AutoLayout + contenedores anidados probada en R3 no es suficiente para reproducir FL-SC-001.
+### FL-EVID-004 — Controles visuales de navegación sin eventos
+
+Validado mediante `F01-00A-R4`:
+
+- `Rectangle@2.3.0`;
+- `Classic/Icon@2.5.0`;
+- `Label@2.5.1` sin `Radius*`;
+- `Classic/Button@2.2.0` sin `AccessibleLabel`;
+- tres filas estáticas;
+- sin `OnSelect`, Gallery, Table, custom properties, Output ni Event.
+
+Resultado real: `INSTANCE_SAFE = PASS`.
+
+Interpretación limitada: esta combinación estática de controles visuales tampoco es suficiente para reproducir FL-SC-001.
 
 ## Decisiones para Functional Lab
 
@@ -104,13 +117,7 @@ Interpretación limitada: la composición concreta de AutoLayout + contenedores 
 
 El Functional Lab tendrá una biblioteca propia de componentes premium.
 
-Los componentes podrán inspirarse en patrones y contratos probados en Pulse, pero su fuente canónica pertenecerá al Functional Lab y no deberá depender de:
-
-- logo o assets de PULSE;
-- variables globales de PULSE;
-- nombres de pantallas de PULSE;
-- contratos SQL/flows de PULSE;
-- semántica específica de Punches.
+Los componentes podrán inspirarse en patrones y contratos probados en Pulse, pero su fuente canónica pertenecerá al Functional Lab y no deberá depender de assets, variables, pantallas, SQL/flows o semántica específica de PULSE.
 
 ### FL-COMP-002 — Incorporación secuencial antes del shell
 
@@ -124,7 +131,7 @@ Un componente no se considerará disponible por existir en GitHub ni por aceptar
 
 ### FL-COMP-003 — Componentes Pulse son referencias, no dependencias
 
-- `cmp_SidebarNav` está acoplado a PULSE mediante logo, textos y estado global; no se reutiliza directamente.
+- `cmp_SidebarNav` está acoplado a PULSE y no se reutiliza directamente.
 - `cmp_PageHeaderPro` es conceptualmente reusable, pero existe evidencia de cierre de Studio durante una prueba de instancia; se usa solo como referencia hasta comprender la causa.
 
 ### FL-COMP-004 — No copiar propiedades por apariencia
@@ -154,6 +161,18 @@ root only
 
 El primer estadio que reproduce el fallo delimita la superficie sospechosa.
 
+### FL-COMP-008 — R5 prueba solo propiedades custom primitivas
+
+Para mantener el diagnóstico discriminante, R5 introducirá únicamente `CustomProperties` primitivas:
+
+- `Text`;
+- `Boolean`;
+- `Color`.
+
+Estas propiedades deberán consumirse por controles ya validados. R5 no debe introducir `Table`, Gallery, Output, Event, OnSelect ni geometría condicional compleja.
+
+Si R5 falla, se subdividirá por tipo de propiedad antes de continuar.
+
 ## Incidentes Functional Lab
 
 ### FL-SC-001 — `cmp_FL_SidebarPro` cierra Studio al insertar instancia
@@ -164,8 +183,8 @@ El primer estadio que reproduce el fallo delimita la superficie sospechosa.
 **Session ID:** no disponible.  
 **Causa técnica:** `UNKNOWN — INVESTIGATION ACTIVE`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Resultados diagnósticos:** `R1 PASS`, `R2 PASS`, `R3 PASS`.  
-**Correctivo actual:** `F01-00A-R4`, navegación visual sin eventos.  
+**Resultados diagnósticos:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`.  
+**Correctivo actual:** `F01-00A-R5`, custom inputs simples.  
 **Registro completo:** `development/incidents/FL-SC-001-component-instance-crash.md`.
 
 ## Estado de validación
@@ -177,7 +196,9 @@ cmp_FL_SidebarPro complete initial instance: FAIL
 R1 root-only instance: PASS
 R2 identity/text instance: PASS
 R3 static containers instance: PASS
+R4 static navigation instance: PASS
+R5 simple custom inputs: PENDING
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
-Current diagnostic: F01-00A-R4 static navigation without events
+Current diagnostic: F01-00A-R5 simple custom inputs
 ```
