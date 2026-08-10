@@ -1,433 +1,68 @@
-# CMMS 2.0 FUNCTIONAL LAB — F01-00A — PREMIUM SIDEBAR COMPONENT
+# CMMS 2.0 FUNCTIONAL LAB — F01-00A-R1 — SIDEBAR ROOT-ONLY REPRODUCER
 #
-# Status: PUBLISHED — PENDING POWER APPS STUDIO VALIDATION
-# Operation: CREATE CANVAS COMPONENT FROM SOURCE CODE
+# Status: CORRECTIVE DIAGNOSTIC — PENDING POWER APPS STUDIO VALIDATION
+# Incident: FL-SC-001
+# Operation: REPLACE COMPLETE COMPONENT SOURCE
 # Target component: cmp_FL_SidebarPro
-# Functional responsibility: persistent workspace navigation only
-# Dependencies: none
 #
-# OUT OF SCOPE:
-# - business gates
-# - fixture loading
-# - navigation orchestration
-# - SQL / flows / persistence
-# - external assets
-# - global variables
+# PURPOSE
+# Determine whether a minimal CanvasComponent created from Source Code can be
+# instantiated safely in the CMMS 2.0 Functional Lab app.
 #
-# VALIDATION AFTER PASTE/SAVE:
-# 1. ComponentDefinitions is accepted by Studio.
-# 2. No PA1001 / PA2108 attributable to this component.
-# 3. No missing image or component dependency.
-# 4. Expanded and collapsed layouts render correctly.
-# 5. Active item is visually distinct.
-# 6. Clicking an item updates SelectedKey and triggers OnSelectItem.
-# 7. Static text has no clipping or mini-scrollbars.
-# 8. App Checker shows no new component errors.
+# IMPORTANT
+# Replace the COMPLETE current cmp_FL_SidebarPro source with this content,
+# beginning at `ComponentDefinitions:`.
+# Do not keep any CustomProperties or children from the previous version.
+#
+# INTENTIONALLY REMOVED FOR THIS TEST
+# - CustomProperties
+# - Table inputs
+# - Output properties
+# - Event properties
+# - Gallery
+# - ModernText / Label / Button / Icon
+# - navigation logic
+# - conditional geometry
+# - AutoLayout nesting
+#
+# VALIDATION
+# 1. Source definition is accepted.
+# 2. Save succeeds.
+# 3. Insert ONE instance of cmp_FL_SidebarPro on an otherwise empty screen.
+# 4. Studio must remain open and responsive.
+# 5. The instance renders as a dark 220x700 surface.
+# 6. Save again.
+# 7. App Checker shows no new error attributable to the component.
+#
+# INTERPRETATION
+# PASS -> minimal CanvasComponent infrastructure is instance-safe; restore the
+#         sidebar incrementally until the first failing responsibility appears.
+# FAIL -> investigate the CanvasComponent Source Code/baseline mechanism itself;
+#         do not restore component complexity.
 
 ComponentDefinitions:
   cmp_FL_SidebarPro:
     DefinitionType: CanvasComponent
-    CustomProperties:
-      AppTitle:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="CMMS 2.0"
-      AppSubtitle:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="Functional Lab"
-      EnvironmentLabel:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="CONCEPT LAB"
-      ActiveKey:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="Overview"
-      NavItems:
-        PropertyKind: Input
-        DataType: Table
-        Default: |-
-          =
-          Table(
-              {Order:10, Key:"Overview", Label:"Overview", IconKey:"Overview"},
-              {Order:20, Key:"Context", Label:"Case & Context", IconKey:"Context"},
-              {Order:30, Key:"Functions", Label:"Functions & Failures", IconKey:"Functions"},
-              {Order:40, Key:"Risk", Label:"Effects & Risk", IconKey:"Risk"},
-              {Order:50, Key:"Decision", Label:"RCM Decision", IconKey:"Decision"},
-              {Order:60, Key:"Plan", Label:"Plan Design", IconKey:"Plan"},
-              {Order:70, Key:"Governance", Label:"Governance", IconKey:"Governance"},
-              {Order:80, Key:"Improve", Label:"Effectiveness", IconKey:"Improve"}
-          )
-      IsCollapsed:
-        PropertyKind: Input
-        DataType: Boolean
-        Default: =false
-      CurrentCaseCode:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="P-101"
-      CurrentCaseName:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="Cooling water centrifugal pump"
-      UserRole:
-        PropertyKind: Input
-        DataType: Text
-        Default: ="Functional reviewer"
-      SurfaceColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#07111F")
-      SurfaceAltColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#0B1B2E")
-      TextColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#F8FAFC")
-      MutedTextColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#94A3B8")
-      AccentColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#38BDF8")
-      ActiveFillColor:
-        PropertyKind: Input
-        DataType: Color
-        Default: =ColorValue("#12395A")
-      OnSelectItem:
-        PropertyKind: Event
-        ReturnType: None
-        Default: =
-      SelectedKey:
-        PropertyKind: Output
-        DataType: Text
 
     Properties:
-      Fill: =cmp_FL_SidebarPro.SurfaceColor
-      Height: =900
-      SelectedKey: =Coalesce(galFLNav.Selected.Key, cmp_FL_SidebarPro.ActiveKey, "")
-      Width: =If(cmp_FL_SidebarPro.IsCollapsed,76,220)
+      Fill: =ColorValue("#07111F")
+      Height: =700
+      Width: =220
 
     Children:
       - conFLSB_Root:
           Control: GroupContainer@1.5.0
-          Variant: AutoLayout
+          Variant: ManualLayout
           Properties:
             BorderColor: =RGBA(0,0,0,0)
             BorderThickness: =0
             DropShadow: =DropShadow.None
-            Fill: =cmp_FL_SidebarPro.SurfaceColor
+            Fill: =ColorValue("#07111F")
             Height: =Parent.Height
-            LayoutAlignItems: =LayoutAlignItems.Stretch
-            LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
             RadiusBottomLeft: =0
             RadiusBottomRight: =0
             RadiusTopLeft: =0
             RadiusTopRight: =0
             Width: =Parent.Width
-          Children:
-            - conFLSB_Brand:
-                Control: GroupContainer@1.5.0
-                Variant: ManualLayout
-                Properties:
-                  BorderColor: =RGBA(255,255,255,0.06)
-                  BorderThickness: =0
-                  DropShadow: =DropShadow.None
-                  Fill: =cmp_FL_SidebarPro.SurfaceColor
-                  FillPortions: =0
-                  Height: =96
-                  LayoutMinHeight: =96
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =Parent.Width
-                Children:
-                  - conFLSB_Mark:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =RGBA(255,255,255,0.10)
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =cmp_FL_SidebarPro.SurfaceAltColor
-                        Height: =42
-                        RadiusBottomLeft: =10
-                        RadiusBottomRight: =10
-                        RadiusTopLeft: =10
-                        RadiusTopRight: =10
-                        Width: =42
-                        X: =17
-                        Y: =18
-                      Children:
-                        - lblFLSB_Mark:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Align: =Align.Center
-                              AutoHeight: =true
-                              Color: =cmp_FL_SidebarPro.AccentColor
-                              FontWeight: =FontWeight.Bold
-                              Height: =26
-                              Size: =13
-                              Text: ="C2"
-                              Width: =Parent.Width
-                              Wrap: =false
-                              X: =0
-                              Y: =8
-                  - lblFLSB_AppTitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.TextColor
-                        FontWeight: =FontWeight.Semibold
-                        Height: =24
-                        Size: =13
-                        Text: =cmp_FL_SidebarPro.AppTitle
-                        Visible: =!cmp_FL_SidebarPro.IsCollapsed
-                        Width: =Parent.Width-76
-                        Wrap: =false
-                        X: =70
-                        Y: =19
-                  - lblFLSB_AppSubtitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.MutedTextColor
-                        Height: =18
-                        Size: =9
-                        Text: =cmp_FL_SidebarPro.AppSubtitle
-                        Visible: =!cmp_FL_SidebarPro.IsCollapsed
-                        Width: =Parent.Width-76
-                        Wrap: =false
-                        X: =70
-                        Y: =45
-                  - lblFLSB_Environment:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.MutedTextColor
-                        FontWeight: =FontWeight.Semibold
-                        Height: =18
-                        Size: =8
-                        Text: =cmp_FL_SidebarPro.EnvironmentLabel
-                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-34)
-                        Wrap: =false
-                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,17)
-                        Y: =70
-
-            - recFLSB_DividerTop:
-                Control: Rectangle@2.3.0
-                Properties:
-                  BorderColor: =RGBA(0,0,0,0)
-                  BorderThickness: =0
-                  Fill: =RGBA(255,255,255,0.07)
-                  FillPortions: =0
-                  Height: =1
-                  LayoutMinHeight: =1
-                  Width: =Parent.Width
-
-            - conFLSB_Menu:
-                Control: GroupContainer@1.5.0
-                Variant: AutoLayout
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Fill: =Color.Transparent
-                  FillPortions: =1
-                  LayoutAlignItems: =LayoutAlignItems.Stretch
-                  LayoutDirection: =LayoutDirection.Vertical
-                  LayoutGap: =0
-                  LayoutMinHeight: =280
-                  PaddingBottom: =10
-                  PaddingLeft: =8
-                  PaddingRight: =8
-                  PaddingTop: =12
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =Parent.Width
-                Children:
-                  - galFLNav:
-                      Control: Gallery@2.15.0
-                      Variant: Vertical
-                      Properties:
-                        BorderColor: =RGBA(0,0,0,0)
-                        FillPortions: =1
-                        Items: |-
-                          =
-                          SortByColumns(
-                              cmp_FL_SidebarPro.NavItems,
-                              "Order",
-                              SortOrder.Ascending
-                          )
-                        LayoutMinHeight: =240
-                        OnSelect: =cmp_FL_SidebarPro.OnSelectItem()
-                        ShowScrollbar: =false
-                        TemplateFill: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),cmp_FL_SidebarPro.ActiveFillColor,Color.Transparent)
-                        TemplatePadding: =3
-                        TemplateSize: =50
-                        Width: =Parent.Width
-                      Children:
-                        - recFLSB_ActiveBar:
-                            Control: Rectangle@2.3.0
-                            Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderThickness: =0
-                              Fill: =cmp_FL_SidebarPro.AccentColor
-                              Height: =Parent.TemplateHeight-12
-                              Visible: =Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey))
-                              Width: =3
-                              X: =0
-                              Y: =6
-                        - icoFLSB_Item:
-                            Control: Classic/Icon@2.5.0
-                            Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              Color: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),Color.White,ColorValue("#C7D6E8"))
-                              Height: =22
-                              HoverColor: =Color.White
-                              Icon: |-
-                                =
-                                Switch(
-                                    ThisItem.IconKey,
-                                    "Overview", Icon.Home,
-                                    "Context", Icon.Document,
-                                    "Functions", Icon.Document,
-                                    "Risk", Icon.Flag,
-                                    "Decision", Icon.Message,
-                                    "Plan", Icon.Trending,
-                                    "Governance", Icon.Lock,
-                                    "Improve", Icon.TrendingUpwards,
-                                    "Settings", Icon.Settings,
-                                    Icon.Home
-                                )
-                              OnSelect: =Select(Parent)
-                              Width: =22
-                              X: =If(cmp_FL_SidebarPro.IsCollapsed,(Parent.TemplateWidth-Self.Width)/2,16)
-                              Y: =14
-                        - lblFLSB_Item:
-                            Control: Label@2.5.1
-                            Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderStyle: =BorderStyle.None
-                              BorderThickness: =0
-                              Color: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),Color.White,ColorValue("#C7D6E8"))
-                              Font: =Font.'Segoe UI'
-                              FontWeight: =If(Lower(Text(ThisItem.Key))=Lower(Text(cmp_FL_SidebarPro.ActiveKey)),FontWeight.Semibold,FontWeight.Normal)
-                              Height: =Parent.TemplateHeight
-                              OnSelect: =Select(Parent)
-                              Size: =10
-                              Text: =ThisItem.Label
-                              Visible: =!cmp_FL_SidebarPro.IsCollapsed
-                              Width: =Parent.TemplateWidth-54
-                              Wrap: =false
-                              X: =48
-                              Y: =0
-                        - btnFLSB_Hit:
-                            Control: Classic/Button@2.2.0
-                            Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderStyle: =BorderStyle.None
-                              BorderThickness: =0
-                              Color: =Color.Transparent
-                              Fill: =Color.Transparent
-                              Height: =Parent.TemplateHeight
-                              HoverFill: =RGBA(255,255,255,0.05)
-                              OnSelect: =Select(Parent)
-                              PressedFill: =RGBA(56,189,248,0.10)
-                              RadiusBottomLeft: =8
-                              RadiusBottomRight: =8
-                              RadiusTopLeft: =8
-                              RadiusTopRight: =8
-                              Text: =""
-                              Width: =Parent.TemplateWidth
-                              X: =0
-                              Y: =0
-
-            - recFLSB_DividerBottom:
-                Control: Rectangle@2.3.0
-                Properties:
-                  BorderColor: =RGBA(0,0,0,0)
-                  BorderThickness: =0
-                  Fill: =RGBA(255,255,255,0.07)
-                  FillPortions: =0
-                  Height: =1
-                  LayoutMinHeight: =1
-                  Width: =Parent.Width
-
-            - conFLSB_Footer:
-                Control: GroupContainer@1.5.0
-                Variant: ManualLayout
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Fill: =cmp_FL_SidebarPro.SurfaceAltColor
-                  FillPortions: =0
-                  Height: =132
-                  LayoutMinHeight: =132
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =Parent.Width
-                Children:
-                  - lblFLSB_CaseLabel:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.MutedTextColor
-                        FontWeight: =FontWeight.Semibold
-                        Height: =18
-                        Size: =8
-                        Text: =If(cmp_FL_SidebarPro.IsCollapsed,"CASE","CURRENT CASE")
-                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-28)
-                        Wrap: =false
-                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
-                        Y: =12
-                  - lblFLSB_CaseCode:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.TextColor
-                        FontWeight: =FontWeight.Semibold
-                        Height: =22
-                        Size: =10
-                        Text: =Coalesce(cmp_FL_SidebarPro.CurrentCaseCode,"No case")
-                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-28)
-                        Wrap: =false
-                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
-                        Y: =34
-                  - lblFLSB_CaseName:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.MutedTextColor
-                        Height: =34
-                        Size: =8
-                        Text: =cmp_FL_SidebarPro.CurrentCaseName
-                        Visible: =!cmp_FL_SidebarPro.IsCollapsed
-                        Width: =Parent.Width-28
-                        Wrap: =true
-                        X: =14
-                        Y: =58
-                  - lblFLSB_Role:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        Align: =If(cmp_FL_SidebarPro.IsCollapsed,Align.Center,Align.Left)
-                        AutoHeight: =true
-                        Color: =cmp_FL_SidebarPro.AccentColor
-                        Height: =18
-                        Size: =8
-                        Text: =If(cmp_FL_SidebarPro.IsCollapsed,"LAB",cmp_FL_SidebarPro.UserRole)
-                        Width: =If(cmp_FL_SidebarPro.IsCollapsed,Parent.Width,Parent.Width-28)
-                        Wrap: =false
-                        X: =If(cmp_FL_SidebarPro.IsCollapsed,0,14)
-                        Y: =104
+            X: =0
+            Y: =0
