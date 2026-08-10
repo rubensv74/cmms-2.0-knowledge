@@ -1,0 +1,129 @@
+{
+  "fixtureVersion": "1.0.0",
+  "caseId": "P101-AMEF-RCM-001",
+  "name": "P-101 — Bomba centrífuga de agua de refrigeración",
+  "disclaimer": "Caso ilustrativo derivado del AMEF–RCM Experience Center. Los valores son realistas para validación conceptual, pero no constituyen una instrucción de mantenimiento aprobada.",
+  "asset": {
+    "assetCode": "P-101",
+    "assetName": "Bomba centrífuga de agua de refrigeración",
+    "plant": "Unidad de proceso A",
+    "service": "Transferir agua de refrigeración al intercambiador E-201",
+    "boundary": "Desde la brida de aspiración hasta la brida de descarga, incluyendo motor M-101, acoplamiento y protecciones."
+  },
+  "operationalContext": {
+    "dutyFlowM3h": 120,
+    "dutyPressureBar": 6,
+    "operatingModes": ["Normal", "Arranque/parada", "Reserva disponible"],
+    "redundancy": "P-102 en reserva automática",
+    "constraints": "Servicio continuo; pérdida total de caudal > 20 min afecta a producción y puede elevar temperatura del proceso."
+  },
+  "evidence": {
+    "sources": ["Ficha técnica", "P&ID", "Histórico de OT", "Manual O&M", "Entrevista Operaciones"],
+    "dataConfidence": "Media-alta"
+  },
+  "functions": {
+    "mainFunction": "Transferir 120 m³/h de agua de refrigeración a 6 bar durante operación normal.",
+    "secondaryFunction": "Contener el fluido sin fuga visible y transmitir potencia sin vibración perjudicial.",
+    "functionalFailures": {
+      "full": "No entregar caudal de refrigeración cuando el sistema lo requiere.",
+      "partial": "Entregar menos de 108 m³/h, presión inferior a 5,5 bar o hacerlo con fuga/vibración fuera del límite."
+    }
+  },
+  "failureAnalysis": {
+    "failureModes": [
+      "FM-01 Degradación del sello mecánico",
+      "FM-03 Degradación de rodamientos",
+      "FM-06 Fallo oculto de la bomba de reserva",
+      "FM-07 Obstrucción parcial en aspiración"
+    ],
+    "focusMode": "FM-03 Degradación de rodamientos",
+    "excludedMode": "Rotura catastrófica del eje: tratada como consecuencia secundaria, sin evidencia de mecanismo dominante en el histórico actual.",
+    "effects": {
+      "local": "Aumento progresivo de vibración y temperatura en el apoyo.",
+      "system": "Pérdida de estabilidad mecánica, daño secundario en sello y acoplamiento.",
+      "operational": "Reducción de capacidad y posible parada no planificada de P-101."
+    }
+  },
+  "risk": {
+    "consequence": "Operacional",
+    "severity": 4,
+    "occurrence": 3,
+    "detection": 3,
+    "criticalOverride": "No",
+    "existingControls": "Medición mensual de vibración y temperatura; rondas operativas.",
+    "amefConfidence": "Media",
+    "amefException": "Confirmar baseline de vibración después de la próxima alineación."
+  },
+  "rcm": {
+    "evident": "Sí",
+    "detectable": "Sí",
+    "pfEvidence": "Histórico de tendencias y experiencia de equipos equivalentes muestran degradación detectable.",
+    "pfDays": 45,
+    "interventionDays": 14,
+    "detectionProbabilityPct": 85,
+    "ageRelated": "No demostrada",
+    "effectivePolicy": "Sí",
+    "strategy": "Mantenimiento basado en condición",
+    "fallback": "Restauración o sustitución condicionada",
+    "authority": "Fiabilidad + Mantenimiento + Operaciones"
+  },
+  "treatment": {
+    "economics": {
+      "failRatePerYear": 1.2,
+      "repairCostPerFailureEur": 8500,
+      "downtimeHoursPerFailure": 18,
+      "downtimeRateEurPerHour": 2500,
+      "additionalImpactCostEur": 9000,
+      "annualRuns": 17,
+      "laborHoursPerRun": 1.2,
+      "laborRateEurPerHour": 62,
+      "materialPerRunEur": 18,
+      "fixedAnnualCostEur": 1800,
+      "investmentEur": 0,
+      "probabilityReductionPct": 65,
+      "consequenceReductionPct": 10
+    },
+    "task": {
+      "name": "Medir vibración global, espectro y temperatura de rodamientos",
+      "technique": "Tomar medidas en puntos normalizados DE/NDE, registrar carga y comparar tendencia con baseline.",
+      "acceptanceCriterion": "Sin alarma de tendencia; valores dentro del límite corporativo y sin incremento sostenido > 25 %.",
+      "actionIfFailed": "Generar aviso de ingeniería, aumentar frecuencia y planificar inspección/alineación o sustitución según diagnóstico.",
+      "interval": 21,
+      "intervalUnit": "días",
+      "pfFactor": 0.5,
+      "planningWindowDays": 14
+    }
+  },
+  "plan": {
+    "discipline": "Mecánica",
+    "workCenter": "Técnico de mantenimiento predictivo",
+    "crew": 1,
+    "tools": "Analizador de vibraciones, termómetro IR, tablet y puntos marcados.",
+    "spares": "Kit de rodamiento disponible bajo condición.",
+    "shutdown": "No para medición; sí para intervención correctiva.",
+    "permit": "Permiso rutinario y control de partes giratorias.",
+    "scope": ["P-101 Bomba", "M-101 Motor", "CPL-101 Acoplamiento"],
+    "grouping": "Ruta predictiva del tren P-101",
+    "exportModel": "Modelo interno neutro con mapeo posterior al CMMS destino."
+  },
+  "governance": {
+    "traceConfirmed": "Sí",
+    "qualityDecision": "Resolver advertencia antes de publicación",
+    "reviewResolution": "Mantener intervalo de 21 días durante seis meses y revisar con datos reales.",
+    "reviewOwner": "Ingeniería de Fiabilidad",
+    "approvals": {
+      "maintenance": "Aprobado",
+      "operations": "Aprobado",
+      "reliability": "Aprobado",
+      "assetOwner": "Aprobado"
+    },
+    "version": "1.0"
+  },
+  "effectiveness": {
+    "actualDetectionDays": 28,
+    "actualAnnualCostEur": 11200,
+    "actualFailures": 1,
+    "reviewDecision": "Abrir solicitud de cambio",
+    "reopenScope": "Revisar P–F, intervalo de tarea y baseline; mantener estrategia RCM mientras se valida."
+  }
+}

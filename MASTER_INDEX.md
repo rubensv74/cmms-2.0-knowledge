@@ -1,44 +1,53 @@
-﻿# Indice maestro
+# Índice maestro
 
 ## Gobierno
 
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
+- [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
+- [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
 
-## Vision
+## Visión
 
-- `01-vision/`
+- [CMMS 2.0 Functional Lab — Visión](01-vision/cmms-functional-lab-vision.md)
 
-## Funcional
+## Modelo funcional
 
-- `02-functional/modules/`
-- `02-functional/asset-model/`
-- `02-functional/maintenance-library/`
-- `02-functional/work-management/`
-- `02-functional/cost-management/`
+- [Functional Journey](02-functional/process-model/functional-journey.md)
+- [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
 
-## Modelo de datos
+## Reuniones y especificaciones históricas
 
-- `03-data-model/entities/`
-- `03-data-model/relationships/`
-- `03-data-model/dictionaries/`
-- `03-data-model/taxonomies/`
+- `05-meetings/2026/`
+- `05-meetings/01_Analysis/`
+- `05-meetings/02-Specifications/`
+- `05-meetings/decisions/`
 
-## Diagramas
+## UI/UX y prototipos históricos
 
-- [Mapa visual CMMS](04-diagrams/mermaid/cmms-product-map.md)
+- [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
+- [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
+- [03 - Registro de activos físicos](06-ui-ux/html-prototypes/03_registro_activos_fisicos_revision_14.html)
+- [AMEF–RCM Experience Center](06-ui-ux/html-prototypes/amef-rcm-experience-center/README.md)
 
-## Reuniones y decisiones
+## CMMS 2.0 Functional Lab
 
-- [Plantilla de reunion](05-meetings/MEETING_TEMPLATE.md)
-- [Plantilla ADR](05-meetings/decisions/ADR_TEMPLATE.md)
+- [README](06-ui-ux/functional-lab/README.md)
+- [Arquitectura](06-ui-ux/functional-lab/architecture.md)
+- [Estado de implementación](06-ui-ux/functional-lab/implementation-status.md)
+- [Schema del journey](06-ui-ux/functional-lab/contracts/functional-journey.schema.json)
+- [Schema de casos](06-ui-ux/functional-lab/contracts/case-fixture.schema.json)
+- [Caso P-101 v1](06-ui-ux/functional-lab/cases/P101/p101-case.v1.json)
+
+## Handoff funcional para IT
+
+- [Paquete documental modular](07-it-handoff/functional-document-set.md)
 
 ## Recursos
 
 - `08-resources/`
 
-## Prototipos HTML
+## Seguimiento
 
-- [01 - Configuracion FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
-- [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
-- [03 - Registro de activos fisicos](06-ui-ux/html-prototypes/03_registro_activos_fisicos_revision_14.html)
-- [04 - AMEF + RCM](06-ui-ux/html-prototypes/prototype-04-amef-rcm/README.md)
+- [Estado actual](PROJECT_STATUS.md)
+- [Roadmap](ROADMAP.md)
+- [Changelog](CHANGELOG.md)
