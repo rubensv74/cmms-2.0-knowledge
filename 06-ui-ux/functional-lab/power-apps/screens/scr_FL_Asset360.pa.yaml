@@ -6,7 +6,7 @@ Screens:
       OnVisible: =Set(varFLNavKey,"Assets")
 
     Children:
-      - conFLA360Root:
+      - conFLAsset360Root:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
@@ -21,14 +21,14 @@ Screens:
             RadiusTopRight: =0
             Width: =App.Width
           Children:
-            - cmpFLA360Nav:
+            - cmpFLAsset360Nav:
                 Control: CanvasComponent
                 ComponentName: cmp_FL_SidebarPro
                 Properties:
                   ActiveKey: ="Assets"
                   AppTitle: ="CMMS 2.0"
                   AppSubtitle: ="Functional Lab"
-                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseCode: =varFLActiveAssetCode
                   CurrentCaseName: =varFLActiveAssetName
                   EnvironmentLabel: ="LAB CONCEPTUAL"
                   Height: =Parent.Height
@@ -36,13 +36,13 @@ Screens:
                   NavItems: =colFLV2NavItems
                   OnSelectItem: |-
                     =
-                    Set(varFLNavKey,cmpFLA360Nav.SelectedKey);
-                    Switch(cmpFLA360Nav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                    Set(varFLNavKey,cmpFLAsset360Nav.SelectedKey);
+                    Switch(cmpFLAsset360Nav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
                   UserRole: =varFLCurrentRole
                   Width: =If(varFLSidebarCollapsed,76,220)
                   X: =0
                   Y: =0
-            - conFLA360Main:
+            - conFLAsset360Main:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
                 Properties:
@@ -55,44 +55,31 @@ Screens:
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =Parent.Width-cmpFLA360Nav.Width
-                  X: =cmpFLA360Nav.Width
+                  Width: =Parent.Width-cmpFLAsset360Nav.Width
+                  X: =cmpFLAsset360Nav.Width
                   Y: =0
                 Children:
-                  - lblFLA360Eyebrow:
-                      Control: ModernText@1.0.0
+                  - cmpFLAsset360Header:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
                       Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#0284C7")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =9
-                        Text: ="ACTIVOS · OBJETO TÉCNICO"
-                        Width: =Parent.Width-48
-                        X: =24
-                        Y: =20
-                  - lblFLA360Title:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#0F172A")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =23
-                        Text: =varFLActiveAssetCode & " · " & varFLActiveAssetName
-                        Width: =Parent.Width-48
-                        Wrap: =false
-                        X: =24
-                        Y: =46
-                  - lblFLA360Subtitle:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =ColorValue("#64748B")
-                        Size: =10
-                        Text: ="Ficha consolidada de solo lectura con contexto, relaciones y análisis asociados."
-                        Width: =Parent.Width-48
-                        X: =24
-                        Y: =82
-                  - conFLA360Tabs:
+                        Archetype: ="ACTIVO"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: ="Bomba centrífuga"
+                        Height: =132
+                        JourneyHint: ="Maestro + contexto + ingeniería aplicada"
+                        JourneyPosition: ="FICHA 360"
+                        ProgressCurrent: =0
+                        ProgressTotal: =28
+                        ReviewHint: =varFLActiveCriticalityRevision
+                        ReviewState: ="Activo operativo"
+                        Subtitle: ="La ficha consolida el objeto sin mezclar datos maestros, criticidad de planta e ingeniería AMEF aplicada. Cada capa conserva su propio propietario y revisión."
+                        Title: =varFLActiveAssetCode & " · " & varFLActiveAssetName
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ACTIVOS"
+                        X: =0
+                        Y: =0
+                  - conFLAsset360Tabs:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -100,23 +87,23 @@ Screens:
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
-                        Height: =50
-                        RadiusBottomLeft: =10
-                        RadiusBottomRight: =10
-                        RadiusTopLeft: =10
-                        RadiusTopRight: =10
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
                         Width: =Parent.Width-48
                         X: =24
-                        Y: =116
+                        Y: =144
                       Children:
-                        - btnFLA360FLH:
+                        - btnFLAsset360FLH:
                             Control: Classic/Button@2.2.0
                             Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderThickness: =0
-                              Color: =ColorValue("#475569")
-                              Fill: =Color.Transparent
-                              Height: =34
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
                               OnSelect: =Navigate(scr_FL_FLH,ScreenTransition.None)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -124,17 +111,17 @@ Screens:
                               RadiusTopRight: =8
                               Size: =9
                               Text: ="FLH"
-                              Width: =110
-                              X: =8
-                              Y: =8
-                        - btnFLA360Tax:
+                              Width: =80
+                              X: =12
+                              Y: =11
+                        - btnFLAsset360Tax:
                             Control: Classic/Button@2.2.0
                             Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderThickness: =0
-                              Color: =ColorValue("#475569")
-                              Fill: =Color.Transparent
-                              Height: =34
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
                               OnSelect: =Navigate(scr_FL_Taxonomy,ScreenTransition.None)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -142,17 +129,17 @@ Screens:
                               RadiusTopRight: =8
                               Size: =9
                               Text: ="Taxonomía"
-                              Width: =126
-                              X: =126
-                              Y: =8
-                        - btnFLA360ADR:
+                              Width: =105
+                              X: =102
+                              Y: =11
+                        - btnFLAsset360ADR:
                             Control: Classic/Button@2.2.0
                             Properties:
-                              BorderColor: =RGBA(0,0,0,0)
-                              BorderThickness: =0
-                              Color: =ColorValue("#475569")
-                              Fill: =Color.Transparent
-                              Height: =34
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
                               OnSelect: =Navigate(scr_FL_ADR,ScreenTransition.None)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -160,17 +147,35 @@ Screens:
                               RadiusTopRight: =8
                               Size: =9
                               Text: ="ADR"
-                              Width: =110
-                              X: =260
-                              Y: =8
-                        - btnFLA360Active:
+                              Width: =80
+                              X: =217
+                              Y: =11
+                        - btnFLAsset360Crit:
                             Control: Classic/Button@2.2.0
                             Properties:
-                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =32
+                              OnSelect: =Navigate(scr_FL_AssetCriticality,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Criticidad"
+                              Width: =105
+                              X: =307
+                              Y: =11
+                        - btnFLAsset360Current:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
                               BorderThickness: =1
                               Color: =ColorValue("#0369A1")
                               Fill: =ColorValue("#F0F9FF")
-                              Height: =34
+                              Height: =32
                               OnSelect: =false
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -178,10 +183,25 @@ Screens:
                               RadiusTopRight: =8
                               Size: =9
                               Text: ="Ficha 360"
-                              Width: =126
-                              X: =378
-                              Y: =8
-                  - conFLA360Identity:
+                              Width: =105
+                              X: =422
+                              Y: =11
+                  - cmpFLAsset360Lineage:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_LineagePanelPro
+                      Properties:
+                        ApplicationCode: =varFLActiveApplicationCode
+                        AssetCode: =varFLActiveAssetCode
+                        CriticalityLabel: =varFLActiveCriticality
+                        ExecutionLabel: =First(colFLPmPlans).PlanCode
+                        Height: =126
+                        LibraryCode: =varFLActiveFmeaCode
+                        RevisionCode: =varFLActiveFmeaRevisionCode
+                        Title: ="Ingeniería aplicada al activo"
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =210
+                  - conFLAsset360Master:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
@@ -194,82 +214,48 @@ Screens:
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
-                        Width: =(Parent.Width-60)*0.52
+                        Width: =(Parent.Width-60)*0.34
                         X: =24
-                        Y: =182
+                        Y: =348
                       Children:
-                        - lblFLA360IdentityLabel:
+                        - lblFLAsset360MasterTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
-                              Color: =ColorValue("#0284C7")
+                              Color: =ColorValue("#475569")
                               FontWeight: =FontWeight.Semibold
-                              Size: =9
-                              Text: ="IDENTIDAD Y SERVICIO"
+                              Size: =8
+                              Text: ="DATO MAESTRO"
                               Width: =Parent.Width-36
                               X: =18
                               Y: =16
-                        - lblFLA360Code:
+                        - lblFLAsset360MasterValue:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#0F172A")
                               FontWeight: =FontWeight.Semibold
-                              Size: =19
-                              Text: =varFLActiveAssetCode
+                              Size: =13
+                              Text: =varFLActiveAssetCode & " · Bomba centrífuga"
                               Width: =Parent.Width-36
                               X: =18
-                              Y: =46
-                        - lblFLA360Name:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#334155")
-                              Size: =11
-                              Text: =varFLActiveAssetName
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =78
-                        - lblFLA360Plant:
+                              Y: =44
+                        - lblFLAsset360MasterInfo:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#64748B")
-                              Size: =10
-                              Text: |-
-                                ="Unidad: " & varFLPlant
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =108
-                        - lblFLA360Service:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#334155")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =10
-                              Text: |-
-                                ="Servicio: " & varFLService
+                              Size: =9
+                              Text: ="Ubicación · Unidad de proceso A" & Char(10) & "Servicio · Agua de refrigeración" & Char(10) & "Taxonomía · Bomba centrífuga" & Char(10) & "Estado · Operativo"
                               Width: =Parent.Width-36
                               Wrap: =true
                               X: =18
-                              Y: =138
-                        - lblFLA360Master:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#7C3AED")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =8
-                              Text: ="MAESTRO · SOLO LECTURA"
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =190
-                  - conFLA360Operating:
+                              Y: =82
+                  - conFLAsset360Crit:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderColor: =ColorValue("#FED7AA")
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
@@ -278,73 +264,66 @@ Screens:
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
-                        Width: =Parent.Width-conFLA360Identity.Width-60
-                        X: =conFLA360Identity.X+conFLA360Identity.Width+12
-                        Y: =182
+                        Width: =(Parent.Width-60)*0.30
+                        X: =conFLAsset360Master.X+conFLAsset360Master.Width+12
+                        Y: =348
                       Children:
-                        - lblFLA360OperatingLabel:
+                        - lblFLAsset360CritTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
-                              Color: =ColorValue("#0284C7")
+                              Color: =ColorValue("#C2410C")
                               FontWeight: =FontWeight.Semibold
-                              Size: =9
-                              Text: ="CONTEXTO OPERATIVO"
+                              Size: =8
+                              Text: ="CRITICIDAD DE PLANTA"
                               Width: =Parent.Width-36
                               X: =18
                               Y: =16
-                        - lblFLA360Duty:
+                        - lblFLAsset360CritValue:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#0F172A")
                               FontWeight: =FontWeight.Semibold
                               Size: =20
-                              Text: =Text(varFLDutyFlowM3h) & " m³/h  ·  " & Text(varFLDutyPressureBar) & " bar"
+                              Text: =varFLActiveCriticality
                               Width: =Parent.Width-36
                               X: =18
-                              Y: =46
-                        - lblFLA360Redundancy:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#334155")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =10
-                              Text: |-
-                                ="Redundancia: " & varFLRedundancy
-                              Width: =Parent.Width-36
-                              Wrap: =true
-                              X: =18
-                              Y: =88
-                        - lblFLA360Constraints:
+                              Y: =44
+                        - lblFLAsset360CritInfo:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#64748B")
-                              Size: =10
-                              Text: =varFLConstraints
+                              Size: =8
+                              Text: ="Revisión · " & varFLActiveCriticalityRevision & Char(10) & "Independiente del NPR y de la matriz de riesgo AMEF."
                               Width: =Parent.Width-36
                               Wrap: =true
                               X: =18
-                              Y: =124
-                        - lblFLA360Confidence:
-                            Control: ModernText@1.0.0
+                              Y: =88
+                        - btnFLAsset360CritOpen:
+                            Control: Classic/Button@2.2.0
                             Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#166534")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =9
-                              Text: |-
-                                ="Confianza del contexto: " & varFLDataConfidence
-                              Width: =Parent.Width-36
+                              BorderColor: =ColorValue("#EA580C")
+                              BorderThickness: =1
+                              Color: =ColorValue("#C2410C")
+                              Fill: =ColorValue("#FFF7ED")
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_AssetCriticality,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =8
+                              Text: ="Abrir análisis"
+                              Width: =120
                               X: =18
-                              Y: =190
-                  - conFLA360Related:
+                              Y: =158
+                  - conFLAsset360Engineering:
                       Control: GroupContainer@1.5.0
                       Variant: ManualLayout
                       Properties:
-                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderColor: =ColorValue("#BAE6FD")
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =ColorValue("#FFFFFF")
@@ -353,146 +332,106 @@ Screens:
                         RadiusBottomRight: =14
                         RadiusTopLeft: =14
                         RadiusTopRight: =14
-                        Width: =(Parent.Width-60)*0.52
-                        X: =24
-                        Y: =414
+                        Width: =Parent.Width-conFLAsset360Crit.X-conFLAsset360Crit.Width-36
+                        X: =conFLAsset360Crit.X+conFLAsset360Crit.Width+12
+                        Y: =348
                       Children:
-                        - lblFLA360RelatedLabel:
+                        - lblFLAsset360EngineeringTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#0284C7")
                               FontWeight: =FontWeight.Semibold
-                              Size: =9
-                              Text: ="OBJETOS RELACIONADOS"
+                              Size: =8
+                              Text: ="INGENIERÍA / APLICACIÓN"
                               Width: =Parent.Width-36
                               X: =18
                               Y: =16
-                        - galFLA360Related:
-                            Control: Gallery@2.15.0
-                            Variant: Vertical
-                            Properties:
-                              BorderColor: =Color.Transparent
-                              Height: =160
-                              Items: =Filter(colFLTechnicalObjects,Code<>"P-101")
-                              ShowScrollbar: =false
-                              TemplatePadding: =2
-                              TemplateSize: =48
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =48
-                            Children:
-                              - lblFLA360RelatedCode:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#0284C7")
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =9
-                                    Text: =ThisItem.Code
-                                    Width: =70
-                                    X: =2
-                                    Y: =8
-                              - lblFLA360RelatedName:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#334155")
-                                    Size: =10
-                                    Text: =ThisItem.Name
-                                    Width: =Parent.TemplateWidth-180
-                                    Wrap: =false
-                                    X: =82
-                                    Y: =8
-                              - lblFLA360RelatedStatus:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    Align: =Align.Right
-                                    AutoHeight: =true
-                                    Color: =ColorValue("#64748B")
-                                    Size: =9
-                                    Text: =ThisItem.Status
-                                    Width: =80
-                                    X: =Parent.TemplateWidth-86
-                                    Y: =8
-                  - conFLA360Analysis:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
-                      Properties:
-                        BorderColor: =ColorValue("#BAE6FD")
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.None
-                        Fill: =ColorValue("#F8FCFF")
-                        Height: =220
-                        RadiusBottomLeft: =14
-                        RadiusBottomRight: =14
-                        RadiusTopLeft: =14
-                        RadiusTopRight: =14
-                        Width: =Parent.Width-conFLA360Related.Width-60
-                        X: =conFLA360Related.X+conFLA360Related.Width+12
-                        Y: =414
-                      Children:
-                        - lblFLA360AnalysisLabel:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#0284C7")
-                              FontWeight: =FontWeight.Semibold
-                              Size: =9
-                              Text: ="ESTRATEGIA DE MANTENIMIENTO"
-                              Width: =Parent.Width-36
-                              X: =18
-                              Y: =16
-                        - lblFLA360AnalysisTitle:
+                        - lblFLAsset360EngineeringValue:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#0F172A")
                               FontWeight: =FontWeight.Semibold
-                              Size: =16
-                              Text: =varFLActiveCaseTitle
+                              Size: =11
+                              Text: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
                               Width: =Parent.Width-36
                               Wrap: =true
                               X: =18
-                              Y: =46
-                        - lblFLA360AnalysisState:
+                              Y: =44
+                        - lblFLAsset360Application:
                             Control: ModernText@1.0.0
                             Properties:
                               AutoHeight: =true
                               Color: =ColorValue("#475569")
-                              Size: =10
-                              Text: =varFLCurrentStageId & " · " & LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                              Size: =9
+                              Text: =varFLActiveApplicationCode & " · Perfil " & varFLActiveProfileCode
                               Width: =Parent.Width-36
                               Wrap: =true
                               X: =18
-                              Y: =88
-                        - lblFLA360AnalysisMeta:
-                            Control: ModernText@1.0.0
+                              Y: =82
+                        - btnFLAsset360Application:
+                            Control: Classic/Button@2.2.0
                             Properties:
-                              AutoHeight: =true
-                              Color: =ColorValue("#64748B")
-                              Size: =9
-                              Text: ="Versión " & varFLCaseVersion & " · " & varFLCaseLifecycleStatus & " · Borrador activo"
-                              Width: =Parent.Width-36
+                              BorderColor: =ColorValue("#7C3AED")
+                              BorderThickness: =1
+                              Color: =ColorValue("#6D28D9")
+                              Fill: =ColorValue("#F5F3FF")
+                              Height: =34
+                              OnSelect: =Navigate(scr_FL_AssetApplication,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =8
+                              Text: ="Ver aplicación"
+                              Width: =125
                               X: =18
                               Y: =126
-                        - btnFLA360OpenAnalysis:
+                        - btnFLAsset360Case:
                             Control: Classic/Button@2.2.0
                             Properties:
                               BorderColor: =ColorValue("#0284C7")
                               BorderThickness: =1
-                              Color: =Color.White
-                              Fill: =ColorValue("#0284C7")
-                              FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              HoverFill: =ColorValue("#0369A1")
+                              Color: =ColorValue("#0369A1")
+                              Fill: =ColorValue("#F0F9FF")
+                              Height: =34
                               OnSelect: =Navigate(scr_FL_CaseOverview,ScreenTransition.None)
-                              RadiusBottomLeft: =9
-                              RadiusBottomRight: =9
-                              RadiusTopLeft: =9
-                              RadiusTopRight: =9
-                              Size: =10
-                              Text: ="Abrir análisis"
-                              Width: =150
-                              X: =Parent.Width-Self.Width-18
-                              Y: =Parent.Height-Self.Height-18
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =8
+                              Text: ="Abrir caso"
+                              Width: =110
+                              X: =153
+                              Y: =126
+                  - conFLAsset360Rule:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#BBF7D0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F0FDF4")
+                        Height: =Parent.Height-592
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =580
+                      Children:
+                        - lblFLAsset360Rule:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#14532D")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="Un único TechnicalObject enlaza maestro, criticidad, aplicación AMEF, casos, planes y resultados. Ninguna de esas capas se duplica dentro de la ficha."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =18
