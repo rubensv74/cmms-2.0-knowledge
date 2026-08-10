@@ -13,7 +13,8 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 4. no asumir que un componente existe en la app porque exista en GitHub;
 5. no reutilizar un componente de Pulse sin revisar acoplamientos;
 6. registrar cualquier error nuevo y convertirlo en regla preventiva;
-7. para CanvasComponent, separar siempre aceptación de definición y seguridad de instancia.
+7. para CanvasComponent, separar siempre aceptación de definición y seguridad de instancia;
+8. para CustomProperties, no asumir que una declaración escrita manualmente en YAML equivale a la serialización generada por Studio.
 
 ## Niveles de validación obligatorios para CanvasComponent
 
@@ -41,58 +42,49 @@ Regla crítica:
 | CanvasComponent con definición aceptada | puede cerrar Studio al insertar instancia | Smoke test de instancia aislada obligatorio. |
 | SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático. |
 | `ModernText@1.0.0` estático con altura rígida | mini-scrollbars/clipping | `AutoHeight=true` por defecto. |
+| CustomProperty escrita manualmente en YAML | puede ser aceptada como definición y aun cerrar Studio al instanciar | Crear/validar primero en Studio y comparar la serialización real antes de generar el contrato por YAML. |
 
 ## Evidencia específica de Functional Lab
 
 ```text
-FL-EVID-001  R1 root-only                                      PASS
-FL-EVID-002  R2 ModernText estático                            PASS
-FL-EVID-003  R3 AutoLayout + contenedores anidados             PASS
-FL-EVID-004  R4 Rectangle/Icon/Label/Button estáticos          PASS
-FL-EVID-005  R5 Input Text+Boolean+Color                       FAIL
-FL-EVID-006  R5-T Input/Text declarado+consumido               FAIL
-FL-EVID-007  R5-TD Input/Text declarado, NO consumido          FAIL
+FL-EVID-001  R1 root-only                                         PASS
+FL-EVID-002  R2 ModernText estático                               PASS
+FL-EVID-003  R3 AutoLayout + contenedores anidados                PASS
+FL-EVID-004  R4 Rectangle/Icon/Label/Button estáticos             PASS
+FL-EVID-005  R5 Input Text+Boolean+Color via Source Code           FAIL
+FL-EVID-006  R5-T Input/Text declarado+consumido via Source Code  FAIL
+FL-EVID-007  R5-TD Input/Text declarado, no consumido via Source  FAIL
+FL-EVID-008  R5-TM Input/Text creado manualmente en Studio        PASS
 ```
 
-### FL-EVID-007 — Input/Text declarado por Source Code, sin consumo
+### FL-EVID-008 — mismo contrato, distinto camino de autoría
 
-R5-TD usa el baseline mínimo R1 y añade exclusivamente:
-
-```yaml
-CustomProperties:
-  AppTitle:
-    PropertyKind: Input
-    DataType: Text
-    Default: ="CMMS 2.0"
-```
-
-Ningún control referencia la propiedad.
-
-Resultado real:
+Contrato probado:
 
 ```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       FAIL — Studio closes on insertion
+Property name: AppTitle
+Property type: Data
+Definition: Input
+Data type: Text
+```
+
+Resultados:
+
+```text
+Source Code manual declaration   → INSTANCE_SAFE FAIL
+Studio manual creation           → INSTANCE_SAFE PASS
 ```
 
 Interpretación permitida:
 
-> En el baseline y mecanismo de autoría probados, la mera declaración **mediante Source Code** de una CustomProperty `Input/Text` es suficiente para reproducir FL-SC-001.
+> `Input/Text` es viable en la app activa. La reproducción del cierre queda asociada al camino usado para crear/serializar/hidratar la CustomProperty desde Source Code, no al tipo Text en sí mismo.
 
 Interpretaciones NO permitidas todavía:
 
-- afirmar que `Input/Text` sea inseguro cuando se crea manualmente en Studio;
-- afirmar que Canvas Components no soporte custom inputs de texto;
-- extrapolar el fallo a Boolean, Color, Table, Output o Event;
-- atribuir el fallo al consumo/binding, porque R5-TD no consume la propiedad.
-
-## Evidencia oficial Microsoft relevante
-
-Microsoft documenta las propiedades Data/Input como mecanismo soportado para componentes Canvas, incluyendo valores como texto y color. citeturn310826view1
-
-Microsoft también indica que el esquema `.pa.yaml` está en desarrollo activo, que el Source Code actual está orientado a control de código fuente y que la edición externa se soporta únicamente mediante Power Platform Git Integration. citeturn310826view0
-
-Por tanto, FL-SC-001 se sigue tratando como incidente de compatibilidad/autoría; no como comportamiento funcional esperado.
+- afirmar qué campo exacto falta o sobra en R5-TD;
+- extrapolar la causa a Boolean, Color, Table, Output o Event;
+- asumir que la representación visible después de crear la propiedad en Studio será idéntica a nuestro YAML sin capturarla;
+- reanudar la construcción de contratos públicos por YAML antes de comparar la serialización real.
 
 ## Decisiones para Functional Lab
 
@@ -124,34 +116,33 @@ Priorizar jerarquía, legibilidad, densidad, estados, accesibilidad, feedback y 
 ### FL-COMP-007 — Reducir antes de reescribir cuando falla una instancia
 El primer estadio que reproduce el fallo se subdivide; no se avanza al siguiente.
 
-### FL-COMP-008 — Separar contrato de componente y mecanismo de autoría
+### FL-COMP-008 — Separar contrato del mecanismo de autoría
 
-R5-TD obliga a añadir un nuevo gate:
+Cuando una CustomProperty creada mediante Source Code provoque `FAIL_INSTANCE`, antes de descartar el contrato funcional debe recrearse el mismo contrato manualmente en Studio sobre un baseline instance-safe.
 
-> Cuando una CustomProperty creada mediante Source Code provoque `FAIL_INSTANCE`, antes de descartar el contrato funcional debe recrearse el mismo contrato **manualmente en Studio** sobre un baseline instance-safe.
+### FL-COMP-009 — Studio-first para CustomProperties hasta cerrar FL-SC-001
 
-Diagnóstico actual:
+Regla temporal obligatoria:
 
 ```text
-R5-TM — Data / Input / Text creado manualmente en Studio, sin consumo
+crear propiedad en Studio
+→ probar INSTANCE_SAFE
+→ capturar serialización generada
+→ comparar con representación propuesta
+→ solo entonces automatizar/generar YAML
 ```
 
-Interpretación:
-
-- `R5-TM PASS` → el contrato `Input/Text` es viable y el problema queda concentrado en el camino de autoría Source Code/serialización/hidratación;
-- `R5-TM FAIL` → investigar Enhanced component properties/app baseline/Studio antes de continuar.
-
-Hasta obtener este resultado, no preparar R6, PageHeader ni App Shell.
+No generar una CustomProperty nueva a partir de memoria o de un ejemplo previo mientras esta regla esté activa.
 
 ## Incidentes Functional Lab
 
 ### FL-SC-001 — `cmp_FL_SidebarPro` cierra Studio al insertar instancia
 
 **Fecha:** 2026-08-10  
-**Causa técnica:** `UNKNOWN — SOURCE-CODE INPUT/TEXT DECLARATION PATH IS SUFFICIENT TO REPRODUCE`.  
+**Causa técnica:** `UNKNOWN — SOURCE-CODE AUTHORING/SERIALIZATION PATH IS THE OBSERVED DIFFERENTIAL`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`, `R5-T FAIL`, `R5-TD FAIL`.  
-**Correctivo actual:** `F01-00A-R5-TM`, creación manual de Input/Text en Studio.
+**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`, `R5-T FAIL`, `R5-TD FAIL`, `R5-TM PASS`.  
+**Correctivo actual:** `F01-00A-R5-TS`, capturar serialización real de Studio.
 
 ## Estado de validación
 
@@ -161,10 +152,11 @@ R1 root-only instance: PASS
 R2 identity/text instance: PASS
 R3 static containers instance: PASS
 R4 static navigation instance: PASS
-R5 primitive custom inputs combined: FAIL
-R5-T Text input declared+consumed: FAIL
-R5-TD Text input declaration only via Source Code: FAIL
-R5-TM manual Text input: PENDING
+R5 primitive custom inputs via Source Code: FAIL
+R5-T Text declared+consumed via Source Code: FAIL
+R5-TD Text declaration only via Source Code: FAIL
+R5-TM manual Text input in Studio: PASS
+R5-TS Studio serialization capture: PENDING
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
 ```
