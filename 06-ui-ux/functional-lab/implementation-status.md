@@ -1,9 +1,9 @@
 # Functional Lab — Implementation Status
 
 **Fecha:** 2026-08-10  
-**Estado general:** F01 — Power Apps Foundation  
-**Último gate superado:** auditoría estática y arquitectura técnica F01-00  
-**Validación Power Apps:** pendiente de app baseline real
+**Estado general:** F01 — Power Apps Premium Foundation  
+**Último gate superado:** app baseline creada + arquitectura premium definida  
+**Validación Power Apps:** F01-00A pendiente de Studio
 
 ## 1. Estado de incrementos
 
@@ -18,16 +18,18 @@
 | F00-07 Fixture P-101 | completed | Caso existente convertido a JSON canónico. |
 | F00-08 Arquitectura del Lab | completed | Capas, estado, workspaces y límites definidos. |
 | F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
-| F01-00 Auditoría Power Apps Foundation | partial | Auditoría estática y compatibilidad completadas; falta app real y Studio. |
-| F01-01 Shell de pantalla | blocked-by-runtime-baseline | Primer bloque técnico. |
+| F01-00 Auditoría Power Apps Foundation | partial | App creada; falta baseline real de Studio/App Checker y componentes fundacionales. |
+| F01-00A cmp_FL_SidebarPro | published-pending-validation | Contrato y Source Code publicados; pendiente pegar/guardar/validar en Studio. |
+| F01-00B cmp_FL_PageHeaderPro | blocked-by-F01-00A | Se preparará solo tras validar Sidebar. |
+| F01-01 Premium App Shell Foundation | blocked-by-components | Depende de Sidebar + Header validados. |
 | F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
 | F01-03 Adaptador P-101 | planned | JSON → colecciones Power Fx. |
 | F01-04 Navegación base | planned | Navegación entre workspaces sin lógica funcional avanzada. |
-| F01-05 WS-01 Contexto visual | planned | Mostrar caso y datos existentes. |
+| F01-05 WS-01 Contexto visual premium | planned | Mostrar caso y datos existentes. |
 | F01-06 WS-01 Edición | planned | Inputs humanos del contexto. |
 | F01-07 WS-01 Gate evidencia | planned | Preparación de datos y explicación del bloqueo. |
 | F01-08 WS-01 Output | planned | Salida estructurada hacia WS-02. |
-| F01-09 Hardening WS-01 | planned | Empty/error/dirty/accessibility y documentación. |
+| F01-09 Hardening / Visual QA WS-01 | planned | Empty/error/dirty/accessibility/calidad visual y documentación. |
 
 ## 2. F01-00 — Resultado actual
 
@@ -36,33 +38,49 @@ Completado:
 - inspección del protocolo activo de Pulse;
 - inspección del protocolo modular de pantallas;
 - inspección del registro de compatibilidad Source Code;
-- inspección de un shell real utilizado en Pulse;
-- registro de compatibilidad propio del Functional Lab;
-- árbol técnico mínimo de `scr_FunctionalLab`;
-- secuencia de bloques F01;
-- decisión de no depender de componentes premium en Bloque 01.
+- inspección de componentes premium de referencia de Pulse;
+- adopción de arquetipos SaaS y estándares de la base de conocimiento;
+- estrategia de componentes premium propia del Functional Lab;
+- Canvas app `CMMS 2.0 Functional Lab` creada por el responsable;
+- contrato de `cmp_FL_SidebarPro`;
+- Source Code F01-00A publicado en la rama de trabajo.
 
 Pendiente de la herramienta real:
 
-- crear/identificar la Canvas app del Functional Lab;
-- confirmar schema Source Code aceptado;
-- confirmar versiones reales de controles;
-- obtener baseline de App Checker;
-- integrar y validar Bloque 01.
+- pegar/crear `cmp_FL_SidebarPro` en la app;
+- guardar;
+- comprobar Source Code validation;
+- revisar App Checker;
+- verificar render expandido y colapsado;
+- comprobar selección y evento;
+- registrar cualquier incompatibilidad nueva.
 
-## 3. Condición para generar Bloque 01
+## 3. Arquitectura de interfaz de WS-01
 
-Debe existir una Canvas app vacía o baseline destinada al laboratorio.
-
-Nombre recomendado:
+Declaración inicial:
 
 ```text
-CMMS 2.0 Functional Lab
+PRIMARY_USER_TASK: comprender y confirmar el caso y su contexto operacional
+SUCCESS_CRITERION: el contexto queda suficientemente completo y confirmado para formular funciones y fallos
+PRIMARY_ARCHETYPE: Object 360
+SECONDARY_PATTERNS: contextual inspector, status/gate panel, help modal, dirty guard
 ```
 
-El primer bloque será autocontenido y no asumirá que componentes premium de Pulse estén instalados.
+Esta selección se considera hipótesis de interfaz validable durante el vertical slice.
 
-## 4. Gate funcional de WS-01
+## 4. Componentes premium fundacionales
+
+Secuencia obligatoria:
+
+```text
+F01-00A  cmp_FL_SidebarPro
+F01-00B  cmp_FL_PageHeaderPro
+F01-01   Premium App Shell Foundation
+```
+
+No se preparará F01-00B hasta que F01-00A sea aceptado en Power Apps Studio.
+
+## 5. Gate funcional de WS-01
 
 ### Inputs existentes
 
@@ -102,13 +120,13 @@ El primer bloque será autocontenido y no asumirá que componentes premium de Pu
 
 Objeto de contexto funcional listo para alimentar funciones y fallos.
 
-## 5. Documentos técnicos F01
+## 6. Archivos F01 actuales
 
 - `development/f01-00-power-apps-foundation-audit.md`
 - `development/compatibility.md`
+- `power-apps/components/cmp_FL_SidebarPro.md`
+- `power-apps/components/cmp_FL_SidebarPro.pa.yaml`
 
-## 6. Regla de continuidad
-
-Una vez iniciado F01:
+## 7. Regla de continuidad
 
 > No se prepara el siguiente bloque técnico hasta que el anterior quede integrado y validado en Power Apps Studio o exista una corrección explícita en curso.
