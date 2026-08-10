@@ -1,7 +1,7 @@
 # Functional Lab — Power Apps Source Code Compatibility
 
 **Estado:** activo antes de cualquier YAML  
-**Origen inicial:** lecciones transferibles confirmadas en `rubensv74/app_pulse` y conocimiento curado en `rubensv74/functional-engineering-knowledge-base`.
+**Origen:** evidencia real de Functional Lab, PULSE y conocimiento curado central.
 
 ## Gate obligatorio pre-YAML
 
@@ -14,9 +14,9 @@ Antes de redactar, corregir o publicar cualquier `.pa.yaml` del Functional Lab:
 5. registrar cualquier error nuevo y convertirlo en regla preventiva;
 6. separar aceptación de definición y seguridad de instancia;
 7. no declarar `CustomProperties:` dentro del YAML pegable de esta superficie;
-8. crear primero en Studio toda propiedad pública nueva y validarla por instancia;
-9. confirmar el **nombre interno exacto y el componente propietario** antes de escribir un binding YAML;
-10. probar el binding desde YAML como gate independiente.
+8. crear en Studio toda propiedad pública nueva solo cuando realmente se necesite;
+9. confirmar nombre interno exacto y componente propietario antes de escribir un binding;
+10. hacer un smoke test de instancia por componente completo antes de integrarlo.
 
 ## Niveles de validación obligatorios
 
@@ -41,112 +41,86 @@ READY_FOR_INTEGRATION
 | CanvasComponent solo en GitHub | `PA2301` | Confirmar instalación real en la app. |
 | Definición aceptada | puede cerrar Studio al instanciar | Smoke test aislado obligatorio. |
 | SVG inline como sustituto visual | renderizado poco fiable | No usar como fallback automático. |
-| `ModernText@1.0.0` estático | clipping con altura rígida | `AutoHeight=true` por defecto. |
-| `CustomProperties:` inyectado en el YAML pegable probado | definición aceptada pero cierre al instanciar | Crear el contrato público en Studio. |
-| Propiedad pública creada en Studio + binding desde YAML | `Input/Text` validado estable en R5-TB | Patrón permitido, pero revalidar por tipo de propiedad. |
-| Binding a propiedad pública no reconocida | `Name isn't valid. '<property>' isn't recognized.` | Detener el bloque; verificar en Studio propietario, nombre interno exacto y persistencia de la propiedad antes de modificar YAML. |
+| `ModernText@1.0.0` estático | clipping/mini-scroll con altura rígida | `AutoHeight=true` por defecto. |
+| `CustomProperties:` inyectado en YAML pegable | definición aceptada pero cierre al instanciar | Crear contrato público en Studio; no inyectarlo desde esta superficie. |
+| Propiedad pública creada en Studio + binding desde YAML | Input/Text validado estable | Patrón permitido cuando sea necesario. |
+| Binding a propiedad no reconocida | `Name isn't valid` | Verificar propietario, nombre interno y persistencia antes de modificar YAML. |
 
 ## Evidencia Functional Lab
 
 ```text
-FL-EVID-001  R1 root-only                                         PASS
-FL-EVID-002  R2 ModernText estático                               PASS
-FL-EVID-003  R3 AutoLayout + contenedores anidados                PASS
-FL-EVID-004  R4 controles de navegación estáticos                 PASS
-FL-EVID-005  R5 CustomProperties Text+Boolean+Color               FAIL
-FL-EVID-006  R5-T Input/Text declarado+consumido por YAML         FAIL
-FL-EVID-007  R5-TD Input/Text solo declarado por YAML             FAIL
-FL-EVID-008  R5-TM Input/Text creado manualmente en Studio        PASS
-FL-EVID-009  R5-TS Studio Source Code omite AppTitle              CONFIRMED
-FL-EVID-010  R5-TB YAML consume AppTitle creado en Studio         PASS
-FL-EVID-011  R5-BM ShowEnvironment binding                        BLOCKED — PROPERTY NOT RECOGNIZED
+R1 root-only                                         PASS
+R2 ModernText estático                               PASS
+R3 AutoLayout + contenedores anidados                PASS
+R4 controles navegación estáticos                    PASS
+R5 CustomProperties vía YAML                         FAIL
+R5-TM Input/Text creado manualmente en Studio        PASS
+R5-TB YAML consume propiedad Studio-created          PASS
+RC1 Sidebar premium completo sin CustomProperties    PASS
 ```
 
-### FL-EVID-010 — estrategia híbrida validada para Input/Text
+### RC1 — recuperación completa del Sidebar
 
-```text
-AppTitle → Data / Input / Text creado manualmente en Studio
-YAML     → SIN CustomProperties
-Binding  → ModernText.Text = cmp_FL_SidebarPro.AppTitle
-```
+Configuración validada:
 
-```text
-DEFINITION_ACCEPTED PASS
-INSTANCE_SAFE       PASS
-```
+- `GroupContainer@1.5.0` AutoLayout + ManualLayout;
+- `Gallery@2.15.0` con `Table(...)` local;
+- `Rectangle@2.3.0`;
+- `Classic/Icon@2.5.0`;
+- `Label@2.5.1` sin `Radius*`;
+- `Classic/Button@2.2.0` sin `AccessibleLabel`;
+- `ModernText@1.0.0` con `AutoHeight=true`;
+- selección local mediante `galFLNav.Selected`;
+- sin `CustomProperties:`;
+- sin globals ni assets externos.
 
-### FL-EVID-011 — resolver contrato antes del binding
+Resultado real comunicado por el usuario: `funciona`.
 
-R5-BM contiene:
+Interpretación:
 
-```powerfx
-Visible = cmp_FL_SidebarPro.ShowEnvironment
-```
+> El Sidebar premium body-only es `INSTANCE_SAFE` y puede utilizarse como referencia de controles y composición para la Foundation.
 
-Power Apps Studio permanece abierto, pero informa:
-
-```text
-Name isn't valid. 'ShowEnvironment' isn't recognized.
-```
-
-Interpretación permitida:
-
-> La prueba Boolean no ha llegado todavía al gate de binding. `ShowEnvironment` no está disponible con ese nombre en el contrato público observable de `cmp_FL_SidebarPro` en el momento de la prueba.
-
-No afirmar incompatibilidad de Boolean. Antes de cualquier corrección YAML se debe verificar en Studio:
-
-- que la propiedad se creó sobre `cmp_FL_SidebarPro`;
-- el nombre interno exacto;
-- que persiste después de guardar;
-- si `AppTitle` sigue también presente.
-
-## Estrategia de autoría Functional Lab
+## Regla de autoría para componentes fundacionales
 
 ```text
 PUBLIC CONTRACT
-  Studio first
-      ↓
-  confirm owner + internal name
-      ↓
-  instance smoke test
-      ↓
-BODY / LAYOUT / FORMULAS
-  Source Code incremental
-      ↓
-BINDING
-  reference Studio-created contract
-      ↓
-  formula resolution gate
-      ↓
-  instance smoke test
+→ Studio, solo cuando una pantalla host lo necesite realmente
+
+VISUAL BODY / LAYOUT / FORMULAS
+→ YAML completo, incremental y validado
+
+CustomProperties:
+→ no inyectar en el YAML pegable probado
 ```
 
-### Regla Studio-first
+No validar Text/Boolean/Color/Table/Event uno a uno salvo fallo real de producto.
 
-No incluir `CustomProperties:` en el YAML pegable hasta nueva evidencia explícita de soporte para esa superficie.
+## F01-00B — PageHeaderPro
 
-### Regla por tipo
+El PageHeader se construirá inicialmente como componente autónomo body-only:
 
-```text
-Text     PASS
-Boolean  BLOCKED — contract/name resolution
-Color    PENDING
-Table    PENDING
-Output   PENDING
-Event    PENDING
-```
+- sin `CustomProperties:`;
+- sin Event/Output;
+- sin dependencia de variables globales;
+- sin assets externos;
+- textos/contextos realistas del caso P-101;
+- `ModernText` con `AutoHeight=true`;
+- radios en contenedores, no en Labels;
+- botones clásicos sin `AccessibleLabel`;
+- un único smoke test final de instancia.
+
+El precedente `cmp_PageHeaderPro` de PULSE confirma el mismo problema de `CustomProperties:` y adoptó la misma frontera operativa Studio-first para contrato público.
 
 ## Incidente FL-SC-001
 
-**Estado:** `OPEN — BLOCKING UNTIL FULL SIDEBAR RECOVERY`.  
-**Workaround demostrado:** Studio-first contract + YAML binding para `Input/Text`.  
-**Correctivo actual:** resolver `ShowEnvironment` en Studio sin modificar el YAML.
+**Estado:** `RESOLVED — OPERATIONAL WORKAROUND VALIDATED`.  
+**Resolución:** RC1 premium completo validado; patrón inseguro excluido del flujo normal.
 
-## Estado
+## Estado actual
 
 ```text
-R5-TB binding to Studio-created Text property    PASS
-R5-BM Boolean binding                            BLOCKED — ShowEnvironment not recognized
-FL-SC-001                                        OPEN
-F01-00B                                          BLOCKED
+cmp_FL_SidebarPro RC1       INSTANCE_SAFE PASS
+FL-SC-001                   RESOLVED
+cmp_FL_PageHeaderPro        CURRENT
+F01-01 Premium App Shell    BLOCKED UNTIL PAGEHEADER PASS
 ```
