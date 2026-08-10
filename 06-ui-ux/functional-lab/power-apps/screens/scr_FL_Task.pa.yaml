@@ -1,0 +1,432 @@
+Screens:
+  scr_FL_Task:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-18" || varFLCurrentStageId="FL-19"),Set(varFLCurrentStageId,"FL-18"));
+        Set(varFLRecommendedInterval,RoundDown(varFLPFDays*varFLPFFactor,0))
+
+    Children:
+      - conFLTaskRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLTaskNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLTaskNav.SelectedKey);
+                    Switch(cmpFLTaskNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLTaskMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLTaskNav.Width
+                  X: =cmpFLTaskNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLTaskHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="DISEÑO DE TAREA"
+                        CaseCode: =varFLActiveCaseCode
+                        CaseType: =varFLRecommendedStrategy
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="FL-18 y FL-19"
+                        ReviewState: =If(varFLCaseDraft,"Borrador","En revisión")
+                        Subtitle: ="Convierte la estrategia confirmada en una tarea ejecutable y justifica su intervalo con la ventana P–F."
+                        Title: ="Tarea e intervalo"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLTaskRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLTaskHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLTaskRail.SelectedStageIdOut);
+                          Switch(cmpFLTaskRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLTaskHeader.Height+12
+                  - conFLTaskWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLTaskHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLTaskRail.Width-60
+                        X: =cmpFLTaskRail.X+cmpFLTaskRail.Width+12
+                        Y: =cmpFLTaskHeader.Height+12
+                      Children:
+                        - conFLTaskDefinition:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =378
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =(Parent.Width-12)*0.62
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLTaskDefLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-18 · TAREA EJECUTABLE"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLTaskNameLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="Nombre de tarea"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =42
+                              - txtFLTaskName:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#BAE6FD")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =varFLTaskName
+                                    Fill: =ColorValue("#F8FCFF")
+                                    Height: =40
+                                    OnChange: =Set(varFLTaskName,Trim(Self.Text));Set(varFLCaseDraft,true);UpdateIf(colFLStageExecutions,StageId="FL-18",{Status:"draft"})
+                                    PaddingLeft: =10
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =9
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =62
+                              - lblFLTaskTechniqueLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="Técnica / método"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =114
+                              - txtFLTaskTechnique:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#BAE6FD")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =varFLTaskTechnique
+                                    Fill: =ColorValue("#F8FCFF")
+                                    Height: =68
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: =Set(varFLTaskTechnique,Trim(Self.Text));Set(varFLCaseDraft,true);UpdateIf(colFLStageExecutions,StageId="FL-18",{Status:"draft"})
+                                    PaddingBottom: =7
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =7
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =9
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =134
+                              - lblFLTaskAcceptLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="Criterio de aceptación"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =214
+                              - txtFLTaskAccept:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#BAE6FD")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =varFLTaskAcceptance
+                                    Fill: =ColorValue("#F8FCFF")
+                                    Height: =62
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: =Set(varFLTaskAcceptance,Trim(Self.Text));Set(varFLCaseDraft,true);UpdateIf(colFLStageExecutions,StageId="FL-18",{Status:"draft"})
+                                    PaddingLeft: =10
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =9
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =234
+                              - lblFLTaskReactionLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="Acción si no cumple"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =308
+                              - txtFLTaskReaction:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =ColorValue("#FED7AA")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0F172A")
+                                    Default: =varFLTaskFailedAction
+                                    Fill: =ColorValue("#FFFBF5")
+                                    Height: =44
+                                    Mode: =TextMode.MultiLine
+                                    OnChange: =Set(varFLTaskFailedAction,Trim(Self.Text));Set(varFLCaseDraft,true);UpdateIf(colFLStageExecutions,StageId="FL-18",{Status:"draft"})
+                                    PaddingLeft: =10
+                                    RadiusBottomLeft: =7
+                                    RadiusBottomRight: =7
+                                    RadiusTopLeft: =7
+                                    RadiusTopRight: =7
+                                    Size: =9
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =328
+                        - conFLTaskInterval:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =378
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLTaskDefinition.Width-12
+                              X: =conFLTaskDefinition.Width+12
+                              Y: =0
+                            Children:
+                              - lblFLTaskIntervalLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-19 · INTERVALO"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - conFLTaskPF:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#BAE6FD")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#F0F9FF")
+                                    Height: =104
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =46
+                                  Children:
+                                    - lblFLTaskPFValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =21
+                                          Text: =Text(varFLPFDays) & " días"
+                                          Width: =Parent.Width-28
+                                          X: =14
+                                          Y: =14
+                                    - lblFLTaskPFHint:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#64748B")
+                                          Size: =9
+                                          Text: ="Ventana P–F estimada · factor de diseño " & Text(varFLPFFactor,"0.0")
+                                          Width: =Parent.Width-28
+                                          X: =14
+                                          Y: =50
+                                    - lblFLTaskPFCalc:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0369A1")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: ="Recomendación calculada: " & Text(varFLRecommendedInterval) & " días"
+                                          Width: =Parent.Width-28
+                                          X: =14
+                                          Y: =76
+                              - conFLTaskSelectedInterval:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#BBF7D0")
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =ColorValue("#F0FDF4")
+                                    Height: =96
+                                    RadiusBottomLeft: =10
+                                    RadiusBottomRight: =10
+                                    RadiusTopLeft: =10
+                                    RadiusTopRight: =10
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =164
+                                  Children:
+                                    - lblFLTaskSelectedLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#166534")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: ="INTERVALO PROPUESTO"
+                                          Width: =Parent.Width-28
+                                          X: =14
+                                          Y: =12
+                                    - lblFLTaskSelectedValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#14532D")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =21
+                                          Text: =Text(varFLTaskInterval) & " " & varFLTaskIntervalUnit
+                                          Width: =Parent.Width-28
+                                          X: =14
+                                          Y: =38
+                              - lblFLTaskPlanning:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =9
+                                    Text: ="Ventana de planificación: " & Text(varFLPlanningWindowDays) & " días"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =280
+                              - lblFLTaskIntervalRule:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =9
+                                    Text: ="El sistema recomienda; la persona confirma el intervalo considerando incertidumbre, criticidad y capacidad de ejecución."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =312
+                        - cmpFLTaskGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =!IsBlank(varFLTaskName) && !IsBlank(varFLTaskTechnique) && !IsBlank(varFLTaskAcceptance) && !IsBlank(varFLTaskFailedAction) && varFLTaskInterval>0 && varFLTaskInterval<=varFLPFDays
+                              ContinueLabel: ="Confirmar tarea e intervalo"
+                              GateStatus: =If(!IsBlank(varFLTaskName) && !IsBlank(varFLTaskTechnique) && !IsBlank(varFLTaskAcceptance) && !IsBlank(varFLTaskFailedAction) && varFLTaskInterval>0 && varFLTaskInterval<=varFLPFDays,"passed","blocked")
+                              GateTitle: ="Gate de diseño de tarea"
+                              Height: =220
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-18" || StageId="FL-19",{Status:"confirmed"});
+                                Set(varFLCaseDraft,false);
+                                Set(varFLCurrentStageId,"FL-20");
+                                Navigate(scr_FL_PlanPackage,ScreenTransition.None)
+                              OutputLabel: ="Tarea ejecutable e intervalo justificable"
+                              Reason: ="La tarea define método, criterio y reacción; el intervalo queda dentro de la ventana P–F."
+                              RequiredAction: ="Confirmar que la tarea es ejecutable y el intervalo defendible"
+                              ResponsibleRole: ="Mantenimiento / Planificación + Ingeniería de Fiabilidad"
+                              Summary: ="Tarea preparada para planificación"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =390
