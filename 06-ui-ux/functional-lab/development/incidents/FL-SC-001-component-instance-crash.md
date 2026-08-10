@@ -58,25 +58,25 @@ El protocolo se ha corregido para exigir explícitamente `INSTANCE_SAFE` antes d
 UNKNOWN — INVESTIGATION ACTIVE
 ```
 
-Tras R1, R2 y R3 puede afirmarse de forma limitada que no son suficientes por sí solos para reproducir el cierre:
+Tras R1–R4 puede afirmarse de forma limitada que las siguientes superficies probadas no son suficientes para reproducir el cierre:
 
 - `CanvasComponent + GroupContainer@1.5.0` ManualLayout mínimo;
-- cuatro `ModernText@1.0.0` estáticos con `AutoHeight=true`;
-- raíz `AutoLayout` vertical;
-- tres `GroupContainer@1.5.0` anidados y estáticos.
+- `ModernText@1.0.0` estático;
+- raíz AutoLayout vertical;
+- contenedores anidados estáticos;
+- `Rectangle@2.3.0` estático;
+- `Classic/Icon@2.5.0` estático;
+- `Label@2.5.1` estático sin `Radius*`;
+- `Classic/Button@2.2.0` estático sin `AccessibleLabel` y sin `OnSelect`.
 
-Siguen sin aislarse como causa o superficie suficiente:
+Siguen sin aislarse:
 
-- `Rectangle@2.3.0`;
-- `Classic/Icon@2.5.0`;
-- `Label@2.5.1`;
-- `Classic/Button@2.2.0`;
-- `Gallery@2.15.0`;
-- custom properties;
+- custom properties primitivas;
 - `Table`;
+- `Gallery@2.15.0`;
 - `Output`;
 - `Event`;
-- lógica dinámica y geometría condicional.
+- datos dinámicos, eventos y geometría condicional.
 
 ## 5. Evidencia transversal ya existente
 
@@ -93,8 +93,6 @@ rubensv74/functional-engineering-knowledge-base
 Este segundo caso refuerza la obligatoriedad del gate `INSTANCE_SAFE`, pero no confirma todavía una causa técnica común.
 
 ## 6. Estrategia de diagnóstico
-
-Aplicar reconstrucción incremental manteniendo el mismo nombre de componente:
 
 ```text
 R1 root only
@@ -122,8 +120,6 @@ DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       PASS
 ```
 
-El mecanismo básico de CanvasComponent Source Code y el root `GroupContainer@1.5.0` ManualLayout no reproducen el incidente.
-
 ### R2 — Identidad / texto
 
 **Resultado real comunicado:** `R2 instancia OK`.
@@ -133,21 +129,29 @@ DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       PASS
 ```
 
-Cuatro `ModernText@1.0.0` estáticos sobre R1 no reproducen el incidente.
-
 ### R3 — Contenedores estáticos
 
 **Resultado real comunicado:** `R3 instancia OK`.
 
-Configuración añadida sobre el baseline validado:
+```text
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       PASS
+```
 
-- root `GroupContainer@1.5.0` como `AutoLayout` vertical;
-- tres `GroupContainer@1.5.0` hijos estáticos;
-- identidad, zona de workspace y footer distribuidos entre ellos;
-- sin navegación interactiva;
+### R4 — Navegación visual sin eventos
+
+**Resultado real comunicado:** `R4 instancia OK`.
+
+Configuración añadida sobre R3:
+
+- `Rectangle@2.3.0`;
+- `Classic/Icon@2.5.0`;
+- `Label@2.5.1`;
+- `Classic/Button@2.2.0` transparente;
+- tres filas de navegación estáticas;
+- sin `OnSelect`;
 - sin custom properties;
-- sin Gallery / Table;
-- sin Output / Event.
+- sin `Gallery`, `Table`, `Output` ni `Event`.
 
 Resultado:
 
@@ -156,26 +160,29 @@ DEFINITION_ACCEPTED PASS
 INSTANCE_SAFE       PASS
 ```
 
-### Interpretación R3
+### Interpretación R4
 
-La composición estática probada con AutoLayout y contenedores anidados no reproduce FL-SC-001.
+Los tipos de control visual probados en R4, en configuración estática y sin eventos, no reproducen FL-SC-001.
 
-Por tanto, la investigación avanza a la siguiente responsabilidad: controles visuales de navegación sin fórmulas de evento ni datos dinámicos.
+La investigación avanza a `R5`, dedicado exclusivamente a propiedades custom primitivas.
 
-### R4 — Navegación visual sin eventos
+### R5 — Custom inputs simples
 
 **Estado:** PENDING STUDIO VALIDATION.
 
-R4 reintroducirá únicamente controles visuales utilizados por la navegación original, con valores estáticos y sin `OnSelect`:
+R5 debe probar inputs primitivos sin introducir colecciones ni eventos. Se utilizarán propiedades custom simples de tipo `Text`, `Boolean` y `Color` consumidas por controles ya validados.
 
-- `Rectangle@2.3.0`;
-- `Classic/Icon@2.5.0`;
-- `Label@2.5.1`;
-- `Classic/Button@2.2.0` como hit surface visual sin evento.
+Se mantienen fuera:
 
-Se mantienen fuera `Gallery`, `Table`, custom properties, outputs, events y navegación real.
+- `Table`;
+- `Gallery`;
+- `Output`;
+- `Event`;
+- `OnSelect`;
+- navegación real;
+- geometría condicional compleja.
 
-Si R4 falla, se subdividirá esta etapa por tipo de control antes de avanzar.
+Si R5 falla, se subdividirá por tipo de propiedad custom antes de avanzar.
 
 ## 8. Regla preventiva inmediata
 
@@ -192,7 +199,7 @@ READY_FOR_INTEGRATION
 
 Nunca usar `validado`, `listo` o equivalente mientras `INSTANCE_SAFE` no haya pasado.
 
-Cuando se diagnostique un cierre de instancia, reconstruir desde un baseline mínimo que ya haya demostrado `INSTANCE_SAFE`, añadiendo una sola responsabilidad por iteración.
+Cuando se diagnostique un cierre de instancia, reconstruir desde un baseline mínimo `INSTANCE_SAFE` añadiendo una sola responsabilidad por iteración.
 
 ## 9. Criterio de cierre
 
