@@ -61,11 +61,21 @@ Incluyó `Rectangle@2.3.0`, `Classic/Icon@2.5.0`, `Label@2.5.1` y `Classic/Butto
 
 ### FL-EVID-005 — CustomProperties primitivas combinadas
 
-`F01-00A-R5` introdujo sobre R4 únicamente:
+`F01-00A-R5` introdujo `Input/Text`, `Input/Boolean` e `Input/Color`, consumidos por controles ya validados.
 
-- Input / Text (`AppTitle`), consumido en `ModernText.Text`;
-- Input / Boolean (`ShowEnvironment`), consumido en `ModernText.Visible`;
-- Input / Color (`AccentColor`), consumido en `ModernText.Color` y `Rectangle.Fill`.
+```text
+DEFINITION_ACCEPTED PASS
+INSTANCE_SAFE       FAIL — Studio closes on insertion
+```
+
+### FL-EVID-006 — Input/Text declarado y consumido
+
+`F01-00A-R5-T` volvió al baseline R4 y añadió únicamente:
+
+- `AppTitle` — `PropertyKind: Input`;
+- `DataType: Text`;
+- `Default: ="CMMS 2.0"`;
+- consumo: `ModernText.Text = cmp_FL_SidebarPro.AppTitle`.
 
 Resultado real:
 
@@ -76,9 +86,9 @@ INSTANCE_SAFE       FAIL — Studio closes on insertion
 
 Interpretación obligatoria:
 
-> R5 reduce la superficie problemática al delta de propiedades custom primitivas o a su consumo, pero NO identifica todavía un tipo concreto como causa.
+> El fallo ya puede acotarse al patrón `Input/Text` declarado + consumido, pero todavía NO distingue si el problema está en la mera declaración de la CustomProperty o en el binding/consumo desde un control hijo.
 
-No promover `Text`, `Boolean` o `Color` individualmente a causa hasta aislarlos.
+La documentación oficial de Microsoft considera soportadas las propiedades Data de tipo Input para valores como texto y color; por tanto, el cierre observado se trata como incompatibilidad/incidente de autoría, no como comportamiento esperado.
 
 ## Decisiones para Functional Lab
 
@@ -122,19 +132,27 @@ root only
 
 El primer estadio que reproduce el fallo se subdivide; no se avanza al siguiente.
 
-### FL-COMP-008 — R5 se subdivide por tipo de propiedad
+### FL-COMP-008 — R5 se subdivide por tipo y después por declaración/consumo
 
-R5 combinado ha fallado. La secuencia diagnóstica pasa a:
+Resultados:
 
 ```text
-R5-T  Input/Text solamente
-R5-B  Input/Boolean solamente
-R5-C  Input/Color solamente
+R5    Text+Boolean+Color              FAIL
+R5-T  Input/Text declarado+consumido  FAIL
 ```
 
-Cada variante debe partir del baseline R4 validado y añadir un único tipo de propiedad.
+Siguiente reducción obligatoria:
 
-Si una variante falla, separar después **declaración** de la propiedad frente a **consumo**.
+```text
+R5-TD  Input/Text declarado, NO consumido
+```
+
+Para maximizar poder diagnóstico, R5-TD usará el baseline mínimo R1 ya validado y añadirá exclusivamente la declaración `Input/Text`, sin referencias a esa propiedad desde ningún control hijo.
+
+Interpretación:
+
+- si R5-TD falla: la mera declaración `Input/Text` es suficiente para reproducir el cierre en este baseline;
+- si R5-TD pasa: el foco se desplaza al binding/consumo de la propiedad o a su interacción con una composición más compleja.
 
 ## Incidentes Functional Lab
 
@@ -142,10 +160,10 @@ Si una variante falla, separar después **declaración** de la propiedad frente 
 
 **Fecha:** 2026-08-10  
 **Bloque:** F01-00A  
-**Causa técnica:** `UNKNOWN — SURFACE NARROWED TO R5 DELTA`.  
+**Causa técnica:** `UNKNOWN — SURFACE NARROWED TO INPUT/TEXT DECLARATION VS CONSUMPTION`.  
 **Estado:** `OPEN — BLOCKING`.  
-**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`.  
-**Correctivo actual:** `F01-00A-R5-T`, Input/Text solamente.  
+**Resultados:** `R1 PASS`, `R2 PASS`, `R3 PASS`, `R4 PASS`, `R5 FAIL`, `R5-T FAIL`.  
+**Correctivo actual:** `F01-00A-R5-TD`, Input/Text declarado sin consumo.  
 **Registro completo:** `development/incidents/FL-SC-001-component-instance-crash.md`.
 
 ## Estado de validación
@@ -157,7 +175,8 @@ R2 identity/text instance: PASS
 R3 static containers instance: PASS
 R4 static navigation instance: PASS
 R5 primitive custom inputs combined: FAIL
-R5-T Text input only: PENDING
+R5-T Text input declared+consumed: FAIL
+R5-TD Text input declaration only: PENDING
 FL-SC-001: OPEN — BLOCKING
 F01-00B: BLOCKED
 ```
