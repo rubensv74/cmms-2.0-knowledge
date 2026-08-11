@@ -1,116 +1,201 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-08-10
+**Última actualización:** 2026-08-11  
+**Rama de trabajo:** `feature/f01-premium-foundation`
 
 ## Estado general
 
-CMMS 2.0 ha entrado en la fase **Functional Lab**. La foundation funcional está consolidada y se ha iniciado F01 — Power Apps Foundation.
+CMMS 2.0 se encuentra en fase **Functional Lab**. El modelo funcional está alineado y el foco actual es estabilizar la construcción Power Apps sin perder el conocimiento ya validado.
 
-El laboratorio se utilizará para validar el modelo funcional mediante casos ejecutables y producir documentación funcional trazable para IT, sin convertir Power Apps en una decisión de arquitectura productiva.
+El laboratorio sigue siendo un instrumento de análisis funcional ejecutable, no una decisión de arquitectura productiva para IT.
 
-La interfaz del Functional Lab se construirá desde Foundation con una **arquitectura SaaS premium**, utilizando los arquetipos, estándares visuales y contratos de componentes curados en `rubensv74/functional-engineering-knowledge-base`.
-
-## Completado
-
-### Fundamentos previos
-
-- Estructura documental inicial.
-- Prototipos HTML 01-03 de fundamentos del modelo de activos.
-- Prototipo 04 AMEF + RCM por sprints P04.0-P04.6.
-- AMEF–RCM Experience Center v3 con caso P-101 y recorrido guiado de 28 etapas.
-- Dossier de contexto para NotebookLM.
-
-### Foundation Functional Lab — F00
-
-- Auditoría de transición desde prototipos hacia laboratorio funcional.
-- Adaptación del Protocolo de Implementación Incremental Asistida por IA usado en Pulse.
-- Gate funcional obligatorio antes del gate técnico.
-- Visión y límites del Functional Lab.
-- Functional Journey de 28 etapas independiente de la UI.
-- Agrupación inicial en nueve workspaces.
-- Matriz preliminar persona vs sistema.
-- Arquitectura conceptual del laboratorio.
-- Schemas JSON para journey y casos.
-- Conversión del caso P-101 existente a fixture JSON canónico.
-- Definición del paquete documental modular para IT.
-
-### Power Apps Foundation — F01-00 estático
-
-- Revisión del protocolo modular Power Apps de Pulse.
-- Revisión del registro de compatibilidad Source Code de Pulse.
-- Revisión de un shell incremental real utilizado en Pulse.
-- Creación del registro de compatibilidad propio del Functional Lab.
-- Secuencia F01-01 a F01-09.
-- Estrategia SaaS premium documentada en `06-ui-ux/functional-lab/design-system.md`.
-- Adopción del patrón de selección de arquetipos de la base de conocimiento.
-- Adopción del estándar de calidad visual Power Apps.
-- Adopción del contrato de componentes reutilizables.
-- Decisión: el diseño será premium desde Foundation; no se añadirá una dependencia CanvasComponent hasta confirmar su instalación en la app activa.
-
-## En curso
-
-### F01-00 — cierre en herramienta real
-
-La auditoría estática está superada. Falta disponer de la Canvas app real del Functional Lab para confirmar:
-
-- schema Source Code aceptado;
-- versiones reales de controles;
-- baseline de App Checker;
-- componentes premium instalados;
-- componentes fundacionales que deben incorporarse;
-- aceptación del primer bloque en Power Apps Studio;
-- baseline de calidad visual.
-
-## Siguiente acción
-
-Crear o identificar una Canvas app destinada al laboratorio, nombre recomendado:
+## Modelo funcional consolidado
 
 ```text
-CMMS 2.0 Functional Lab
+Biblioteca AMEF reusable
+→ revisión versionada
+→ aplicación a activos
+→ contexto / criticidad
+→ AnalysisCase / 28 etapas
+→ AMEF + RCM
+→ tarea ejecutable
+→ alcance / agrupación
+→ Job Plan / PM / WO
+→ ExecutionResult
+→ efectividad / mejora
 ```
 
-Una vez exista:
+P-101 consume `AMEF-BOMBA-CENTRIFUGA / R01`; no posee la ingeniería AMEF.
 
-1. inventariar componentes disponibles;
-2. seleccionar los componentes premium fundacionales;
-3. declarar tarea, criterio de éxito y arquetipo del primer workspace;
-4. redactar `F01-01 Premium App Shell Foundation`;
-5. validar el bloque en Power Apps Studio antes de preparar F01-02.
+Las desviaciones funcionales D-01…D-14 identificadas durante la auditoría están alineadas en el modelo conceptual y UI.
 
-## Próximos incrementos
+## Evidencia Studio conservada
 
-1. F01-01 — Premium App Shell Foundation.
-2. F01-02 — Runtime state mínimo.
-3. F01-03 — Adaptador P-101.
-4. F01-04 — Navegación base.
-5. F01-05 — WS-01 contexto visual premium.
-6. F01-06 — WS-01 edición.
-7. F01-07 — WS-01 gate de evidencia.
-8. F01-08 — WS-01 output hacia funciones y fallos.
-9. F01-09 — Hardening, Visual QA y documentación de WS-01.
+```text
+HOME OK
+ACTIVOS OK
+BIBLIOTECA AMEF OK
+APLICACIÓN MULTI-ACTIVO OK
+HOME BASELINE PASS
+FLH PASS
+TAXONOMÍA PASS
+ADR PASS
+```
 
-No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
+Esta evidencia se conserva y evita reconstruir piezas ya aprobadas.
 
-## Riesgos principales
+## Incidente de recuperación
 
-- Confundir el Functional Lab con la arquitectura productiva futura.
-- Convertir hipótesis conceptuales en automatismos sin validación.
-- Identificar una etapa de negocio con una pantalla de forma automática.
-- Forzar un único arquetipo de interfaz a workspaces con trabajos distintos.
-- Introducir backend o integraciones antes de que el laboratorio las necesite.
-- Asumir que un CanvasComponent disponible en GitHub está instalado en la app.
-- Tratar `premium` como mera decoración en lugar de calidad de arquitectura, interacción y componente.
-- Duplicar conocimiento entre prototipos, app y documentación funcional.
+Durante la evolución de AMEF se mezclaron simultáneamente cambios de shell, navegación, Process Rail, matriz, tipografía y color.
 
-## Fuentes de verdad principales
+Después, un rollback por archivos históricos reintrodujo:
 
-- `00-governance/cmms-functional-lab-incremental-protocol.md`
-- `01-vision/cmms-functional-lab-vision.md`
-- `02-functional/process-model/functional-journey.md`
-- `02-functional/process-model/human-system-decisions.md`
-- `06-ui-ux/functional-lab/architecture.md`
-- `06-ui-ux/functional-lab/design-system.md`
-- `06-ui-ux/functional-lab/implementation-status.md`
-- `06-ui-ux/functional-lab/development/f01-00-power-apps-foundation-audit.md`
-- `06-ui-ux/functional-lab/development/compatibility.md`
-- `07-it-handoff/functional-document-set.md`
+- dependencias visuales antiguas;
+- superficies negras inesperadas;
+- ruido de `Name isn't valid` causado en parte por un grafo de pantallas incompleto en Studio.
+
+La arquitectura funcional no se descarta. Se cambia el método de construcción.
+
+## Estrategia Power Apps vigente
+
+Autoridad:
+
+`functional-engineering-knowledge-base/30-playbooks/power-platform/modular-power-apps-screen-construction.md`
+
+Método obligatorio:
+
+```text
+SKELETON
+→ PLACEHOLDERS
+→ BLOCK S / C / I
+→ POWER APPS STUDIO
+→ VALIDATE
+→ FREEZE
+→ NEXT BLOCK
+```
+
+Los fallos utilizan un bloque `FIX` independiente.
+
+No se sustituirán de forma rutinaria componentes/pantallas completos por lotes.
+
+## Freeze actual
+
+### Functional foundation
+
+```text
+Home                         FUNCTIONAL_FROZEN
+FLH                          FUNCTIONAL_FROZEN / Tree RC3 revalidation required
+Taxonomía                    FUNCTIONAL_FROZEN / Tree RC3 revalidation required
+ADR                          FUNCTIONAL_FROZEN / Tree RC3 revalidation required
+Biblioteca AMEF              FUNCTIONAL_FROZEN
+Revisión AMEF                FUNCTIONAL_FROZEN
+Aplicación multi-activo      FUNCTIONAL_FROZEN / Applicability RC2 revalidation required
+```
+
+Color permanece `PENDING` hasta validación centralizada.
+
+### AMEF
+
+```text
+scr_FL_AMEF
+STATUS       IN_CONSTRUCTION
+STRUCTURE    OPEN
+BEHAVIOR     OPEN
+COLOR        PENDING
+```
+
+AMEF se reconstruirá `skeleton first`.
+
+## Componentes
+
+Fuentes actuales:
+
+```text
+cmp_FL_SidebarPro              evidencia positiva previa
+cmp_FL_PageHeaderPro           evidencia positiva previa
+cmp_FL_TreePro                 HARDENED SAFE PALETTE RC3
+cmp_FL_ProcessRailPro          source revisado
+cmp_FL_DecisionPanelPro        source revisado
+cmp_FL_GatePanelPro            HARDENED SAFE PALETTE RC2
+cmp_FL_RiskMatrixPro           Premium 5×5 RC4
+cmp_FL_LineagePanelPro         HARDENED SAFE PALETTE RC3
+cmp_FL_ApplicabilityMatrixPro  HARDENED READABILITY RC2
+```
+
+Una revisión modificada no se considera `INSTANCE_SAFE` hasta pasar Studio.
+
+## Design System Lab
+
+Se crea una utility screen técnica:
+
+```text
+scr_DesignSystemLab
+```
+
+No forma parte de las 25 pantallas funcionales ni de la navegación del producto.
+
+Primer bloque preparado:
+
+```text
+DS-S01 — skeleton + placeholders
+```
+
+No se preparará `DS-C01` hasta validar y congelar DS-S01 en Studio.
+
+El laboratorio se utilizará para cerrar:
+
+```text
+tokens semánticos
+color
+contraste
+Classic/Modern controls
+hover / pressed / selected / disabled / focus
+data visualisation palette
+```
+
+## Siguiente acción exacta
+
+Mañana:
+
+1. completar las identidades de pantallas canónicas que falten para eliminar ruido de dependencias;
+2. crear `scr_DesignSystemLab` y pegar únicamente `DS-S01`;
+3. validar geometría y congelarla;
+4. continuar DS-C01…DS-C04 uno a uno;
+5. validar las revisiones actuales de componentes en aislamiento;
+6. integrar solo la pieza aprobada en las pantallas ya congeladas;
+7. preparar y validar `S-AMEF-01`;
+8. sustituir progresivamente placeholders AMEF mediante C/I.
+
+Guía detallada:
+
+`06-ui-ux/functional-lab/development/TOMORROW_RUNBOOK_2026-08-12.md`
+
+## Fuentes de verdad operativas
+
+```text
+00-governance/cmms-functional-lab-incremental-protocol.md
+00-governance/functional-lab-yaml-delivery.md
+06-ui-ux/functional-lab/V2_STATUS.md
+06-ui-ux/functional-lab/development/compatibility.md
+06-ui-ux/functional-lab/development/FREEZE_REGISTER_2026-08-11.md
+06-ui-ux/functional-lab/development/RECOVERY_HARDENING_AUDIT_2026-08-11.md
+06-ui-ux/functional-lab/development/STATIC_SOURCE_AUDIT_2026-08-11.md
+06-ui-ux/functional-lab/development/TOMORROW_RUNBOOK_2026-08-12.md
+```
+
+## Riesgos principales controlados
+
+- no confundir laboratorio con arquitectura productiva;
+- no automatizar hipótesis;
+- no asociar automáticamente etapa funcional = pantalla;
+- no asumir componente GitHub = componente validado en Studio;
+- no crear copias `_1` como actualización;
+- no diagnosticar Navigate sobre un grafo incompleto;
+- no usar commits históricos como catálogo de piezas;
+- no reducir tipografía para hacer caber contenido;
+- no propagar color sin DesignSystemLab;
+- no modificar piezas congeladas desde otro bloque.
+
+## Decisiones deliberadamente abiertas
+
+Continúan abiertas las escalas/bandas AMEF corporativas, criticidad oficial, árbol RCM definitivo, reglas P-F/intervalo, autoridades, evidencia mínima, sobreclasificación, criterios de aprobación, KPIs de efectividad, agrupación final, sistema destino, integración y arquitectura física de datos.
