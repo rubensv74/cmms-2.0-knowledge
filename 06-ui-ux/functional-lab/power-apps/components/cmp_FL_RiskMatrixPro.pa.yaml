@@ -1,7 +1,9 @@
-# CMMS 2.0 FUNCTIONAL LAB — RISK MATRIX PRO — COMFORTABLE READABILITY RC
+# CMMS 2.0 FUNCTIONAL LAB — RISK MATRIX PRO — PREMIUM 5x5 REFERENCE RC
 #
-# Generic configurable matrix. P-101 uses 5×5 S×O with D separate.
-# Preserves public contract, outputs and component identity.
+# Visual source of truth: AMEF premium reference approved 2026-08-11.
+# Preserves the existing public contract and component identity.
+# Adds optional ContextLabel / ShowContextBadge without removing existing properties.
+# Default rendering is 5×5; RowScale/ColumnScale remain host-configurable.
 # Safe palette is used unless UseHostTheme=true.
 
 ComponentDefinitions:
@@ -14,14 +16,28 @@ ComponentDefinitions:
         DisplayName: Title
         Description: Título visible del componente.
         DataType: Text
-        Default: ="Matriz de riesgo"
+        Default: ="Matriz de riesgo AMEF"
 
       Subtitle:
         PropertyKind: Input
         DisplayName: Subtitle
         Description: Explicación breve de la matriz.
         DataType: Text
-        Default: ="Matriz configurable · escalas definidas por el host"
+        Default: ="Valoración contextual del modo de fallo"
+
+      ContextLabel:
+        PropertyKind: Input
+        DisplayName: ContextLabel
+        Description: Código o etiqueta contextual mostrada en la cabecera.
+        DataType: Text
+        Default: ="P-101"
+
+      ShowContextBadge:
+        PropertyKind: Input
+        DisplayName: ShowContextBadge
+        Description: Muestra la etiqueta contextual en la cabecera.
+        DataType: Boolean
+        Default: =true
 
       RowAxisTitle:
         PropertyKind: Input
@@ -42,14 +58,14 @@ ComponentDefinitions:
         DisplayName: RowScale
         Description: Escala del eje vertical. Campos requeridos ScaleIndex, ScaleLabel y ScaleScore.
         DataType: Table
-        Default: =ForAll(Sequence(10),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
+        Default: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
 
       ColumnScale:
         PropertyKind: Input
         DisplayName: ColumnScale
         Description: Escala del eje horizontal. Campos requeridos ScaleIndex, ScaleLabel y ScaleScore.
         DataType: Table
-        Default: =ForAll(Sequence(10),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
+        Default: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
 
       MatrixMode:
         PropertyKind: Input
@@ -70,14 +86,14 @@ ComponentDefinitions:
         DisplayName: SeverityValue
         Description: Score actual del eje vertical; en AMEF representa Severidad.
         DataType: Number
-        Default: =8
+        Default: =4
 
       OccurrenceValue:
         PropertyKind: Input
         DisplayName: OccurrenceValue
         Description: Score actual del eje horizontal; en AMEF representa Ocurrencia.
         DataType: Number
-        Default: =4
+        Default: =3
 
       DetectionValue:
         PropertyKind: Input
@@ -105,7 +121,7 @@ ComponentDefinitions:
         DisplayName: RiskScore
         Description: Indicador global calculado por el host; en AMEF representa NPR.
         DataType: Number
-        Default: =96
+        Default: =36
 
       RiskScoreLabel:
         PropertyKind: Input
@@ -133,21 +149,21 @@ ComponentDefinitions:
         DisplayName: LowMax
         Description: Máximo del score de matriz para banda baja en modo PRODUCT.
         DataType: Number
-        Default: =20
+        Default: =5
 
       ModerateMax:
         PropertyKind: Input
         DisplayName: ModerateMax
         Description: Máximo del score de matriz para banda moderada en modo PRODUCT.
         DataType: Number
-        Default: =40
+        Default: =10
 
       HighMax:
         PropertyKind: Input
         DisplayName: HighMax
         Description: Máximo del score de matriz para banda alta en modo PRODUCT; superiores son críticos.
         DataType: Number
-        Default: =70
+        Default: =20
 
       LowLabel:
         PropertyKind: Input
@@ -182,28 +198,28 @@ ComponentDefinitions:
         DisplayName: LowColor
         Description: Color de banda baja.
         DataType: Color
-        Default: =ColorValue("#DCFCE7")
+        Default: =ColorValue("#D8F3D8")
 
       ModerateColor:
         PropertyKind: Input
         DisplayName: ModerateColor
         Description: Color de banda moderada.
         DataType: Color
-        Default: =ColorValue("#FEF3C7")
+        Default: =ColorValue("#F4F0BE")
 
       HighColor:
         PropertyKind: Input
         DisplayName: HighColor
         Description: Color de banda alta.
         DataType: Color
-        Default: =ColorValue("#FFEDD5")
+        Default: =ColorValue("#F8D6A0")
 
       CriticalColor:
         PropertyKind: Input
         DisplayName: CriticalColor
         Description: Color de banda crítica.
         DataType: Color
-        Default: =ColorValue("#FEE2E2")
+        Default: =ColorValue("#F6A6AC")
 
       UseHostTheme:
         PropertyKind: Input
@@ -217,7 +233,7 @@ ComponentDefinitions:
         DisplayName: AccentColor
         Description: Color principal de acento.
         DataType: Color
-        Default: =ColorValue("#0284C7")
+        Default: =ColorValue("#2563EB")
 
       SurfaceColor:
         PropertyKind: Input
@@ -231,7 +247,7 @@ ComponentDefinitions:
         DisplayName: BorderColor
         Description: Color de borde.
         DataType: Color
-        Default: =ColorValue("#E2E8F0")
+        Default: =ColorValue("#DCE4EE")
 
       TextColor:
         PropertyKind: Input
@@ -245,14 +261,14 @@ ComponentDefinitions:
         DisplayName: MutedTextColor
         Description: Color de texto secundario.
         DataType: Color
-        Default: =ColorValue("#64748B")
+        Default: =ColorValue("#5B6B86")
 
       ScaleNote:
         PropertyKind: Input
         DisplayName: ScaleNote
         Description: Nota sobre procedencia o validación de escalas y umbrales.
         DataType: Text
-        Default: ="Escalas y umbrales configurables por el host"
+        Default: ="Matriz AMEF 5×5 · escalas y umbrales definidos por el host"
 
       OnSelectCell:
         PropertyKind: Event
@@ -299,7 +315,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =Color.Transparent
-      Height: =304
+      Height: =620
       SelectedSeverityOut: |-
         =
         If(
@@ -309,7 +325,12 @@ ComponentDefinitions:
                 {
                     _rowPos:RoundUp(Value(galFLRiskMatrix.Selected.Value)/Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),0)
                 },
-                Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Ascending),_rowPos)).ScaleScore
+                Last(
+                    FirstN(
+                        SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                        _rowPos
+                    )
+                ).ScaleScore
             )
         )
       SelectedOccurrenceOut: |-
@@ -321,27 +342,46 @@ ComponentDefinitions:
                 {
                     _colPos:Mod(Value(galFLRiskMatrix.Selected.Value)-1,Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)))+1
                 },
-                Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),_colPos)).ScaleScore
+                Last(
+                    FirstN(
+                        SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                        _colPos
+                    )
+                ).ScaleScore
             )
         )
       SelectedRowLabelOut: |-
         =
         Coalesce(
-            LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedSeverityOut,ScaleLabel),
+            LookUp(
+                cmp_FL_RiskMatrixPro.RowScale,
+                ScaleScore=cmp_FL_RiskMatrixPro.SelectedSeverityOut,
+                ScaleLabel
+            ),
             Text(cmp_FL_RiskMatrixPro.SelectedSeverityOut)
         )
       SelectedColumnLabelOut: |-
         =
         Coalesce(
-            LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedOccurrenceOut,ScaleLabel),
+            LookUp(
+                cmp_FL_RiskMatrixPro.ColumnScale,
+                ScaleScore=cmp_FL_RiskMatrixPro.SelectedOccurrenceOut,
+                ScaleLabel
+            ),
             Text(cmp_FL_RiskMatrixPro.SelectedOccurrenceOut)
         )
       MatrixScoreOut: |-
         =
         With(
             {
-                _rowRec:LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedSeverityOut),
-                _colRec:LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedOccurrenceOut)
+                _rowRec:LookUp(
+                    cmp_FL_RiskMatrixPro.RowScale,
+                    ScaleScore=cmp_FL_RiskMatrixPro.SeverityValue
+                ),
+                _colRec:LookUp(
+                    cmp_FL_RiskMatrixPro.ColumnScale,
+                    ScaleScore=cmp_FL_RiskMatrixPro.OccurrenceValue
+                )
             },
             With(
                 {
@@ -352,9 +392,11 @@ ComponentDefinitions:
                     )
                 },
                 If(
-                    Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" && !IsBlank(_configuredScore) && _configuredScore>=0,
+                    Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" &&
+                    !IsBlank(_configuredScore) &&
+                    _configuredScore>=0,
                     _configuredScore,
-                    cmp_FL_RiskMatrixPro.SelectedSeverityOut*cmp_FL_RiskMatrixPro.SelectedOccurrenceOut
+                    cmp_FL_RiskMatrixPro.SeverityValue*cmp_FL_RiskMatrixPro.OccurrenceValue
                 )
             )
         )
@@ -368,81 +410,145 @@ ComponentDefinitions:
                 If(
                     _score<=cmp_FL_RiskMatrixPro.ModerateMax,
                     cmp_FL_RiskMatrixPro.ModerateLabel,
-                    If(_score<=cmp_FL_RiskMatrixPro.HighMax,cmp_FL_RiskMatrixPro.HighLabel,cmp_FL_RiskMatrixPro.CriticalLabel)
+                    If(
+                        _score<=cmp_FL_RiskMatrixPro.HighMax,
+                        cmp_FL_RiskMatrixPro.HighLabel,
+                        cmp_FL_RiskMatrixPro.CriticalLabel
+                    )
                 )
             )
         )
-      Width: =560
+      Width: =820
 
     Children:
       - conFLRiskRoot:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
-            BorderColor: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.BorderColor,ColorValue("#E2E8F0"))
+            BorderColor: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.BorderColor,ColorValue("#DCE4EE"))
             BorderThickness: =1
             DropShadow: =DropShadow.None
             Fill: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.SurfaceColor,ColorValue("#FFFFFF"))
             Height: =Parent.Height
-            RadiusBottomLeft: =14
-            RadiusBottomRight: =14
-            RadiusTopLeft: =14
-            RadiusTopRight: =14
+            RadiusBottomLeft: =22
+            RadiusBottomRight: =22
+            RadiusTopLeft: =22
+            RadiusTopRight: =22
             Width: =Parent.Width
 
           Children:
+            - conFLRiskTitleIcon:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#C7D2FE")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F5F3FF")
+                  Height: =48
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  Width: =48
+                  X: =26
+                  Y: =22
+                Children:
+                  - lblFLRiskTitleGlyph:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =ColorValue("#4F46E5")
+                        FontWeight: =FontWeight.Bold
+                        Size: =20
+                        Text: ="▦"
+                        Width: =Parent.Width
+                        X: =0
+                        Y: =12
+
             - lblFLRiskTitle:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
                   Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.TextColor,ColorValue("#0F172A"))
-                  FontWeight: =FontWeight.Semibold
-                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  Size: =22
                   Text: =cmp_FL_RiskMatrixPro.Title
-                  Width: =Parent.Width-32
+                  Width: =Parent.Width-250
                   Wrap: =false
-                  X: =16
-                  Y: =9
+                  X: =92
+                  Y: =22
 
             - lblFLRiskSubtitle:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#64748B"))
-                  Size: =12
+                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#5B6B86"))
+                  Size: =13
                   Text: =cmp_FL_RiskMatrixPro.Subtitle
-                  Width: =Parent.Width-32
+                  Width: =Parent.Width-250
                   Wrap: =false
-                  X: =16
-                  Y: =34
+                  X: =92
+                  Y: =54
+
+            - conFLRiskContextBadge:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#DDD6FE")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F5F3FF")
+                  Height: =42
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Visible: =cmp_FL_RiskMatrixPro.ShowContextBadge && !IsBlank(cmp_FL_RiskMatrixPro.ContextLabel)
+                  Width: =116
+                  X: =Parent.Width-142
+                  Y: =24
+                Children:
+                  - lblFLRiskContextBadge:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =ColorValue("#4338CA")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =13
+                        Text: =cmp_FL_RiskMatrixPro.ContextLabel
+                        Width: =Parent.Width
+                        X: =0
+                        Y: =11
 
             - lblFLRiskColAxis:
                 Control: ModernText@1.0.0
                 Properties:
                   Align: =Align.Center
                   AutoHeight: =true
-                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#64748B"))
-                  FontWeight: =FontWeight.Semibold
-                  Size: =11
-                  Text: =cmp_FL_RiskMatrixPro.ColumnAxisTitle
-                  Width: =Parent.Width-104
-                  X: =88
-                  Y: =57
+                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#5B6B86"))
+                  FontWeight: =FontWeight.Bold
+                  Size: =14
+                  Text: =Upper(cmp_FL_RiskMatrixPro.ColumnAxisTitle)
+                  Width: =Parent.Width-250
+                  X: =164
+                  Y: =100
 
             - galFLRiskColumnHeaders:
                 Control: Gallery@2.15.0
                 Variant: Horizontal
                 Properties:
                   BorderColor: =Color.Transparent
-                  Height: =26
+                  Height: =34
                   Items: =SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending)
                   ShowScrollbar: =false
-                  TemplatePadding: =0
-                  TemplateSize: =(Parent.Width-4)/Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale))
-                  Width: =Parent.Width-104
-                  X: =88
-                  Y: =78
-
+                  TemplatePadding: =4
+                  TemplateSize: =(Parent.Width-8)/Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale))
+                  Width: =Parent.Width-250
+                  X: =164
+                  Y: =128
                 Children:
                   - lblFLRiskColumn:
                       Control: ModernText@1.0.0
@@ -451,38 +557,38 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =11
+                        Size: =14
                         Text: =Text(ThisItem.ScaleLabel)
                         Width: =Parent.TemplateWidth
                         X: =0
-                        Y: =2
+                        Y: =4
 
             - lblFLRiskRowAxis:
                 Control: ModernText@1.0.0
                 Properties:
+                  Align: =Align.Center
                   AutoHeight: =true
-                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#64748B"))
-                  FontWeight: =FontWeight.Semibold
-                  Size: =11
-                  Text: =cmp_FL_RiskMatrixPro.RowAxisTitle
-                  Width: =64
-                  X: =16
-                  Y: =103
+                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#5B6B86"))
+                  FontWeight: =FontWeight.Bold
+                  Size: =14
+                  Text: =Upper(cmp_FL_RiskMatrixPro.RowAxisTitle)
+                  Width: =88
+                  X: =28
+                  Y: =176
 
             - galFLRiskRows:
                 Control: Gallery@2.15.0
                 Variant: Vertical
                 Properties:
                   BorderColor: =Color.Transparent
-                  Height: =154
-                  Items: =SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Ascending)
+                  Height: =270
+                  Items: =SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending)
                   ShowScrollbar: =false
                   TemplatePadding: =0
-                  TemplateSize: =154/Max(1,CountRows(cmp_FL_RiskMatrixPro.RowScale))
-                  Width: =64
-                  X: =16
-                  Y: =118
-
+                  TemplateSize: =270/Max(1,CountRows(cmp_FL_RiskMatrixPro.RowScale))
+                  Width: =44
+                  X: =112
+                  Y: =166
                 Children:
                   - lblFLRiskRow:
                       Control: ModernText@1.0.0
@@ -491,29 +597,28 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =11
+                        Size: =14
                         Text: =Text(ThisItem.ScaleLabel)
                         Width: =Parent.TemplateWidth
                         X: =0
-                        Y: =Max(0,(Parent.TemplateHeight-18)/2)
+                        Y: =Max(0,(Parent.TemplateHeight-20)/2)
 
             - galFLRiskMatrix:
                 Control: Gallery@2.15.0
                 Variant: Vertical
                 Properties:
                   BorderColor: =Color.Transparent
-                  Height: =154
+                  Height: =270
                   Items: =Sequence(Max(1,CountRows(cmp_FL_RiskMatrixPro.RowScale))*Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)))
                   OnSelect: =cmp_FL_RiskMatrixPro.OnSelectCell()
                   ShowScrollbar: =false
                   TemplateFill: =Color.Transparent
-                  TemplatePadding: =2
-                  TemplateSize: =154/Max(1,CountRows(cmp_FL_RiskMatrixPro.RowScale))
-                  Width: =Parent.Width-104
+                  TemplatePadding: =4
+                  TemplateSize: =270/Max(1,CountRows(cmp_FL_RiskMatrixPro.RowScale))
+                  Width: =Parent.Width-250
                   WrapCount: =Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale))
-                  X: =88
-                  Y: =118
-
+                  X: =164
+                  Y: =166
                 Children:
                   - btnFLRiskCell:
                       Control: Classic/Button@2.2.0
@@ -527,18 +632,59 @@ ComponentDefinitions:
                               },
                               With(
                                   {
-                                      _rowScore:Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Ascending),_rowPos)).ScaleScore,
-                                      _colScore:Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),_colPos)).ScaleScore
+                                      _rowScore:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                                              _rowPos
+                                          )
+                                      ).ScaleScore,
+                                      _colScore:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                                              _colPos
+                                          )
+                                      ).ScaleScore
                                   },
                                   If(
-                                      _rowScore=cmp_FL_RiskMatrixPro.SeverityValue && _colScore=cmp_FL_RiskMatrixPro.OccurrenceValue,
-                                      ColorValue("#0284C7"),
-                                      ColorValue("#FFFFFF")
+                                      _rowScore=cmp_FL_RiskMatrixPro.SeverityValue &&
+                                      _colScore=cmp_FL_RiskMatrixPro.OccurrenceValue,
+                                      If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.AccentColor,ColorValue("#2563EB")),
+                                      RGBA(255,255,255,0.55)
                                   )
                               )
                           )
-                        BorderThickness: =2
-                        Color: =ColorValue("#0F172A")
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: |-
+                          =
+                          With(
+                              {
+                                  _rowPos:RoundUp(Value(ThisItem.Value)/Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),0),
+                                  _colPos:Mod(Value(ThisItem.Value)-1,Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)))+1
+                              },
+                              With(
+                                  {
+                                      _rowScore:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                                              _rowPos
+                                          )
+                                      ).ScaleScore,
+                                      _colScore:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                                              _colPos
+                                          )
+                                      ).ScaleScore
+                                  },
+                                  If(
+                                      _rowScore=cmp_FL_RiskMatrixPro.SeverityValue &&
+                                      _colScore=cmp_FL_RiskMatrixPro.OccurrenceValue,
+                                      3,
+                                      1
+                                  )
+                              )
+                          )
+                        Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.TextColor,ColorValue("#0F172A"))
                         Fill: |-
                           =
                           With(
@@ -548,42 +694,68 @@ ComponentDefinitions:
                               },
                               With(
                                   {
-                                      _rowRec:Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Ascending),_rowPos)),
-                                      _colRec:Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),_colPos))
+                                      _rowRec:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                                              _rowPos
+                                          )
+                                      ),
+                                      _colRec:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                                              _colPos
+                                          )
+                                      )
                                   },
                                   With(
                                       {
-                                          _configuredScore:LookUp(cmp_FL_RiskMatrixPro.MatrixCells,RowIndex=_rowRec.ScaleIndex && ColumnIndex=_colRec.ScaleIndex,CellScore),
-                                          _configuredBand:Upper(Coalesce(LookUp(cmp_FL_RiskMatrixPro.MatrixCells,RowIndex=_rowRec.ScaleIndex && ColumnIndex=_colRec.ScaleIndex,BandKey),""))
+                                          _configuredScore:LookUp(
+                                              cmp_FL_RiskMatrixPro.MatrixCells,
+                                              RowIndex=_rowRec.ScaleIndex && ColumnIndex=_colRec.ScaleIndex,
+                                              CellScore
+                                          ),
+                                          _configuredBand:Upper(
+                                              Coalesce(
+                                                  LookUp(
+                                                      cmp_FL_RiskMatrixPro.MatrixCells,
+                                                      RowIndex=_rowRec.ScaleIndex && ColumnIndex=_colRec.ScaleIndex,
+                                                      BandKey
+                                                  ),
+                                                  ""
+                                              )
+                                          )
                                       },
                                       With(
                                           {
                                               _score:If(
-                                                  Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" && !IsBlank(_configuredScore) && _configuredScore>=0,
+                                                  Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" &&
+                                                  !IsBlank(_configuredScore) &&
+                                                  _configuredScore>=0,
                                                   _configuredScore,
                                                   _rowRec.ScaleScore*_colRec.ScaleScore
                                               )
                                           },
                                           If(
-                                              Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" && !IsBlank(_configuredBand),
+                                              Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" &&
+                                              !IsBlank(_configuredBand),
                                               Switch(
                                                   _configuredBand,
-                                                  "LOW",ColorValue("#DCFCE7"),
-                                                  "MODERATE",ColorValue("#FEF3C7"),
-                                                  "HIGH",ColorValue("#FFEDD5"),
-                                                  "CRITICAL",ColorValue("#FEE2E2"),
+                                                  "LOW",If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.LowColor,ColorValue("#D8F3D8")),
+                                                  "MODERATE",If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.ModerateColor,ColorValue("#F4F0BE")),
+                                                  "HIGH",If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.HighColor,ColorValue("#F8D6A0")),
+                                                  "CRITICAL",If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.CriticalColor,ColorValue("#F6A6AC")),
                                                   ColorValue("#F8FAFC")
                                               ),
                                               If(
                                                   _score<=cmp_FL_RiskMatrixPro.LowMax,
-                                                  If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.LowColor,ColorValue("#DCFCE7")),
+                                                  If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.LowColor,ColorValue("#D8F3D8")),
                                                   If(
                                                       _score<=cmp_FL_RiskMatrixPro.ModerateMax,
-                                                      If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.ModerateColor,ColorValue("#FEF3C7")),
+                                                      If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.ModerateColor,ColorValue("#F4F0BE")),
                                                       If(
                                                           _score<=cmp_FL_RiskMatrixPro.HighMax,
-                                                          If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.HighColor,ColorValue("#FFEDD5")),
-                                                          If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.CriticalColor,ColorValue("#FEE2E2"))
+                                                          If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.HighColor,ColorValue("#F8D6A0")),
+                                                          If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.CriticalColor,ColorValue("#F6A6AC"))
                                                       )
                                                   )
                                               )
@@ -592,16 +764,46 @@ ComponentDefinitions:
                                   )
                               )
                           )
-                        FontWeight: =FontWeight.Semibold
-                        Height: =Parent.TemplateHeight-4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: |-
+                          =
+                          With(
+                              {
+                                  _rowPos:RoundUp(Value(ThisItem.Value)/Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),0),
+                                  _colPos:Mod(Value(ThisItem.Value)-1,Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)))+1
+                              },
+                              With(
+                                  {
+                                      _rowScore:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                                              _rowPos
+                                          )
+                                      ).ScaleScore,
+                                      _colScore:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                                              _colPos
+                                          )
+                                      ).ScaleScore
+                                  },
+                                  If(
+                                      _rowScore=cmp_FL_RiskMatrixPro.SeverityValue &&
+                                      _colScore=cmp_FL_RiskMatrixPro.OccurrenceValue,
+                                      FontWeight.Bold,
+                                      FontWeight.Semibold
+                                  )
+                              )
+                          )
+                        Height: =Parent.TemplateHeight-8
                         HoverFill: =Self.Fill
                         OnSelect: =Select(Parent)
                         PressedFill: =Self.Fill
-                        RadiusBottomLeft: =5
-                        RadiusBottomRight: =5
-                        RadiusTopLeft: =5
-                        RadiusTopRight: =5
-                        Size: =12
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Size: =16
                         Text: |-
                           =
                           With(
@@ -611,59 +813,293 @@ ComponentDefinitions:
                               },
                               With(
                                   {
-                                      _rowRec:Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Ascending),_rowPos)),
-                                      _colRec:Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),_colPos)),
-                                      _configuredScore:LookUp(cmp_FL_RiskMatrixPro.MatrixCells,RowIndex=Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Ascending),_rowPos)).ScaleIndex && ColumnIndex=Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),_colPos)).ScaleIndex,CellScore)
+                                      _rowRec:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                                              _rowPos
+                                          )
+                                      ),
+                                      _colRec:Last(
+                                          FirstN(
+                                              SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                                              _colPos
+                                          )
+                                      ),
+                                      _configuredScore:LookUp(
+                                          cmp_FL_RiskMatrixPro.MatrixCells,
+                                          RowIndex=Last(
+                                              FirstN(
+                                                  SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+                                                  _rowPos
+                                              )
+                                          ).ScaleIndex &&
+                                          ColumnIndex=Last(
+                                              FirstN(
+                                                  SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+                                                  _colPos
+                                              )
+                                          ).ScaleIndex,
+                                          CellScore
+                                      )
                                   },
                                   Text(
                                       If(
-                                          Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" && !IsBlank(_configuredScore) && _configuredScore>=0,
+                                          Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" &&
+                                          !IsBlank(_configuredScore) &&
+                                          _configuredScore>=0,
                                           _configuredScore,
                                           _rowRec.ScaleScore*_colRec.ScaleScore
                                       )
                                   )
                               )
                           )
-                        Width: =Parent.TemplateWidth-4
-                        X: =2
-                        Y: =2
+                        Width: =Parent.TemplateWidth-8
+                        X: =4
+                        Y: =4
 
-            - lblFLRiskDetection:
-                Control: ModernText@1.0.0
+            - recFLRiskDivider:
+                Control: Rectangle@2.3.0
                 Properties:
-                  AutoHeight: =true
-                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#64748B"))
-                  FontWeight: =FontWeight.Semibold
-                  Size: =11
-                  Text: =Upper(cmp_FL_RiskMatrixPro.DetectionLabel) & " · " & Text(cmp_FL_RiskMatrixPro.DetectionValue)
+                  Fill: =ColorValue("#E5EAF1")
+                  Height: =1
+                  Width: =Parent.Width-52
+                  X: =26
+                  Y: =452
+
+            - conFLRiskDetection:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  Height: =82
                   Visible: =cmp_FL_RiskMatrixPro.ShowDetection
-                  Width: =130
-                  X: =16
-                  Y: =278
+                  Width: =196
+                  X: =34
+                  Y: =468
+                Children:
+                  - conFLRiskDetectionIcon:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =Color.Transparent
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#EAF2FF")
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =54
+                        X: =0
+                        Y: =12
+                      Children:
+                        - lblFLRiskDetectionGlyph:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              Color: =ColorValue("#1D4ED8")
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: ="D"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =15
+                  - lblFLRiskDetectionLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#5B6B86"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =12
+                        Text: =cmp_FL_RiskMatrixPro.DetectionLabel
+                        Width: =122
+                        X: =68
+                        Y: =11
+                  - lblFLRiskDetectionValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#1D4ED8")
+                        FontWeight: =FontWeight.Bold
+                        Size: =25
+                        Text: =Text(cmp_FL_RiskMatrixPro.DetectionValue)
+                        Width: =100
+                        X: =68
+                        Y: =34
 
-            - lblFLRiskScore:
-                Control: ModernText@1.0.0
+            - conFLRiskMatrixScore:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
                 Properties:
-                  Align: =Align.Right
-                  AutoHeight: =true
-                  Color: =ColorValue("#7C3AED")
-                  FontWeight: =FontWeight.Semibold
-                  Size: =18
-                  Text: =Upper(cmp_FL_RiskMatrixPro.RiskScoreLabel) & " · " & Text(cmp_FL_RiskMatrixPro.RiskScore)
+                  BorderColor: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  Height: =82
+                  Width: =190
+                  X: =260
+                  Y: =468
+                Children:
+                  - conFLRiskMatrixScoreIcon:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =Color.Transparent
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F3ECFF")
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =54
+                        X: =0
+                        Y: =12
+                      Children:
+                        - lblFLRiskMatrixScoreGlyph:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              Color: =ColorValue("#6D28D9")
+                              FontWeight: =FontWeight.Bold
+                              Size: =24
+                              Text: ="×"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =13
+                  - lblFLRiskMatrixScoreLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#5B6B86"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =12
+                        Text: ="S × O"
+                        Width: =110
+                        X: =68
+                        Y: =11
+                  - lblFLRiskMatrixScoreValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#6D28D9")
+                        FontWeight: =FontWeight.Bold
+                        Size: =25
+                        Text: =Text(cmp_FL_RiskMatrixPro.MatrixScoreOut)
+                        Width: =100
+                        X: =68
+                        Y: =34
+
+            - conFLRiskNpr:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#C9D9F6")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F8FBFF")
+                  Height: =82
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
                   Visible: =cmp_FL_RiskMatrixPro.ShowRiskScore
-                  Width: =130
-                  X: =Parent.Width-146
-                  Y: =274
+                  Width: =Parent.Width-500
+                  X: =470
+                  Y: =468
+                Children:
+                  - conFLRiskNprIcon:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =Color.Transparent
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =54
+                        X: =14
+                        Y: =13
+                      Children:
+                        - lblFLRiskNprGlyph:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              Color: =ColorValue("#1E40AF")
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: ="N"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =15
+                  - lblFLRiskNprLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#5B6B86"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =12
+                        Text: =cmp_FL_RiskMatrixPro.RiskScoreLabel & " (S × O × D)"
+                        Width: =Parent.Width-100
+                        X: =82
+                        Y: =10
+                  - lblFLRiskNprValue:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#1D4ED8")
+                        FontWeight: =FontWeight.Bold
+                        Size: =28
+                        Text: =Text(cmp_FL_RiskMatrixPro.RiskScore)
+                        Width: =140
+                        X: =82
+                        Y: =34
 
-            - lblFLRiskScaleNote:
-                Control: ModernText@1.0.0
+            - conFLRiskFooter:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
                 Properties:
-                  Align: =Align.Center
-                  AutoHeight: =true
-                  Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#64748B"))
-                  Size: =11
-                  Text: =cmp_FL_RiskMatrixPro.ScaleNote
-                  Width: =Parent.Width-300
-                  Wrap: =false
-                  X: =150
-                  Y: =279
+                  BorderColor: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#FBFCFE")
+                  Height: =52
+                  Width: =Parent.Width
+                  X: =0
+                  Y: =Parent.Height-52
+                Children:
+                  - lblFLRiskFooterIcon:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =ColorValue("#94A3B8")
+                        FontWeight: =FontWeight.Bold
+                        Size: =13
+                        Text: ="i"
+                        Width: =24
+                        X: =28
+                        Y: =16
+                  - lblFLRiskScaleNote:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_RiskMatrixPro.UseHostTheme,cmp_FL_RiskMatrixPro.MutedTextColor,ColorValue("#64748B"))
+                        Size: =11
+                        Text: =cmp_FL_RiskMatrixPro.ScaleNote
+                        Width: =Parent.Width-86
+                        Wrap: =false
+                        X: =62
+                        Y: =16
