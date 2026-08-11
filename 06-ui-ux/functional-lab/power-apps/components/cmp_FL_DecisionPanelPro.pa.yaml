@@ -1,3 +1,8 @@
+# CMMS 2.0 FUNCTIONAL LAB — DECISION PANEL PRO — SAFE PALETTE RC
+#
+# Preserves system/recommendation/human-decision separation.
+# Safe palette is used unless UseHostTheme=true.
+
 ComponentDefinitions:
   cmp_FL_DecisionPanelPro:
     DefinitionType: CanvasComponent
@@ -136,6 +141,13 @@ ComponentDefinitions:
         DataType: Text
         Default: ="Modificar decisión"
 
+      UseHostTheme:
+        PropertyKind: Input
+        DisplayName: UseHostTheme
+        Description: Usa colores del host. Desactivado por defecto por compatibilidad Studio.
+        DataType: Boolean
+        Default: =false
+
       AccentColor:
         PropertyKind: Input
         DisplayName: AccentColor
@@ -186,7 +198,7 @@ ComponentDefinitions:
         Default: =false
 
     Properties:
-      Fill: =cmp_FL_DecisionPanelPro.SurfaceColor
+      Fill: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.SurfaceColor,ColorValue("#FFFFFF"))
       Height: =360
       Width: =620
 
@@ -195,25 +207,24 @@ ComponentDefinitions:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
-            BorderColor: =cmp_FL_DecisionPanelPro.BorderColor
+            BorderColor: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.BorderColor,ColorValue("#E2E8F0"))
             BorderThickness: =1
             DropShadow: =DropShadow.None
-            Fill: =cmp_FL_DecisionPanelPro.SurfaceColor
+            Fill: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.SurfaceColor,ColorValue("#FFFFFF"))
             Height: =Parent.Height
             RadiusBottomLeft: =14
             RadiusBottomRight: =14
             RadiusTopLeft: =14
             RadiusTopRight: =14
             Width: =Parent.Width
-
           Children:
             - lblFLDecisionEyebrow:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_DecisionPanelPro.AccentColor
+                  Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.AccentColor,ColorValue("#0284C7"))
                   FontWeight: =FontWeight.Semibold
-                  Size: =9
+                  Size: =8
                   Text: ="SISTEMA + DECISIÓN HUMANA"
                   Width: =Parent.Width-36
                   Wrap: =false
@@ -224,7 +235,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_DecisionPanelPro.TextColor
+                  Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                   FontWeight: =FontWeight.Semibold
                   Size: =17
                   Text: =cmp_FL_DecisionPanelPro.Title
@@ -237,8 +248,8 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_DecisionPanelPro.MutedTextColor
-                  Size: =10
+                  Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.MutedTextColor,ColorValue("#64748B"))
+                  Size: =9
                   Text: =cmp_FL_DecisionPanelPro.ContextText
                   Width: =Parent.Width-36
                   Wrap: =true
@@ -262,7 +273,6 @@ ComponentDefinitions:
                   Width: =(Parent.Width-54)*0.5
                   X: =18
                   Y: =112
-
                 Children:
                   - lblFLDecisionSystemLabel:
                       Control: ModernText@1.0.0
@@ -273,7 +283,6 @@ ComponentDefinitions:
                         Size: =8
                         Text: ="SISTEMA"
                         Width: =Parent.Width-24
-                        Wrap: =false
                         X: =12
                         Y: =10
 
@@ -281,7 +290,7 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =cmp_FL_DecisionPanelPro.TextColor
+                        Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
                         Size: =10
                         Text: |-
@@ -319,8 +328,8 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =cmp_FL_DecisionPanelPro.MutedTextColor
-                        Size: =9
+                        Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.MutedTextColor,ColorValue("#64748B"))
+                        Size: =8
                         Text: =cmp_FL_DecisionPanelPro.RecommendationExplanation
                         Visible: =cmp_FL_DecisionPanelPro.ShowRecommendation && !IsBlank(cmp_FL_DecisionPanelPro.RecommendationExplanation)
                         Width: =Parent.Width-24
@@ -345,7 +354,6 @@ ComponentDefinitions:
                   Width: =(Parent.Width-54)*0.5
                   X: =Parent.Width-Self.Width-18
                   Y: =112
-
                 Children:
                   - lblFLDecisionHumanLabel:
                       Control: ModernText@1.0.0
@@ -356,7 +364,6 @@ ComponentDefinitions:
                         Size: =8
                         Text: =If(cmp_FL_DecisionPanelPro.IsOverride,"DECISIÓN HUMANA · OVERRIDE","DECISIÓN HUMANA")
                         Width: =Parent.Width-24
-                        Wrap: =false
                         X: =12
                         Y: =10
 
@@ -364,7 +371,7 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =cmp_FL_DecisionPanelPro.TextColor
+                        Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
                         Size: =11
                         Text: =If(IsBlank(cmp_FL_DecisionPanelPro.HumanDecisionValue),"Pendiente de decisión",cmp_FL_DecisionPanelPro.HumanDecisionValue)
@@ -377,8 +384,8 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =cmp_FL_DecisionPanelPro.MutedTextColor
-                        Size: =9
+                        Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.MutedTextColor,ColorValue("#64748B"))
+                        Size: =8
                         Text: =If(IsBlank(cmp_FL_DecisionPanelPro.DecisionReason),"Sin motivo registrado",cmp_FL_DecisionPanelPro.DecisionReason)
                         Width: =Parent.Width-24
                         Wrap: =true
@@ -402,12 +409,12 @@ ComponentDefinitions:
             - btnFLDecisionConfirm:
                 Control: Classic/Button@2.2.0
                 Properties:
-                  BorderColor: =cmp_FL_DecisionPanelPro.AccentColor
+                  BorderColor: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.AccentColor,ColorValue("#0284C7"))
                   BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
                   Color: =Color.White
                   DisplayMode: =If(cmp_FL_DecisionPanelPro.CanConfirm,DisplayMode.Edit,DisplayMode.Disabled)
-                  Fill: =cmp_FL_DecisionPanelPro.AccentColor
+                  Fill: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.AccentColor,ColorValue("#0284C7"))
                   Font: =Font.'Segoe UI'
                   FontWeight: =FontWeight.Semibold
                   Height: =40
@@ -427,10 +434,10 @@ ComponentDefinitions:
             - btnFLDecisionOverride:
                 Control: Classic/Button@2.2.0
                 Properties:
-                  BorderColor: =cmp_FL_DecisionPanelPro.BorderColor
+                  BorderColor: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.BorderColor,ColorValue("#E2E8F0"))
                   BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  Color: =cmp_FL_DecisionPanelPro.TextColor
+                  Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                   DisplayMode: =If(cmp_FL_DecisionPanelPro.CanOverride,DisplayMode.Edit,DisplayMode.Disabled)
                   Fill: =ColorValue("#FFFFFF")
                   Font: =Font.'Segoe UI'
