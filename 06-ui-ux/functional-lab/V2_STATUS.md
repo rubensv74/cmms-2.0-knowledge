@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados / implementación visual pausada para corregir foundation
+**Estado global:** D-01…D-14 corregido / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados / F03 AMEF readability reference `PASS_STATIC`
 
 ## 1. Modelo canónico
 
@@ -61,33 +61,29 @@ BIBLIOTECA AMEF OK
 APLICACIÓN MULTI-ACTIVO OK
 ```
 
-## 4. Incidencias foundation abiertas
+## 4. Foundation visual — F03
 
-### FL-SC-004 — colores de componentes
+La inspección de `scr_FL_AMEF` reveló dos problemas que obligaron a pausar la propagación a las 25 pantallas:
 
-Se observó que varias instancias materializan como negro colores que en Source Code tienen defaults claros.
+```text
+FL-SC-004    materialización visual incorrecta de defaults Color en varias instancias
+UX           escala tipográfica 7–10 demasiado pequeña para uso real y demostración
+```
 
-El patrón correctivo safe-palette está publicado, pero **no debe introducirse agregando nuevas copias de componentes existentes**, porque Studio crea una identidad nueva y las pantallas continúan asociadas a la original.
+Además se incorporó la regla de identidad de Canvas Components:
 
-La corrección definitiva deberá preservar identidad de componente o realizar migración controlada de instancias.
+> una definición corregida no debe agregarse como nueva copia si el componente ya tiene instancias; debe actualizarse in situ o migrarse de forma controlada.
 
-### Legibilidad tipográfica — nueva corrección obligatoria
+### Baseline Comfortable
 
-La inspección visual confirmó que la escala anterior era demasiado pequeña para una aplicación que debe utilizarse en escritorio y demostrarse en reuniones.
-
-Se retira como baseline la escala basada en tamaños 7–10.
-
-Nuevo estándar canónico:
-
-`TYPOGRAPHY_AND_DENSITY_STANDARD.md`
-
-Reglas principales:
+`TYPOGRAPHY_AND_DENSITY_STANDARD.md` establece:
 
 ```text
 texto visible mínimo     11
 supporting               12
 label                    12–13
 body                     13–14
+card title               15–17
 section title            16–18
 page title               24–28
 button                    12–13
@@ -95,78 +91,157 @@ button                    12–13
 
 No se reducirá tipografía para evitar scroll.
 
-## 5. Decisión de implementación
+## 5. F03 — AMEF Readability Reference
 
-**No volver a implementar todavía las 25 pantallas ni los componentes.**
+La referencia canónica está implementada en:
 
-La secuencia correcta es:
+`power-apps/blocks/F03-AMEF-READABILITY-REFERENCE/`
 
-```text
-1. cerrar estrategia de preservación de identidad de componentes
-2. corregir foundation visual de componentes
-3. aplicar paleta segura
-4. aplicar escala tipográfica Comfortable
-5. reajustar alturas, padding y gaps
-6. validar scr_FL_AMEF como pantalla de alta densidad
-7. solo si AMEF supera QA, propagar el patrón al resto
-8. reanudar los smokes funcionales desde AnalysisCase
-```
-
-## 6. Gate de referencia — scr_FL_AMEF
-
-AMEF se utilizará como pantalla discriminante porque contiene simultáneamente:
+Target:
 
 ```text
-Sidebar
-PageHeader
-ProcessRail
-LineagePanel
-TextInputs
-RiskMatrix
-DecisionPanel
-GatePanel
+1366×768
+browser zoom 100%
+Comfortable density
 ```
 
-Debe pasar:
+Definiciones actualizadas como candidatos **con el mismo nombre/identidad canónica**:
 
 ```text
-[ ] paleta correcta
-[ ] ningún texto visible < 11
-[ ] body >= 13
-[ ] títulos >= 16
-[ ] botones/inputs con altura suficiente
-[ ] ningún clipping
-[ ] scroll antes que reducción tipográfica
-[ ] P-101 y contexto correctamente cargados
-[ ] lectura cómoda a 100% zoom
+cmp_FL_SidebarPro
+cmp_FL_PageHeaderPro
+cmp_FL_ProcessRailPro
+cmp_FL_LineagePanelPro
+cmp_FL_RiskMatrixPro
+cmp_FL_DecisionPanelPro
+cmp_FL_GatePanelPro
+scr_FL_AMEF
 ```
 
-Hasta superar este gate:
+No se modifican en F03:
 
 ```text
-PASS_STATIC              parcial
-INSTANCE_SAFE            evidencia previa por bloques
-VISUAL_QA_VALIDATED      NO
-READY_FOR_INTEGRATION    NO
+cmp_FL_TreePro
+cmp_FL_ApplicabilityMatrixPro
+resto de pantallas
 ```
 
-## 7. Estado del plan integrado
+### Geometría de referencia
+
+```text
+Sidebar                 220
+Header host              100
+ProcessRail              300 + scroll
+Lineage/context          108
+Effects                  304
+RiskMatrix               304
+Decision                 216
+Gate                     216
+```
+
+El layout elimina los bloques verticales redundantes anteriores y gana espacio reorganizando información, no miniaturizándola.
+
+## 6. Semántica AMEF preservada
+
+Fixture P-101:
+
+```text
+S=4/5
+O=3/5
+D=3/5
+S×O=12
+NPR=36
+```
+
+La matriz sigue siendo `Matriz de riesgo AMEF` S×O.
+
+La criticidad del activo permanece como contexto externo al AMEF.
+
+## 7. Estado de validación F03
+
+```text
+SOURCE / YAML REVIEW            PASS
+KNOWN COMPATIBILITY SCAN        PASS
+TYPOGRAPHY BASELINE             PASS_STATIC
+REFERENCE GEOMETRY              PASS_STATIC
+COMPONENT IDENTITY STRATEGY     DOCUMENTED
+
+DEFINITION_ACCEPTED             pendiente de Studio
+INSTANCE_SAFE                   pendiente para esta revisión
+VISUAL_QA_VALIDATED             pendiente
+READY_FOR_INTEGRATION           NO
+```
+
+Documentos:
+
+```text
+F03.../README.md
+F03.../STUDIO_IN_PLACE_UPDATE.md
+F03.../STATIC_VALIDATION.md
+```
+
+## 8. Próximo gate — una única actualización y smoke
+
+No se deben volver a copiar las 25 pantallas.
+
+Actualizar **in situ** en Studio, en este orden:
+
+```text
+1 cmp_FL_SidebarPro
+2 cmp_FL_PageHeaderPro
+3 cmp_FL_ProcessRailPro
+4 cmp_FL_LineagePanelPro
+5 cmp_FL_RiskMatrixPro
+6 cmp_FL_DecisionPanelPro
+7 cmp_FL_GatePanelPro
+8 scr_FL_AMEF
+```
+
+Después ejecutar una única validación:
+
+```text
+Home
+→ Registro de análisis
+→ P101-AMEF-RCM-001
+→ AMEF
+```
+
+Criterios principales:
+
+```text
+no duplicación de componentes
+instancias siguen asociadas
+paleta correcta
+texto legible a 100%
+ProcessRail con scroll
+matriz 5×5 legible
+D=3
+NPR=36
+sistema vs decisión humana diferenciados
+gate legible
+sin bloques negros
+uso cómodo a 1366×768
+```
+
+Solo si este gate pasa se propagará el patrón al resto del Functional Lab.
+
+## 9. Estado del plan integrado
 
 ```text
 1 Home / bootstrap                       PASS
 2 Activos + criticidad                   PASS
 3 Biblioteca AMEF                        PASS
 4 Aplicación multi-activo                PASS
-5 AnalysisCase                           PAUSADO — foundation visual
+5 AnalysisCase                           PAUSADO — F03 visual gate
 6 Failure Modes / causas                 pendiente
-7 AMEF                                   pendiente QA visual
+7 AMEF                                   F03 PASS_STATIC / Studio QA pendiente
 8 RCM                                    pendiente
 9 Task                                   pendiente
 10 Plan Package / Maintenance Plans      pendiente
 11 Trazabilidad / revisión / efectividad pendiente
 ```
 
-## 8. Asuntos deliberadamente abiertos
+## 10. Asuntos deliberadamente abiertos
 
 - escalas AMEF corporativas;
 - umbrales/bandas/colores;
