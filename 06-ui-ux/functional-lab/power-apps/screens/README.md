@@ -1,25 +1,40 @@
 # Power Apps Screens — Functional Lab alineado
 
 **Fuente canónica:** rama `feature/f01-premium-foundation`  
-**Estado:** 25 fuentes publicadas / instalación completa y Visual QA pendientes de Power Apps Studio.
+**Estado:** 25 pantallas funcionales publicadas como referencia de fuente; construcción/evolución regida por el playbook modular.
 
-## Regla de instalación
+## Autoridad de construcción
 
-Estas pantallas forman un **grafo único**. Varias contienen `Navigate(...)` hacia otras pantallas del mismo conjunto.
+Antes de cualquier evolución YAML consultar:
 
-Por tanto:
+`functional-engineering-knowledge-base/30-playbooks/power-platform/modular-power-apps-screen-construction.md`
+
+Las pantallas forman un grafo único y varias contienen `Navigate(...)` hacia otras del conjunto.
+
+Se pueden crear primero las identidades faltantes como `Blank screen` para resolver referencias cruzadas, pero eso **no autoriza a sustituir después las 25 pantallas de forma monolítica**.
+
+Para una pantalla nueva o abierta a reconstrucción:
 
 ```text
-crear primero las 25 identidades en Studio
-→ actualizar los 9 componentes in situ
-→ sustituir después el Source Code de las 25 pantallas desde esta carpeta
+S skeleton completo
+→ placeholders contratados
+→ Studio validation
+→ GEOMETRY FROZEN
+→ C placeholder → component
+→ validation / freeze
+→ I integration
+→ Theme pass separado
 ```
 
-No evaluar `Name isn't valid. 'scr_FL_...'` con un grafo parcial si el nombre señalado pertenece a esta lista y aún no ha sido creado en Studio.
+Para una pantalla ya aprobada:
 
-No instalar pantallas desde commits históricos individuales.
+```text
+conservar geometría y comportamiento congelados
+→ tocar únicamente el slot declarado
+→ FIX independiente si falla
+```
 
-## Canónicas — 25 pantallas
+## Canónicas — 25 pantallas funcionales
 
 | Módulo | Pantalla | Propósito |
 |---|---|---|
@@ -49,6 +64,33 @@ No instalar pantallas desde commits históricos individuales.
 | Gobernanza | `scr_FL_Governance` | revisiones, aprobaciones, findings y cambios |
 | Configuración | `scr_FL_Settings` | preferencias y reglas conceptuales configurables |
 
+## Utility screen
+
+`scr_DesignSystemLab` no forma parte de las 25 pantallas funcionales ni de la navegación del producto.
+
+Se construye únicamente para validar:
+
+```text
+tokens
+color
+contraste
+Classic/Modern controls
+interaction states
+data visualisation palette
+```
+
+Bloques:
+
+`../labs/design-system/`
+
+## Freeze actual
+
+Consultar:
+
+`../../development/FREEZE_REGISTER_2026-08-11.md`
+
+No modificar incidentalmente una pantalla `FUNCTIONAL_FROZEN` o su geometría congelada desde un bloque de otra pantalla.
+
 ## Principios protegidos
 
 ```text
@@ -63,11 +105,9 @@ PreventiveMaintenancePlan ≠ WorkOrder
 
 ## Bootstrap
 
-`scr_FL_Home.OnVisible` es la autoridad del fixture alineado. No reinstalar el bootstrap legacy.
+`scr_FL_Home.OnVisible` es la autoridad del fixture alineado. No reinstalar bootstrap legacy.
 
 ## Visual QA
-
-Las pantallas aún contienen deuda tipográfica histórica en algunos textos auxiliares. No aplicar reemplazos globales ciegos. El estándar obligatorio es:
 
 ```text
 mínimo visible 11
@@ -78,7 +118,13 @@ page title     24–28
 button         12–13
 ```
 
-Primero cerrar `FOUNDATION INTEGRATED PASS`; después corregir una pantalla de referencia y propagar el patrón una vez validado que no introduce clipping.
+No aplicar reemplazos globales ciegos de tipografía o color. La paleta se valida primero en `scr_DesignSystemLab`; la tipografía se corrige mediante bloques visuales acotados sin reabrir comportamiento congelado.
+
+## AMEF
+
+`scr_FL_AMEF` permanece `IN_CONSTRUCTION` y es la pantalla que debe reconstruirse mediante `skeleton first`.
+
+No pegar otra versión monolítica completa como método de recuperación.
 
 ## Legacy
 
@@ -88,4 +134,5 @@ Primero cerrar `FOUNDATION INTEGRATED PASS`; después corregir una pantalla de r
 
 - `../V2_INSTALLATION.md`
 - `../../development/RECOVERY_HARDENING_AUDIT_2026-08-11.md`
+- `../../development/FREEZE_REGISTER_2026-08-11.md`
 - `../../development/TOMORROW_RUNBOOK_2026-08-12.md`
