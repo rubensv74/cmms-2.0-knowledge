@@ -1,7 +1,7 @@
-# CMMS 2.0 FUNCTIONAL LAB — DECISION PANEL PRO — SAFE PALETTE RC
+# CMMS 2.0 FUNCTIONAL LAB — DECISION PANEL PRO — COMFORTABLE READABILITY RC
 #
-# Preserves system/recommendation/human-decision separation.
-# Safe palette is used unless UseHostTheme=true.
+# Preserves public contract and system/recommendation/human authority separation.
+# Information is consolidated to gain space; typography is not reduced.
 
 ComponentDefinitions:
   cmp_FL_DecisionPanelPro:
@@ -199,7 +199,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.SurfaceColor,ColorValue("#FFFFFF"))
-      Height: =360
+      Height: =214
       Width: =620
 
     Children:
@@ -217,6 +217,7 @@ ComponentDefinitions:
             RadiusTopLeft: =14
             RadiusTopRight: =14
             Width: =Parent.Width
+
           Children:
             - lblFLDecisionEyebrow:
                 Control: ModernText@1.0.0
@@ -224,12 +225,12 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.AccentColor,ColorValue("#0284C7"))
                   FontWeight: =FontWeight.Semibold
-                  Size: =8
+                  Size: =11
                   Text: ="SISTEMA + DECISIÓN HUMANA"
                   Width: =Parent.Width-36
                   Wrap: =false
                   X: =18
-                  Y: =16
+                  Y: =9
 
             - lblFLDecisionTitle:
                 Control: ModernText@1.0.0
@@ -237,24 +238,24 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                   FontWeight: =FontWeight.Semibold
-                  Size: =17
+                  Size: =16
                   Text: =cmp_FL_DecisionPanelPro.Title
                   Width: =Parent.Width-36
                   Wrap: =false
                   X: =18
-                  Y: =42
+                  Y: =29
 
             - lblFLDecisionContext:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
                   Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.MutedTextColor,ColorValue("#64748B"))
-                  Size: =9
+                  Size: =12
                   Text: =cmp_FL_DecisionPanelPro.ContextText
                   Width: =Parent.Width-36
-                  Wrap: =true
+                  Wrap: =false
                   X: =18
-                  Y: =72
+                  Y: =53
 
             - conFLDecisionSystem:
                 Control: GroupContainer@1.5.0
@@ -264,7 +265,7 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =ColorValue("#F0F9FF")
-                  Height: =132
+                  Height: =80
                   RadiusBottomLeft: =11
                   RadiusBottomRight: =11
                   RadiusTopLeft: =11
@@ -272,7 +273,8 @@ ComponentDefinitions:
                   Visible: =cmp_FL_DecisionPanelPro.ShowSystemResult || cmp_FL_DecisionPanelPro.ShowRecommendation
                   Width: =(Parent.Width-54)*0.5
                   X: =18
-                  Y: =112
+                  Y: =76
+
                 Children:
                   - lblFLDecisionSystemLabel:
                       Control: ModernText@1.0.0
@@ -280,11 +282,11 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =ColorValue("#0369A1")
                         FontWeight: =FontWeight.Semibold
-                        Size: =8
+                        Size: =11
                         Text: ="SISTEMA"
                         Width: =Parent.Width-24
                         X: =12
-                        Y: =10
+                        Y: =6
 
                   - lblFLDecisionResult:
                       Control: ModernText@1.0.0
@@ -292,7 +294,7 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =10
+                        Size: =13
                         Text: |-
                           =
                           If(
@@ -301,41 +303,28 @@ ComponentDefinitions:
                               ""
                           )
                         Width: =Parent.Width-24
-                        Wrap: =true
+                        Wrap: =false
                         X: =12
-                        Y: =32
+                        Y: =26
 
                   - lblFLDecisionRecommendation:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
                         Color: =ColorValue("#075985")
-                        FontWeight: =FontWeight.Semibold
-                        Size: =10
+                        Size: =12
                         Text: |-
                           =
                           If(
                               cmp_FL_DecisionPanelPro.ShowRecommendation,
-                              cmp_FL_DecisionPanelPro.RecommendationLabel & " · " & cmp_FL_DecisionPanelPro.RecommendationValue,
+                              cmp_FL_DecisionPanelPro.RecommendationLabel & " · " & cmp_FL_DecisionPanelPro.RecommendationValue &
+                              If(IsBlank(cmp_FL_DecisionPanelPro.RecommendationExplanation),""," — " & cmp_FL_DecisionPanelPro.RecommendationExplanation),
                               ""
                           )
                         Width: =Parent.Width-24
                         Wrap: =true
                         X: =12
-                        Y: =60
-
-                  - lblFLDecisionExplanation:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.MutedTextColor,ColorValue("#64748B"))
-                        Size: =8
-                        Text: =cmp_FL_DecisionPanelPro.RecommendationExplanation
-                        Visible: =cmp_FL_DecisionPanelPro.ShowRecommendation && !IsBlank(cmp_FL_DecisionPanelPro.RecommendationExplanation)
-                        Width: =Parent.Width-24
-                        Wrap: =true
-                        X: =12
-                        Y: =88
+                        Y: =49
 
             - conFLDecisionHuman:
                 Control: GroupContainer@1.5.0
@@ -345,7 +334,7 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#FFF7ED"),ColorValue("#FAF5FF"))
-                  Height: =132
+                  Height: =80
                   RadiusBottomLeft: =11
                   RadiusBottomRight: =11
                   RadiusTopLeft: =11
@@ -353,7 +342,8 @@ ComponentDefinitions:
                   Visible: =cmp_FL_DecisionPanelPro.ShowDecision
                   Width: =(Parent.Width-54)*0.5
                   X: =Parent.Width-Self.Width-18
-                  Y: =112
+                  Y: =76
+
                 Children:
                   - lblFLDecisionHumanLabel:
                       Control: ModernText@1.0.0
@@ -361,11 +351,11 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#C2410C"),ColorValue("#7C3AED"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =8
+                        Size: =11
                         Text: =If(cmp_FL_DecisionPanelPro.IsOverride,"DECISIÓN HUMANA · OVERRIDE","DECISIÓN HUMANA")
                         Width: =Parent.Width-24
                         X: =12
-                        Y: =10
+                        Y: =6
 
                   - lblFLDecisionHumanValue:
                       Control: ModernText@1.0.0
@@ -373,38 +363,30 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =11
+                        Size: =13
                         Text: =If(IsBlank(cmp_FL_DecisionPanelPro.HumanDecisionValue),"Pendiente de decisión",cmp_FL_DecisionPanelPro.HumanDecisionValue)
                         Width: =Parent.Width-24
-                        Wrap: =true
+                        Wrap: =false
                         X: =12
-                        Y: =34
+                        Y: =26
 
                   - lblFLDecisionHumanReason:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.MutedTextColor,ColorValue("#64748B"))
-                        Size: =8
-                        Text: =If(IsBlank(cmp_FL_DecisionPanelPro.DecisionReason),"Sin motivo registrado",cmp_FL_DecisionPanelPro.DecisionReason)
+                        Color: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#C2410C"),ColorValue("#6D28D9"))
+                        Size: =12
+                        Text: |-
+                          =
+                          If(
+                              IsBlank(cmp_FL_DecisionPanelPro.DecisionReason),
+                              "Autoridad · " & cmp_FL_DecisionPanelPro.RequiredRole,
+                              cmp_FL_DecisionPanelPro.DecisionReason & " · " & cmp_FL_DecisionPanelPro.RequiredRole
+                          )
                         Width: =Parent.Width-24
                         Wrap: =true
                         X: =12
-                        Y: =66
-
-                  - lblFLDecisionRole:
-                      Control: ModernText@1.0.0
-                      Properties:
-                        AutoHeight: =true
-                        Color: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#C2410C"),ColorValue("#7C3AED"))
-                        FontWeight: =FontWeight.Semibold
-                        Size: =8
-                        Text: |-
-                          ="Autoridad: " & cmp_FL_DecisionPanelPro.RequiredRole
-                        Width: =Parent.Width-24
-                        Wrap: =false
-                        X: =12
-                        Y: =105
+                        Y: =49
 
             - btnFLDecisionConfirm:
                 Control: Classic/Button@2.2.0
@@ -425,11 +407,11 @@ ComponentDefinitions:
                   RadiusBottomRight: =9
                   RadiusTopLeft: =9
                   RadiusTopRight: =9
-                  Size: =10
+                  Size: =12
                   Text: =cmp_FL_DecisionPanelPro.ConfirmLabel
-                  Width: =180
+                  Width: =190
                   X: =Parent.Width-Self.Width-18
-                  Y: =Parent.Height-Self.Height-18
+                  Y: =Parent.Height-Self.Height-10
 
             - btnFLDecisionOverride:
                 Control: Classic/Button@2.2.0
@@ -450,8 +432,8 @@ ComponentDefinitions:
                   RadiusBottomRight: =9
                   RadiusTopLeft: =9
                   RadiusTopRight: =9
-                  Size: =10
+                  Size: =12
                   Text: =cmp_FL_DecisionPanelPro.OverrideLabel
-                  Width: =160
+                  Width: =170
                   X: =Parent.Width-btnFLDecisionConfirm.Width-Self.Width-28
-                  Y: =Parent.Height-Self.Height-18
+                  Y: =Parent.Height-Self.Height-10
