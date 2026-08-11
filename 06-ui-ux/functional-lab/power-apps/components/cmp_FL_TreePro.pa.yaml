@@ -1,3 +1,9 @@
+# CMMS 2.0 FUNCTIONAL LAB — TREE PRO — HARDENED SAFE PALETTE RC3
+#
+# Preserves the validated public contract, events, outputs and flat-gallery pattern.
+# Internal visual colors no longer depend on Color custom-property materialization.
+# Visible typography follows the Comfortable baseline (>=11).
+
 ComponentDefinitions:
   cmp_FL_TreePro:
     DefinitionType: CanvasComponent
@@ -6,7 +12,7 @@ ComponentDefinitions:
       AccentColor:
         PropertyKind: Input
         DisplayName: AccentColor
-        Description: Color principal de acento.
+        Description: Color principal de acento. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#1677FF")
 
@@ -20,14 +26,14 @@ ComponentDefinitions:
       BorderColor:
         PropertyKind: Input
         DisplayName: BorderColor
-        Description: Color de borde del componente.
+        Description: Color de borde del componente. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#E2E8F0")
 
       CompactMode:
         PropertyKind: Input
         DisplayName: CompactMode
-        Description: Reduce la altura de fila para árboles densos.
+        Description: Reduce la altura de fila manteniendo tipografía legible.
         DataType: Boolean
         Default: =true
 
@@ -55,7 +61,7 @@ ComponentDefinitions:
       HighlightFill:
         PropertyKind: Input
         DisplayName: HighlightFill
-        Description: Fondo aplicado al nodo resaltado sin seleccionarlo.
+        Description: Fondo aplicado al nodo resaltado. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#FFF7ED")
 
@@ -107,7 +113,7 @@ ComponentDefinitions:
       MutedTextColor:
         PropertyKind: Input
         DisplayName: MutedTextColor
-        Description: Color de texto secundario.
+        Description: Color de texto secundario. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#64748B")
 
@@ -154,7 +160,7 @@ ComponentDefinitions:
       SelectedNodeIdOut:
         PropertyKind: Output
         DisplayName: SelectedNodeIdOut
-        Description: Identificador del nodo seleccionado.
+        Description: Identificador seleccionado.
         DataType: Text
 
       SelectedParentIdOut:
@@ -178,7 +184,7 @@ ComponentDefinitions:
       SelectionFill:
         PropertyKind: Input
         DisplayName: SelectionFill
-        Description: Fondo del nodo seleccionado.
+        Description: Fondo del nodo seleccionado. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#EFF6FF")
 
@@ -220,14 +226,14 @@ ComponentDefinitions:
       SurfaceColor:
         PropertyKind: Input
         DisplayName: SurfaceColor
-        Description: Color de fondo del componente.
+        Description: Color de fondo del componente. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#FFFFFF")
 
       TextColor:
         PropertyKind: Input
         DisplayName: TextColor
-        Description: Color de texto principal.
+        Description: Color de texto principal. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#0F172A")
 
@@ -244,7 +250,7 @@ ComponentDefinitions:
         DataType: Boolean
 
     Properties:
-      Fill: =cmp_FL_TreePro.SurfaceColor
+      Fill: =ColorValue("#FFFFFF")
       Height: =560
       SelectedLabelOut: =Text(Coalesce(galFLTreeRows.Selected.RowLabel,""))
       SelectedLevelOut: =Value(Coalesce(galFLTreeRows.Selected.RowLevel,0))
@@ -261,10 +267,10 @@ ComponentDefinitions:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
-            BorderColor: =cmp_FL_TreePro.BorderColor
+            BorderColor: =ColorValue("#E2E8F0")
             BorderThickness: =1
             DropShadow: =DropShadow.None
-            Fill: =cmp_FL_TreePro.SurfaceColor
+            Fill: =ColorValue("#FFFFFF")
             Height: =Parent.Height
             RadiusBottomLeft: =14
             RadiusBottomRight: =14
@@ -296,9 +302,9 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =cmp_FL_TreePro.MutedTextColor
+                        Color: =ColorValue("#64748B")
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =11
                         Text: =If(IsBlank(cmp_FL_TreePro.SelectedPathOut),"Selecciona un nodo para ver su ruta",cmp_FL_TreePro.SelectedPathOut)
                         Width: =Parent.Width-20
                         Wrap: =false
@@ -356,7 +362,7 @@ ComponentDefinitions:
                   ShowScrollbar: =true
                   TemplateFill: =Color.Transparent
                   TemplatePadding: =2
-                  TemplateSize: =If(cmp_FL_TreePro.CompactMode,38,If(cmp_FL_TreePro.ShowDescriptions,58,44))
+                  TemplateSize: =If(cmp_FL_TreePro.CompactMode,40,If(cmp_FL_TreePro.ShowDescriptions,62,46))
                   Width: =Parent.Width-28
                   X: =14
                   Y: |-
@@ -391,17 +397,17 @@ ComponentDefinitions:
                           If(
                               Text(ThisItem.RowNodeId)=Text(galFLTreeRows.Selected.RowNodeId) ||
                               Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.SelectedNodeId),
-                              cmp_FL_TreePro.SelectionFill,
+                              ColorValue("#EFF6FF"),
                               If(
                                   Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),
-                                  cmp_FL_TreePro.HighlightFill,
+                                  ColorValue("#FFF7ED"),
                                   Color.Transparent
                               )
                           )
                         Height: =Parent.TemplateHeight-4
-                        HoverFill: =If(Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),cmp_FL_TreePro.HighlightFill,ColorValue("#F8FAFC"))
+                        HoverFill: =If(Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),ColorValue("#FFF7ED"),ColorValue("#F8FAFC"))
                         OnSelect: =Select(Parent)
-                        PressedFill: =If(Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),cmp_FL_TreePro.HighlightFill,cmp_FL_TreePro.SelectionFill)
+                        PressedFill: =If(Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),ColorValue("#FFEDD5"),ColorValue("#DBEAFE"))
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
@@ -438,7 +444,7 @@ ComponentDefinitions:
                         Visible: =cmp_FL_TreePro.ShowLines && Value(ThisItem.RowLevel)>1
                         Width: =10
                         X: =recFLTreeGuide.X
-                        Y: =If(cmp_FL_TreePro.CompactMode,18,21)
+                        Y: =If(cmp_FL_TreePro.CompactMode,19,22)
 
                   - btnFLTreeToggle:
                       Control: Classic/Button@2.2.0
@@ -474,7 +480,7 @@ ComponentDefinitions:
                               (cmp_FL_TreePro.DepthCompressionStart-1)*cmp_FL_TreePro.IndentSize+
                               (Min(Value(ThisItem.RowLevel),cmp_FL_TreePro.MaxVisualDepth)-cmp_FL_TreePro.DepthCompressionStart)*cmp_FL_TreePro.DeepIndentSize
                           )
-                        Y: =If(cmp_FL_TreePro.CompactMode,7,9)
+                        Y: =If(cmp_FL_TreePro.CompactMode,8,10)
 
                   - btnFLTreeIconChip:
                       Control: Classic/Button@2.2.0
@@ -508,7 +514,7 @@ ComponentDefinitions:
                         Visible: =cmp_FL_TreePro.ShowIcons
                         Width: =24
                         X: =btnFLTreeToggle.X+26
-                        Y: =If(cmp_FL_TreePro.CompactMode,7,9)
+                        Y: =If(cmp_FL_TreePro.CompactMode,8,10)
 
                   - icoFLTreeRow:
                       Control: Classic/Icon@2.5.0
@@ -567,7 +573,7 @@ ComponentDefinitions:
                               Text(ThisItem.RowNodeId)=Text(galFLTreeRows.Selected.RowNodeId) ||
                               Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.SelectedNodeId),
                               ColorValue("#1D4ED8"),
-                              cmp_FL_TreePro.TextColor
+                              ColorValue("#0F172A")
                           )
                         Fill: =Color.Transparent
                         Font: =Font.'Segoe UI'
@@ -580,13 +586,13 @@ ComponentDefinitions:
                               FontWeight.Semibold,
                               If(Value(ThisItem.RowLevel)=1,FontWeight.Semibold,FontWeight.Normal)
                           )
-                        Height: =If(cmp_FL_TreePro.ShowDescriptions && !cmp_FL_TreePro.CompactMode,24,Parent.TemplateHeight-4)
+                        Height: =If(cmp_FL_TreePro.ShowDescriptions && !cmp_FL_TreePro.CompactMode,26,Parent.TemplateHeight-4)
                         OnSelect: =Select(Parent)
                         PaddingBottom: =0
                         PaddingLeft: =0
                         PaddingRight: =0
                         PaddingTop: =0
-                        Size: =If(cmp_FL_TreePro.CompactMode,10,11)
+                        Size: =If(cmp_FL_TreePro.CompactMode,11,12)
                         Text: =Text(ThisItem.RowLabel)
                         Width: |-
                           =
@@ -597,7 +603,7 @@ ComponentDefinitions:
                               If(
                                   cmp_FL_TreePro.ShowHighlightBadge &&
                                   Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),
-                                  70,
+                                  76,
                                   10
                               )
                           )
@@ -609,14 +615,14 @@ ComponentDefinitions:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
-                        Color: =cmp_FL_TreePro.MutedTextColor
-                        Size: =9
+                        Color: =ColorValue("#64748B")
+                        Size: =11
                         Text: =Text(ThisItem.RowDescription)
                         Visible: =cmp_FL_TreePro.ShowDescriptions && !cmp_FL_TreePro.CompactMode && !IsBlank(Text(ThisItem.RowDescription))
                         Width: =Parent.TemplateWidth-Self.X-10
                         Wrap: =false
                         X: =lblFLTreeRow.X
-                        Y: =27
+                        Y: =29
 
                   - btnFLTreeHighlightBadge:
                       Control: Classic/Button@2.2.0
@@ -628,17 +634,17 @@ ComponentDefinitions:
                         Fill: =ColorValue("#FFF7ED")
                         Font: =Font.'Segoe UI'
                         FontWeight: =FontWeight.Semibold
-                        Height: =22
+                        Height: =24
                         HoverFill: =ColorValue("#FFF7ED")
                         OnSelect: =Select(Parent)
                         PressedFill: =ColorValue("#FFEDD5")
-                        RadiusBottomLeft: =11
-                        RadiusBottomRight: =11
-                        RadiusTopLeft: =11
-                        RadiusTopRight: =11
-                        Size: =8
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Size: =11
                         Text: =cmp_FL_TreePro.HighlightBadgeText
                         Visible: =cmp_FL_TreePro.ShowHighlightBadge && Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId)
-                        Width: =60
+                        Width: =66
                         X: =Parent.TemplateWidth-Self.Width-8
-                        Y: =If(cmp_FL_TreePro.CompactMode,8,10)
+                        Y: =If(cmp_FL_TreePro.CompactMode,8,11)
