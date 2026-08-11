@@ -188,9 +188,8 @@ ComponentDefinitions:
                   Y: =72
 
                 Children:
-                  - conFLRailRow:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
+                  - btnFLRailRowSurface:
+                      Control: Classic/Button@2.2.0
                       Properties:
                         BorderColor: |-
                           =
@@ -199,8 +198,10 @@ ComponentDefinitions:
                               ColorValue("#BAE6FD"),
                               RGBA(0,0,0,0)
                           )
+                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =If(Text(ThisItem.StageId)=Text(cmp_FL_ProcessRailPro.ActiveStageId) || Coalesce(ThisItem.IsCurrent,false),1,0)
-                        DropShadow: =DropShadow.None
+                        Color: =Color.Transparent
+                        DisplayMode: =If(Coalesce(ThisItem.IsAccessible,true),DisplayMode.Edit,DisplayMode.Disabled)
                         Fill: |-
                           =
                           If(
@@ -209,22 +210,25 @@ ComponentDefinitions:
                               If(Coalesce(ThisItem.IsAccessible,true),Color.Transparent,ColorValue("#F8FAFC"))
                           )
                         Height: =Parent.TemplateHeight-4
+                        HoverFill: =If(Coalesce(ThisItem.IsAccessible,true),RGBA(2,132,199,0.04),ColorValue("#F8FAFC"))
                         OnSelect: =Select(Parent)
+                        PressedFill: =RGBA(2,132,199,0.08)
                         RadiusBottomLeft: =9
                         RadiusBottomRight: =9
                         RadiusTopLeft: =9
                         RadiusTopRight: =9
+                        Text: =""
                         Width: =Parent.TemplateWidth
                         X: =0
                         Y: =2
 
-                  - conFLRailStatusDot:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
+                  - btnFLRailStatusDot:
+                      Control: Classic/Button@2.2.0
                       Properties:
                         BorderColor: =RGBA(0,0,0,0)
+                        BorderStyle: =BorderStyle.None
                         BorderThickness: =0
-                        DropShadow: =DropShadow.None
+                        Color: =Color.Transparent
                         Fill: |-
                           =
                           Switch(
@@ -238,11 +242,14 @@ ComponentDefinitions:
                               ColorValue("#CBD5E1")
                           )
                         Height: =9
+                        HoverFill: =Self.Fill
                         OnSelect: =Select(Parent)
+                        PressedFill: =Self.Fill
                         RadiusBottomLeft: =9
                         RadiusBottomRight: =9
                         RadiusTopLeft: =9
                         RadiusTopRight: =9
+                        Text: =""
                         Width: =9
                         X: =12
                         Y: =If(cmp_FL_ProcessRailPro.CompactMode,18,24)
