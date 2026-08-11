@@ -90,7 +90,7 @@ Screens:
                       Properties:
                         Archetype: ="RIESGO AMEF CONTEXTUAL"
                         CaseCode: =varFLActiveAssetCode
-                        CaseType: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                        CaseType: =varFLActiveFmeaRevisionCode & " · " & varFLActiveCriticality
                         Height: =100
                         JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
                         JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
@@ -98,7 +98,7 @@ Screens:
                         ProgressTotal: =28
                         ReviewHint: =varFLActiveApplicationCode
                         ReviewState: =If(varFLCaseDraft,"Borrador","En revisión")
-                        Subtitle: ="Valora el riesgo del modo en la aplicación AMEF. La criticidad del activo permanece como contexto separado."
+                        Subtitle: ="S/O/D del modo seleccionado; la criticidad del activo es un contexto independiente."
                         Title: ="AMEF · Efectos y riesgo"
                         Width: =Parent.Width
                         WorkspaceCode: ="ESTRATEGIA"
@@ -194,7 +194,7 @@ Screens:
                                     Color: =ColorValue("#0284C7")
                                     FontWeight: =FontWeight.Semibold
                                     Size: =16
-                                    Text: ="FL-07 · Efectos y contexto del modo"
+                                    Text: ="FL-07 · Efectos"
                                     Width: =Parent.Width-132
                                     X: =18
                                     Y: =11
@@ -419,7 +419,7 @@ Screens:
                               CanConfirm: =true
                               CanOverride: =true
                               ConfirmLabel: ="Confirmar consecuencia"
-                              ContextText: ="El sistema recomienda; la clasificación final la confirma Ingeniería de Fiabilidad."
+                              ContextText: ="El sistema recomienda; Ingeniería de Fiabilidad confirma."
                               DecisionReason: ="Impacta en disponibilidad y capacidad del proceso."
                               Height: =216
                               HumanDecisionValue: =varFLConsequenceClass
