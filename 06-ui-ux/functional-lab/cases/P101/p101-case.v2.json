@@ -1,0 +1,513 @@
+{
+  "fixtureVersion": "2.0.0",
+  "caseId": "P101-AMEF-RCM-002",
+  "name": "P-101 — Aplicación de biblioteca AMEF/RCM a bomba centrífuga de agua de refrigeración",
+  "disclaimer": "Caso ilustrativo para validación conceptual. Los valores, umbrales, costes, frecuencias, roles y decisiones no constituyen una instrucción de mantenimiento aprobada.",
+  "engineeringLibrary": {
+    "fmeaDefinition": {
+      "fmeaDefinitionId": "FMEA-CWPUMP-001",
+      "code": "FMEA-CWPUMP-001",
+      "name": "Bomba centrífuga de servicio de agua de refrigeración",
+      "description": "Biblioteca reusable de ingeniería para bombas centrífugas de servicio de agua de refrigeración.",
+      "equipmentTypeRef": "EQUIPTYPE-CENTRIFUGAL-PUMP",
+      "functionalScopeRef": "FUNC-CW-TRANSFER",
+      "ownerRole": "Reliability Engineering",
+      "lifecycleStatus": "active"
+    },
+    "fmeaRevision": {
+      "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+      "fmeaDefinitionId": "FMEA-CWPUMP-001",
+      "revisionNumber": 1,
+      "status": "published",
+      "validFrom": "2026-08-01",
+      "validTo": null,
+      "changeReason": "Fixture inicial library-first para Functional Lab.",
+      "sourceRevisionId": null,
+      "riskMatrixVersionRef": "DEMO-RISK-5X5-V1",
+      "rcmLogicVersionRef": "DEMO-RCM-LOGIC-V1",
+      "publishedSnapshotId": "SNAP-FMEAR-CWPUMP-001-R1",
+      "validationStatus": "to_validate"
+    },
+    "functions": [
+      {
+        "fmeaFunctionId": "FNC-CWPUMP-001",
+        "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+        "sequence": 1,
+        "functionType": "main",
+        "statement": "Transferir agua de refrigeración cuando el sistema la requiera.",
+        "performanceStandard": "Caudal y presión según el contexto operacional de aplicación.",
+        "unitRef": null
+      },
+      {
+        "fmeaFunctionId": "FNC-CWPUMP-002",
+        "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+        "sequence": 2,
+        "functionType": "secondary",
+        "statement": "Contener el fluido y transmitir potencia sin degradación mecánica inaceptable.",
+        "performanceStandard": "Sin fuga visible ni condición mecánica fuera de los límites aprobados.",
+        "unitRef": null
+      }
+    ],
+    "functionalFailures": [
+      {
+        "functionalFailureId": "FF-CWPUMP-001",
+        "fmeaFunctionId": "FNC-CWPUMP-001",
+        "sequence": 1,
+        "failureType": "total",
+        "statement": "No entregar caudal cuando el sistema requiere servicio."
+      },
+      {
+        "functionalFailureId": "FF-CWPUMP-002",
+        "fmeaFunctionId": "FNC-CWPUMP-001",
+        "sequence": 2,
+        "failureType": "partial",
+        "statement": "Entregar un caudal o presión inferior al estándar requerido por el contexto de aplicación."
+      },
+      {
+        "functionalFailureId": "FF-CWPUMP-003",
+        "fmeaFunctionId": "FNC-CWPUMP-002",
+        "sequence": 1,
+        "failureType": "degraded",
+        "statement": "Operar con fuga o degradación mecánica fuera del criterio aceptado."
+      }
+    ],
+    "failureModes": [
+      {
+        "failureModeId": "FM-CWPUMP-001",
+        "functionalFailureId": "FF-CWPUMP-003",
+        "code": "FM-01",
+        "statement": "Degradación del sello mecánico",
+        "status": "included",
+        "inclusionRationale": "Modo plausible para el tipo de equipo y servicio de referencia.",
+        "exclusionRationale": null
+      },
+      {
+        "failureModeId": "FM-CWPUMP-003",
+        "functionalFailureId": "FF-CWPUMP-003",
+        "code": "FM-03",
+        "statement": "Degradación de rodamientos",
+        "status": "included",
+        "inclusionRationale": "Modo plausible con degradación potencialmente detectable.",
+        "exclusionRationale": null
+      },
+      {
+        "failureModeId": "FM-CWPUMP-006",
+        "functionalFailureId": "FF-CWPUMP-001",
+        "code": "FM-06",
+        "statement": "Fallo oculto de equipo de reserva asociado a la función requerida",
+        "status": "included",
+        "inclusionRationale": "Ejemplo de fallo oculto que requiere evaluación RCM específica.",
+        "exclusionRationale": null
+      },
+      {
+        "failureModeId": "FM-CWPUMP-007",
+        "functionalFailureId": "FF-CWPUMP-002",
+        "code": "FM-07",
+        "statement": "Obstrucción parcial en aspiración",
+        "status": "included",
+        "inclusionRationale": "Puede degradar caudal o presión.",
+        "exclusionRationale": null
+      },
+      {
+        "failureModeId": "FM-CWPUMP-009",
+        "functionalFailureId": "FF-CWPUMP-003",
+        "code": "FM-09",
+        "statement": "Desalineación del tren rotativo",
+        "status": "included",
+        "inclusionRationale": "Puede contribuir a vibración y degradación de rodamientos.",
+        "exclusionRationale": null
+      }
+    ],
+    "failureCauses": [
+      {
+        "failureCauseId": "FC-CWPUMP-003-01",
+        "failureModeId": "FM-CWPUMP-003",
+        "causeType": "degradation_mechanism",
+        "statement": "Lubricación inadecuada o degradada.",
+        "evidenceRef": "EVID-LIB-003"
+      },
+      {
+        "failureCauseId": "FC-CWPUMP-003-02",
+        "failureModeId": "FM-CWPUMP-003",
+        "causeType": "mechanical_condition",
+        "statement": "Carga adicional inducida por desalineación.",
+        "evidenceRef": "EVID-LIB-004"
+      }
+    ],
+    "failureEffects": [
+      {
+        "failureEffectId": "FE-CWPUMP-003-01",
+        "failureModeId": "FM-CWPUMP-003",
+        "effectLevel": "local",
+        "sequence": 1,
+        "statement": "Aumento progresivo de vibración y temperatura en el apoyo.",
+        "evidenceRef": "EVID-LIB-003"
+      },
+      {
+        "failureEffectId": "FE-CWPUMP-003-02",
+        "failureModeId": "FM-CWPUMP-003",
+        "effectLevel": "system",
+        "sequence": 2,
+        "statement": "Pérdida de estabilidad mecánica y posible daño secundario en sello y acoplamiento.",
+        "evidenceRef": "EVID-LIB-004"
+      },
+      {
+        "failureEffectId": "FE-CWPUMP-003-03",
+        "failureModeId": "FM-CWPUMP-003",
+        "effectLevel": "operational",
+        "sequence": 3,
+        "statement": "Reducción de capacidad o parada no planificada del equipo aplicado.",
+        "evidenceRef": null
+      }
+    ],
+    "consequenceAssessments": [
+      {
+        "consequenceAssessmentId": "CA-CWPUMP-003-01",
+        "failureModeId": "FM-CWPUMP-003",
+        "operationalContextProfileRef": "CTXPROFILE-CW-CONTINUOUS",
+        "riskMatrixVersionRef": "DEMO-RISK-5X5-V1",
+        "consequenceCategory": "operational",
+        "severityValue": 4,
+        "occurrenceValue": 3,
+        "detectionValue": 3,
+        "calculatedRiskResult": "DEMO-RISK-HIGH",
+        "humanAssessment": "high",
+        "rationale": "Valoración demostrativa para revisar el comportamiento del Functional Lab.",
+        "evidenceRefs": ["EVID-LIB-003", "EVID-LIB-004"],
+        "validationStatus": "to_validate"
+      }
+    ],
+    "rcmAssessments": [
+      {
+        "rcmAssessmentId": "RCM-CWPUMP-003-01",
+        "failureModeId": "FM-CWPUMP-003",
+        "consequenceAssessmentId": "CA-CWPUMP-003-01",
+        "decisionLogicVersionRef": "DEMO-RCM-LOGIC-V1",
+        "systemRecommendation": "condition_based_maintenance",
+        "humanDecision": "condition_based_maintenance",
+        "overrideReason": null,
+        "authorityRole": "Reliability + Maintenance + Operations",
+        "status": "approved_for_fixture",
+        "answers": [
+          {
+            "answerId": "RCMA-CWPUMP-003-01",
+            "questionRef": "RCMQ-EVIDENT",
+            "sequence": 1,
+            "answer": "yes",
+            "rationale": "El deterioro puede manifestarse durante operación normal.",
+            "evidenceRefs": []
+          },
+          {
+            "answerId": "RCMA-CWPUMP-003-02",
+            "questionRef": "RCMQ-DETECTABLE",
+            "sequence": 2,
+            "answer": "yes",
+            "rationale": "El fixture asume degradación detectable por tendencia de vibración/temperatura.",
+            "evidenceRefs": ["EVID-LIB-003"]
+          },
+          {
+            "answerId": "RCMA-CWPUMP-003-03",
+            "questionRef": "RCMQ-PF",
+            "sequence": 3,
+            "answer": "45 days",
+            "rationale": "Hipótesis demostrativa a validar; no estándar corporativo.",
+            "evidenceRefs": ["EVID-LIB-003"]
+          }
+        ]
+      }
+    ],
+    "maintenanceTasks": [
+      {
+        "maintenanceTaskId": "MT-CWPUMP-001",
+        "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+        "code": "MT-01",
+        "name": "Monitorizar condición mecánica del tren rotativo",
+        "objective": "Detectar degradación compatible con fallo de rodamientos o desalineación antes del fallo funcional.",
+        "maintenanceTypeRef": "condition_based",
+        "activityRef": "condition_monitoring",
+        "techniqueRef": "vibration_temperature",
+        "triggerBasis": "pf_interval",
+        "defaultIntervalValue": 21,
+        "defaultIntervalUnit": "days",
+        "intervalBasisRef": "DEMO-PF-HYPOTHESIS-45D",
+        "executionStateRequirementRef": "running",
+        "disciplineRef": "mechanical",
+        "executorRoleRef": "predictive_maintenance_technician",
+        "procedureRef": "PROC-CWPUMP-VIB-001-R1",
+        "inspectionFormatRef": "IF-CWPUMP-VIB-001-R1",
+        "status": "approved_for_fixture"
+      },
+      {
+        "maintenanceTaskId": "MT-CWPUMP-002",
+        "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+        "code": "MT-02",
+        "name": "Verificar alineación del tren cuando la condición lo requiera",
+        "objective": "Confirmar o descartar desalineación como contribuyente a degradación mecánica.",
+        "maintenanceTypeRef": "condition_triggered",
+        "activityRef": "inspection",
+        "techniqueRef": "alignment_check",
+        "triggerBasis": "condition_trigger",
+        "defaultIntervalValue": null,
+        "defaultIntervalUnit": null,
+        "intervalBasisRef": null,
+        "executionStateRequirementRef": "stopped",
+        "disciplineRef": "mechanical",
+        "executorRoleRef": "mechanical_technician",
+        "procedureRef": null,
+        "inspectionFormatRef": null,
+        "status": "approved_for_fixture"
+      }
+    ],
+    "taskFailureModeLinks": [
+      {
+        "maintenanceTaskFailureModeId": "MTFM-001",
+        "maintenanceTaskId": "MT-CWPUMP-001",
+        "failureModeId": "FM-CWPUMP-003",
+        "treatmentPurpose": "detect",
+        "rationale": "Tendencias mecánicas pueden evidenciar degradación de rodamientos."
+      },
+      {
+        "maintenanceTaskFailureModeId": "MTFM-002",
+        "maintenanceTaskId": "MT-CWPUMP-001",
+        "failureModeId": "FM-CWPUMP-009",
+        "treatmentPurpose": "detect",
+        "rationale": "La misma adquisición puede aportar evidencia compatible con desalineación."
+      },
+      {
+        "maintenanceTaskFailureModeId": "MTFM-003",
+        "maintenanceTaskId": "MT-CWPUMP-002",
+        "failureModeId": "FM-CWPUMP-003",
+        "treatmentPurpose": "mitigate",
+        "rationale": "La verificación de alineación puede confirmar una causa contribuyente."
+      },
+      {
+        "maintenanceTaskFailureModeId": "MTFM-004",
+        "maintenanceTaskId": "MT-CWPUMP-002",
+        "failureModeId": "FM-CWPUMP-009",
+        "treatmentPurpose": "verify",
+        "rationale": "La tarea confirma el modo específico de desalineación."
+      }
+    ],
+    "maintenanceProcedures": [
+      {
+        "maintenanceProcedureId": "PROC-CWPUMP-VIB-001-R1",
+        "code": "PROC-CWPUMP-VIB-001",
+        "name": "Adquisición normalizada de vibración y temperatura",
+        "revision": 1,
+        "status": "fixture_only",
+        "summary": "Procedimiento de demostración separado de la definición de tarea.",
+        "steps": [
+          "Confirmar condición operativa y puntos de medida definidos.",
+          "Adquirir mediciones en posiciones DE/NDE según el formato aplicable.",
+          "Registrar condición de carga y cualquier observación relevante.",
+          "Comparar resultado con baseline/criterio vigente."
+        ]
+      }
+    ],
+    "inspectionFormats": [
+      {
+        "inspectionFormatId": "IF-CWPUMP-VIB-001-R1",
+        "code": "IF-CWPUMP-VIB-001",
+        "name": "Formato de condición mecánica",
+        "revision": 1,
+        "status": "fixture_only",
+        "fields": [
+          { "fieldId": "VIB-DE", "label": "Vibración global DE", "dataType": "number", "unit": "mm/s", "required": true, "acceptanceRule": "DEMO-RULE-VIB" },
+          { "fieldId": "VIB-NDE", "label": "Vibración global NDE", "dataType": "number", "unit": "mm/s", "required": true, "acceptanceRule": "DEMO-RULE-VIB" },
+          { "fieldId": "TEMP-DE", "label": "Temperatura DE", "dataType": "number", "unit": "°C", "required": true, "acceptanceRule": "DEMO-RULE-TEMP" },
+          { "fieldId": "OBS", "label": "Observaciones", "dataType": "text", "unit": null, "required": false, "acceptanceRule": null }
+        ]
+      }
+    ],
+    "noScheduledTaskDecisions": [],
+    "economicAssessments": [
+      {
+        "economicAssessmentId": "EA-CWPUMP-003-01",
+        "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+        "scopeRef": "RCM-CWPUMP-003-01",
+        "currency": "EUR",
+        "scenarioWithoutPolicy": {
+          "expectedFailuresPerYear": 1.2,
+          "repairCostPerFailure": 8500,
+          "downtimeHoursPerFailure": 18,
+          "downtimeRatePerHour": 2500,
+          "additionalImpactCost": 9000
+        },
+        "scenarioWithPolicy": {
+          "probabilityReductionPct": 65,
+          "consequenceReductionPct": 10,
+          "maintenanceCostEstimateRef": "MCE-CWPUMP-001"
+        },
+        "expectedSaving": null,
+        "rationale": "Ejemplo para comparar políticas técnicamente válidas; fórmulas corporativas pendientes.",
+        "validationStatus": "to_validate"
+      }
+    ],
+    "maintenanceCostEstimates": [
+      {
+        "maintenanceCostEstimateId": "MCE-CWPUMP-001",
+        "scopeType": "maintenance_task",
+        "scopeId": "MT-CWPUMP-001",
+        "currency": "EUR",
+        "laborHoursPerRun": 1.2,
+        "laborRate": 62,
+        "materialCostPerRun": 18,
+        "fixedAnnualCost": 1800,
+        "estimatedRunsPerYear": 17,
+        "estimatedCostPerRun": 92.4,
+        "estimatedAnnualCost": 3370.8,
+        "costBasisDate": "2026-08-01",
+        "validationStatus": "to_validate"
+      }
+    ],
+    "governance": {
+      "validationStatus": "to_validate",
+      "evidenceSources": ["Ficha técnica", "P&ID", "Histórico de OT", "Manual O&M", "Entrevista Operaciones"],
+      "approvals": [
+        { "role": "maintenance", "status": "approved_for_fixture" },
+        { "role": "operations", "status": "approved_for_fixture" },
+        { "role": "reliability", "status": "approved_for_fixture" }
+      ],
+      "publishedSnapshotId": "SNAP-FMEAR-CWPUMP-001-R1"
+    }
+  },
+  "assetApplication": {
+    "fmeaAssetApplicationId": "APP-P101-FMEAR1-001",
+    "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+    "asset": {
+      "assetId": "ASSET-P101",
+      "assetCode": "P-101",
+      "assetName": "Bomba centrífuga de agua de refrigeración",
+      "plant": "Unidad de proceso A",
+      "equipmentTypeRef": "EQUIPTYPE-CENTRIFUGAL-PUMP"
+    },
+    "operationalContextSnapshot": {
+      "snapshotId": "CTX-P101-20260811",
+      "service": "Transferir agua de refrigeración al intercambiador E-201",
+      "boundary": "Desde la brida de aspiración hasta la brida de descarga, incluyendo motor M-101, acoplamiento y protecciones para este caso de aplicación.",
+      "dutyFlowM3h": 120,
+      "dutyPressureBar": 6,
+      "operatingModes": ["Normal", "Arranque/parada", "Reserva disponible"],
+      "redundancy": "P-102 en reserva automática",
+      "constraints": "Servicio continuo; pérdida total de caudal superior a 20 min puede afectar a producción y temperatura del proceso.",
+      "capturedAt": "2026-08-11T07:45:00+02:00"
+    },
+    "assetCriticalitySnapshot": {
+      "snapshotId": "CRIT-P101-20260811",
+      "criticalitySchemeVersionRef": "DEMO-ASSET-CRITICALITY-V1",
+      "sourceValue": "High",
+      "source": "Fixture de demostración; no representa criticidad corporativa aprobada.",
+      "capturedAt": "2026-08-11T07:45:00+02:00"
+    },
+    "assetCriticalityOverride": null,
+    "applicabilityResult": "applicable_with_context_review",
+    "validatedApplicabilityResult": "applicable",
+    "applicabilityDecisions": [
+      {
+        "maintenanceTaskId": "MT-CWPUMP-001",
+        "systemRecommendation": "applicable",
+        "humanDecision": "applicable",
+        "overrideReason": null,
+        "profileRef": "PROFILE-CW-HIGH-DEMO"
+      },
+      {
+        "maintenanceTaskId": "MT-CWPUMP-002",
+        "systemRecommendation": "conditional",
+        "humanDecision": "conditional",
+        "overrideReason": null,
+        "profileRef": "PROFILE-CW-HIGH-DEMO"
+      }
+    ],
+    "validatedBy": "Reliability Engineer — demo",
+    "validatedAt": "2026-08-11T07:45:00+02:00",
+    "status": "validated_fixture"
+  },
+  "executionPlan": {
+    "executionPlanId": "PLAN-P101-001",
+    "fmeaAssetApplicationId": "APP-P101-FMEAR1-001",
+    "revisionNumber": 1,
+    "status": "draft_fixture",
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "planningPolicyRef": "DEMO-PREDICTIVE-ROUTE",
+    "publishedSnapshotId": null,
+    "tasks": [
+      {
+        "executionPlanTaskId": "EPT-P101-001",
+        "maintenanceTaskId": "MT-CWPUMP-001",
+        "intervalValue": 21,
+        "intervalUnit": "days",
+        "intervalOverrideReason": null,
+        "discipline": "Mecánica",
+        "workCenter": "Técnico de mantenimiento predictivo",
+        "crew": 1,
+        "tools": "Analizador de vibraciones, termómetro IR y dispositivo de registro.",
+        "spares": "No requeridos para la medición; repuestos condicionados a hallazgo.",
+        "shutdown": "No para medición; las intervenciones derivadas se planifican separadamente.",
+        "permit": "Condiciones y permisos de demostración pendientes de validación corporativa.",
+        "scope": ["ASSET-P101", "ASSET-M101", "ASSET-CPL101"],
+        "grouping": "Ruta predictiva del tren P-101",
+        "procedureRef": "PROC-CWPUMP-VIB-001-R1",
+        "inspectionFormatRef": "IF-CWPUMP-VIB-001-R1"
+      }
+    ],
+    "maintenanceCostEstimates": [
+      {
+        "maintenanceCostEstimateId": "MCE-PLAN-P101-001",
+        "sourceEstimateRef": "MCE-CWPUMP-001",
+        "currency": "EUR",
+        "estimatedAnnualCost": 3370.8,
+        "validationStatus": "to_validate"
+      }
+    ]
+  },
+  "results": {
+    "maintenanceResults": [
+      {
+        "maintenanceResultId": "MR-P101-20260801-001",
+        "executionPlanTaskId": "EPT-P101-001",
+        "executedAt": "2026-08-01T09:30:00+02:00",
+        "outcome": "finding_recorded",
+        "measurements": [
+          { "fieldId": "VIB-DE", "value": 5.1, "unit": "mm/s" },
+          { "fieldId": "TEMP-DE", "value": 72, "unit": "°C" }
+        ],
+        "findings": ["Tendencia superior al baseline del fixture; requiere revisión de ingeniería."],
+        "evidenceRefs": ["DEMO-EVIDENCE-MR-001"]
+      }
+    ],
+    "actualMaintenanceCosts": [
+      {
+        "actualMaintenanceCostId": "AMC-P101-20260801-001",
+        "maintenanceResultId": "MR-P101-20260801-001",
+        "currency": "EUR",
+        "laborCost": 74.4,
+        "materialCost": 0,
+        "otherCost": 0,
+        "totalCost": 74.4
+      }
+    ],
+    "effectivenessReviews": [
+      {
+        "effectivenessReviewId": "ER-P101-001",
+        "fmeaAssetApplicationId": "APP-P101-FMEAR1-001",
+        "decision": "open_engineering_change_request",
+        "observations": "El ejemplo detecta evidencia a los 28 días frente a una hipótesis P–F de 45 días; revisar la hipótesis y el intervalo sin sobrescribir la revisión publicada.",
+        "engineeringChangeRequestId": "ECR-CWPUMP-001",
+        "status": "open_fixture"
+      }
+    ]
+  },
+  "traceability": {
+    "lineage": [
+      { "layer": "library", "objectType": "FmeaDefinition", "objectId": "FMEA-CWPUMP-001", "sourceObjectId": null },
+      { "layer": "library", "objectType": "FmeaRevision", "objectId": "FMEAR-CWPUMP-001-R1", "sourceObjectId": "FMEA-CWPUMP-001" },
+      { "layer": "library", "objectType": "FailureMode", "objectId": "FM-CWPUMP-003", "sourceObjectId": "FMEAR-CWPUMP-001-R1" },
+      { "layer": "library", "objectType": "MaintenanceTask", "objectId": "MT-CWPUMP-001", "sourceObjectId": "FM-CWPUMP-003" },
+      { "layer": "asset_application", "objectType": "FmeaAssetApplication", "objectId": "APP-P101-FMEAR1-001", "sourceObjectId": "FMEAR-CWPUMP-001-R1" },
+      { "layer": "execution_plan", "objectType": "ExecutionPlan", "objectId": "PLAN-P101-001", "sourceObjectId": "APP-P101-FMEAR1-001" },
+      { "layer": "results", "objectType": "MaintenanceResult", "objectId": "MR-P101-20260801-001", "sourceObjectId": "PLAN-P101-001" },
+      { "layer": "results", "objectType": "EffectivenessReview", "objectId": "ER-P101-001", "sourceObjectId": "MR-P101-20260801-001" }
+    ]
+  }
+}
