@@ -1,25 +1,50 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "cmms2-case-fixture.schema.json",
-  "title": "CMMS 2.0 Functional Lab Case Fixture",
+  "title": "CMMS 2.0 Functional Lab Case Fixture v2",
+  "description": "Fixture compuesto por cuatro capas separadas: Engineering Library, Asset Application, Execution Plan y Results & Learning.",
   "type": "object",
-  "required": ["fixtureVersion", "caseId", "name", "disclaimer", "asset", "operationalContext", "evidence", "functions", "failureAnalysis", "risk", "rcm", "treatment", "plan", "governance", "effectiveness"],
+  "required": [
+    "fixtureVersion",
+    "caseId",
+    "name",
+    "disclaimer",
+    "engineeringLibrary",
+    "assetApplication",
+    "executionPlan",
+    "results",
+    "traceability"
+  ],
   "properties": {
-    "fixtureVersion": { "type": "string" },
+    "fixtureVersion": { "type": "string", "pattern": "^2\\." },
     "caseId": { "type": "string" },
     "name": { "type": "string" },
     "disclaimer": { "type": "string" },
-    "asset": { "type": "object" },
-    "operationalContext": { "type": "object" },
-    "evidence": { "type": "object" },
-    "functions": { "type": "object" },
-    "failureAnalysis": { "type": "object" },
-    "risk": { "type": "object" },
-    "rcm": { "type": "object" },
-    "treatment": { "type": "object" },
-    "plan": { "type": "object" },
-    "governance": { "type": "object" },
-    "effectiveness": { "type": "object" }
+    "engineeringLibrary": { "$ref": "fmea-library.schema.json" },
+    "assetApplication": { "$ref": "fmea-asset-application.schema.json" },
+    "executionPlan": { "$ref": "execution-plan.schema.json" },
+    "results": { "$ref": "maintenance-results.schema.json" },
+    "traceability": {
+      "type": "object",
+      "required": ["lineage"],
+      "properties": {
+        "lineage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["layer", "objectType", "objectId"],
+            "properties": {
+              "layer": { "type": "string", "enum": ["library", "asset_application", "execution_plan", "results"] },
+              "objectType": { "type": "string" },
+              "objectId": { "type": "string" },
+              "sourceObjectId": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }
