@@ -1,8 +1,211 @@
 (()=>{
-const GUIDES={"01":{"title":"Comprender el activo antes de decidir","subtitle":"Definir qué debe hacer el activo, en qué contexto opera y de qué maneras puede dejar de cumplir su función.","question":"¿Entendemos con suficiente precisión el activo y sus funciones para comenzar un AMEF fiable?","steps":[["Delimitar el alcance","Identificar el activo, sus límites físicos, interfaces, equipo principal y periféricos incluidos."],["Describir el contexto","Registrar régimen de operación, entorno, redundancias, restricciones y consecuencias de indisponibilidad."],["Definir funciones","Expresar qué debe hacer el activo mediante un verbo, un objeto y un estándar de desempeño medible."],["Identificar fallos funcionales","Describir la pérdida total, parcial, intermitente o no deseada de cada función."],["Identificar modos de fallo","Explicar causas concretas y razonablemente probables que puedan producir cada fallo funcional."],["Comprobar preparación","Revisar evidencias, vacíos de datos y trazabilidad antes de entregar el paquete al AMEF."]],"roles":["Operaciones aporta el contexto y los estándares reales.","Mantenimiento aporta experiencia, historial y mecanismos de degradación.","Ingeniería confirma límites, diseño e interfaces.","Fiabilidad estructura funciones, fallos y evidencias.","HSE interviene cuando una función protege seguridad o medioambiente."],"decisions":["Qué activos y periféricos forman parte del análisis.","Qué nivel de desempeño se considera aceptable.","Qué modos se incluyen, excluyen o quedan pendientes.","Qué supuestos se aceptan temporalmente y quién debe validarlos."],"outputs":["Contexto operacional documentado.","Funciones y estándares medibles.","Fallos funcionales y modos de fallo trazados.","Evidencias y nivel de confianza.","Gate de preparación para iniciar el AMEF."],"mistakes":["Empezar por tareas preventivas existentes.","Confundir una función con un componente.","Redactar el fallo funcional como causa.","Copiar una biblioteca sin justificar su aplicabilidad."],"example":"P-101 debe transferir 120 m³/h a 6 bar. “Rodamiento desgastado” no es la función ni el fallo funcional: es un modo que puede impedir mantener el caudal o la estabilidad mecánica."},"02":{"title":"Evaluar consecuencias y priorizar el riesgo","subtitle":"Convertir los modos de fallo identificados en una visión comparable de efectos, consecuencias, controles y prioridad.","question":"¿Qué modos de fallo requieren atención prioritaria y por qué?","steps":[["Describir el efecto","Explicar qué ocurre localmente, qué observa el operador y cómo progresa el fallo."],["Identificar consecuencias","Separar seguridad, medioambiente, operación, coste y fallos ocultos."],["Revisar controles existentes","Documentar alarmas, inspecciones, protecciones, redundancias y su eficacia real."],["Valorar el riesgo","Aplicar severidad, ocurrencia y detectabilidad con evidencia y escalas comunes."],["Aplicar reglas críticas","Evitar que un NPR bajo o un control débil rebaje artificialmente consecuencias graves."],["Asignar disposición","Decidir si el modo pasa a RCM, requiere información, acción inmediata o aceptación formal."]],"roles":["Fiabilidad facilita la metodología y la consistencia.","Operaciones valida efectos y capacidad de detección.","Mantenimiento valida causas, frecuencia y controles.","HSE revisa consecuencias de seguridad y ambientales.","Responsable del activo acepta prioridades y excepciones."],"decisions":["Nivel de consecuencia y prioridad oficial.","Validez de los controles existentes.","Evidencia suficiente o necesidad de investigación.","Tratamiento de riesgos altos y excepciones."],"outputs":["AMEF priorizado por modo de fallo.","Riesgos críticos y altos visibles.","Controles y evidencia asociados.","Excepciones y acciones pendientes.","Paquete preparado para la decisión RCM."],"mistakes":["Usar el NPR como única regla.","Puntuar sin fuente ni justificación.","Confundir efecto con consecuencia.","Considerar control existente como control eficaz sin comprobarlo."],"example":"Una fuga del sello puede tener un NPR moderado, pero si existe consecuencia ambiental debe conservar una prioridad alta hasta demostrar que el riesgo residual es tolerable."},"03":{"title":"Seleccionar la política de mantenimiento","subtitle":"Determinar qué respuesta es técnicamente aplicable y efectiva para cada modo de fallo priorizado.","question":"¿Qué política controla mejor este modo de fallo y bajo qué condiciones sigue siendo válida?","steps":[["Confirmar la entrada","Recuperar modo, efecto, consecuencia, riesgo, controles y evidencia desde el AMEF."],["Clasificar la consecuencia","Determinar si el fallo es evidente u oculto y qué autoridades deben intervenir."],["Buscar tarea por condición","Comprobar si existe degradación detectable y una ventana P–F útil."],["Buscar tarea por edad","Comprobar si existe relación demostrable entre edad y probabilidad de fallo."],["Evaluar alternativas","Considerar búsqueda de fallos, cambio operacional, rediseño o correctivo tolerable."],["Demostrar efectividad","Verificar que la política reduce el riesgo y sigue siendo robusta si cambian los supuestos."]],"roles":["Fiabilidad conduce el árbol y conserva la justificación.","Mantenimiento confirma aplicabilidad y capacidad técnica.","Operaciones confirma detectabilidad e intervención.","HSE acepta consecuencias residuales críticas.","Responsable del activo valida la política final."],"decisions":["Fallo evidente u oculto.","Tarea técnicamente aplicable.","Intervalo P–F y capacidad de intervención.","Alternativas descartadas y motivo.","Riesgo residual y autoridad requerida."],"outputs":["Estrategia primaria y alternativa.","Camino seguido en el árbol RCM.","Condiciones de validez y revisión.","Evidencias, responsables y aprobaciones requeridas.","Paquete de decisión para construir el plan."],"mistakes":["Tratar RCM como algoritmo automático.","Elegir una frecuencia por costumbre.","Proponer una inspección sin umbral ni acción.","Operar hasta fallo cuando existe consecuencia no tolerable."],"example":"Para un rodamiento con degradación detectable, una tarea por condición solo es válida si el P–F permite medir, diagnosticar, planificar y reparar antes del fallo funcional."},"04":{"title":"Convertir la política en un plan ejecutable","subtitle":"Traducir la decisión RCM en tareas concretas, intervalos defendibles, recursos y un paquete neutral para cualquier CMMS.","question":"¿Cómo se convierte una política técnicamente válida en trabajo que pueda planificarse, ejecutarse y medirse?","steps":[["Recibir la decisión","Conservar modo, estrategia, condiciones, riesgo residual y autoridad procedentes de RCM."],["Comprobar sostenibilidad","Comparar costes únicamente entre alternativas que ya son técnicamente válidas."],["Definir la tarea","Especificar acción, técnica, punto de medida, criterio de aceptación y respuesta ante desviación."],["Justificar el intervalo","Relacionar frecuencia con P–F, edad, normativa, prueba funcional o condición operacional."],["Asignar recursos","Definir disciplina, puesto, duración, herramientas, repuestos, permisos, riesgos y parada."],["Construir el plan neutro","Agrupar equipo y periféricos, conservar trazabilidad y mapear después al sistema destino."]],"roles":["Ingeniería de mantenimiento redacta el contenido técnico.","Planificación valida recursos, duración y capacidad.","Operaciones valida accesos, parada y condiciones de ejecución.","Costes aporta tasas y supuestos económicos.","Responsable del activo autoriza el paso a gobernanza."],"decisions":["Contenido y criterio de aceptación de cada tarea.","Intervalo y fundamento técnico.","Recursos, competencias y repuestos.","Agrupación del equipo principal y auxiliares.","Campos internos y mapeo posterior al CMMS destino."],"outputs":["Tareas ejecutables vinculadas a modos de fallo.","Intervalos y criterios de revisión.","Recursos y requisitos de ejecución.","Coste anual y riesgo residual estimado.","Plan interno neutral preparado para revisión."],"mistakes":["Redactar tareas genéricas como “revisar equipo”.","No indicar qué hacer cuando el resultado no cumple.","Dejar que el ahorro económico valide una tarea ineficaz.","Diseñar el modelo interno según SAP, Maximo o Hexagon."],"example":"“Medir vibración” no basta. La tarea debe indicar dónde, con qué técnica, qué umbral o tendencia se acepta, qué acción se abre y qué modo de fallo controla."},"05":{"title":"Aprobar, versionar y aprender de la ejecución","subtitle":"Convertir el plan candidato en un expediente controlado que conserve su historia y se revise con datos reales.","question":"¿Podemos demostrar quién decidió qué, con qué evidencia y cuándo debe revisarse?","steps":[["Reconstruir la trazabilidad","Navegar desde cualquier tarea hasta activo, función, fallo, AMEF y decisión RCM."],["Validar la calidad","Ejecutar reglas metodológicas y documentar la resolución de errores y advertencias."],["Resolver discrepancias","Registrar posiciones, impacto, responsable, decisión y excepciones multidisciplinares."],["Aprobar por ámbito","Cada rol revisa su responsabilidad antes de que el responsable del activo publique."],["Congelar la versión","Crear un snapshot inmutable con evidencias, aprobaciones, tareas y condiciones vigentes."],["Comparar con la realidad","Usar fallos, hallazgos, costes y cambios operacionales para abrir una nueva versión."]],"roles":["Mantenimiento aprueba contenido técnico.","Operaciones aprueba ejecutabilidad y contexto.","Fiabilidad aprueba coherencia metodológica.","HSE aprueba riesgos de seguridad y ambientales.","Responsable del activo publica o rechaza la versión."],"decisions":["Errores que bloquean y advertencias aceptables.","Resolución o aceptación de discrepancias.","Aprobaciones y segregación de funciones.","Umbrales que disparan revisión.","Alcance de la reapertura: AMEF, RCM, tarea o plan completo."],"outputs":["Expediente trazable y auditado.","Versión aprobada e inmutable.","Historial de decisiones y excepciones.","Informe ejecutivo con acceso a evidencia.","Cola de revisión y solicitudes de cambio."],"mistakes":["Sobrescribir una versión aprobada.","Cerrar observaciones sin evidencia.","Eliminar discrepancias en lugar de resolverlas.","Mantener el plan sin comparar hipótesis y resultados reales."],"example":"Si la vibración aparece a los 28 días y el P–F aprobado era 45, el sistema no cambia silenciosamente la frecuencia: abre una solicitud, conserva la versión anterior y reevalúa el razonamiento."}};
+const GUIDES={
+"01":{
+  "title":"Construir conocimiento reusable antes de aplicarlo",
+  "subtitle":"Crear una definición AMEF y una revisión gobernada con funciones, fallos, modos, causas, efectos y evidencia que puedan reutilizarse en activos equivalentes.",
+  "question":"¿Qué conocimiento pertenece a la biblioteca y debe sobrevivir independientemente de P-101?",
+  "steps":[
+    ["Identificar la biblioteca","Seleccionar o crear FmeaDefinition con alcance de equipo/función y responsabilidad clara."],
+    ["Abrir una revisión","Trabajar en FmeaRevision; una revisión publicada queda inmutable."],
+    ["Definir funciones y fallos","Registrar funciones medibles y sus fallos funcionales con identidad propia."],
+    ["Identificar modos","Relacionar cada FailureMode con el fallo funcional que puede producir."],
+    ["Separar causas y efectos","Registrar FailureCause y FailureEffect como objetos trazables, no texto mezclado en el modo."],
+    ["Comprobar evidencia","Confirmar fuentes, supuestos y vacíos antes de evaluar consecuencias."]
+  ],
+  "roles":[
+    "Fiabilidad mantiene la estructura metodológica y la coherencia de biblioteca.",
+    "Mantenimiento aporta mecanismos de degradación y experiencia técnica.",
+    "Operaciones aporta condiciones de referencia y estándares funcionales.",
+    "Ingeniería aporta diseño, límites e interfaces.",
+    "HSE participa cuando funciones o efectos tienen relevancia de seguridad o medioambiente."
+  ],
+  "decisions":[
+    "Qué conocimiento es reusable y no específico de P-101.",
+    "Qué revisión se está modificando y por qué.",
+    "Qué funciones, fallos y modos se incluyen o excluyen.",
+    "Qué causas/efectos tienen evidencia suficiente."
+  ],
+  "outputs":[
+    "FmeaDefinition y FmeaRevision identificadas.",
+    "Árbol función → fallo → modo con IDs.",
+    "Causas y efectos explícitos.",
+    "Evidencias y supuestos de biblioteca.",
+    "Gate preparado para consecuencia y RCM."
+  ],
+  "mistakes":[
+    "Empezar el AMEF creando P-101 como raíz.",
+    "Clonar el análisis por cada activo o nivel de criticidad.",
+    "Confundir modo con causa/mecanismo.",
+    "Guardar relaciones solo dentro de textos visibles."
+  ],
+  "example":"La función 'transferir agua de refrigeración' y el modo 'degradación de rodamientos' pertenecen a la revisión reusable FMEA-CWPUMP-001. P-101 todavía no es necesario para definirlos."
+},
+"02":{
+  "title":"Evaluar consecuencias sin confundir riesgo y criticidad",
+  "subtitle":"Aplicar una matriz AMEF versionada al modo de fallo y conservar evidencia, controles y valoración humana.",
+  "question":"¿Qué consecuencia y riesgo AMEF tiene este modo según la metodología identificada?",
+  "steps":[
+    ["Seleccionar la matriz","Identificar la versión de matriz y el contexto/perfil utilizado para la evaluación."],
+    ["Revisar efectos","Partir de FailureEffect y evidencia, no de una puntuación aislada."],
+    ["Valorar consecuencias","Clasificar seguridad, medioambiente, operación, no operación u ocultas según el método vigente."],
+    ["Calcular indicadores","Aplicar S/O/D u otras dimensiones únicamente según la matriz/version seleccionada."],
+    ["Revisar controles","Documentar controles existentes y comprobar su eficacia/evidencia."],
+    ["Superar el gate","Confirmar que el expediente puede entrar en RCM o dejar clara la excepción."
+    ]
+  ],
+  "roles":[
+    "Fiabilidad facilita consistencia y trazabilidad.",
+    "Operaciones valida efectos operacionales y detectabilidad real.",
+    "Mantenimiento valida frecuencia, mecanismos y controles.",
+    "HSE revisa consecuencias de seguridad y ambientales.",
+    "La autoridad final sigue pendiente de validación corporativa."
+  ],
+  "decisions":[
+    "Versión de matriz utilizada.",
+    "Valores y justificaciones del ConsequenceAssessment.",
+    "Evidencia suficiente o necesidad de investigación.",
+    "Excepciones que deben viajar a RCM."
+  ],
+  "outputs":[
+    "ConsequenceAssessment trazable al FailureMode.",
+    "Resultado de riesgo AMEF explicable.",
+    "Controles y evidencia asociados.",
+    "Gate hacia RCM."
+  ],
+  "mistakes":[
+    "Llamar 'criticidad del activo' al resultado S×O o NPR.",
+    "Usar NPR como única regla de decisión.",
+    "Puntuar sin versión de matriz o evidencia.",
+    "Dar por eficaz un control solo porque existe."
+  ],
+  "example":"El riesgo AMEF de FM-CWPUMP-003 se calcula dentro de la revisión de biblioteca. La criticidad corporativa de P-101 aparecerá después, cuando esa revisión se aplique al activo."
+},
+"03":{
+  "title":"Decidir con RCM y diseñar el tratamiento reusable",
+  "subtitle":"Conservar el camino del árbol RCM, permitir una salida explícita sin tarea y diseñar tareas que puedan tratar varios modos.",
+  "question":"¿Qué tratamiento técnicamente válido debe formar parte de la revisión reusable y qué evidencia lo sostiene?",
+  "steps":[
+    ["Ejecutar lógica RCM","Registrar respuestas sobre fallo evidente, detectabilidad, P–F y alternativas usando una versión identificada del árbol."],
+    ["Conservar recomendación y decisión","Diferenciar systemRecommendation de humanDecision y documentar cualquier override."],
+    ["Resolver la salida","Crear MaintenanceTask o NoScheduledTaskDecision; nunca dejar la ausencia de tarea implícita."],
+    ["Relacionar tareas y modos","Usar la relación N:M para indicar qué modos detecta, previene, mitiga o verifica cada tarea."],
+    ["Separar adjuntos","Asociar MaintenanceProcedure e InspectionFormat de forma opcional y versionada."],
+    ["Evaluar economía y publicar","Separar MaintenanceCostEstimate de EconomicAssessment y congelar la FmeaRevision cuando supere gobernanza."]
+  ],
+  "roles":[
+    "Fiabilidad conduce y documenta la decisión RCM.",
+    "Mantenimiento confirma viabilidad técnica de tareas y procedimientos.",
+    "Operaciones valida detectabilidad y condiciones de intervención.",
+    "Costes aporta supuestos para estimación/comparación.",
+    "Los aprobadores publican una revisión inmutable según el workflow que se valide."
+  ],
+  "decisions":[
+    "Recomendación RCM y decisión humana final.",
+    "Salida con tarea o sin tarea programada.",
+    "Relaciones N:M y propósito técnico de cada vínculo.",
+    "Necesidad de procedimiento y/o formato.",
+    "Coste estimado y comparación económica entre alternativas técnicamente válidas."
+  ],
+  "outputs":[
+    "RcmAssessment con respuestas y evidencia.",
+    "MaintenanceTask reusable o NoScheduledTaskDecision.",
+    "MaintenanceTaskFailureMode links.",
+    "Procedimiento/formato opcionales.",
+    "FmeaRevision publicada e inmutable."
+  ],
+  "mistakes":[
+    "Tratar RCM como un algoritmo que sustituye autoridad humana.",
+    "Forzar que todo resultado RCM genere una tarea.",
+    "Vincular cada tarea a un único modo por comodidad de UI.",
+    "Guardar el procedimiento completo dentro de MaintenanceTask.",
+    "Permitir que un ahorro económico valide una política técnicamente inválida."
+  ],
+  "example":"MT-CWPUMP-001 puede monitorizar señales compatibles con degradación de rodamientos y desalineación. Una segunda tarea puede tratar también FM-CWPUMP-003: el modelo no necesita duplicar ninguna de ellas."
+},
+"04":{
+  "title":"Aplicar la biblioteca a P-101 y construir su plan",
+  "subtitle":"Evaluar una revisión publicada sobre un activo y convertir solo las tareas aplicables en un Execution Plan contextual.",
+  "question":"¿Qué parte de FMEA-CWPUMP-001 Rev 1 aplica realmente a P-101 y cómo debe ejecutarse en su contexto?",
+  "steps":[
+    ["Crear la aplicación","Vincular FmeaRevision y Asset mediante FmeaAssetApplication."],
+    ["Congelar contexto","Capturar servicio, condiciones, redundancia y restricciones relevantes de P-101."],
+    ["Leer criticidad","Recibir AssetCriticalitySnapshot desde un esquema/fuente independiente del riesgo AMEF."],
+    ["Evaluar aplicabilidad","El sistema sugiere y una persona valida tareas, perfiles, variantes u overrides."],
+    ["Instanciar el plan","Crear ExecutionPlanTask conservando MaintenanceTaskId de origen."],
+    ["Contextualizar ejecución","Definir intervalo efectivo, recursos, alcance, procedimiento/formato y agrupación sin modificar la biblioteca."
+    ]
+  ],
+  "roles":[
+    "Fiabilidad valida la aplicabilidad de la revisión.",
+    "Responsable del activo aporta/valida criticidad y contexto.",
+    "Mantenimiento confirma recursos y ejecución.",
+    "Operaciones valida condiciones operativas, accesos y ventanas.",
+    "Planificación configura el trabajo contextual."
+  ],
+  "decisions":[
+    "Resultado de aplicabilidad para P-101.",
+    "Criticidad recibida y cualquier override autorizado.",
+    "Variantes de intervalo o condición con motivo.",
+    "Recursos, alcance, procedimiento/formato y agrupación del plan."
+  ],
+  "outputs":[
+    "FmeaAssetApplication validada.",
+    "AssetCriticalitySnapshot independiente del AMEF.",
+    "ExecutionPlan y ExecutionPlanTask trazables a la biblioteca.",
+    "Plan contextual preparado para ejecución/publicación."
+  ],
+  "mistakes":[
+    "Copiar toda la revisión AMEF dentro de P-101.",
+    "Modificar una FmeaRevision publicada para acomodar una excepción del activo.",
+    "Inferir la criticidad de P-101 desde S×O o NPR.",
+    "Perder el MaintenanceTaskId reusable al crear el plan."
+  ],
+  "example":"P-101 puede usar MT-CWPUMP-001 cada 21 días mientras otro activo equivalente usa un intervalo contextual distinto. Ambos siguen apuntando a la misma tarea reusable y revisión de biblioteca."
+},
+"05":{
+  "title":"Registrar resultados y decidir qué debe cambiar",
+  "subtitle":"Comparar ejecución real con hipótesis y distinguir un ajuste contextual de un cambio del conocimiento de ingeniería.",
+  "question":"¿Los resultados reales confirman el plan y la ingeniería que lo originó o debemos abrir una revisión?",
+  "steps":[
+    ["Registrar resultado","Capturar MaintenanceResult, mediciones, hallazgos y evidencia contra ExecutionPlanTask."],
+    ["Registrar coste real","Crear ActualMaintenanceCost sin sobrescribir MaintenanceCostEstimate."],
+    ["Comparar hipótesis","Contrastar P–F, frecuencia, hallazgos, eficacia y coste con lo esperado."],
+    ["Determinar el alcance","Decidir si el problema pertenece al activo/plan o cuestiona la biblioteca."],
+    ["Ajustar contexto si procede","Crear nueva revisión de aplicación/plan cuando la ingeniería reusable siga siendo válida."],
+    ["Reabrir ingeniería si procede","Abrir EngineeringChangeRequest y una nueva FmeaRevision sin modificar la publicada."
+    ]
+  ],
+  "roles":[
+    "Mantenimiento registra ejecución y hallazgos.",
+    "Operaciones aporta cambios de contexto y consecuencias observadas.",
+    "Costes registra/importa el coste real según la futura integración.",
+    "Fiabilidad ejecuta EffectivenessReview.",
+    "La gobernanza decide si corresponde nueva revisión de biblioteca."
+  ],
+  "decisions":[
+    "Si la desviación es contextual o de ingeniería.",
+    "Si se mantiene o revisa el plan.",
+    "Si se abre EngineeringChangeRequest.",
+    "Qué hipótesis debe revalidarse sin borrar la versión anterior."
+  ],
+  "outputs":[
+    "MaintenanceResult y ActualMaintenanceCost trazables.",
+    "EffectivenessReview.",
+    "Ajuste de aplicación/plan o EngineeringChangeRequest.",
+    "Historia completa conservada desde biblioteca hasta resultado."
+  ],
+  "mistakes":[
+    "Sobrescribir la estimación con el coste real.",
+    "Cambiar silenciosamente una frecuencia publicada después de un hallazgo.",
+    "Crear nueva revisión AMEF por cualquier variación específica de P-101.",
+    "Perder la revisión exacta que originó el trabajo ejecutado."
+  ],
+  "example":"Si una tendencia aparece antes de lo previsto, primero se determina si P-101 necesita un ajuste contextual o si la hipótesis P–F reusable es incorrecta. Solo el segundo caso justifica revisar la biblioteca."
+}
+};
 const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
 function list(items){return items.map(x=>`<li>${esc(x)}</li>`).join('')}
-function build(g){const steps=g.steps.map((x,i)=>`<div class="biz-step"><span class="biz-step-num">${String(i+1).padStart(2,'0')}</span><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div>`).join('');return `<div class="biz-modal" id="businessGuideModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="businessGuideTitle"><div class="biz-dialog"><div class="biz-head"><div><span class="biz-kicker">Guía práctica del flujo de negocio</span><h2 id="businessGuideTitle">${esc(g.title)}</h2><p>${esc(g.subtitle)}</p></div><button class="biz-close" type="button" data-biz-close aria-label="Cerrar guía">×</button></div><div class="biz-body"><div class="biz-question"><b>Pregunta que debe responder el negocio</b>${esc(g.question)}</div><h3>Flujo lógico</h3><div class="biz-flow">${steps}</div><div class="biz-grid"><div class="biz-card"><h3>Quién interviene</h3><ul>${list(g.roles)}</ul></div><div class="biz-card"><h3>Decisiones que deben quedar registradas</h3><ul>${list(g.decisions)}</ul></div><div class="biz-card output"><h3>Resultado esperado</h3><ul>${list(g.outputs)}</ul></div><div class="biz-card warning"><h3>Errores que conviene evitar</h3><ul>${list(g.mistakes)}</ul></div></div><div class="biz-example"><b>Ejemplo práctico · Bomba P-101</b><p>${esc(g.example)}</p></div></div><div class="biz-footer"><small>Esta guía describe el proceso de negocio propuesto para CMMS 2.0; no explica cómo utilizar la pantalla.</small><button type="button" data-biz-close>Volver al análisis</button></div></div></div>`}
+function build(g){const steps=g.steps.map((x,i)=>`<div class="biz-step"><span class="biz-step-num">${String(i+1).padStart(2,'0')}</span><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div>`).join('');return `<div class="biz-modal" id="businessGuideModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="businessGuideTitle"><div class="biz-dialog"><div class="biz-head"><div><span class="biz-kicker">Guía práctica del flujo de negocio</span><h2 id="businessGuideTitle">${esc(g.title)}</h2><p>${esc(g.subtitle)}</p></div><button class="biz-close" type="button" data-biz-close aria-label="Cerrar guía">×</button></div><div class="biz-body"><div class="biz-question"><b>Pregunta que debe responder el negocio</b>${esc(g.question)}</div><h3>Flujo lógico</h3><div class="biz-flow">${steps}</div><div class="biz-grid"><div class="biz-card"><h3>Quién interviene</h3><ul>${list(g.roles)}</ul></div><div class="biz-card"><h3>Decisiones que deben quedar registradas</h3><ul>${list(g.decisions)}</ul></div><div class="biz-card output"><h3>Resultado esperado</h3><ul>${list(g.outputs)}</ul></div><div class="biz-card warning"><h3>Errores que conviene evitar</h3><ul>${list(g.mistakes)}</ul></div></div><div class="biz-example"><b>Ejemplo práctico · P-101 como aplicación</b><p>${esc(g.example)}</p></div></div><div class="biz-footer"><small>Esta guía describe el proceso de negocio propuesto para CMMS 2.0; no explica cómo utilizar la pantalla.</small><button type="button" data-biz-close>Volver al análisis</button></div></div></div>`}
 function init(){const script=document.currentScript||[...document.scripts].find(s=>s.dataset.businessGuide);const id=script?.dataset.businessGuide||document.body.dataset.businessGuide;const g=GUIDES[id];if(!g||document.getElementById('businessInfoBtn'))return;const host=document.querySelector('header .actions')||document.querySelector('header nav')||document.querySelector('header');if(!host)return;const trigger=document.createElement('button');trigger.className='btn biz-info-trigger';trigger.id='businessInfoBtn';trigger.type='button';trigger.title='Guía práctica del flujo de negocio';trigger.setAttribute('aria-label','Abrir guía práctica del flujo de negocio');trigger.innerHTML='<span aria-hidden="true">ⓘ</span>';host.appendChild(trigger);document.body.insertAdjacentHTML('beforeend',build(g));const modal=document.getElementById('businessGuideModal');const close=()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');trigger.focus()};const open=()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');modal.querySelector('[data-biz-close]')?.focus()};trigger.addEventListener('click',open);modal.querySelectorAll('[data-biz-close]').forEach(x=>x.addEventListener('click',close));modal.addEventListener('click',e=>{if(e.target===modal)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close()})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
