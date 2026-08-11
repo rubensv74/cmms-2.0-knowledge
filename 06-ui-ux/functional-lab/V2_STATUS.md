@@ -1,58 +1,43 @@
-# CMMS 2.0 Functional Lab — Estado canónico alineado
+# CMMS 2.0 Functional Lab — Estado canónico tras hardening
 
 **Fecha:** 2026-08-11  
-**Rama:** `feature/f01-premium-foundation`  
-**Estado global:** D-01…D-14 corregido / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados / AMEF premium stage-focused publicado como candidato Studio
+**Rama:** `feature/f01-premium-foundation`
 
-## 1. Modelo canónico
+## Estado global
 
 ```text
-BIBLIOTECA DE INGENIERÍA
+Arquitectura funcional D-01…D-14       ALINEADA
+9 componentes canónicos                PUBLICADOS
+25 pantallas canónicas                 PUBLICADAS
+Studio reconstruido con 25 identidades NO TODAVÍA
+Hardening de paleta/legibilidad         PUBLICADO EN COMPONENTES CRÍTICOS
+Visual QA final                         PENDIENTE STUDIO
+READY_FOR_INTEGRATION                   NO
+```
+
+## Modelo canónico
+
+```text
 FmeaDefinition → FmeaRevision
         ↓
-CONTEXTO DE PLANTA
 TechnicalObject + FLH + Taxonomía + ADR + AssetCriticalityAssessment
         ↓
-APLICACIÓN
 FmeaAssetApplication + perfil + variantes + overrides
         ↓
-ANÁLISIS CONTEXTUAL
 AnalysisCase + 28 etapas + AMEF + RCM
         ↓
-EJECUTABILIDAD
 MaintenanceTask + intervalo + recursos + procedimiento opcional
         ↓
-HANDOFF
 PlanScopeItem → JobPlan/Route → PM → WorkOrder → ExecutionResult
         ↓
-MEJORA
-coste real + efectividad + cambio de aplicación o biblioteca
+coste real + efectividad + mejora de aplicación o biblioteca
 ```
 
-P-101 es una aplicación de `AMEF-BOMBA-CENTRIFUGA / R01`, no propietario de la ingeniería AMEF.
+P-101 consume una revisión reusable de ingeniería; no posee el AMEF.
 
-## 2. Auditoría D-01…D-14
+## Evidencia Studio acumulada que se conserva
 
-Las 14 desviaciones identificadas están corregidas funcionalmente.
-
-`CORREGIDO` no significa automáticamente `INSTANCE_SAFE` ni `VISUAL_QA_VALIDATED`.
-
-## 3. Evidencia Studio acumulada
-
-```text
-scr_FL_Home / bootstrap                           PASS
-FLH → Taxonomía → ADR → Criticidad → Ficha 360   PASS
-Biblioteca AMEF → FmeaRevision R01                PASS
-funciones/fallos/modos/causas/efectos             PASS
-tareas propuestas + N:M tarea ↔ modo              PASS
-ingeniería base separada de P-101                 PASS
-R01 aplicada a P-101 / P-102 / P-103              PASS
-criticidad/perfil/intervalo por aplicación         PASS
-APP-P101-R01 + perfil HIGH                         PASS
-ApplicabilityMatrixPro en runtime                  PASS previo
-```
-
-Confirmaciones de usuario:
+Se obtuvo anteriormente:
 
 ```text
 HOME OK
@@ -61,94 +46,108 @@ BIBLIOTECA AMEF OK
 APLICACIÓN MULTI-ACTIVO OK
 ```
 
-## 4. Foundation visual
-
-La inspección de `scr_FL_AMEF` reveló dos problemas que obligaron a pausar la propagación a las 25 pantallas:
+Durante la recuperación del 11 de agosto se reconfirmó:
 
 ```text
-FL-SC-004    materialización visual incorrecta de defaults Color en varias instancias
-UX           escala tipográfica 7–10 demasiado pequeña para uso real y demostración
+HOME BASELINE PASS
+FLH PASS
+TAXONOMÍA PASS
+ADR PASS
 ```
 
-Además se incorporó la regla de identidad de Canvas Components:
+La posterior aparición de superficies negras y ~84 errores se ha clasificado como incidente de **instalación parcial + regresión visual por rollback histórico**, no como refutación de la arquitectura funcional.
 
-> una definición corregida no debe agregarse como nueva copia si el componente ya tiene instancias; debe actualizarse in situ o migrarse de forma controlada.
+## Diagnóstico de los errores actuales
 
-Baseline Comfortable:
+### Fórmulas
+
+Muchas referencias `Name isn't valid. 'scr_FL_...'` corresponden a destinos que sí existen en el repositorio pero que todavía no habían sido creados como pantallas en la app de Studio reconstruida parcialmente.
+
+Corrección: crear primero las 25 identidades de pantalla y después evaluar App Checker.
+
+### Superficies negras
+
+El rollback histórico reintrodujo componentes cuyo camino visual dependía directamente de propiedades `Color` que ya habían mostrado materialización incorrecta en Studio.
+
+Correcciones publicadas:
 
 ```text
-texto visible mínimo     11
-supporting               12
-label                    12–13
-body                     13–14
-card title               15–17
-section title            16–18
-page title               24–28
-button                    12–13
+cmp_FL_TreePro                 HARDENED SAFE PALETTE RC3
+cmp_FL_LineagePanelPro         HARDENED SAFE PALETTE RC3
+cmp_FL_GatePanelPro            HARDENED SAFE PALETTE RC2
+cmp_FL_ApplicabilityMatrixPro  HARDENED READABILITY RC2
 ```
 
-No se reducirá tipografía para evitar scroll.
-
-## 5. RiskMatrixPro premium 5×5
-
-`cmp_FL_RiskMatrixPro` tiene como fuente de verdad visual la referencia premium aprobada durante la revisión del 11 de agosto.
-
-La RC3 canónica conserva:
+Continúan como fuentes actuales revisadas:
 
 ```text
-900×650
-5×5 como caso principal AMEF
-Severidad 5→1
-Ocurrencia 1→5
-selección S=4 / O=3
-Detección=3
-S×O=12
-NPR=36
-KPI strip inferior
-nota de escala discreta
+cmp_FL_SidebarPro              safe dark palette + Comfortable
+cmp_FL_PageHeaderPro           safe palette + Comfortable
+cmp_FL_ProcessRailPro          safe palette + Comfortable
+cmp_FL_DecisionPanelPro        safe palette + Comfortable
+cmp_FL_RiskMatrixPro           Premium 5×5 RC4
 ```
 
-La matriz no debe volver a convertirse en una tabla compacta para hacerla caber.
+Ninguna revisión publicada esta noche se declara `INSTANCE_SAFE` hasta que Studio la acepte y se prueben instancias reales.
 
-Estado RC3:
+## Fuente única de instalación
+
+No utilizar commits históricos.
 
 ```text
-SOURCE candidate          publicado
-Studio render             evidencia disponible
-VISUAL_QA final           pendiente
+componentes  → power-apps/components/
+pantallas    → power-apps/screens/
+guía         → power-apps/V2_INSTALLATION.md
+runbook      → development/TOMORROW_RUNBOOK_2026-08-12.md
+auditoría    → development/RECOVERY_HARDENING_AUDIT_2026-08-11.md
 ```
 
-## 6. scr_FL_AMEF — workspace por etapa
+`RECOVERY_BASELINE_R0.md` queda `SUPERSEDED` y solo se conserva como evidencia forense.
 
-Se retira la composición que intentaba mostrar simultáneamente efectos, matriz, decisión y gate.
-
-Nuevo patrón:
+## Gate de recuperación para 12 de agosto
 
 ```text
-FL-07          Efectos + contexto + criticidad
-FL-09          Matriz de riesgo AMEF premium 5×5
-FL-08/10/11    Resultado AMEF + decisión humana + control de avance
+25 nombres de pantalla resueltos en Studio
+→ 9 componentes actuales actualizados in situ
+→ 25 fuentes actuales instaladas
+→ reinicio de sesión + Home bootstrap
+→ Foundation smoke integrado
 ```
 
-El Process Rail permanece visible y actúa como navegación interna entre las etapas AMEF sin recrear la pantalla.
-
-Para liberar superficie útil en este workspace denso:
+Foundation smoke:
 
 ```text
-Sidebar        colapsado a 76
-ProcessRail    250
-Header         100
-Work area      resto del ancho
-RiskMatrix     900×650 centrada en FL-09
+Home
+→ FLH
+→ Taxonomía
+→ ADR
+→ Criticidad
+→ Ficha 360
+→ Biblioteca AMEF
+→ Revisión AMEF
+→ Aplicación multi-activo
 ```
 
-Esto permite mantener la matriz premium sin reducir tipografía ni deformar las celdas.
+Debe terminar con:
 
-Archivo canónico:
+```text
+0 Name isn't valid por pantallas canónicas
+0 superficies negras accidentales
+0 componentes duplicados
+P-101 cargado
+criticidad separada de AMEF
+R01 aplicada a P-101/P-102/P-103
+```
 
-`power-apps/screens/scr_FL_AMEF.pa.yaml`
+Resultado esperado:
 
-## 7. Semántica AMEF preservada
+```text
+FOUNDATION INTEGRATED PASS
+```
+
+Solo entonces vuelve al flujo AnalysisCase/AMEF.
+
+## AMEF
 
 Fixture P-101:
 
@@ -160,76 +159,27 @@ S×O=12
 NPR=36
 ```
 
-La matriz sigue siendo `Matriz de riesgo AMEF` S×O.
+`cmp_FL_RiskMatrixPro` conserva la referencia premium 5×5; no se rediseña durante la recuperación.
 
-La criticidad del activo permanece como contexto externo al AMEF.
+`scr_FL_AMEF` permanece como candidato de fuente y requiere Studio QA después de cerrar Foundation.
 
-La decisión final de consecuencia sigue siendo autoridad humana, separada del cálculo y de la recomendación del sistema.
+## Deuda visual controlada
 
-## 8. Próximo gate Studio
+La auditoría detecta pantallas históricas con texto de 9/10 pt. No se realizará un reemplazo global ciego porque puede introducir clipping.
 
-Actualizar in situ únicamente las definiciones que hayan cambiado y validar:
-
-```text
-Home
-→ Registro de análisis
-→ P101-AMEF-RCM-001
-→ AMEF
-```
-
-Comprobación discriminante:
+El estándar sigue siendo:
 
 ```text
-FL-07  muestra efectos/contexto sin clipping
-FL-09  muestra RiskMatrixPro 900×650 completa
-FL-08/10/11 muestran decisión + gate
-Process Rail conmuta entre estas vistas sin error
-P-101 se mantiene cargado
-S=4 / O=3 / D=3 / NPR=36
-texto legible a 100%
-sin bloques negros
-sin duplicación de componentes
+mínimo visible 11
+supporting     12
+body           13–14
+section title  16–18
+page title     24–28
+button         12–13
 ```
 
-Hasta esta validación:
+La propagación tipográfica se hará únicamente después del `FOUNDATION INTEGRATED PASS`, empezando por una pantalla de referencia.
 
-```text
-PASS_STATIC / source candidate    SÍ
-DEFINITION_ACCEPTED               pendiente Studio para esta revisión
-VISUAL_QA_VALIDATED               NO
-READY_FOR_INTEGRATION             NO
-```
+## Asuntos deliberadamente abiertos
 
-## 9. Estado del plan integrado
-
-```text
-1 Home / bootstrap                       PASS
-2 Activos + criticidad                   PASS
-3 Biblioteca AMEF                        PASS
-4 Aplicación multi-activo                PASS
-5 AnalysisCase                           PAUSADO — gate visual AMEF
-6 Failure Modes / causas                 pendiente
-7 AMEF                                   candidato premium publicado / Studio QA pendiente
-8 RCM                                    pendiente
-9 Task                                   pendiente
-10 Plan Package / Maintenance Plans      pendiente
-11 Trazabilidad / revisión / efectividad pendiente
-```
-
-## 10. Asuntos deliberadamente abiertos
-
-- escalas AMEF corporativas;
-- umbrales/bandas/colores;
-- reglas oficiales de criticidad;
-- árbol RCM definitivo;
-- reglas P–F / intervalo;
-- autoridades/permisos finales;
-- evidencia mínima/confianza;
-- reglas de sobreclasificación;
-- criterios de aprobación;
-- KPIs/umbrales de efectividad;
-- reglas definitivas de agrupación;
-- sistema destino/integración;
-- arquitectura física de datos.
-
-No se cerrará ninguno por inferencia antes de la siguiente fase de decisiones.
+Continúan abiertos y no se cerrarán por inferencia: escalas/bandas AMEF corporativas, reglas oficiales de criticidad, árbol RCM definitivo, reglas P-F/intervalo, autoridades finales, evidencia mínima, overclassification, criterios de aprobación, KPIs de efectividad, agrupación definitiva, sistema destino, integración y arquitectura física de datos.
