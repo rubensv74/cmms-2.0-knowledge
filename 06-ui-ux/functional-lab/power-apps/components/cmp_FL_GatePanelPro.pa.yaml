@@ -1,6 +1,7 @@
-# CMMS 2.0 FUNCTIONAL LAB — GATE PANEL PRO — COMFORTABLE READABILITY RC
+# CMMS 2.0 FUNCTIONAL LAB — GATE PANEL PRO — HARDENED SAFE PALETTE RC2
 #
 # Preserves public contract and component identity.
+# Root surface is fixed to the safe palette to avoid Color-input materialization issues.
 # Responsive narrow layout: text uses full width; action sits at the bottom.
 
 ComponentDefinitions:
@@ -74,28 +75,28 @@ ComponentDefinitions:
       SurfaceColor:
         PropertyKind: Input
         DisplayName: SurfaceColor
-        Description: Fondo base.
+        Description: Fondo base. Conservado por compatibilidad de contrato; la RC2 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#FFFFFF")
 
       BorderColor:
         PropertyKind: Input
         DisplayName: BorderColor
-        Description: Borde base.
+        Description: Borde base. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#E2E8F0")
 
       TextColor:
         PropertyKind: Input
         DisplayName: TextColor
-        Description: Texto principal.
+        Description: Texto principal. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#0F172A")
 
       MutedTextColor:
         PropertyKind: Input
         DisplayName: MutedTextColor
-        Description: Texto secundario.
+        Description: Texto secundario. Conservado por compatibilidad de contrato.
         DataType: Color
         Default: =ColorValue("#64748B")
 
@@ -107,7 +108,7 @@ ComponentDefinitions:
         Default: =false
 
     Properties:
-      Fill: =cmp_FL_GatePanelPro.SurfaceColor
+      Fill: =ColorValue("#FFFFFF")
       Height: =216
       Width: =620
 
