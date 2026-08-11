@@ -95,8 +95,10 @@ Power Apps Studio continúa siendo la autoridad para esos niveles.
 
 ## Siguiente validación
 
-Ejecutar los siete smoke tests integrados descritos en:
+Ejecutar los **11 smoke tests integrados** descritos en:
 
 `../power-apps/V2_INSTALLATION.md`
 
-No solicitar validaciones aisladas por cada una de las 25 pantallas salvo que un smoke concreto revele una incidencia localizada.
+Los 11 smokes cubren Foundation, Activos/Criticidad, Biblioteca AMEF, Aplicación multi-activo, AnalysisCase, Failure Modes/AMEF, RCM, Task, Plan Package, Maintenance Plans y Trazabilidad/Revisión/Efectividad.
+
+No solicitar validaciones aisladas por cada una de las 25 pantallas salvo que un smoke revele una incidencia localizada.
