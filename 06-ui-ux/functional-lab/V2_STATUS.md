@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF validados en Studio / Aplicación multi-activo pendiente
+**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados en Studio / AnalysisCase pendiente
 
 ## 1. Modelo canónico
 
@@ -33,65 +33,30 @@ P-101 es una aplicación de `AMEF-BOMBA-CENTRIFUGA / R01`, no propietario de la 
 
 ## 2. Auditoría D-01…D-14
 
+Las 14 desviaciones identificadas están corregidas funcionalmente. `CORREGIDO` no significa automáticamente `INSTANCE_SAFE`: cada pieza debe comprobarse en Power Apps Studio.
+
 | ID | Corrección | Estado funcional |
 |---|---|---|
 | D-01 | Biblioteca `FmeaDefinition/FmeaRevision` | CORREGIDO |
-| D-02 | Criticidad de activo separada de riesgo AMEF | CORREGIDO |
+| D-02 | Criticidad separada de riesgo AMEF | CORREGIDO |
 | D-03 | Aplicación multi-activo | CORREGIDO |
 | D-04 | Perfiles/variantes por contexto | CORREGIDO |
 | D-05 | `FailureCause` / mecanismo | CORREGIDO |
 | D-06 | N:M tarea propuesta ↔ modo | CORREGIDO |
 | D-07 | Procedimiento/checklist opcional | CORREGIDO |
-| D-08 | Estado operativo/parada/aislamiento/permiso en tarea | CORREGIDO |
-| D-09 | duración, crew, H-H, disciplina/work center | CORREGIDO |
-| D-10 | economía preliminar / estimado / real separados | CORREGIDO |
-| D-11 | lógica RCM versionable | CORREGIDO |
-| D-12 | alcance físico por `TechnicalObject` | CORREGIDO |
+| D-08 | Estado operativo/parada/aislamiento/permiso | CORREGIDO |
+| D-09 | Duración, crew, H-H, disciplina/work center | CORREGIDO |
+| D-10 | Economía preliminar / estimado / real | CORREGIDO |
+| D-11 | Lógica RCM versionable | CORREGIDO |
+| D-12 | Alcance físico por `TechnicalObject` | CORREGIDO |
 | D-13 | Job Plan / PM / WO / resultado separados | CORREGIDO |
-| D-14 | ciclos, reglas de agrupación y ObjectList | CORREGIDO |
+| D-14 | Ciclos, agrupación y ObjectList | CORREGIDO |
 
-`CORREGIDO` no significa automáticamente `INSTANCE_SAFE`: cada pieza debe comprobarse en Power Apps Studio.
+## 3. Pantallas y componentes canónicos
 
-## 3. Pantallas canónicas — 25
+La versión alineada contiene **25 pantallas** y **9 componentes**.
 
-### Inicio
-- `scr_FL_Home`
-
-### Activos
-- `scr_FL_FLH`
-- `scr_FL_Taxonomy`
-- `scr_FL_ADR`
-- `scr_FL_AssetCriticality`
-- `scr_FL_Asset360`
-
-### Ingeniería reutilizable
-- `scr_FL_FmeaLibrary`
-- `scr_FL_FmeaRevision`
-- `scr_FL_AssetApplication`
-
-### AnalysisCase
-- `scr_FL_AnalysisRegister`
-- `scr_FL_CaseOverview`
-- `scr_FL_Context`
-- `scr_FL_Functions`
-- `scr_FL_FailureModes`
-- `scr_FL_AMEF`
-- `scr_FL_RCM`
-- `scr_FL_Economics`
-- `scr_FL_Task`
-- `scr_FL_PlanPackage`
-- `scr_FL_Traceability`
-- `scr_FL_ReviewApproval`
-- `scr_FL_Effectiveness`
-
-### Handoff / producto
-- `scr_FL_MaintenancePlans`
-- `scr_FL_Governance`
-- `scr_FL_Settings`
-
-`WorkspaceShell` queda únicamente como evidencia histórica.
-
-## 4. Componentes canónicos — 9
+Componentes:
 
 ```text
 cmp_FL_SidebarPro
@@ -105,17 +70,17 @@ cmp_FL_LineagePanelPro
 cmp_FL_ApplicabilityMatrixPro
 ```
 
-Estados:
+Evidencia acumulada:
 
 ```text
 SidebarPro / PageHeaderPro        INSTANCE_SAFE PASS previo
-TreePro                            runtime funcional dentro del smoke Activos PASS
-ProcessRailPro                     import corregido / smoke de AnalysisCase pendiente
-ApplicabilityMatrixPro             próximo smoke multi-activo
-resto de componentes nuevos       PASS_STATIC / Studio pending
+TreePro                            runtime funcional en Activos PASS
+ApplicabilityMatrixPro             runtime funcional en Aplicación multi-activo PASS
+ProcessRailPro                     import corregido / próximo smoke AnalysisCase
+resto de componentes nuevos       Studio validation pendiente
 ```
 
-## 5. Fixture P-101
+## 4. Fixture P-101
 
 ```text
 FmeaDefinition        AMEF-BOMBA-CENTRIFUGA
@@ -129,143 +94,68 @@ AnalysisCase          P101-AMEF-RCM-001
 
 La misma revisión R01 se aplica también a P-102 y P-103 con perfiles/intervalos distintos sin duplicar la ingeniería.
 
-## 6. AMEF
+## 5. Evidencia Studio — 2026-08-11
 
 ```text
-AssetCriticalityAssessment  → contexto de planta
-S × O                       → Matriz de riesgo AMEF
-D                           → valor separado
-S × O × D                   → NPR
+scr_FL_Home / bootstrap                           PASS
+FLH → Taxonomía → ADR → Criticidad → Ficha 360   PASS
+Biblioteca AMEF → FmeaRevision R01                PASS
+funciones/fallos/modos/causas/efectos             PASS
+tareas propuestas + N:M tarea ↔ modo              PASS
+ingeniería base separada de P-101                 PASS
+R01 aplicada a P-101 / P-102 / P-103              PASS
+criticidad/perfil/intervalo por aplicación         PASS
+APP-P101-R01 + perfil HIGH                         PASS
+ApplicabilityMatrixPro en runtime                  PASS
 ```
 
-Configuración demostrativa P-101:
+Confirmaciones de usuario:
 
 ```text
-S=4/5
-O=3/5
-D=3/5
-S×O=12
-NPR=36
+HOME OK
+ACTIVOS OK
+BIBLIOTECA AMEF OK
+APLICACIÓN MULTI-ACTIVO OK
 ```
 
-Los umbrales/bandas/colores siguen pendientes de decisión corporativa.
-
-## 7. RCM
-
-La experiencia consume un contrato versionable:
+## 6. Estado del plan integrado
 
 ```text
-DecisionLogic
-→ DecisionLogicRevision
-→ DecisionQuestion
-→ DecisionTransition
-→ RcmAssessment
-→ RcmAssessmentAnswer
-```
-
-El árbol corporativo definitivo sigue abierto.
-
-## 8. Tarea / coste / procedimiento
-
-La experiencia distingue:
-
-```text
-ProposedMaintenanceTask
-→ TaskProfileVariant
-→ MaintenanceTask
-→ MaintenanceProcedure? / Checklist?
-→ ResourceRequirement
-→ IntervalJustification
-→ MaintenanceCostEstimate
-```
-
-`EconomicAssessment` es previo y `ActualMaintenanceCost` procede de ejecución.
-
-## 9. Planes y ejecución
-
-```text
-PlanScopeItem
-→ RouteGroupingRule
-→ ObjectList
-→ JobPlan / Route
-→ PreventiveMaintenancePlan
-→ WorkOrder
-→ ExecutionResult por TechnicalObject
-→ ActualMaintenanceCost
-```
-
-La agrupación nunca elimina trazabilidad por tag.
-
-## 10. Bootstrap canónico
-
-El bootstrap ejecutable está integrado en `scr_FL_Home.OnVisible` y protegido por `varFLAlignedInitialized`.
-
-Referencia conceptual sincronizada:
-
-`power-apps/runtime/functional-lab-aligned-bootstrap.powerfx`
-
-El bootstrap pre-auditoría `functional-lab-v2-bootstrap.powerfx` ha sido **eliminado** para evitar reinstalar accidentalmente el modelo anterior.
-
-### Evidencia Studio — 2026-08-11
-
-```text
-scr_FL_Home abre y ejecuta correctamente       PASS
-bootstrap alineado carga sin bloqueo           PASS
-navegación base visible                        PASS
-FLH → Taxonomía → ADR                          PASS
-Criticidad → Ficha 360                         PASS
-P-101 estable durante recorrido                PASS
-FLH como jerarquía padre-hijo                  PASS
-ADR como relaciones no físicas                 PASS
-criticidad separada del riesgo AMEF            PASS
-Biblioteca AMEF por familia                    PASS
-FmeaRevision R01 reutilizable                  PASS
-funciones/fallos/modos/causas/efectos          PASS
-tareas propuestas en revisión                  PASS
-cobertura N:M tarea ↔ modo comprensible        PASS
-ingeniería base separada de P-101              PASS
-```
-
-Confirmaciones de usuario: `HOME OK`, `ACTIVOS OK` y `BIBLIOTECA AMEF OK`.
-
-Esto valida el punto de entrada, el bloque de Activos y la Biblioteca AMEF, pero no implica todavía que las pantallas restantes sean `INSTANCE_SAFE`.
-
-## 11. Próximo gate
-
-Seguir `power-apps/V2_INSTALLATION.md`.
-
-Estado del plan:
-
-```text
-1 Home / bootstrap                    PASS
-2 Activos + criticidad                PASS
-3 Biblioteca AMEF                     PASS
-4 Aplicación multi-activo             EN CURSO
-5 AnalysisCase                        pendiente
-6 Failure Modes / causas              pendiente
-7 AMEF                                pendiente
-8 RCM                                 pendiente
-9 Task                                pendiente
-10 Plan Package / Maintenance Plans   pendiente
+1 Home / bootstrap                       PASS
+2 Activos + criticidad                   PASS
+3 Biblioteca AMEF                        PASS
+4 Aplicación multi-activo                PASS
+5 AnalysisCase                           EN CURSO
+6 Failure Modes / causas                 pendiente
+7 AMEF                                   pendiente
+8 RCM                                    pendiente
+9 Task                                   pendiente
+10 Plan Package / Maintenance Plans      pendiente
 11 Trazabilidad / revisión / efectividad pendiente
 ```
 
-Próxima validación integrada:
+## 7. Próxima validación integrada — AnalysisCase
+
+Recorrido:
 
 ```text
-scr_FL_AssetApplication
+scr_FL_AnalysisRegister
+→ scr_FL_CaseOverview
+→ scr_FL_Context
+→ scr_FL_Functions
 ```
 
 Criterios de aceptación:
 
-- la revisión `R01` aparece aplicada a varios activos compatibles;
-- P-101, P-102 y P-103 comparten la misma ingeniería base sin duplicarla;
-- cada activo puede conservar criticidad, perfil y variante de intervalo diferentes;
-- P-101 mantiene `APP-P101-R01` y perfil `HIGH`;
-- la pantalla deja claro qué procede de la biblioteca y qué pertenece al contexto de cada activo;
-- la matriz de aplicabilidad funciona sin error en Studio.
+- `P101-AMEF-RCM-001` se abre desde el registro;
+- Case Overview referencia `AMEF-BOMBA-CENTRIFUGA / R01` y `APP-P101-R01`;
+- la criticidad `Alta` se muestra como contexto, no como resultado AMEF;
+- Process Rail muestra las 28 etapas y permite seleccionar/navegar sin error;
+- FL-01…FL-06 se presentan como revisión/aplicación contextual, no como creación desde cero;
+- Contexto y Funciones conservan lineage biblioteca → aplicación → caso;
+- la navegación no rompe P-101 ni la revisión R01 activa.
 
-## 12. Asuntos deliberadamente abiertos
+## 8. Asuntos deliberadamente abiertos
 
 - escalas AMEF corporativas;
 - umbrales/bandas/colores;
