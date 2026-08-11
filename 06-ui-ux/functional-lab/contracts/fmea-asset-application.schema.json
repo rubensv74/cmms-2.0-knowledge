@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cmms2-fmea-asset-application.schema.json",
+  "title": "CMMS 2.0 FMEA Asset Application",
+  "type": "object",
+  "required": ["fmeaAssetApplicationId", "fmeaRevisionId", "asset", "operationalContextSnapshot", "assetCriticalitySnapshot", "applicabilityDecisions", "status"],
+  "properties": {
+    "fmeaAssetApplicationId": { "type": "string" },
+    "fmeaRevisionId": { "type": "string" },
+    "asset": {
+      "type": "object",
+      "required": ["assetId", "assetCode", "assetName"],
+      "properties": {
+        "assetId": { "type": "string" },
+        "assetCode": { "type": "string" },
+        "assetName": { "type": "string" },
+        "plant": { "type": "string" },
+        "equipmentTypeRef": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "operationalContextSnapshot": {
+      "type": "object",
+      "required": ["snapshotId", "service", "capturedAt"],
+      "properties": {
+        "snapshotId": { "type": "string" },
+        "service": { "type": "string" },
+        "boundary": { "type": "string" },
+        "dutyFlowM3h": { "type": "number" },
+        "dutyPressureBar": { "type": "number" },
+        "operatingModes": { "type": "array", "items": { "type": "string" } },
+        "redundancy": { "type": "string" },
+        "constraints": { "type": "string" },
+        "capturedAt": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "assetCriticalitySnapshot": {
+      "type": "object",
+      "required": ["snapshotId", "criticalitySchemeVersionRef", "sourceValue", "source", "capturedAt"],
+      "properties": {
+        "snapshotId": { "type": "string" },
+        "criticalitySchemeVersionRef": { "type": "string" },
+        "sourceValue": { "type": "string" },
+        "source": { "type": "string" },
+        "capturedAt": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "assetCriticalityOverride": {
+      "type": ["object", "null"],
+      "required": ["sourceValue", "humanValue", "reason", "authorityRole"],
+      "properties": {
+        "sourceValue": { "type": "string" },
+        "humanValue": { "type": "string" },
+        "reason": { "type": "string" },
+        "authorityRole": { "type": "string" },
+        "actor": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "applicabilityResult": { "type": "string" },
+    "validatedApplicabilityResult": { "type": "string" },
+    "applicabilityDecisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["maintenanceTaskId", "systemRecommendation", "humanDecision"],
+        "properties": {
+          "maintenanceTaskId": { "type": "string" },
+          "systemRecommendation": { "type": "string" },
+          "humanDecision": { "type": "string" },
+          "overrideReason": { "type": ["string", "null"] },
+          "profileRef": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "validatedBy": { "type": "string" },
+    "validatedAt": { "type": "string" },
+    "status": { "type": "string" }
+  },
+  "additionalProperties": false
+}
