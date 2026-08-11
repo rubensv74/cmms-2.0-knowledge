@@ -3,154 +3,220 @@
 **Estado:** activo antes de cualquier YAML  
 **Actualizado:** 2026-08-11
 
-## Gate obligatorio pre-YAML
+## Autoridad de construcción
 
-Antes de redactar, corregir o publicar cualquier `.pa.yaml`:
+Antes de redactar, corregir o publicar cualquier `.pa.yaml`, consultar primero la versión vigente de:
 
-1. leer este documento;
-2. confirmar control y versión contra referencias probadas;
-3. reutilizar patrones positivos de PULSE/Functional Lab cuando existan;
-4. separar `PASS_STATIC`, aceptación de definición y seguridad de instancia;
-5. para nuevas `CustomProperties`, usar contrato completo por `PropertyKind`;
-6. convertir fórmulas inline con literales `: ` a bloque YAML `|-`;
-7. evitar `GroupContainer` con `Children` dentro de plantillas Gallery salvo contraejemplo validado;
-8. no usar SVG inline como fallback visual;
-9. no declarar `INSTANCE_SAFE` sin prueba real en Studio;
-10. no diagnosticar `Navigate(scr_FL_...)` mientras el grafo canónico de pantallas esté incompleto en Studio;
-11. no recuperar componentes/pantallas desde commits históricos aislados para una instalación normal;
-12. preservar identidad de componente: actualización in situ o migración controlada;
-13. en componentes afectados por FL-SC-004, la paleta visual base no debe depender de Inputs `Color` no validados en la instancia actual;
-14. no introducir texto visible < 11 para resolver problemas de espacio.
+`functional-engineering-knowledge-base/30-playbooks/power-platform/modular-power-apps-screen-construction.md`
 
-## Niveles de validación
+El método obligatorio es:
 
 ```text
-PASS_STATIC
-DEFINITION_ACCEPTED
-INSTANCE_SAFE
-PUBLIC_CONTRACT_VALIDATED
-VISUAL_QA_VALIDATED
-READY_FOR_INTEGRATION
+SKELETON
+→ PLACEHOLDER CONTRATADO
+→ BLOCK S / C / I
+→ PEGAR EN STUDIO
+→ VALIDAR
+→ FREEZE
+→ NEXT BLOCK
 ```
 
-> `PASS_STATIC` y `DEFINITION_ACCEPTED` no implican `INSTANCE_SAFE`.
+Si un incremento falla, se corrige mediante `FIX` del mismo bloque. No se usa el bloque siguiente para reparar silenciosamente el anterior.
 
-## Reglas confirmadas
+## Gate obligatorio pre-YAML
+
+Antes de cualquier `.pa.yaml`:
+
+1. leer el playbook modular vigente;
+2. leer este documento;
+3. declarar `BLOCK`, `TARGET`, `ACTION`, `DEPENDS ON`, `TOUCHES`, `DO NOT MODIFY`, `VALIDATION` y estado esperado;
+4. confirmar control y versión contra referencias probadas;
+5. reutilizar patrones positivos de PULSE/Functional Lab cuando existan;
+6. separar fuente, definición, instancia, contrato y QA visual;
+7. para nuevas `CustomProperties`, usar contrato completo por `PropertyKind`;
+8. convertir fórmulas inline con literales `: ` a bloque YAML `|-`;
+9. evitar `GroupContainer` con `Children` dentro de plantillas Gallery salvo contraejemplo validado;
+10. no usar SVG inline como fallback visual;
+11. no declarar `INSTANCE_SAFE` sin prueba real en Studio;
+12. no diagnosticar `Navigate(scr_FL_...)` mientras el grafo de identidades esté incompleto en Studio;
+13. no recuperar componentes/pantallas desde commits históricos aislados para una instalación normal;
+14. preservar identidad de componente: actualización in situ o migración controlada;
+15. no introducir texto visible <11 para resolver problemas de espacio;
+16. no modificar una pieza `FUNCTIONAL_FROZEN` o `FINAL_FROZEN` salvo que el bloque lo declare expresamente;
+17. separar estructura, comportamiento y color;
+18. validar dudas cromáticas/render en `scr_DesignSystemLab` antes de propagarlas.
+
+## Tipos de bloque
+
+```text
+S — Structural
+C — Component
+I — Integration
+FIX — reparación aislada del bloque que falló
+```
+
+### S — Structural
+
+Crea shell, containers, slots, placeholders y geometría. Una vez aprobada, la geometría queda congelada.
+
+### C — Component
+
+Sustituye un placeholder/slot por un componente real o modifica una pieza visual concreta. No rediseña la pantalla.
+
+### I — Integration
+
+Conecta piezas ya estables. No debe rehacer geometría ni rediseñar componentes.
+
+## Niveles de validación de componentes
+
+```text
+SOURCE_VALID
+→ COMPONENT_DEFINITION_ACCEPTED
+→ INSTANCE_SAFE
+→ PUBLIC_CONTRACT_VALIDATED
+→ VISUAL_QA_VALIDATED
+→ READY_FOR_INTEGRATION
+```
+
+`SOURCE_VALID` o definición aceptada no implican `INSTANCE_SAFE`.
+
+## Estados de construcción
+
+```text
+IN_CONSTRUCTION
+→ FUNCTIONAL
+→ FUNCTIONAL_FROZEN
+→ VISUAL_APPROVED
+→ FINAL_FROZEN
+```
+
+Capas:
+
+```text
+STRUCTURE       OPEN | FROZEN
+BEHAVIOR        OPEN | FROZEN
+DATA CONTRACT   OPEN | FROZEN
+COLOR           PENDING | APPROVED
+```
+
+El color puede permanecer `PENDING` mientras estructura, comportamiento y contrato estén congelados.
+
+## Reglas confirmadas de Source Code
 
 | Patrón | Riesgo confirmado | Regla |
 |---|---|---|
 | `Label@2.5.1` + Radius* | PA2108 | radios en contenedor |
 | `Classic/Button@2.2.0` + AccessibleLabel | PA2108 | no declarar sin validación específica |
 | `TabList@2.2.30` + Reset() | error de fórmula | selección mediante variable |
-| CanvasComponent solo en Git | PA2301 | instalar componente antes de pantalla consumidora |
+| CanvasComponent solo en Git | PA2301 | instalar/validar componente antes de pantalla consumidora |
 | ModernText con altura rígida | clipping/mini-scroll | `AutoHeight=true` por defecto |
 | Input CustomProperty reducido | contrato inestable | usar `PropertyKind + DisplayName + Description + DataType + Default` |
 | Power Fx inline con literal `: ` | PA1001 | bloque YAML `|-` |
 | `Classic/TextInput@2.3.2` | patrón positivo | reutilizable para edición |
-| GroupContainer anidado en Gallery | PA1001 `Expected Scalar` | controles planos dentro de template |
+| GroupContainer anidado en Gallery | PA1001 `Expected Scalar` | controles planos dentro del template |
 | SVG inline | render poco fiable | no usar como fallback |
-| componente corregido agregado como copia nueva | instancias antiguas siguen ligadas a identidad anterior | actualizar definición in situ |
-| grafo de pantallas parcial + `Navigate(scr_FL_X)` | `Name isn't valid` mientras `scr_FL_X` no exista en Studio | crear primero las 25 identidades canónicas |
-| rollback por archivo histórico | puede reintroducir defectos corregidos en revisiones posteriores | recuperar ensamblaje coherente de una rama canónica |
-| Input `Color` en componente afectado por FL-SC-004 | superficie/texto puede materializarse incorrectamente en Studio | conservar contrato si es necesario, pero usar safe palette en el camino visual base |
+| componente corregido agregado como copia nueva | las instancias antiguas conservan la identidad anterior | actualizar definición in situ |
+| grafo parcial + `Navigate(scr_FL_X)` | `Name isn't valid` mientras `scr_FL_X` no exista | crear identidad faltante antes de diagnosticar fórmula |
+| rollback por archivo histórico | reintroduce defectos posteriores ya corregidos | usar rama/ensamblaje coherente; histórico solo forense |
+| Color input afectado por FL-SC-004 | render visual inesperado en algunas instancias | validar rol/token en DesignSystemLab antes de propagar |
 
-## Evidencia positiva
+## Referencia positiva primero
+
+Ante un componente `FAIL_INSTANCE`, no iniciar una batería de micropruebas si existe un componente PULSE comparable `INSTANCE_SAFE`.
+
+Referencias principales:
 
 ```text
 PULSE cmp_HeatMapPro
-PULSE Sidebar/Nav patterns
+PULSE cmp_SidebarNav
 PULSE Classic/TextInput@2.3.2
-CMMS cmp_FL_SidebarPro RC2
+CMMS cmp_FL_SidebarPro
 CMMS cmp_FL_PageHeaderPro
-CMMS App Shell v1
-CMMS Runtime P-101 v1
-CMMS WS-01
-CMMS WS-02
 ```
+
+Secuencia:
+
+```text
+componente con problema
+→ componente PULSE comparable
+→ diff de contrato + cuerpo + versiones
+→ candidato completo corregido
+→ un smoke test
+```
+
+Solo después, si sigue fallando, reducción controlada.
 
 ## Arquitectura alineada
 
-La v2 utiliza:
+El producto funcional mantiene:
 
 ```text
 9 componentes canónicos
-25 pantallas canónicas
+25 pantallas funcionales canónicas
 ```
 
-Componentes:
+`scr_DesignSystemLab` es una utility screen de validación visual; no aumenta el alcance funcional ni entra en navegación del producto.
+
+## Grafo de pantallas
+
+Antes de evaluar referencias cross-screen pueden crearse como `Blank screen` las identidades canónicas faltantes.
+
+Eso es preparación del grafo, no autorización para pegar 25 pantallas monolíticas.
+
+Una pantalla nueva o una pantalla abierta a reconstrucción debe seguir:
 
 ```text
-cmp_FL_SidebarPro
-cmp_FL_PageHeaderPro
-cmp_FL_TreePro
-cmp_FL_ProcessRailPro
-cmp_FL_DecisionPanelPro
-cmp_FL_GatePanelPro
-cmp_FL_RiskMatrixPro
-cmp_FL_LineagePanelPro
-cmp_FL_ApplicabilityMatrixPro
+S skeleton completo
+→ geometry freeze
+→ C placeholder a componente
+→ validate/freeze
+→ I integraciones
+→ Theme pass separado
 ```
 
-El antiguo `WorkspaceShell` queda como evidencia histórica.
+## Identidad de componente
 
-## Grafo de pantallas — regla de instalación
-
-Antes de evaluar fórmulas de navegación deben existir las 25 identidades documentadas en:
-
-`../power-apps/screens/README.md`
-
-Patrón:
+Si una definición ya tiene instancias:
 
 ```text
-crear pantallas faltantes como Blank screen con nombre final
-→ comprobar desaparición de Name isn't valid por destino ausente
-→ actualizar componentes in situ
-→ cargar fuente actual de pantallas
+NO insertar copia nueva
+NO asumir que _1 sustituye a la identidad original
 ```
 
-Un `Name isn't valid. 'scr_FL_X'` no prueba un fallo de Power Fx si `scr_FL_X` todavía no existe como objeto de Studio.
+Usar actualización in situ. Una nueva identidad exige migración explícita.
 
-## Componente identity — regla obligatoria
+## FL-SC-004 — color y Theme
 
-Si una definición corregida ya tiene instancias:
+Se observaron superficies/textos negros al materializar determinadas propiedades visuales `Color`. La causa interna exacta no se declara resuelta.
 
-```text
-NO insertar una nueva copia
-NO asumir que _1 reemplaza al componente original
-```
+Desde el playbook actualizado:
 
-Usar:
+- el componente no inventa su propia paleta semántica;
+- los colores responden a roles/tokens compartidos;
+- los valores hardcoded actuales se consideran fallback de compatibilidad, no fuente semántica definitiva;
+- la paleta se valida centralmente en `scr_DesignSystemLab`;
+- un componente puede quedar `FUNCTIONAL_FROZEN` con `COLOR PENDING`.
 
-```text
-actualización in situ de la definición existente
-```
-
-La creación de una nueva identidad solo se admite como migración deliberada y controlada.
-
-## FL-SC-004 — safe palette
-
-### Efecto confirmado
-
-En esta fase se observaron instancias con superficies/textos negros al materializar determinadas propiedades visuales `Color`.
-
-La causa interna exacta de Power Apps no se declara resuelta.
-
-### Patrón correctivo operativo
-
-En componentes afectados:
-
-- mantener Inputs `Color` si forman parte del contrato que consumen pantallas existentes;
-- no depender de dichos Inputs para la paleta visual base hasta que la instancia concreta se valide;
-- usar `ColorValue(...)`/RGBA conocidos en la ruta segura;
-- habilitar tematización del host únicamente mediante una ruta explícita y validada.
-
-Componentes hardened al cierre del 11-08:
+Roles mínimos:
 
 ```text
-cmp_FL_TreePro                 HARDENED SAFE PALETTE RC3
-cmp_FL_LineagePanelPro         HARDENED SAFE PALETTE RC3
-cmp_FL_GatePanelPro            HARDENED SAFE PALETTE RC2
-cmp_FL_ApplicabilityMatrixPro  HARDENED READABILITY RC2
+Background
+Surface
+SurfaceAlt
+Border
+TextPrimary
+TextSecondary
+Primary
+PrimaryHover
+PrimarySelected
+SelectedBackground
+SelectedBorder
+SelectedAccent
+SelectedText
+Success
+Warning
+Danger
+Chart01…Chart06
 ```
 
 ## Tipografía y densidad
@@ -168,23 +234,23 @@ page title      24–28
 button          12–13
 ```
 
-No reducir texto para evitar scroll. Reorganizar layout, aumentar altura o habilitar scroll.
+No reducir tipografía para evitar scroll. Cambiar layout, altura o estrategia de overflow mediante un bloque explícito.
 
-No aplicar reemplazos globales de tamaños a las 25 pantallas sin validar una pantalla de referencia, porque el aumento puede requerir cambios de layout.
+No aplicar search-and-replace global de tamaños o colores.
 
 ## Reglas funcionales que afectan al Source Code
 
 ### Biblioteca vs aplicación
 
-Las pantallas de AnalysisCase no deben crear silenciosamente funciones/fallos/modos como si pertenecieran a P-101. Deben consumir objetos de `FmeaRevision` y registrar aplicabilidad/contexto/override cuando corresponda.
+AnalysisCase consume objetos de `FmeaRevision` y registra aplicabilidad/contexto/override; no recrea silenciosamente funciones/fallos/modos como propiedad de P-101.
 
 ### Criticidad vs riesgo AMEF
 
-Nunca usar `Matriz de criticidad` como título de S×O. Usar `Matriz de riesgo AMEF` o equivalente.
+`AssetCriticalityAssessment` y `RiskAssessment AMEF` son conceptos separados. La matriz S×O se denomina `Matriz de riesgo AMEF`.
 
 ### Tarea
 
-La UI debe poder representar:
+La UI debe distinguir:
 
 ```text
 ProposedMaintenanceTask
@@ -192,8 +258,6 @@ TaskProfileVariant
 MaintenanceTask
 MaintenanceProcedure opcional
 ```
-
-Parada, aislamiento, permiso, duración, cuadrilla y H-H pertenecen a la tarea ejecutable.
 
 ### Handoff
 
@@ -207,37 +271,33 @@ PreventiveMaintenancePlan
 WorkOrder
 ```
 
-## Bootstrap canónico
+## Bootstrap
 
-La experiencia alineada se inicializa desde `scr_FL_Home.OnVisible` con `varFLAlignedInitialized`.
+`scr_FL_Home.OnVisible` permanece como autoridad del fixture alineado mediante `varFLAlignedInitialized`.
 
-Referencia conceptual equivalente:
+No reinstalar bootstraps legacy.
 
-`../power-apps/runtime/functional-lab-aligned-bootstrap.powerfx`
-
-El bootstrap pre-auditoría está retirado para evitar reinstalaciones accidentales del modelo anterior.
-
-## Estado de validación tras hardening 11-08
+## Estado de fuente al cierre del hardening 11-08
 
 ```text
-cmp_FL_SidebarPro              evidencia INSTANCE_SAFE previa; revisión actual requiere smoke integrado
-cmp_FL_PageHeaderPro           evidencia INSTANCE_SAFE previa; revisión actual requiere smoke integrado
-cmp_FL_TreePro                 SOURCE HARDENED / Studio retest pendiente
+cmp_FL_SidebarPro              evidencia positiva previa / no tocar sin fallo real
+cmp_FL_PageHeaderPro           evidencia positiva previa / no tocar sin fallo real
+cmp_FL_TreePro                 RC3 SOURCE / Studio retest pendiente
 cmp_FL_ProcessRailPro          SOURCE revisado / Studio pendiente
 cmp_FL_DecisionPanelPro        SOURCE revisado / Studio pendiente
-cmp_FL_GatePanelPro            SOURCE HARDENED / Studio retest pendiente
+cmp_FL_GatePanelPro            RC2 SOURCE / Studio retest pendiente
 cmp_FL_RiskMatrixPro           RC4 SOURCE / Studio QA pendiente
-cmp_FL_LineagePanelPro         SOURCE HARDENED / Studio retest pendiente
-cmp_FL_ApplicabilityMatrixPro  SOURCE HARDENED / Studio retest pendiente
-25 pantallas                   fuentes publicadas / instalación integrada pendiente
+cmp_FL_LineagePanelPro         RC3 SOURCE / Studio retest pendiente
+cmp_FL_ApplicabilityMatrixPro  RC2 SOURCE / Studio retest pendiente
 ```
 
-No promover este cuadro por inferencia. Solo Studio puede aumentar el nivel de aceptación.
+Consultar `FREEZE_REGISTER_2026-08-11.md` antes de declarar `TOUCHES`/`DO NOT MODIFY`.
 
 ## Siguiente gate
 
-Seguir:
+Seguir, en este orden:
 
-- `../power-apps/V2_INSTALLATION.md`
-- `TOMORROW_RUNBOOK_2026-08-12.md`
-- `RECOVERY_HARDENING_AUDIT_2026-08-11.md`
+1. `TOMORROW_RUNBOOK_2026-08-12.md`
+2. `FREEZE_REGISTER_2026-08-11.md`
+3. `RECOVERY_HARDENING_AUDIT_2026-08-11.md`
+4. `../power-apps/V2_INSTALLATION.md`
