@@ -1,36 +1,54 @@
-# CMMS 2.0 Functional Lab — Instalación arquitectura v2
+# CMMS 2.0 Functional Lab — Instalación del modelo alineado
 
 **Estado:** candidato para validación integrada en Power Apps Studio  
-**Rama:** `feature/f01-premium-foundation`
+**Rama:** `feature/f01-premium-foundation`  
+**Fecha:** 2026-08-11
 
 ## 1. Objetivo
 
-Instalar la arquitectura v2 como una aplicación coherente, evitando validar 21 pantallas una por una.
+Instalar y validar la versión corregida tras la auditoría de las últimas reuniones.
 
-La arquitectura v2 utiliza navegación de producto, pantallas por objeto/proceso real, Process Rail FL-01…FL-28, decisiones explícitas y controles de avance explicables.
+La experiencia completa utiliza:
+
+```text
+Biblioteca AMEF
+→ Aplicación multi-activo
+→ Criticidad contextual
+→ AnalysisCase / 28 etapas
+→ AMEF / RCM
+→ tarea ejecutable
+→ plan / handoff
+→ ejecución / efectividad
+```
 
 ## 2. Componentes requeridos
 
-Crear o sustituir primero estos siete componentes con su Source Code completo:
+Crear o sustituir primero los 9 componentes canónicos:
 
-1. `components/cmp_FL_SidebarPro.pa.yaml`
-2. `components/cmp_FL_PageHeaderPro.pa.yaml`
-3. `components/cmp_FL_TreePro.pa.yaml`
-4. `components/cmp_FL_ProcessRailPro.pa.yaml`
-5. `components/cmp_FL_DecisionPanelPro.pa.yaml`
-6. `components/cmp_FL_GatePanelPro.pa.yaml`
-7. `components/cmp_FL_RiskMatrixPro.pa.yaml`
+1. `cmp_FL_SidebarPro`
+2. `cmp_FL_PageHeaderPro`
+3. `cmp_FL_TreePro`
+4. `cmp_FL_ProcessRailPro`
+5. `cmp_FL_DecisionPanelPro`
+6. `cmp_FL_GatePanelPro`
+7. `cmp_FL_RiskMatrixPro`
+8. `cmp_FL_LineagePanelPro`
+9. `cmp_FL_ApplicabilityMatrixPro`
 
-No insertar pantallas que los consuman hasta que las siete definiciones estén guardadas en la app.
+No instalar pantallas consumidoras hasta guardar primero las nueve definiciones.
 
-## 3. Crear primero las 21 pantallas vacías
+## 3. Crear las 25 pantallas vacías
 
 ```text
 scr_FL_Home
 scr_FL_FLH
 scr_FL_Taxonomy
 scr_FL_ADR
+scr_FL_AssetCriticality
 scr_FL_Asset360
+scr_FL_FmeaLibrary
+scr_FL_FmeaRevision
+scr_FL_AssetApplication
 scr_FL_AnalysisRegister
 scr_FL_CaseOverview
 scr_FL_Context
@@ -49,143 +67,218 @@ scr_FL_Governance
 scr_FL_Settings
 ```
 
-Esto permite que todas las fórmulas `Navigate(...)` resuelvan los nombres de pantalla.
+Esto permite resolver referencias `Navigate(...)` antes de pegar el Source Code completo.
 
-## 4. Orden recomendado
+## 4. Bootstrap
 
-### Lote A — arranque
+La autoridad ejecutable de la versión alineada es `scr_FL_Home.OnVisible`, protegido por `varFLAlignedInitialized`.
 
-`scr_FL_Home.pa.yaml`
+Existe además una copia conceptual en:
 
-Abrir Home una vez para inicializar el runtime v2.
+`runtime/functional-lab-aligned-bootstrap.powerfx`
 
-### Lote B — Activos
+Abrir Home una vez para cargar:
 
-```text
-scr_FL_FLH.pa.yaml
-scr_FL_Taxonomy.pa.yaml
-scr_FL_ADR.pa.yaml
-scr_FL_Asset360.pa.yaml
-```
+- navegación;
+- criticidad independiente de P-101/P-102/P-103;
+- biblioteca AMEF;
+- revisiones;
+- funciones/fallos/modos/causas/efectos;
+- tareas propuestas;
+- cobertura N:M tarea-modo;
+- aplicaciones multi-activo;
+- perfiles y variantes;
+- AnalysisCase;
+- 28 etapas;
+- datos de AMEF/RCM/tarea/plan/ejecución.
 
-### Lote C — Estrategia / caso
+No utilizar el antiguo `functional-lab-v2-bootstrap.powerfx` para reinstalar esta versión.
 
-```text
-scr_FL_AnalysisRegister.pa.yaml
-scr_FL_CaseOverview.pa.yaml
-scr_FL_Context.pa.yaml
-scr_FL_Functions.pa.yaml
-scr_FL_FailureModes.pa.yaml
-scr_FL_AMEF.pa.yaml
-scr_FL_RCM.pa.yaml
-scr_FL_Economics.pa.yaml
-scr_FL_Task.pa.yaml
-scr_FL_PlanPackage.pa.yaml
-scr_FL_Traceability.pa.yaml
-scr_FL_ReviewApproval.pa.yaml
-scr_FL_Effectiveness.pa.yaml
-```
+## 5. Orden recomendado de pantallas
 
-### Lote D — módulos de shell
+### Lote A — Shell y contexto
 
 ```text
-scr_FL_MaintenancePlans.pa.yaml
-scr_FL_Governance.pa.yaml
-scr_FL_Settings.pa.yaml
+scr_FL_Home
+scr_FL_FLH
+scr_FL_Taxonomy
+scr_FL_ADR
+scr_FL_AssetCriticality
+scr_FL_Asset360
 ```
 
-## 5. Estado inicial de P-101
+### Lote B — Ingeniería reusable
 
 ```text
-FL-01..FL-06   confirmed
-FL-07          draft / current
-FL-08..FL-28   not_started
+scr_FL_FmeaLibrary
+scr_FL_FmeaRevision
+scr_FL_AssetApplication
 ```
 
-El runtime conserva la valoración AMEF del prototipo:
+### Lote C — AnalysisCase
 
 ```text
-Severidad     4/5
-Ocurrencia    3/5
-Detección     3/5
-S×O           12
-NPR           36
+scr_FL_AnalysisRegister
+scr_FL_CaseOverview
+scr_FL_Context
+scr_FL_Functions
+scr_FL_FailureModes
+scr_FL_AMEF
+scr_FL_RCM
+scr_FL_Economics
+scr_FL_Task
+scr_FL_PlanPackage
+scr_FL_Traceability
+scr_FL_ReviewApproval
+scr_FL_Effectiveness
 ```
 
-## 6. Validación integrada
+### Lote D — Handoff y gobierno
+
+```text
+scr_FL_MaintenancePlans
+scr_FL_Governance
+scr_FL_Settings
+```
+
+## 6. Fixture P-101
+
+```text
+FmeaDefinition        AMEF-BOMBA-CENTRIFUGA
+FmeaRevision          R01
+Application           APP-P101-R01
+TechnicalObject       P-101
+AssetCriticality      Alta
+Profile               HIGH
+AnalysisCase          P101-AMEF-RCM-001
+```
+
+AMEF inicial:
+
+```text
+S=4/5
+O=3/5
+D=3/5
+S×O=12
+NPR=36
+```
+
+## 7. Validación integrada
 
 ### Smoke 1 — Foundation
 
-Guardar los siete componentes e insertar de forma aislada los cuatro componentes nuevos de arquitectura v2:
+Insertar una instancia aislada de los componentes nuevos/no validados: ProcessRail, DecisionPanel, GatePanel, RiskMatrix, LineagePanel y ApplicabilityMatrix. Studio debe permanecer estable.
 
-- `cmp_FL_ProcessRailPro`
-- `cmp_FL_DecisionPanelPro`
-- `cmp_FL_GatePanelPro`
-- `cmp_FL_RiskMatrixPro`
+### Smoke 2 — Activos y criticidad
 
-Studio debe permanecer estable.
+Verificar FLH, Taxonomía, ADR, Criticidad y Ficha 360. Confirmar que la criticidad de P-101 se presenta como dato contextual externo al AMEF.
 
-### Smoke 2 — Shell
+### Smoke 3 — Biblioteca AMEF
 
-Abrir `scr_FL_Home` y comprobar navegación, caso P-101 y accesos a FLH, Taxonomía y ADR.
+Abrir Biblioteca y Revisión. Verificar:
 
-### Smoke 3 — Activos
+- AMEF por familia de equipo;
+- revisión R01;
+- funciones/fallos/modos;
+- causas/mecanismos;
+- efectos;
+- tareas propuestas;
+- relación N:M tarea-modo;
+- ausencia de dependencia propietaria de P-101.
 
-Abrir `scr_FL_FLH` y comprobar TreePro, P-101 resaltado, búsqueda, selección, expandir/contraer y navegación entre vistas de Activos.
+### Smoke 4 — Aplicación multi-activo
 
-### Smoke 4 — AnalysisCase
+Abrir Aplicación y verificar P-101/P-102/P-103 sobre la misma revisión R01, con criticidad/perfil/intervalo diferentes sin duplicar la ingeniería.
 
-Abrir `scr_FL_CaseOverview` y comprobar 28 etapas, FL-01..06 confirmadas, FL-07 actual y navegación desde Process Rail.
+### Smoke 5 — AnalysisCase
 
-### Smoke 5 — Decisión
+Abrir Case Overview y confirmar:
 
-Abrir `scr_FL_FailureModes` y comprobar recomendación FM-03, decisión humana separada, override con motivo y control de avance.
+- referencia a FmeaRevision;
+- aplicación activa;
+- criticidad utilizada;
+- 28 etapas;
+- lineage visible;
+- FL-01..06 como revisión/aplicabilidad, no creación desde cero.
 
-### Smoke 6 — AMEF completo con matriz
+### Smoke 6 — Failure Modes / AMEF
 
-Abrir `scr_FL_AMEF` y comprobar en un único recorrido:
+Verificar:
 
-1. los tres efectos son editables;
-2. la matriz representa **Severidad × Ocurrencia en escala 1–5**;
-3. existen **25 celdas (5×5)**;
-4. la celda inicial corresponde a `S=4`, `O=3` y `S×O=12`;
-5. seleccionar otra celda actualiza S y O;
-6. Detección se mantiene separada y editable entre 1 y 5;
-7. el NPR se recalcula como `S × O × D`, con valor inicial 36;
-8. la banda visual se muestra separada del NPR;
-9. recomendación de consecuencia y decisión humana permanecen diferenciadas;
-10. `GatePanelPro` explica qué falta y permite continuar a RCM cuando el AMEF está completo.
+- modo heredado de biblioteca;
+- causas visibles;
+- recomendación separada de decisión humana;
+- `Matriz de riesgo AMEF` 5×5;
+- criticidad de activo mostrada por separado;
+- S=4, O=3, D=3, NPR=36;
+- control de avance explicable.
 
-Bandas visuales provisionales del laboratorio:
+### Smoke 7 — RCM
 
-```text
-Bajo       S×O <= 5
-Moderado   S×O <= 10
-Alto       S×O <= 15
-Crítico    S×O > 15
-```
+Verificar que la pantalla representa respuestas y resultado de una lógica versionable, sin presentar la secuencia concreta como regla corporativa cerrada.
 
-Estas bandas **no son una regla corporativa aprobada**. El componente permite sustituirlas sin reconstrucción.
+### Smoke 8 — Task
 
-Si los seis smokes pasan, la arquitectura v2 queda suficientemente validada para Visual QA por pantalla.
-
-## 7. Qué no se considera validado todavía
-
-Hasta ejecutar Studio:
+Verificar las tres capas:
 
 ```text
-DEFINITION_ACCEPTED          pending para componentes nuevos
-INSTANCE_SAFE                pending para componentes nuevos
-VISUAL_QA_VALIDATED          pending para nuevas pantallas
-READY_FOR_INTEGRATION        no
+ProposedMaintenanceTask
+TaskProfileVariant
+MaintenanceTask
 ```
 
-El control estático previo comprueba sintaxis YAML, referencias de pantallas/componentes y las incompatibilidades Source Code ya documentadas.
+Comprobar intervalo, estado operativo, parada/aislamiento/permiso, duración, crew, H-H y procedimiento opcional.
 
-## 8. Bilingüismo
+### Smoke 9 — Plan Package
 
-La v2 mantiene español como idioma visible actual y estructura preparada para ES/EN.
+Verificar `PlanScopeItem`, tags incluidos, restricciones derivadas, H-H y regla de agrupación candidata.
 
-## 9. Backend
+### Smoke 10 — Maintenance Plans
 
-El runtime actual utiliza Power Fx y colecciones como adapter del laboratorio. La futura persistencia deberá respetar los contratos de dominio documentados y puede orientarse a Azure SQL sin convertirlo en dependencia del prototipo.
+Distinguir visualmente:
+
+```text
+MaintenanceTask
+MaintenanceProcedure
+JobPlan / Route
+PreventiveMaintenancePlan
+WorkOrder
+ExecutionResult
+```
+
+Confirmar que la agrupación conserva trazabilidad por `TechnicalObject`.
+
+### Smoke 11 — Trazabilidad / revisión / efectividad
+
+Reconstruir Biblioteca → Aplicación → Decisión → Tarea → Plan → Ejecución y comprobar que un resultado real puede desencadenar cambio de aplicación o nueva revisión AMEF.
+
+## 8. Qué NO validamos todavía
+
+Los smokes anteriores validan estructura y experiencia, no cierran:
+
+- escalas AMEF corporativas;
+- umbrales y colores;
+- reglas oficiales de criticidad;
+- árbol RCM definitivo;
+- P–F/intervalo;
+- roles y autoridades finales;
+- evidencia mínima;
+- sobreclasificación;
+- criterios de aprobación;
+- KPIs de efectividad;
+- reglas definitivas de agrupación;
+- sistema destino/integración;
+- arquitectura física de datos.
+
+## 9. Niveles de aceptación
+
+```text
+PASS_STATIC
+DEFINITION_ACCEPTED
+INSTANCE_SAFE
+PUBLIC_CONTRACT_VALIDATED
+VISUAL_QA_VALIDATED
+READY_FOR_INTEGRATION
+```
+
+`PASS_STATIC` no implica `INSTANCE_SAFE`. Power Apps Studio sigue siendo la autoridad de runtime.
