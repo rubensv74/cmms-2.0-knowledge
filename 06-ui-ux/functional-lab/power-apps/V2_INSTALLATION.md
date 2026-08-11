@@ -1,43 +1,29 @@
-# CMMS 2.0 Functional Lab — Instalación del modelo alineado
+# CMMS 2.0 Functional Lab — Instalación canónica y validación integrada
 
-**Estado:** candidato para validación integrada en Power Apps Studio  
+**Estado:** recovery-hardened candidate para Power Apps Studio  
 **Rama:** `feature/f01-premium-foundation`  
 **Fecha:** 2026-08-11
 
-## 1. Objetivo
+## 1. Regla principal
 
-Instalar y validar la versión corregida tras la auditoría de las últimas reuniones.
+La instalación se realiza **exclusivamente desde la rama actual**.
 
-La experiencia completa utiliza:
+No utilizar commits históricos para reconstruir archivos individuales. No mezclar pantallas y componentes de revisiones distintas.
+
+La secuencia obligatoria es:
 
 ```text
-Biblioteca AMEF
-→ Aplicación multi-activo
-→ Criticidad contextual
-→ AnalysisCase / 28 etapas
-→ AMEF / RCM
-→ tarea ejecutable
-→ plan / handoff
-→ ejecución / efectividad
+25 identidades de pantalla
+→ 9 componentes actuales in situ
+→ 25 fuentes de pantalla actuales
+→ reinicio de sesión / bootstrap
+→ smokes integrados
+→ Visual QA
 ```
 
-## 2. Componentes requeridos
+## 2. Crear primero las 25 identidades de pantalla
 
-Crear o sustituir primero los 9 componentes canónicos:
-
-1. `cmp_FL_SidebarPro`
-2. `cmp_FL_PageHeaderPro`
-3. `cmp_FL_TreePro`
-4. `cmp_FL_ProcessRailPro`
-5. `cmp_FL_DecisionPanelPro`
-6. `cmp_FL_GatePanelPro`
-7. `cmp_FL_RiskMatrixPro`
-8. `cmp_FL_LineagePanelPro`
-9. `cmp_FL_ApplicabilityMatrixPro`
-
-No instalar pantallas consumidoras hasta guardar primero las nueve definiciones.
-
-## 3. Crear las 25 pantallas vacías
+Antes de juzgar errores `Navigate(...)`, deben existir en Studio las 25 pantallas canónicas:
 
 ```text
 scr_FL_Home
@@ -67,36 +53,71 @@ scr_FL_Governance
 scr_FL_Settings
 ```
 
-Esto permite resolver referencias `Navigate(...)` antes de pegar el Source Code completo.
+Si una no existe, crear una `Blank screen` y asignar el nombre exacto. Todavía no es necesario pegar su contenido.
 
-## 4. Bootstrap
+### Gate de dependencias
 
-La autoridad ejecutable de la versión alineada es `scr_FL_Home.OnVisible`, protegido por `varFLAlignedInitialized`.
+Después de crear los nombres, abrir Formulas/App Checker.
 
-Existe además una copia conceptual en:
+Un error previo del tipo:
 
-`runtime/functional-lab-aligned-bootstrap.powerfx`
+```text
+Name isn't valid. 'scr_FL_X'
+```
 
-Abrir Home una vez para cargar:
+no se considera un fallo de la fórmula si `scr_FL_X` era una pantalla canónica que aún no existía en Studio.
 
-- navegación;
-- criticidad independiente de P-101/P-102/P-103;
-- biblioteca AMEF;
-- revisiones;
-- funciones/fallos/modos/causas/efectos;
-- tareas propuestas;
-- cobertura N:M tarea-modo;
-- aplicaciones multi-activo;
-- perfiles y variantes;
-- AnalysisCase;
-- 28 etapas;
-- datos de AMEF/RCM/tarea/plan/ejecución.
+## 3. Actualizar los 9 componentes canónicos
 
-No utilizar el antiguo `functional-lab-v2-bootstrap.powerfx` para reinstalar esta versión.
+Carpeta:
 
-## 5. Orden recomendado de pantallas
+`power-apps/components/`
 
-### Lote A — Shell y contexto
+Orden:
+
+```text
+1 cmp_FL_SidebarPro
+2 cmp_FL_PageHeaderPro
+3 cmp_FL_TreePro
+4 cmp_FL_ProcessRailPro
+5 cmp_FL_DecisionPanelPro
+6 cmp_FL_GatePanelPro
+7 cmp_FL_RiskMatrixPro
+8 cmp_FL_LineagePanelPro
+9 cmp_FL_ApplicabilityMatrixPro
+```
+
+### Identidad
+
+Si el componente ya existe en la app, actualizar **la definición existente in situ**.
+
+No añadir una segunda copia con sufijo. Una definición nueva con identidad distinta no reasocia automáticamente las instancias existentes.
+
+### Foundation visual esperada
+
+```text
+Sidebar             dark palette intencional
+PageHeader          safe palette + Comfortable
+TreePro             HARDENED SAFE PALETTE RC3
+ProcessRail         safe palette + texto >=11
+DecisionPanel       safe palette + texto >=11
+GatePanel           HARDENED SAFE PALETTE RC2
+RiskMatrix          Premium 5×5 RC4
+LineagePanel        HARDENED SAFE PALETTE RC3 / Height 126
+ApplicabilityMatrix HARDENED READABILITY RC2
+```
+
+Guardar una vez después de actualizar los nueve y comprobar que no existe un error de definición bloqueante.
+
+## 4. Sustituir las 25 pantallas por su fuente actual
+
+Carpeta:
+
+`power-apps/screens/`
+
+Si una pantalla ya existe, conservar su identidad y sustituir su Source Code por el archivo actual de la rama.
+
+### Lote A — Foundation y Activos
 
 ```text
 scr_FL_Home
@@ -107,7 +128,7 @@ scr_FL_AssetCriticality
 scr_FL_Asset360
 ```
 
-### Lote B — Ingeniería reusable
+### Lote B — Ingeniería reutilizable
 
 ```text
 scr_FL_FmeaLibrary
@@ -141,7 +162,26 @@ scr_FL_Governance
 scr_FL_Settings
 ```
 
-## 6. Fixture P-101
+Guardar una vez al finalizar cada lote. No ejecutar una investigación de fórmula por cada pantalla individual.
+
+## 5. Bootstrap
+
+La autoridad ejecutable de la versión alineada es `scr_FL_Home.OnVisible`, protegida por `varFLAlignedInitialized`.
+
+Existe copia conceptual en:
+
+`runtime/functional-lab-aligned-bootstrap.powerfx`
+
+Después de instalar las 25 fuentes:
+
+1. guardar;
+2. cerrar/reabrir Studio o recargar la sesión para limpiar variables;
+3. abrir `scr_FL_Home`;
+4. dejar que `Home.OnVisible` inicialice el fixture.
+
+No utilizar el antiguo `functional-lab-v2-bootstrap.powerfx`.
+
+## 6. Fixture canónico P-101
 
 ```text
 FmeaDefinition        AMEF-BOMBA-CENTRIFUGA
@@ -151,57 +191,60 @@ TechnicalObject       P-101
 AssetCriticality      Alta
 Profile               HIGH
 AnalysisCase          P101-AMEF-RCM-001
+S                      4/5
+O                      3/5
+D                      3/5
+S×O                    12
+NPR                    36
 ```
 
-AMEF inicial:
+## 7. Smoke 1 — Foundation integrada
+
+Recorrer en una única sesión:
 
 ```text
-S=4/5
-O=3/5
-D=3/5
-S×O=12
-NPR=36
+Home
+→ FLH
+→ Taxonomía
+→ ADR
+→ Criticidad
+→ Ficha 360
+→ Biblioteca AMEF
+→ Revisión AMEF
+→ Aplicación multi-activo
 ```
 
-## 7. Validación integrada
+Validar:
 
-### Smoke 1 — Foundation
+```text
+[ ] ningún Name isn't valid por pantallas canónicas
+[ ] ningún componente duplicado con sufijo
+[ ] ninguna superficie negra accidental
+[ ] Sidebar oscuro únicamente donde corresponde
+[ ] P-101 permanece cargado
+[ ] TreePro funciona en FLH/Taxonomía/ADR
+[ ] criticidad del activo está separada del riesgo AMEF
+[ ] R01 se aplica a P-101/P-102/P-103 sin duplicar ingeniería
+```
 
-Insertar una instancia aislada de los componentes nuevos/no validados: ProcessRail, DecisionPanel, GatePanel, RiskMatrix, LineagePanel y ApplicabilityMatrix. Studio debe permanecer estable.
+Resultado:
 
-### Smoke 2 — Activos y criticidad
+```text
+FOUNDATION INTEGRATED PASS
+```
 
-Verificar FLH, Taxonomía, ADR, Criticidad y Ficha 360. Confirmar que la criticidad de P-101 se presenta como dato contextual externo al AMEF.
-
-### Smoke 3 — Biblioteca AMEF
-
-Abrir Biblioteca y Revisión. Verificar:
-
-- AMEF por familia de equipo;
-- revisión R01;
-- funciones/fallos/modos;
-- causas/mecanismos;
-- efectos;
-- tareas propuestas;
-- relación N:M tarea-modo;
-- ausencia de dependencia propietaria de P-101.
-
-### Smoke 4 — Aplicación multi-activo
-
-Abrir Aplicación y verificar P-101/P-102/P-103 sobre la misma revisión R01, con criticidad/perfil/intervalo diferentes sin duplicar la ingeniería.
-
-### Smoke 5 — AnalysisCase
+## 8. Smoke 2 — AnalysisCase
 
 Abrir Case Overview y confirmar:
 
-- referencia a FmeaRevision;
+- referencia a `FmeaRevision`;
 - aplicación activa;
-- criticidad utilizada;
+- criticidad utilizada como contexto;
 - 28 etapas;
 - lineage visible;
-- FL-01..06 como revisión/aplicabilidad, no creación desde cero.
+- FL-01..06 como revisión/aplicabilidad, no creación silenciosa de nueva ingeniería.
 
-### Smoke 6 — Failure Modes / AMEF
+## 9. Smoke 3 — Failure Modes / AMEF
 
 Verificar:
 
@@ -209,17 +252,19 @@ Verificar:
 - causas visibles;
 - recomendación separada de decisión humana;
 - `Matriz de riesgo AMEF` 5×5;
-- criticidad de activo mostrada por separado;
-- S=4, O=3, D=3, NPR=36;
+- criticidad mostrada por separado;
+- S=4, O=3, D=3, S×O=12, NPR=36;
 - control de avance explicable.
 
-### Smoke 7 — RCM
+No rediseñar RiskMatrix durante este smoke.
 
-Verificar que la pantalla representa respuestas y resultado de una lógica versionable, sin presentar la secuencia concreta como regla corporativa cerrada.
+## 10. Smoke 4 — RCM
 
-### Smoke 8 — Task
+Verificar que la pantalla representa respuestas y resultado de una lógica versionable, sin presentar la secuencia concreta como una regla corporativa cerrada.
 
-Verificar las tres capas:
+## 11. Smoke 5 — Task
+
+Comprobar las tres capas:
 
 ```text
 ProposedMaintenanceTask
@@ -227,13 +272,13 @@ TaskProfileVariant
 MaintenanceTask
 ```
 
-Comprobar intervalo, estado operativo, parada/aislamiento/permiso, duración, crew, H-H y procedimiento opcional.
+Validar intervalo, estado operativo, parada/aislamiento/permiso, duración, crew, H-H y procedimiento opcional.
 
-### Smoke 9 — Plan Package
+## 12. Smoke 6 — Plan Package
 
 Verificar `PlanScopeItem`, tags incluidos, restricciones derivadas, H-H y regla de agrupación candidata.
 
-### Smoke 10 — Maintenance Plans
+## 13. Smoke 7 — Maintenance Plans
 
 Distinguir visualmente:
 
@@ -248,16 +293,45 @@ ExecutionResult
 
 Confirmar que la agrupación conserva trazabilidad por `TechnicalObject`.
 
-### Smoke 11 — Trazabilidad / revisión / efectividad
+## 14. Smoke 8 — Trazabilidad / revisión / efectividad
 
-Reconstruir Biblioteca → Aplicación → Decisión → Tarea → Plan → Ejecución y comprobar que un resultado real puede desencadenar cambio de aplicación o nueva revisión AMEF.
+Reconstruir:
 
-## 8. Qué NO validamos todavía
+```text
+Biblioteca
+→ Aplicación
+→ Decisión
+→ Tarea
+→ Plan
+→ Ejecución
+→ Efectividad
+```
 
-Los smokes anteriores validan estructura y experiencia, no cierran:
+Confirmar que un resultado real puede desencadenar un cambio de aplicación o una nueva revisión AMEF.
+
+## 15. Visual QA después de la estabilidad funcional
+
+La foundation Comfortable exige:
+
+```text
+texto visible mínimo     11
+supporting               12
+label                    12–13
+body                     13–14
+card title               15–17
+section title            16–18
+page title               24–28
+button                    12–13
+```
+
+Existen pantallas históricas con `Size` 9/10. No se hará un reemplazo masivo ciego: primero se corrige una pantalla de referencia, se comprueba clipping y después se propaga el patrón.
+
+Nunca reducir fuente para evitar scroll.
+
+## 16. Qué NO se cierra todavía por inferencia
 
 - escalas AMEF corporativas;
-- umbrales y colores;
+- umbrales y colores corporativos;
 - reglas oficiales de criticidad;
 - árbol RCM definitivo;
 - P–F/intervalo;
@@ -270,7 +344,7 @@ Los smokes anteriores validan estructura y experiencia, no cierran:
 - sistema destino/integración;
 - arquitectura física de datos.
 
-## 9. Niveles de aceptación
+## 17. Niveles de aceptación
 
 ```text
 PASS_STATIC
@@ -281,4 +355,10 @@ VISUAL_QA_VALIDATED
 READY_FOR_INTEGRATION
 ```
 
-`PASS_STATIC` no implica `INSTANCE_SAFE`. Power Apps Studio sigue siendo la autoridad de runtime.
+`PASS_STATIC` nunca implica `INSTANCE_SAFE`. Power Apps Studio y App Checker siguen siendo la autoridad de runtime.
+
+## 18. Runbook operativo
+
+Para la ejecución de mañana seguir:
+
+`../development/TOMORROW_RUNBOOK_2026-08-12.md`
