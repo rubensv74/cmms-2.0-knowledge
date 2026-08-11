@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados en Studio / validación pausada por FL-SC-004
+**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados / implementación visual pausada para corregir foundation
 
 ## 1. Modelo canónico
 
@@ -33,103 +33,11 @@ P-101 es una aplicación de `AMEF-BOMBA-CENTRIFUGA / R01`, no propietario de la 
 
 ## 2. Auditoría D-01…D-14
 
-Las 14 desviaciones identificadas están corregidas funcionalmente. `CORREGIDO` no significa automáticamente `INSTANCE_SAFE`: cada pieza debe comprobarse en Power Apps Studio.
+Las 14 desviaciones identificadas están corregidas funcionalmente.
 
-| ID | Corrección | Estado funcional |
-|---|---|---|
-| D-01 | Biblioteca `FmeaDefinition/FmeaRevision` | CORREGIDO |
-| D-02 | Criticidad separada de riesgo AMEF | CORREGIDO |
-| D-03 | Aplicación multi-activo | CORREGIDO |
-| D-04 | Perfiles/variantes por contexto | CORREGIDO |
-| D-05 | `FailureCause` / mecanismo | CORREGIDO |
-| D-06 | N:M tarea propuesta ↔ modo | CORREGIDO |
-| D-07 | Procedimiento/checklist opcional | CORREGIDO |
-| D-08 | Estado operativo/parada/aislamiento/permiso | CORREGIDO |
-| D-09 | Duración, crew, H-H, disciplina/work center | CORREGIDO |
-| D-10 | Economía preliminar / estimado / real | CORREGIDO |
-| D-11 | Lógica RCM versionable | CORREGIDO |
-| D-12 | Alcance físico por `TechnicalObject` | CORREGIDO |
-| D-13 | Job Plan / PM / WO / resultado separados | CORREGIDO |
-| D-14 | Ciclos, agrupación y ObjectList | CORREGIDO |
+`CORREGIDO` no significa automáticamente `INSTANCE_SAFE` ni `VISUAL_QA_VALIDATED`.
 
-## 3. Pantallas y componentes canónicos
-
-La versión alineada contiene **25 pantallas** y **9 componentes**.
-
-Componentes:
-
-```text
-cmp_FL_SidebarPro
-cmp_FL_PageHeaderPro
-cmp_FL_TreePro
-cmp_FL_ProcessRailPro
-cmp_FL_DecisionPanelPro
-cmp_FL_GatePanelPro
-cmp_FL_RiskMatrixPro
-cmp_FL_LineagePanelPro
-cmp_FL_ApplicabilityMatrixPro
-```
-
-Evidencia acumulada antes de FL-SC-004:
-
-```text
-SidebarPro / PageHeaderPro        INSTANCE_SAFE PASS previo
-TreePro                            runtime funcional en Activos PASS
-ApplicabilityMatrixPro             runtime funcional en Aplicación multi-activo PASS
-ProcessRailPro                     import corregido
-```
-
-### FL-SC-004 — paleta de componentes
-
-Durante la inspección visual de `scr_FL_AMEF` se observó que varias instancias materializan como negro colores que en Source Code tienen defaults claros. Los controles propios de la pantalla sí conservan su paleta.
-
-Se ha publicado un patrón correctivo `safe palette` que mantiene los Inputs Color pero utiliza colores internos explícitos mientras `UseHostTheme=false`.
-
-Componentes revisados:
-
-```text
-cmp_FL_SidebarPro
-cmp_FL_PageHeaderPro
-cmp_FL_ProcessRailPro
-cmp_FL_LineagePanelPro
-cmp_FL_DecisionPanelPro
-cmp_FL_RiskMatrixPro
-cmp_FL_ApplicabilityMatrixPro
-```
-
-Sin cambio:
-
-```text
-cmp_FL_TreePro
-cmp_FL_GatePanelPro
-```
-
-Estado de estas nuevas revisiones:
-
-```text
-PASS_STATIC          PASS
-DEFINITION_ACCEPTED  pendiente de sustitución en Studio
-INSTANCE_SAFE        pendiente
-VISUAL_QA_VALIDATED  pendiente
-```
-
-Incidente: `development/incidents/FL-SC-004-component-color-defaults-render-black.md`.
-
-## 4. Fixture P-101
-
-```text
-FmeaDefinition        AMEF-BOMBA-CENTRIFUGA
-FmeaRevision          R01
-Application           APP-P101-R01
-TechnicalObject       P-101
-AssetCriticality      Alta · CRIT-P101-R03
-Profile               HIGH
-AnalysisCase          P101-AMEF-RCM-001
-```
-
-La misma revisión R01 se aplica también a P-102 y P-103 con perfiles/intervalos distintos sin duplicar la ingeniería.
-
-## 5. Evidencia Studio — 2026-08-11
+## 3. Evidencia Studio acumulada
 
 ```text
 scr_FL_Home / bootstrap                           PASS
@@ -141,7 +49,7 @@ ingeniería base separada de P-101                 PASS
 R01 aplicada a P-101 / P-102 / P-103              PASS
 criticidad/perfil/intervalo por aplicación         PASS
 APP-P101-R01 + perfil HIGH                         PASS
-ApplicabilityMatrixPro en runtime                  PASS previo a safe-palette RC
+ApplicabilityMatrixPro en runtime                  PASS previo
 ```
 
 Confirmaciones de usuario:
@@ -153,36 +61,110 @@ BIBLIOTECA AMEF OK
 APLICACIÓN MULTI-ACTIVO OK
 ```
 
-## 6. Estado del plan integrado
+## 4. Incidencias foundation abiertas
+
+### FL-SC-004 — colores de componentes
+
+Se observó que varias instancias materializan como negro colores que en Source Code tienen defaults claros.
+
+El patrón correctivo safe-palette está publicado, pero **no debe introducirse agregando nuevas copias de componentes existentes**, porque Studio crea una identidad nueva y las pantallas continúan asociadas a la original.
+
+La corrección definitiva deberá preservar identidad de componente o realizar migración controlada de instancias.
+
+### Legibilidad tipográfica — nueva corrección obligatoria
+
+La inspección visual confirmó que la escala anterior era demasiado pequeña para una aplicación que debe utilizarse en escritorio y demostrarse en reuniones.
+
+Se retira como baseline la escala basada en tamaños 7–10.
+
+Nuevo estándar canónico:
+
+`TYPOGRAPHY_AND_DENSITY_STANDARD.md`
+
+Reglas principales:
+
+```text
+texto visible mínimo     11
+supporting               12
+label                    12–13
+body                     13–14
+section title            16–18
+page title               24–28
+button                    12–13
+```
+
+No se reducirá tipografía para evitar scroll.
+
+## 5. Decisión de implementación
+
+**No volver a implementar todavía las 25 pantallas ni los componentes.**
+
+La secuencia correcta es:
+
+```text
+1. cerrar estrategia de preservación de identidad de componentes
+2. corregir foundation visual de componentes
+3. aplicar paleta segura
+4. aplicar escala tipográfica Comfortable
+5. reajustar alturas, padding y gaps
+6. validar scr_FL_AMEF como pantalla de alta densidad
+7. solo si AMEF supera QA, propagar el patrón al resto
+8. reanudar los smokes funcionales desde AnalysisCase
+```
+
+## 6. Gate de referencia — scr_FL_AMEF
+
+AMEF se utilizará como pantalla discriminante porque contiene simultáneamente:
+
+```text
+Sidebar
+PageHeader
+ProcessRail
+LineagePanel
+TextInputs
+RiskMatrix
+DecisionPanel
+GatePanel
+```
+
+Debe pasar:
+
+```text
+[ ] paleta correcta
+[ ] ningún texto visible < 11
+[ ] body >= 13
+[ ] títulos >= 16
+[ ] botones/inputs con altura suficiente
+[ ] ningún clipping
+[ ] scroll antes que reducción tipográfica
+[ ] P-101 y contexto correctamente cargados
+[ ] lectura cómoda a 100% zoom
+```
+
+Hasta superar este gate:
+
+```text
+PASS_STATIC              parcial
+INSTANCE_SAFE            evidencia previa por bloques
+VISUAL_QA_VALIDATED      NO
+READY_FOR_INTEGRATION    NO
+```
+
+## 7. Estado del plan integrado
 
 ```text
 1 Home / bootstrap                       PASS
 2 Activos + criticidad                   PASS
 3 Biblioteca AMEF                        PASS
 4 Aplicación multi-activo                PASS
-5 AnalysisCase                           PAUSADO — validar FL-SC-004 primero
+5 AnalysisCase                           PAUSADO — foundation visual
 6 Failure Modes / causas                 pendiente
-7 AMEF                                   pendiente
+7 AMEF                                   pendiente QA visual
 8 RCM                                    pendiente
 9 Task                                   pendiente
 10 Plan Package / Maintenance Plans      pendiente
 11 Trazabilidad / revisión / efectividad pendiente
 ```
-
-## 7. Próximo gate — smoke visual de paleta
-
-Antes de continuar AnalysisCase:
-
-1. sustituir los 7 componentes safe-palette en Studio;
-2. guardar la app;
-3. iniciar desde `scr_FL_Home`;
-4. entrar en `P101-AMEF-RCM-001` por el flujo normal;
-5. abrir `scr_FL_AMEF`;
-6. verificar que Sidebar, PageHeader, ProcessRail, Lineage, RiskMatrix y DecisionPanel presentan contraste y superficies correctas.
-
-No es necesario volver a copiar las 25 pantallas.
-
-Si esta prueba es satisfactoria, se reanuda la validación integrada desde AnalysisCase.
 
 ## 8. Asuntos deliberadamente abiertos
 
