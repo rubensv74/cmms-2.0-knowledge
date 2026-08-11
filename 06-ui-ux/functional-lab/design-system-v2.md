@@ -1,7 +1,7 @@
 # CMMS 2.0 Functional Lab — Design System v2
 
 **Estado:** canónico para arquitectura v2  
-**Fecha:** 2026-08-10
+**Fecha:** 2026-08-11
 
 ## 1. Objetivo
 
@@ -15,7 +15,7 @@ La interfaz debe comunicar simultáneamente:
 4. qué dato viene del maestro;
 5. qué calcula o recomienda el sistema;
 6. qué necesita una decisión humana;
-7. qué gate permite o bloquea la progresión formal.
+7. qué control de avance permite o bloquea la progresión formal.
 
 ## 2. Dos capas de navegación
 
@@ -47,7 +47,7 @@ Su función es:
 - hacer visible estado confirmado/draft/warning/blocked;
 - navegar a la pantalla de negocio correspondiente.
 
-No ejecuta las reglas del workflow; el host mantiene autoridad sobre gates y navegación formal.
+No ejecuta las reglas del workflow; el host mantiene autoridad sobre controles de avance y navegación formal.
 
 ## 3. Pantallas por trabajo real
 
@@ -168,7 +168,7 @@ Red
 
 Uso:
 
-- gate bloqueado;
+- control de avance bloqueado;
 - error;
 - condición incompatible con avance formal.
 
@@ -186,40 +186,68 @@ Green
 Uso:
 
 - evidencia confirmada;
-- gate pasado;
+- control superado;
 - aprobación;
 - resultado estable.
 
-## 5. Tipografía
+## 5. Tipografía — baseline Comfortable
 
-Base actual: `Segoe UI` / controles modernos equivalentes.
+Base: `Segoe UI` / controles modernos equivalentes.
 
-La escala por defecto es **Cómoda**.
+La versión anterior utilizaba numerosos tamaños 7–10 y resultó insuficiente en Power Apps Studio y para demostraciones. Desde esta revisión, **Comfortable significa realmente legible**, no simplemente algo mayor que Compact.
 
-Valores de referencia:
+Escala canónica:
 
 ```text
-Eyebrow / meta         8–9
-Supporting             9–10
-Body                   10–11
-Section title          14–17
-Page title             22–24
-KPI                     20–24
+Micro badge / stage code   11
+Eyebrow / meta             11–12
+Supporting text            12
+Form label                 12–13
+Body                       13–14
+Table / gallery row        12–13
+Button                     12–13
+Card title                 15–17
+Section title              16–18
+Page title                 24–28
+KPI / principal value      24–32
 ```
 
-Evitar cuerpo inferior a 9 salvo metadatos secundarios.
+### Regla obligatoria
 
-## 6. Escala visual futura
+No utilizar texto visible de usuario con `Size < 11`.
 
-El host será responsable de una preferencia global:
+El cuerpo principal debe ser `>=13` y los labels ordinarios `>=12`.
+
+No reducir tipografía para conseguir que el contenido quepa. Si falta espacio, usar más altura, scroll, reordenación o flujo vertical.
+
+El detalle completo está en:
+
+`TYPOGRAPHY_AND_DENSITY_STANDARD.md`
+
+## 6. Densidad y escala visual
+
+El perfil por defecto del Functional Lab es **Comfortable**.
+
+Geometría mínima recomendada:
+
+```text
+Botón primario          >= 44 px
+Botón secundario        >= 40 px
+Input estándar          >= 40 px
+Fila compacta           >= 42 px
+Fila Comfortable        >= 48 px
+Hit target              >= 40×40 px cuando sea posible
+```
+
+Si el Process Rail con 28 etapas no cabe, debe usar scroll. No debe reducir texto para mostrar todas las etapas a la vez.
+
+Escala futura de usuario:
 
 ```text
 Normal       100%
-Cómoda       115%
-Grande       130%
+Comfortable  115%  ← default
+Large        130%
 ```
-
-No crear zoom independiente dentro de cada componente.
 
 Cuando se implemente, escalar conjuntamente:
 
@@ -229,6 +257,8 @@ Cuando se implemente, escalar conjuntamente:
 - separación;
 - iconos;
 - targets interactivos.
+
+No crear zoom independiente dentro de cada componente.
 
 ## 7. Layout responsive
 
@@ -248,7 +278,8 @@ Principios:
 - contenido principal usa `Parent.Width` y proporciones;
 - paneles de dos columnas deben poder convertirse posteriormente a flujo vertical;
 - evitar coordenadas que dependan del ancho exacto 1200 salvo componentes canónicos ya probados;
-- no diseñar información crítica solo para hover.
+- no diseñar información crítica solo para hover;
+- priorizar legibilidad sobre densidad extrema.
 
 ## 8. Page Header
 
@@ -263,6 +294,8 @@ Principios:
 En pantallas de `AnalysisCase` puede mostrar journey.
 
 En pantallas de Activos no debe fingir una etapa del journey si el usuario está fuera del análisis.
+
+El título de página debe quedar entre 24–28 y el subtítulo entre 13–14.
 
 ## 9. TreePro
 
@@ -286,9 +319,18 @@ Principios:
 
 No usar 11 galerías anidadas para 11 niveles.
 
+Tipografía mínima:
+
+```text
+nodo principal       12–13
+nodo secundario      12
+breadcrumb           12
+badge                11
+```
+
 ## 10. Process Rail
 
-El rail debe mostrar de forma compacta:
+El rail debe mostrar:
 
 ```text
 estado
@@ -308,6 +350,15 @@ G  gate
 ```
 
 Estos códigos son compactos; el contexto de pantalla debe explicar su significado cuando sea necesario.
+
+Tipografía mínima:
+
+```text
+stage label          12
+stageId              11
+phase label          11
+responsibility       11
+```
 
 ## 11. Decision Panel
 
@@ -330,11 +381,13 @@ DECISIÓN HUMANA
 
 Nunca ocultar la recomendación original después de un override.
 
+Título 16–18, body 13 y labels 12 como mínimo.
+
 ## 12. Gate Panel
 
 `cmp_FL_GatePanelPro` sustituye el patrón pobre de simplemente deshabilitar `Siguiente`.
 
-Todo gate visible debe expresar:
+Todo control visible debe expresar:
 
 ```text
 estado
@@ -345,6 +398,8 @@ responsable
 output que se producirá
 acción de continuar
 ```
+
+Título 16–18, body 13 y labels 12 como mínimo.
 
 ## 13. Borrador vs confirmación
 
@@ -422,12 +477,26 @@ Ejemplos:
 
 El objetivo premium no justifica simular capacidades inexistentes.
 
-## 17. Criterio premium
+## 17. Gate de calidad visual
+
+Una pantalla no puede declararse `VISUAL_QA_VALIDATED` si:
+
+- existe texto visible menor de 11;
+- el body principal es menor de 13;
+- hay clipping de texto;
+- se ha reducido tipografía para evitar scroll;
+- botones o inputs no crecen con la nueva escala;
+- la pantalla solo resulta legible acercándose físicamente al monitor.
+
+La pantalla de referencia para validar la nueva foundation visual será `scr_FL_AMEF`, por ser la de mayor densidad y combinar Header, Process Rail, lineage, formularios, Risk Matrix, Decision Panel y Gate Panel.
+
+## 18. Criterio premium
 
 Premium significa:
 
 - jerarquía clara;
 - densidad controlada;
+- legibilidad real;
 - consistencia;
 - acciones previsibles;
 - responsabilidad visible;
