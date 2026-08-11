@@ -1,7 +1,7 @@
 # CMMS 2.0 FUNCTIONAL LAB — GATE PANEL PRO — COMFORTABLE READABILITY RC
 #
 # Preserves public contract and component identity.
-# The gate prioritizes: state → reason → required action → responsibility.
+# Responsive narrow layout: text uses full width; action sits at the bottom.
 
 ComponentDefinitions:
   cmp_FL_GatePanelPro:
@@ -108,7 +108,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =cmp_FL_GatePanelPro.SurfaceColor
-      Height: =214
+      Height: =216
       Width: =620
 
     Children:
@@ -198,8 +198,8 @@ ComponentDefinitions:
                   FontWeight: =FontWeight.Semibold
                   Size: =16
                   Text: =cmp_FL_GatePanelPro.Summary
-                  Width: =Parent.Width-230
-                  Wrap: =true
+                  Width: =Parent.Width-36
+                  Wrap: =false
                   X: =18
                   Y: =38
 
@@ -210,10 +210,10 @@ ComponentDefinitions:
                   Color: =ColorValue("#475569")
                   Size: =13
                   Text: =cmp_FL_GatePanelPro.Reason
-                  Width: =Parent.Width-230
+                  Width: =Parent.Width-36
                   Wrap: =true
                   X: =18
-                  Y: =70
+                  Y: =68
 
             - lblFLGateAction:
                 Control: ModernText@1.0.0
@@ -224,37 +224,23 @@ ComponentDefinitions:
                   Size: =12
                   Text: |-
                     ="Acción · " & cmp_FL_GatePanelPro.RequiredAction
-                  Width: =Parent.Width-230
+                  Width: =Parent.Width-36
                   Wrap: =true
                   X: =18
-                  Y: =105
+                  Y: =101
 
             - lblFLGateRole:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
                   Color: =ColorValue("#475569")
-                  Size: =12
-                  Text: |-
-                    ="Responsable · " & cmp_FL_GatePanelPro.ResponsibleRole
-                  Width: =Parent.Width-230
-                  Wrap: =false
-                  X: =18
-                  Y: =134
-
-            - lblFLGateOutput:
-                Control: ModernText@1.0.0
-                Properties:
-                  AutoHeight: =true
-                  Color: =ColorValue("#475569")
-                  FontWeight: =FontWeight.Semibold
                   Size: =11
                   Text: |-
-                    ="OUTPUT → " & cmp_FL_GatePanelPro.OutputLabel
-                  Width: =Parent.Width-230
-                  Wrap: =false
+                    =cmp_FL_GatePanelPro.ResponsibleRole & " · Output → " & cmp_FL_GatePanelPro.OutputLabel
+                  Width: =Parent.Width-36
+                  Wrap: =true
                   X: =18
-                  Y: =160
+                  Y: =132
 
             - btnFLGateContinue:
                 Control: Classic/Button@2.2.0
@@ -277,6 +263,6 @@ ComponentDefinitions:
                   RadiusTopRight: =9
                   Size: =12
                   Text: =cmp_FL_GatePanelPro.ContinueLabel
-                  Width: =190
+                  Width: =Min(190,Parent.Width-36)
                   X: =Parent.Width-Self.Width-18
-                  Y: =Parent.Height-Self.Height-14
+                  Y: =Parent.Height-Self.Height-12
