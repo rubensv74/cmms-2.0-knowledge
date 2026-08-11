@@ -1,63 +1,173 @@
-# Functional Lab — Protocolo de entrega YAML remota
+# Functional Lab — Protocolo de entrega YAML
 
 **Estado:** activo  
-**Fecha:** 2026-08-10
+**Fecha:** 2026-08-11  
+**Autoridad:** `functional-engineering-knowledge-base/30-playbooks/power-platform/modular-power-apps-screen-construction.md`
 
-## Regla de entrega
+## 1. Principio
 
-A partir de F01-06, los incrementos Power Apps se entregan con enfoque `remote-first`:
+Power Apps Studio es el centro del ciclo de construcción y validación.
+
+GitHub se utiliza para conservar los bloques preparados y facilitar su entrega, pero **no es requisito para construir ni sustituye Studio**.
+
+## 2. Flujo de entrega
 
 ```text
-analizar
-→ preparar YAML completo del incremento
-→ guardar en GitHub
-→ entregar enlace remoto
-→ aplicar todos los bloques del incremento
-→ una validación funcional completa
-→ documentar resultado
-→ continuar
+definir estructura / bloque
+→ declarar contrato del bloque
+→ preparar un YAML con un propósito principal
+→ guardar en repositorio cuando sea útil
+→ entregar ubicación
+→ pegar en Power Apps Studio
+→ validar
+→ congelar
+→ preparar siguiente bloque
 ```
 
-## Chat
+No se preparan/entregan varios bloques dependientes antes de validar el anterior cuando eso impida aislar regresiones.
 
-Por defecto, el chat no reproducirá bloques YAML extensos.
-
-La respuesta contendrá únicamente:
-
-- enlace a la carpeta o archivo remoto;
-- objetivo del incremento;
-- orden de aplicación cuando exista más de un edit surface;
-- validación única esperada;
-- estado del gate.
-
-El YAML se mostrará en el chat solo cuando el usuario lo solicite expresamente.
-
-## Estructura por incremento
-
-Cuando un incremento afecte varios edit surfaces se creará una carpeta:
+## 3. Clasificación obligatoria
 
 ```text
-power-apps/blocks/<incremento>/
+S — Structural
+C — Component
+I — Integration
+FIX — repair of the failed increment
+```
+
+Cada archivo/bloque debe identificar claramente su tipo.
+
+## 4. Contrato antes del YAML
+
+La entrega debe indicar:
+
+```text
+BLOCK:
+Operation:
+Target:
+Parent/anchor:
+Dependencies:
+Scope:
+TOUCHES:
+DO NOT MODIFY:
+Compatibility:
+Validation:
+Expected status:
+```
+
+No se entrega un bloque que modifique incidentalmente piezas congeladas.
+
+## 5. Chat / entrega remota
+
+Por defecto, el chat no reproduce YAML extenso.
+
+La respuesta contiene:
+
+- ubicación remota del bloque;
+- objetivo único;
+- target;
+- dependencias;
+- `DO NOT MODIFY` relevante;
+- prueba que debe ejecutar el usuario en Studio;
+- estado esperado.
+
+El YAML se muestra en chat solo si el usuario lo pide expresamente.
+
+## 6. Estructura de carpetas
+
+Ejemplo:
+
+```text
+power-apps/blocks/S-AMEF-01/
+├── CONTRACT.md
+└── S-AMEF-01_....pa.yaml   # solo cuando el gate anterior permita generarlo
+```
+
+Para Design System Lab:
+
+```text
+power-apps/labs/design-system/
 ├── README.md
-├── 01_....pa.yaml
-├── 02_....pa.yaml
+├── DS-S01_....pa.yaml
+├── DS-C01_....pa.yaml      # solo después de validar DS-S01
 └── ...
 ```
 
-Cada archivo debe contener un bloque completo para su target concreto. El `README.md` identifica el target y el orden de aplicación.
+No crear por adelantado todos los YAML de una secuencia si la geometría/contrato del bloque anterior aún no está congelado.
 
-Cuando sea seguro y práctico sustituir una pantalla completa, se podrá entregar un único `.pa.yaml` full-screen en lugar de varios bloques.
+## 7. Pantalla completa
 
-## Validación
+Un YAML full-screen es apropiado principalmente para un bloque `S` de skeleton o para una pantalla realmente nueva sin piezas congeladas.
 
-No se solicitarán micropruebas entre bloques de un mismo incremento salvo error de Studio.
+No usar full-screen replacement como mecanismo de reparación cuando:
 
-Regla:
+- la pantalla ya tiene geometría aprobada;
+- solo cambia un componente;
+- solo cambia comportamiento;
+- el problema es cromático;
+- el cambio afectaría piezas `FUNCTIONAL_FROZEN`.
 
-> aplicar el incremento completo → ejecutar un único recorrido discriminante → PASS o diagnóstico del error exacto.
+En esos casos el bloque debe estar acotado al slot/elemento correspondiente.
 
-Si aparece un error, se corrige toda la clase de problema identificada antes de solicitar una nueva validación.
+## 8. Validación
 
-## Relación con el protocolo incremental
+Cada bloque se valida antes del siguiente.
 
-Este documento cambia el mecanismo de entrega, no los gates técnicos ni funcionales del protocolo incremental principal.
+Gate mínimo:
+
+```text
+[ ] Studio acepta el bloque
+[ ] la app guarda
+[ ] App Checker no introduce error bloqueante nuevo
+[ ] la interacción principal del bloque funciona
+[ ] no hay regresión de piezas congeladas
+[ ] resultado visual suficiente para el estado declarado
+```
+
+Si falla:
+
+```text
+BLOCK X
+→ X-FIX
+→ validar
+```
+
+No continuar hasta cerrar el bloque.
+
+## 9. Componentes reutilizables
+
+Un componente modificado se valida aisladamente antes de integrarse:
+
+```text
+SOURCE_VALID
+→ COMPONENT_DEFINITION_ACCEPTED
+→ INSTANCE_SAFE
+→ PUBLIC_CONTRACT_VALIDATED
+→ VISUAL_QA_VALIDATED
+→ READY_FOR_INTEGRATION
+```
+
+No insertar una copia `_1` como actualización de una identidad existente.
+
+## 10. Color
+
+El color se valida centralmente mediante roles/tokens en `scr_DesignSystemLab`.
+
+Un bloque de Theme no debe reabrir estructura o comportamiento funcionalmente congelados salvo declaración explícita.
+
+```text
+STRUCTURE       FROZEN
+BEHAVIOR        FROZEN
+DATA CONTRACT   FROZEN
+COLOR           PENDING
+```
+
+es un estado válido.
+
+## 11. Relación con el protocolo principal
+
+Este documento regula la forma de preparar y entregar YAML.
+
+Los gates funcionales/técnicos completos se definen en:
+
+`00-governance/cmms-functional-lab-incremental-protocol.md`
