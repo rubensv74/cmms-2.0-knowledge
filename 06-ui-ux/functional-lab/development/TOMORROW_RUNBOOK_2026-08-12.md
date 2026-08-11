@@ -1,30 +1,36 @@
-# CMMS 2.0 Functional Lab — Runbook de cierre para 2026-08-12
+# CMMS 2.0 Functional Lab — Runbook incremental para 2026-08-12
 
-**Objetivo del día:** instalar una única versión coherente de la rama `feature/f01-premium-foundation`, eliminar el ruido de referencias a pantallas inexistentes y ejecutar una validación integrada sin volver a mezclar commits históricos.
+**Objetivo:** recuperar y terminar el Functional Lab sin volver a introducir regresiones, aplicando como autoridad de construcción el playbook:
 
-> No usar enlaces históricos. Todos los archivos se toman de la rama actual.
+`functional-engineering-knowledge-base/30-playbooks/power-platform/modular-power-apps-screen-construction.md`
+
+Power Apps Studio es el centro del ciclo. GitHub se utiliza únicamente como fuente y archivo de los bloques preparados; **no es requisito para validar ni construir**.
 
 ---
 
-## PASO 0 — No borrar lo que ya funciona
-
-Mantener las pantallas existentes y los componentes existentes.
-
-No crear copias con sufijos como:
+# Regla de trabajo de mañana
 
 ```text
-cmp_FL_TreePro_1
-cmp_FL_LineagePanelPro_1
-scr_FL_Home_1
+DEFINIR ESTRUCTURA
+→ PLACEHOLDERS
+→ BLOQUE S/C/I
+→ PEGAR EN STUDIO
+→ VALIDAR
+→ CONGELAR
+→ SIGUIENTE BLOQUE
 ```
 
-Si un componente ya existe, se actualiza **su definición in situ**.
+No se sustituirán 9 componentes ni 25 pantallas de una sola vez.
+
+No se volverá a un commit histórico para reconstruir una pieza.
+
+No se utilizará el bloque siguiente para reparar el anterior. Un fallo genera un bloque `FIX` independiente.
 
 ---
 
-## PASO 1 — Completar primero el grafo de pantallas
+# 0 — Preparación de dependencias, sin modificar UI
 
-Antes de volver a mirar App Checker, comprobar que existen en Studio las 25 pantallas con estos nombres exactos:
+Antes de empezar con YAML, comprobar que existen en Studio las 25 identidades canónicas de pantalla:
 
 ```text
 scr_FL_Home
@@ -54,288 +60,553 @@ scr_FL_Governance
 scr_FL_Settings
 ```
 
-Las que todavía no existan se crean como **Blank screen** y se renombran exactamente. No pegar aún su código.
+Si falta alguna, crear **Blank screen** con el nombre exacto. No pegar todavía su implementación.
 
-### Gate 1
+Esto es preparación del grafo de dependencias, no un cambio de geometría de las pantallas aprobadas.
 
-Abrir **Formulas / App Checker**.
+### Gate PREP-01
 
-Resultado esperado:
+App Checker no debe seguir mostrando `Name isn't valid. 'scr_FL_X'` únicamente porque un destino canónico no existe.
 
-```text
-los errores Name isn't valid causados exclusivamente por scr_FL_<pantalla ausente>
-deben desaparecer o reducirse drásticamente
-```
-
-Si permanece un `Name isn't valid` que apunta a uno de los 25 nombres anteriores, comprobar primero ortografía/nombre de pantalla antes de tocar fórmulas.
+Si un nombre anterior sigue apareciendo como inválido, comprobar primero el nombre real del objeto en Studio. No modificar fórmulas de navegación por intuición.
 
 ---
 
-## PASO 2 — Actualizar los 9 componentes canónicos
+# 1 — Abrir el laboratorio de design system antes de tocar color
 
-Carpeta única:
+Existe un incidente cromático activo (`FL-SC-004`). Por el nuevo playbook, **ninguna corrección de paleta se propagará directamente a Home, FLH, AMEF u otra pantalla productiva**.
 
-`06-ui-ux/functional-lab/power-apps/components/`
-
-Actualizar **in situ**, en este orden:
+La superficie de prueba será:
 
 ```text
-1  cmp_FL_SidebarPro
-2  cmp_FL_PageHeaderPro
-3  cmp_FL_TreePro
-4  cmp_FL_ProcessRailPro
-5  cmp_FL_DecisionPanelPro
-6  cmp_FL_GatePanelPro
-7  cmp_FL_RiskMatrixPro
-8  cmp_FL_LineagePanelPro
-9  cmp_FL_ApplicabilityMatrixPro
+scr_DesignSystemLab
 ```
 
-### Qué debe aportar la revisión actual
+No forma parte de las 25 pantallas funcionales ni de la navegación del producto. Es una pantalla técnica temporal de validación visual.
+
+## Bloque DS-S01 — Skeleton del Design System Lab
+
+**Tipo:** `S — Structural`
+
+**Objetivo único:** crear la geometría completa del laboratorio mediante placeholders.
 
 ```text
-Sidebar             dark palette intencional + texto legible
-PageHeader          safe palette + Comfortable
-TreePro             HARDENED SAFE PALETTE RC3
-ProcessRail         safe palette + texto >=11
-DecisionPanel       safe palette + separación sistema/humano
-GatePanel           HARDENED SAFE PALETTE RC2
-RiskMatrix          Premium 5×5 RC4
-LineagePanel        HARDENED SAFE PALETTE RC3 / Height 126
-ApplicabilityMatrix HARDENED READABILITY RC2
+ph_Header
+ph_TokenRoles
+ph_Text
+ph_ClassicControls
+ph_ModernControls
+ph_InteractionStates
+ph_DataViz
+ph_Status
 ```
 
-### Gate 2
-
-Después de actualizar los nueve, guardar una vez y revisar App Checker.
-
-No empezar a corregir fórmulas de pantalla mientras exista un error de definición del componente que las consume.
-
----
-
-## PASO 3 — Sustituir las pantallas por la fuente canónica actual
-
-Carpeta única:
-
-`06-ui-ux/functional-lab/power-apps/screens/`
-
-Aunque una pantalla ya exista y hoy haya funcionado, **no recuperar su commit histórico**. Reemplazar su Source Code con el archivo actual de la rama.
-
-### Lote A — Foundation / Activos
+### DO NOT MODIFY
 
 ```text
 scr_FL_Home
 scr_FL_FLH
 scr_FL_Taxonomy
 scr_FL_ADR
-scr_FL_AssetCriticality
-scr_FL_Asset360
-```
-
-Guardar una vez al terminar el lote.
-
-### Lote B — Ingeniería reutilizable
-
-```text
-scr_FL_FmeaLibrary
-scr_FL_FmeaRevision
-scr_FL_AssetApplication
-```
-
-Guardar una vez al terminar el lote.
-
-### Lote C — AnalysisCase
-
-```text
-scr_FL_AnalysisRegister
-scr_FL_CaseOverview
-scr_FL_Context
-scr_FL_Functions
-scr_FL_FailureModes
 scr_FL_AMEF
-scr_FL_RCM
-scr_FL_Economics
-scr_FL_Task
-scr_FL_PlanPackage
-scr_FL_Traceability
-scr_FL_ReviewApproval
-scr_FL_Effectiveness
+ningún componente funcional
 ```
 
-Guardar una vez al terminar el lote.
+### Gate DS-S01
 
-### Lote D — Handoff / gobierno
+Validar únicamente:
 
 ```text
-scr_FL_MaintenancePlans
-scr_FL_Governance
-scr_FL_Settings
+[ ] pantalla abre
+[ ] placeholders ocupan la geometría prevista
+[ ] scroll es intencional
+[ ] no hay clipping
+[ ] no hay error nuevo de fórmula
 ```
 
-Guardar una vez al terminar el lote.
+Si pasa:
+
+```text
+DESIGN LAB STRUCTURE FROZEN
+```
+
+No avanzar a DS-C01 si no pasa.
 
 ---
 
-## PASO 4 — Reiniciar la sesión y ejecutar bootstrap
+# 2 — Validar tokens y color como capa independiente
 
-Cuando las 25 pantallas tengan su fuente actual:
+Después de `DESIGN LAB STRUCTURE FROZEN`:
 
-1. guardar;
-2. cerrar/reabrir el editor o recargar la app para limpiar variables de la sesión;
-3. abrir `scr_FL_Home`;
-4. dejar que `Home.OnVisible` inicialice el fixture alineado.
+## DS-C01 — Semantic token roles
 
-No reinstalar ningún bootstrap antiguo.
+**Tipo:** `C — Component/content`
+
+Sustituir `ph_TokenRoles` por la muestra de roles compartidos:
+
+```text
+Background
+Surface
+SurfaceAlt
+Border
+TextPrimary
+TextSecondary
+Primary
+PrimaryHover
+PrimarySelected
+Success
+Warning
+Danger
+SelectedBackground
+SelectedBorder
+SelectedAccent
+SelectedText
+Chart01…Chart06
+```
+
+El propósito es validar roles, no crear una paleta diferente por componente.
+
+### Gate DS-C01
+
+```text
+[ ] los valores se renderizan como se espera en Studio
+[ ] contraste principal suficiente
+[ ] no aparecen superficies negras inesperadas
+[ ] selección y estado semántico se distinguen
+```
+
+Si pasa:
+
+```text
+TOKEN RENDER VALIDATED
+```
+
+## DS-C02 — Classic + Modern controls
+
+**Tipo:** `C`
+
+Sustituir únicamente:
+
+```text
+ph_ClassicControls
+ph_ModernControls
+```
+
+Probar botones, texto, input, borde, surface y disabled sin tocar token roles.
+
+## DS-C03 — Interaction states
+
+**Tipo:** `C`
+
+Sustituir `ph_InteractionStates` y validar:
+
+```text
+Default
+Hover
+Pressed
+Selected
+Disabled
+Focus
+Success
+Warning
+Error
+```
+
+## DS-C04 — Data visualisation
+
+**Tipo:** `C`
+
+Sustituir `ph_DataViz` y comprobar la paleta de datos sin reutilizarla como lenguaje de botón o selección.
+
+### Gate de color
+
+Solo cuando DS-C01…DS-C04 pasen:
+
+```text
+COLOR FOUNDATION APPROVED
+```
+
+Hasta entonces:
+
+```text
+STRUCTURE      puede estar FROZEN
+BEHAVIOR       puede estar FROZEN
+DATA CONTRACT  puede estar FROZEN
+COLOR          PENDING
+```
+
+---
+
+# 3 — Registro de congelación antes de tocar componentes
+
+Consultar:
+
+`FREEZE_REGISTER_2026-08-11.md`
+
+Regla:
+
+- una pieza `FUNCTIONAL_FROZEN` no se reabre por un problema exclusivamente cromático;
+- una pieza `FINAL_FROZEN` solo se toca si el bloque declara expresamente el motivo;
+- una revisión de color se valida primero en `scr_DesignSystemLab`.
+
+---
+
+# 4 — Gate aislado de componentes reutilizables
+
+Ningún componente modificado puede volver a una pantalla real sin pasar primero por superficie aislada.
+
+Secuencia obligatoria para cada componente:
+
+```text
+SOURCE_VALID
+→ COMPONENT_DEFINITION_ACCEPTED
+→ INSTANCE_SAFE
+→ PUBLIC_CONTRACT_VALIDATED
+→ VISUAL_QA_VALIDATED
+→ READY_FOR_INTEGRATION
+```
+
+Prueba práctica:
+
+1. actualizar **la definición existente in situ**;
+2. guardar;
+3. revisar App Checker;
+4. insertar una sola instancia de prueba en `scr_DesignSystemLab`;
+5. guardar y reabrir;
+6. probar inputs/outputs/events esenciales;
+7. revisar clipping y estados;
+8. solo entonces integrar en pantalla real.
+
+No crear copias `_1`.
+
+## Orden de prioridad
+
+```text
+C-CMP-01  cmp_FL_TreePro
+C-CMP-02  cmp_FL_LineagePanelPro
+C-CMP-03  cmp_FL_ApplicabilityMatrixPro
+C-CMP-04  cmp_FL_ProcessRailPro
+C-CMP-05  cmp_FL_RiskMatrixPro
+C-CMP-06  cmp_FL_DecisionPanelPro
+C-CMP-07  cmp_FL_GatePanelPro
+```
+
+`cmp_FL_SidebarPro` y `cmp_FL_PageHeaderPro` tienen evidencia positiva previa; no se tocarán de nuevo salvo que el smoke actual revele un fallo real.
+
+### Referencia positiva
+
+Si un componente falla al instanciarse, antes de hacer micropruebas comparar con componentes PULSE `INSTANCE_SAFE`, especialmente:
+
+```text
+cmp_HeatMapPro
+cmp_SidebarNav
+```
+
+Corregir el candidato completo y hacer **un** smoke. La reducción controlada es segunda línea, no primera reacción.
+
+---
+
+# 5 — Home: congelar, no reconstruir
+
+Home ya aportó evidencia funcional positiva. No se sustituye el Source Code completo por rutina.
+
+Estado objetivo inicial:
+
+```text
+GEOMETRY       FROZEN
+BOOTSTRAP      FROZEN
+NAVIGATION     FUNCTIONAL_FROZEN
+COLOR          PENDING hasta Color Lab
+```
+
+### Única intervención permitida
+
+Si `cmp_FL_LineagePanelPro` supera el gate aislado y la instancia de Home necesita actualización, realizar un bloque:
+
+```text
+C-HOME-01-FIX — Lineage instance update
+```
+
+**TOUCHES:** únicamente la instancia Lineage / su slot.
+
+**DO NOT MODIFY:** Sidebar, Header, cards, bootstrap, navegación, geometría.
+
+Después del smoke:
+
+```text
+HOME FUNCTIONAL FROZEN
+```
+
+---
+
+# 6 — Activos: mantener geometría aprobada
+
+FLH, Taxonomía y ADR ya tienen evidencia positiva. No reconstruir su layout.
+
+Después de que `cmp_FL_TreePro` llegue a `READY_FOR_INTEGRATION`, integrar por bloques independientes:
+
+```text
+I-ASSET-01  TreePro → FLH
+I-ASSET-02  TreePro → Taxonomía
+I-ASSET-03  TreePro → ADR
+```
+
+Cada bloque toca únicamente la instancia TreePro y sus bindings.
+
+No modificar tabs, header, detail panel ni navegación.
+
+### Gate por pantalla
+
+```text
+[ ] render correcto
+[ ] expand/collapse
+[ ] selección
+[ ] breadcrumb
+[ ] búsqueda
+[ ] P-101 resaltado
+[ ] no regresión de geometría
+```
+
+Cada pantalla se congela al pasar su gate.
+
+---
+
+# 7 — Biblioteca AMEF y Aplicación multi-activo
+
+Estas áreas ya tienen evidencia positiva. Se consideran candidatas a `FUNCTIONAL_FROZEN` y no se reconstruyen.
+
+Solo si `cmp_FL_ApplicabilityMatrixPro` necesita entrar con la revisión legible actual:
+
+```text
+I-APP-01 — ApplicabilityMatrix integration
+```
+
+**TOUCHES:** slot/instancia de aplicabilidad.
+
+**DO NOT MODIFY:** biblioteca, revisión, datos base, navigation shell.
+
+---
+
+# 8 — AMEF se reconstruye correctamente: skeleton first
+
+La pantalla actual `scr_FL_AMEF` no está congelada y su composición previa generó regresiones. Aquí sí se aplica el playbook completo.
+
+No pegar otra versión monolítica de AMEF.
+
+## S-AMEF-01 — Full screen skeleton
+
+Crear únicamente:
+
+```text
+Root
+├── ph_Sidebar
+└── Content
+    ├── ph_Header
+    └── Body
+        ├── ph_ProcessRail
+        └── Workspace
+            ├── ph_StageContext
+            ├── ph_PrimaryWorkspace
+            └── ph_StatusAction
+```
+
+Definir X/Y/Width/Height o contratos responsive de cada placeholder.
+
+### Gate S-AMEF-01
+
+```text
+[ ] proporciones correctas
+[ ] rail dispone de ancho legible
+[ ] workspace admite RiskMatrix 900×650 cuando corresponda
+[ ] scroll previsto
+[ ] no existe solapamiento
+[ ] geometría aceptada a 100%
+```
+
+Cuando se apruebe:
+
+```text
+AMEF GEOMETRY FROZEN
+```
+
+## C-AMEF-01 — Sidebar
+
+`ph_Sidebar → cmp_FL_SidebarPro`
+
+Solo después de gate del componente.
+
+## C-AMEF-02 — Header
+
+`ph_Header → cmp_FL_PageHeaderPro`
+
+## C-AMEF-03 — Process Rail
+
+`ph_ProcessRail → cmp_FL_ProcessRailPro`
+
+## C-AMEF-04 — FL-07 contextual effects
+
+Sustituye únicamente `ph_PrimaryWorkspace` para FL-07.
+
+## C-AMEF-05 — FL-09 RiskMatrix
+
+Sustituye únicamente `ph_PrimaryWorkspace` para FL-09 por `cmp_FL_RiskMatrixPro`.
 
 Fixture esperado:
 
 ```text
-Activo              P-101
-AMEF                 AMEF-BOMBA-CENTRIFUGA
-Revisión             R01
-Aplicación           APP-P101-R01
-Criticidad           Alta
-Perfil               HIGH
-AnalysisCase         P101-AMEF-RCM-001
-S/O/D                4 / 3 / 3
-S×O                  12
-NPR                  36
+S = 4
+O = 3
+D = 3
+S×O = 12
+NPR = 36
 ```
+
+## C-AMEF-06 — Decision
+
+Instala `cmp_FL_DecisionPanelPro` únicamente en el slot contractual.
+
+## C-AMEF-07 — Stage status / avance
+
+Instala `cmp_FL_GatePanelPro` usando lenguaje visible de “Estado de la etapa / Control de avance”.
+
+## I-AMEF-01 — Stage switching
+
+Conecta Process Rail y visibilidad de FL-07…FL-11 sin modificar geometría ni componentes.
+
+## I-AMEF-02 — Risk selection
+
+Conecta selección S/O/D → S×O/NPR.
+
+### Gate AMEF integrado
+
+```text
+[ ] FL-07 efectos/contexto
+[ ] FL-09 matriz 5×5 completa
+[ ] S4/O3/D3 = S×O12 / NPR36
+[ ] criticidad del activo separada del riesgo AMEF
+[ ] recomendación separada de decisión humana
+[ ] avance formal comprensible
+[ ] sin clipping
+[ ] sin superficies negras accidentales
+[ ] ningún bloque previo reabierto incidentalmente
+```
+
+Solo entonces:
+
+```text
+scr_FL_AMEF → FUNCTIONAL_FROZEN
+```
+
+El Theme pass se realiza después, sin reabrir estructura/comportamiento.
 
 ---
 
-## PASO 5 — Un único smoke de Foundation
+# 9 — Resto del AnalysisCase
 
-Recorrer:
-
-```text
-Home
-→ FLH
-→ Taxonomía
-→ ADR
-→ Criticidad
-→ Ficha 360
-→ Biblioteca AMEF
-→ Revisión AMEF
-→ Aplicación multi-activo
-```
-
-Validar de una sola vez:
+Una vez congelado el patrón AMEF, las pantallas restantes se construyen con el mismo mecanismo:
 
 ```text
-[ ] no hay superficies negras fuera del Sidebar intencional
-[ ] no hay Name isn't valid por pantallas canónicas
-[ ] P-101 permanece cargado
-[ ] TreePro funciona en FLH, Taxonomía y ADR
-[ ] Lineage es legible
-[ ] Header es legible
-[ ] criticidad sigue separada del riesgo AMEF
-[ ] R01 se aplica a P-101/P-102/P-103 sin duplicar ingeniería
-[ ] no aparecen componentes con sufijo _1
+S — skeleton completo
+C — reemplazo de un placeholder
+I — integración de piezas ya estables
+FIX — reparación del bloque que falla
 ```
 
-Si este smoke pasa, registrar:
-
-```text
-FOUNDATION INTEGRATED PASS
-```
-
----
-
-## PASO 6 — AnalysisCase / AMEF
-
-Solo después de `FOUNDATION INTEGRATED PASS`:
+Orden funcional:
 
 ```text
 Analysis Register
-→ Case Overview
-→ Contexto
-→ Funciones
-→ Modos de fallo
-→ AMEF
-```
-
-En AMEF comprobar exclusivamente:
-
-```text
-[ ] Process Rail legible y navegable
-[ ] FL-07 efectos/contexto
-[ ] FL-09 RiskMatrix 5×5 completa
-[ ] selección inicial S=4 / O=3
-[ ] D=3
-[ ] S×O=12
-[ ] NPR=36
-[ ] criticidad del activo no se confunde con matriz AMEF
-[ ] recomendación del sistema separada de decisión humana
-[ ] control de avance explicado en lenguaje visible, no “Gate” como término principal
-```
-
-No rediseñar la matriz durante este smoke.
-
----
-
-## PASO 7 — Cierre del recorrido funcional
-
-Si AMEF pasa:
-
-```text
+Case Overview
+Contexto
+Funciones
+Modos de fallo
 RCM
-→ Economía
-→ Tarea e intervalo
-→ Paquete de plan
-→ Trazabilidad
-→ Revisión y aprobación
-→ Efectividad
-→ Maintenance Plans
-→ Gobernanza
-→ Configuración
+Economía
+Tarea
+Paquete de plan
+Trazabilidad
+Revisión y aprobación
+Efectividad
+Maintenance Plans
+Gobernanza
+Configuración
 ```
 
-Validar los 11 smokes de `V2_INSTALLATION.md` como una secuencia integrada.
+No propagar automáticamente el layout AMEF a pantallas con otro trabajo. Compartir lenguaje visual y componentes, no forzar la misma composición.
 
 ---
 
-## PASO 8 — Visual QA final
+# 10 — Theme pass final
 
-Solo con App Checker funcionalmente limpio:
-
-1. revisar texto < 11;
-2. corregir primero una pantalla de referencia;
-3. confirmar que no hay clipping;
-4. propagar el patrón únicamente después de la aprobación visual.
-
-No hacer reemplazos globales ciegos de tamaños de fuente.
-
----
-
-## Si algo falla mañana
-
-Usar esta clasificación antes de cambiar código:
+Solo después de que las piezas relevantes estén `FUNCTIONAL_FROZEN`:
 
 ```text
-Name isn't valid scr_FL_*        → comprobar identidad de pantalla
-PA2301 CanvasComponent           → comprobar definición/identidad del componente
-superficie negra                 → comprobar que el componente actual hardened está pegado in situ
-PA1001 YAML                      → revisar scalar inline / estructura PaYaml
-PA2108 Unknown property          → comprobar control/versión/contrato público
-clipping                         → corregir layout, no reducir texto
+H-THEME-01 — aplicar tokens aprobados
+H-THEME-02 — estados hover/pressed/selected/focus
+H-THEME-03 — contraste y accesibilidad
+H-THEME-04 — responsive/clipping
 ```
 
-No volver a un commit histórico salvo análisis forense explícito.
+Los bloques H no deben alterar lógica funcional ni geometría congelada salvo que lo declaren expresamente.
 
 ---
 
-## Resultado de cierre esperado
+# 11 — Qué registrar después de cada bloque
+
+Usar exactamente uno de estos estados:
 
 ```text
-25 pantallas instaladas
-9 componentes actuales
-0 navegación rota por nombres ausentes
-0 superficies negras accidentales
-Foundation integrada
-AMEF 5×5 correcto
-recorrido completo navegable
-App Checker sin errores estructurales bloqueantes
+IN_CONSTRUCTION
+FUNCTIONAL
+FUNCTIONAL_FROZEN
+VISUAL_APPROVED
+FINAL_FROZEN
 ```
 
-Cuando eso ocurra, actualizar el estado a `READY_FOR_INTEGRATION` únicamente para las piezas que hayan superado Studio y Visual QA.
+Y registrar, cuando aplique:
+
+```text
+STRUCTURE       FROZEN | OPEN
+BEHAVIOR        FROZEN | OPEN
+DATA CONTRACT   FROZEN | OPEN
+COLOR           APPROVED | PENDING
+```
+
+Actualizar `FREEZE_REGISTER_2026-08-11.md` después de cada validación relevante.
+
+---
+
+# 12 — Si algo falla
+
+Clasificar antes de modificar:
+
+```text
+Name isn't valid scr_FL_*   → dependencia/identidad de pantalla
+PA2301 CanvasComponent      → definición/identidad de componente
+PA1001                      → estructura/scalar PaYaml
+PA2108                      → control/versión/property contract
+FAIL_INSTANCE               → comparar primero con referencia PULSE INSTANCE_SAFE
+superficie negra            → reproducir en DesignSystemLab; no reabrir pantalla
+clipping                    → FIX del bloque visual/layout responsable; no reducir fuente
+```
+
+No usar un bloque funcional posterior para reparar silenciosamente otro.
+
+---
+
+# Resultado de cierre
+
+El objetivo no es “que existan 25 YAML pegados”. El objetivo es que cada avance sea acumulativo:
+
+```text
+Design System Lab validado
++ color centralizado
++ componentes reutilizables instance-safe
++ Home/Activos/Biblioteca/Aplicación congelados
++ AMEF construido por skeleton/placeholders y congelado
++ resto del flujo construido sin regresiones
++ App Checker sin errores bloqueantes
++ Theme pass separado
+```
+
+Ese es el punto en el que las piezas podrán promoverse de forma honesta a `READY_FOR_INTEGRATION` / `FINAL_FROZEN`.
