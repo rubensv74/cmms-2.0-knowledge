@@ -1,3 +1,8 @@
+# CMMS 2.0 FUNCTIONAL LAB — GATE PANEL PRO — COMFORTABLE READABILITY RC
+#
+# Preserves public contract and component identity.
+# The gate prioritizes: state → reason → required action → responsibility.
+
 ComponentDefinitions:
   cmp_FL_GatePanelPro:
     DefinitionType: CanvasComponent
@@ -103,7 +108,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =cmp_FL_GatePanelPro.SurfaceColor
-      Height: =220
+      Height: =214
       Width: =620
 
     Children:
@@ -118,7 +123,7 @@ ComponentDefinitions:
                   "passed",ColorValue("#BBF7D0"),
                   "warning",ColorValue("#FDE68A"),
                   "blocked",ColorValue("#FECACA"),
-                  cmp_FL_GatePanelPro.BorderColor
+                  ColorValue("#E2E8F0")
               )
             BorderThickness: =1
             DropShadow: =DropShadow.None
@@ -129,7 +134,7 @@ ComponentDefinitions:
                   "passed",ColorValue("#F0FDF4"),
                   "warning",ColorValue("#FFFBEB"),
                   "blocked",ColorValue("#FEF2F2"),
-                  cmp_FL_GatePanelPro.SurfaceColor
+                  ColorValue("#FFFFFF")
               )
             Height: =Parent.Height
             RadiusBottomLeft: =14
@@ -162,7 +167,7 @@ ComponentDefinitions:
                   RadiusTopRight: =10
                   Width: =10
                   X: =18
-                  Y: =20
+                  Y: =18
 
             - lblFLGateEyebrow:
                 Control: ModernText@1.0.0
@@ -175,81 +180,81 @@ ComponentDefinitions:
                         "passed",ColorValue("#15803D"),
                         "warning",ColorValue("#B45309"),
                         "blocked",ColorValue("#B91C1C"),
-                        cmp_FL_GatePanelPro.MutedTextColor
+                        ColorValue("#64748B")
                     )
                   FontWeight: =FontWeight.Semibold
-                  Size: =9
+                  Size: =11
                   Text: =Upper(cmp_FL_GatePanelPro.GateTitle)
                   Width: =Parent.Width-58
                   Wrap: =false
                   X: =36
-                  Y: =16
+                  Y: =12
 
             - lblFLGateSummary:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_GatePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
                   Size: =16
                   Text: =cmp_FL_GatePanelPro.Summary
                   Width: =Parent.Width-230
                   Wrap: =true
                   X: =18
-                  Y: =48
+                  Y: =38
 
             - lblFLGateReason:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_GatePanelPro.MutedTextColor
-                  Size: =10
+                  Color: =ColorValue("#475569")
+                  Size: =13
                   Text: =cmp_FL_GatePanelPro.Reason
                   Width: =Parent.Width-230
                   Wrap: =true
                   X: =18
-                  Y: =82
+                  Y: =70
 
             - lblFLGateAction:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_GatePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
-                  Size: =9
+                  Size: =12
                   Text: |-
-                    ="Acción: " & cmp_FL_GatePanelPro.RequiredAction
+                    ="Acción · " & cmp_FL_GatePanelPro.RequiredAction
                   Width: =Parent.Width-230
                   Wrap: =true
                   X: =18
-                  Y: =118
+                  Y: =105
 
             - lblFLGateRole:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_GatePanelPro.MutedTextColor
-                  Size: =9
+                  Color: =ColorValue("#475569")
+                  Size: =12
                   Text: |-
-                    ="Responsable: " & cmp_FL_GatePanelPro.ResponsibleRole
+                    ="Responsable · " & cmp_FL_GatePanelPro.ResponsibleRole
                   Width: =Parent.Width-230
                   Wrap: =false
                   X: =18
-                  Y: =147
+                  Y: =134
 
             - lblFLGateOutput:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_GatePanelPro.MutedTextColor
+                  Color: =ColorValue("#475569")
                   FontWeight: =FontWeight.Semibold
-                  Size: =8
+                  Size: =11
                   Text: |-
                     ="OUTPUT → " & cmp_FL_GatePanelPro.OutputLabel
                   Width: =Parent.Width-230
                   Wrap: =false
                   X: =18
-                  Y: =178
+                  Y: =160
 
             - btnFLGateContinue:
                 Control: Classic/Button@2.2.0
@@ -262,7 +267,7 @@ ComponentDefinitions:
                   Fill: =ColorValue("#0284C7")
                   Font: =Font.'Segoe UI'
                   FontWeight: =FontWeight.Semibold
-                  Height: =40
+                  Height: =42
                   HoverFill: =ColorValue("#0369A1")
                   OnSelect: =cmp_FL_GatePanelPro.OnContinue()
                   PressedFill: =ColorValue("#075985")
@@ -270,8 +275,8 @@ ComponentDefinitions:
                   RadiusBottomRight: =9
                   RadiusTopLeft: =9
                   RadiusTopRight: =9
-                  Size: =10
+                  Size: =12
                   Text: =cmp_FL_GatePanelPro.ContinueLabel
-                  Width: =176
+                  Width: =190
                   X: =Parent.Width-Self.Width-18
-                  Y: =Parent.Height-Self.Height-18
+                  Y: =Parent.Height-Self.Height-14
