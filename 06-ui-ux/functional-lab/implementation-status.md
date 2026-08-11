@@ -1,15 +1,15 @@
 # Functional Lab — Implementation Status
 
 **Fecha:** 2026-08-11  
-**Estado general:** Foundation v2 — library-first remediated  
-**Último gate superado:** modelo conceptual, journey, contratos y fixture canónico v2  
-**Validación Power Apps:** todavía no iniciada
+**Estado general:** Foundation v2 — library-first remediated and hardened  
+**Último gate superado:** remediación conceptual/contractual completa  
+**Validación Power Apps:** auditoría estática completada; baseline real pendiente
 
-## 1. Motivo del reset funcional
+## 1. Resultado de la remediación
 
-La primera foundation convirtió correctamente el recorrido P-101 a un fixture ejecutable, pero mantuvo una estructura demasiado centrada en el activo.
+La primera foundation convirtió el recorrido P-101 a un fixture ejecutable, pero mantuvo una estructura demasiado centrada en el activo.
 
-La auditoría posterior detectó 14 desviaciones respecto al modelo reusable ya definido para AMEF/RCM. Todas las desviaciones estructurales han sido corregidas a nivel conceptual y contractual antes de comenzar YAML.
+La auditoría posterior detectó 14 desviaciones respecto al modelo reusable ya definido para AMEF/RCM. Las 14 han sido corregidas en modelo conceptual, journey, contratos, fixture, arquitectura, componentes, guías y handoff documental.
 
 Principio vigente:
 
@@ -25,14 +25,14 @@ Engineering Library
 | Incremento | Estado | Resultado |
 |---|---|---|
 | F00-01 Auditoría de transición | completed | Riesgos, fuentes y orden inicial de trabajo identificados. |
-| F00-02 Protocolo incremental CMMS | completed | Adaptación del protocolo de Pulse con gate funcional previo. |
+| F00-02 Protocolo incremental CMMS | superseded-by-v2 | Primera adaptación del protocolo de Pulse. |
 | F00-03 Visión v1 | superseded-by-v2 | Primera frontera del Functional Lab. |
 | F00-04 Journey v1 | superseded-by-v2 | 28 etapas asset-centric conservadas como antecedente. |
 | F00-05 Persona vs sistema v1 | superseded-by-v2 | Primera matriz de responsabilidades. |
 | F00-06 Contratos JSON v1 | legacy | Fixture monolítico asset-centric; no usar para nuevos bloques. |
 | F00-07 Fixture P-101 v1 | legacy | Evidencia histórica, no fuente runtime canónica. |
 | F00-08 Arquitectura v1 | superseded-by-v2 | Sustituida por arquitectura por capas. |
-| F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
+| F00-09 Paquete documental IT | completed | Estructura modular de handoff definida y posteriormente alineada a v2. |
 | F00-R01 Auditoría library-first | completed | 14 desviaciones catalogadas y corregidas. |
 | F00-R02 Modelo conceptual canónico | completed | `03-data-model/` con entidades, cardinalidades, invariantes y trazabilidad. |
 | F00-R03 Contratos por capas | completed | Schemas Library, Application, Plan y Results. |
@@ -41,16 +41,20 @@ Engineering Library
 | F00-R06 Persona vs sistema v2 | completed | Responsabilidades adaptadas a cuatro capas. |
 | F00-R07 Arquitectura v2 | completed | Estado, workspaces y trazabilidad runtime library-first. |
 | F00-R08 Component contracts | completed | Patrones de dominio definidos sin inventar YAML. |
-| F00-R09 Guías/artefactos históricos | in-progress | Alinear Experience Center y documentación didáctica. |
-| F01-00 Auditoría Power Apps de foundation | planned | Confirmar dialecto Source Code, componentes y restricciones en app real. |
-| F01-01 Premium App Shell Foundation | blocked-by-F01-00 | Primer bloque técnico. |
+| F00-R09 Guías/artefactos históricos | completed | Guías alineadas; runtime HTML v3 clasificado como evidencia histórica. |
+| F00-R10 Governance hardening | completed | Protocolo v2 con Domain Ownership Gate y registro de architecture gates. |
+| F00-R11 Runtime preparation | completed | Runtime Adapter v2, WS-01 detallado y catálogo WS-01..WS-09. |
+| F00-R12 Contract hardening | completed | Schemas reforzados, ambos caminos RCM en fixture y lineage corregido. |
+| F00-R13 Validation tooling | completed | Validador local de sintaxis/referencias/dominio sin GitHub Actions. |
+| F01-00 Auditoría Power Apps de foundation | static-complete / runtime-pending | Documento restaurado de `main` y adaptado a library-first; falta inspeccionar app real. |
+| F01-01 Premium App Shell Foundation | blocked-by-real-baseline | Primer bloque técnico. |
 | F01-02 Layered runtime state | planned | Estado local separado en Library/Application/Plan/Results. |
-| F01-03 Adaptador P-101 v2 | planned | Fixture v2 → estado/colecciones Power Fx. |
+| F01-03 Runtime Adapter v2 | specified / implementation-planned | Fixture v2 → estado/colecciones Power Fx. |
 | F01-04 Navegación base | planned | Workspaces y transición visual entre capas. |
-| F01-05 WS-01 Library context | planned | `FmeaDefinition` y `FmeaRevision`. |
-| F01-06 WS-01 Evidence/revision work | planned | Inputs permitidos sobre revisión borrador/demostrativa. |
-| F01-07 WS-01 Gate | planned | Preparación de revisión y explicación del bloqueo. |
-| F01-08 WS-01 Output | planned | Referencias estructuradas hacia WS-02. |
+| F01-05 WS-01 Library context | specified / implementation-planned | `FmeaDefinition` y `FmeaRevision`. |
+| F01-06 WS-01 Evidence/revision work | specified / implementation-planned | Inputs permitidos sobre revisión editable/demostrativa. |
+| F01-07 WS-01 Gate | specified / implementation-planned | Preparación de revisión y explicación del bloqueo. |
+| F01-08 WS-01 Output | specified / implementation-planned | Referencias estructuradas hacia WS-02. |
 | F01-09 Hardening WS-01 | planned | Loading/empty/error/dirty/read-only/accessibility. |
 
 ## 3. Contratos canónicos vigentes
@@ -71,7 +75,26 @@ cases/P101/p101-case.v2.json
 
 La v1 se conserva exclusivamente como antecedente y referencia de migración.
 
+El fixture v2 demuestra explícitamente:
+
+- `FmeaDefinition` / `FmeaRevision` reusable;
+- P-101 solo en Asset Application;
+- riesgo AMEF separado de criticidad del activo;
+- causas/efectos explícitos;
+- RCM con tarea;
+- RCM con `NoScheduledTaskDecision`;
+- N:M en ambos sentidos entre tareas y modos;
+- procedimiento y formato separados;
+- `EconomicAssessment`, `MaintenanceCostEstimate` y `ActualMaintenanceCost` separados;
+- lineage hasta `ExecutionPlanTask`, resultado y revisión de efectividad.
+
 ## 4. Gate funcional de WS-01 — Library & Revision
+
+Especificación completa:
+
+```text
+development/workspaces/ws-01-library-revision.md
+```
 
 ### Objeto activo
 
@@ -80,91 +103,93 @@ FmeaDefinition
 → FmeaRevision
 ```
 
-### Inputs existentes
-
-- `fmeaDefinitionId`, código y nombre;
-- alcance de tipo de equipo / función cuando aplique;
-- revisión seleccionada;
-- estado de revisión;
-- versión de matriz de riesgo referenciada;
-- versión de lógica RCM referenciada;
-- fuentes/evidencias de biblioteca;
-- estado de validación.
-
-### Inputs humanos
-
-Cuando la revisión sea editable/demostrativa:
-
-- selección o creación de la definición/revisión;
-- descripción y alcance;
-- motivo de nueva revisión;
-- confirmación de evidencia y supuestos;
-- observaciones para revisión.
-
-Una revisión publicada se muestra en solo lectura.
-
-### Cálculos / validaciones
-
-- integridad de IDs padre-hijo;
-- existencia de definición y revisión;
-- coherencia básica del estado;
-- disponibilidad mínima de evidencia según regla demostrativa;
-- detección de intento de edición sobre snapshot publicado.
-
-### Decisión humana
-
-Confirmar que la definición/revisión seleccionada es el conocimiento de ingeniería correcto sobre el que debe continuar el análisis.
-
-### Gate
-
-- bloquear cuando falte identidad o relación entre definición/revisión;
-- bloquear edición de contenido publicado;
-- explicar cualquier evidencia insuficiente;
-- mostrar estado de validación de las reglas usadas.
-
-### Output
+### Output mínimo
 
 ```text
 {
+  layer,
   fmeaDefinitionId,
   fmeaRevisionId,
   revisionNumber,
   status,
-  validationStatus
+  validationStatus,
+  publishedSnapshotId
 }
 ```
 
-listo para alimentar WS-02.
-
 **No existe `AssetId` en el output requerido de WS-01.**
 
-## 5. Condición para comenzar YAML
+## 5. Preparación técnica ya completada
 
-No generar código Source Code de Power Apps hasta completar F01-00.
+Antes de YAML están disponibles:
 
-F01-00 debe confirmar en la Canvas app real:
+- `development/compatibility.md`;
+- `development/f01-00-power-apps-foundation-audit.md`;
+- `development/adapters/runtime-adapter-v2.md`;
+- `development/workspaces/ws-01-library-revision.md`;
+- `development/workspaces/workspace-catalog-v2.md`;
+- `development/validation/validate-fixture-v2.py`.
+
+## 6. Estado de gates
+
+Registro canónico:
+
+```text
+00-governance/architecture-gates.md
+```
+
+### Arquitectura conceptual
+
+No existe un nuevo gate de arquitectura bloqueante.
+
+Las decisiones estructurales que originaron la remediación están cerradas y registradas.
+
+### Dependencia técnica actual
+
+`TG-001 — Canvas app baseline`.
+
+Antes de generar código Source Code de Power Apps deben confirmarse en la Canvas app real:
 
 - schema Source Code aceptado;
 - convenciones de nombres;
 - controles Classic/Modern seguros;
-- componentes premium reutilizables instalados;
-- propiedades incompatibles conocidas;
-- estrategia visual inicial;
-- ubicación canónica de pantalla y bloques;
-- mecanismo inicial del Runtime Adapter.
+- componentes premium instalados;
+- propiedades incompatibles;
+- baseline visual;
+- App Checker;
+- mecanismo de introducción del fixture / `ParseJSON` disponible.
 
-Este gate evita repetir problemas conocidos de YAML y componentes inexistentes.
+Esto es una dependencia técnica verificable, no una decisión de arquitectura del dominio.
 
-## 6. Bloqueadores actuales
+## 7. Validación local preparada
 
-No queda un bloqueador conceptual de arquitectura para continuar la remediación documental.
+El script:
 
-El código Power Apps sigue bloqueado por una **dependencia técnica verificable**: aún no se ha inspeccionado la Canvas app baseline real. Esto no autoriza a inventar Source Code, versiones de controles o componentes.
+```text
+development/validation/validate-fixture-v2.py
+```
 
-## 7. Regla de continuidad
+comprueba sin workflows:
 
-Una vez iniciado F01:
+- JSON syntax;
+- referencias padre-hijo;
+- application → revision;
+- plan → application/task;
+- result → execution plan task;
+- actual cost → result;
+- risk/asset criticality separation;
+- N:M en ambos sentidos;
+- branch con tarea y branch sin tarea;
+- refs de procedimiento/formato;
+- lineage;
+- schemas de las cuatro capas si `jsonschema` está instalado.
+
+No se ha creado ningún workflow ni se han consumido Actions para esta validación.
+
+## 8. Regla de continuidad
+
+Una vez exista baseline real:
 
 > No se prepara el siguiente bloque técnico hasta que el anterior quede integrado y validado en Power Apps Studio o exista una corrección explícita en curso.
 
-La misma disciplina se aplicará a los cambios de capa: WS-07 no puede modificar objetos publicados de Library y WS-09 no puede sobrescribir hipótesis históricas.
+La misma disciplina se aplica a límites de dominio: WS-07 puede leer `FmeaRevision` pero no modificarla; WS-09 puede cuestionar ingeniería y abrir cambio, pero no sobrescribir hipótesis históricas.
