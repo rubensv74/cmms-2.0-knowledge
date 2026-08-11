@@ -338,7 +338,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#475569")
                                     Size: =8
-                                    Text: ="Causas: " & Concat(Filter(colFLFmeaFailureCauses,FailureModeId=ThisItem.FailureModeId),Statement," · ")
+                                    Text: |-
+                                      ="Causas: " & Concat(Filter(colFLFmeaFailureCauses,FailureModeId=ThisItem.FailureModeId),Statement," · ")
                                     Width: =Parent.TemplateWidth-24
                                     Wrap: =true
                                     X: =12
@@ -456,7 +457,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#475569")
                                     Size: =8
-                                    Text: ="Cubre: " & Concat(Filter(colFLTaskFailureModeLinks,ProposedMaintenanceTaskId=ThisItem.ProposedMaintenanceTaskId),FailureModeId," · ")
+                                    Text: |-
+                                      ="Cubre: " & Concat(Filter(colFLTaskFailureModeLinks,ProposedMaintenanceTaskId=ThisItem.ProposedMaintenanceTaskId),FailureModeId," · ")
                                     Width: =Parent.TemplateWidth-24
                                     Wrap: =true
                                     X: =12
