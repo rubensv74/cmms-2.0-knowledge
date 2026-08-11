@@ -1,8 +1,9 @@
-# CMMS 2.0 FUNCTIONAL LAB — RISK MATRIX PRO — PREMIUM 5x5 RC3
+# CMMS 2.0 FUNCTIONAL LAB — RISK MATRIX PRO — PREMIUM 5x5 FINAL RC4
 #
 # Visual source of truth: Premium AMEF 5×5 reference approved in conversation.
-# Preserves the canonical AMEF host contract and component identity.
-# Default geometry is intentionally 900×650. Host screens should not compress it.
+# Final correction: Gallery.Default is synchronized with SeverityValue/OccurrenceValue
+# so visual selection, outputs and S×O start from the same cell.
+# Preserves canonical component identity and public contract.
 
 ComponentDefinitions:
   cmp_FL_RiskMatrixPro:
@@ -42,97 +43,97 @@ ComponentDefinitions:
       RowScale:
         PropertyKind: Input
         DisplayName: RowScale
-        Description: Escala del eje vertical. Campos ScaleIndex, ScaleLabel y ScaleScore.
+        Description: Escala vertical AMEF 1–5. Campos ScaleIndex, ScaleLabel y ScaleScore.
         DataType: Table
         Default: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
       ColumnScale:
         PropertyKind: Input
         DisplayName: ColumnScale
-        Description: Escala del eje horizontal. Campos ScaleIndex, ScaleLabel y ScaleScore.
+        Description: Escala horizontal AMEF 1–5. Campos ScaleIndex, ScaleLabel y ScaleScore.
         DataType: Table
         Default: =ForAll(Sequence(5),{ScaleIndex:Value,ScaleLabel:Text(Value),ScaleScore:Value})
       MatrixMode:
         PropertyKind: Input
         DisplayName: MatrixMode
-        Description: PRODUCT calcula RowScore×ColumnScore; CONFIGURED utiliza MatrixCells.
+        Description: PRODUCT calcula S×O; CONFIGURED queda reservado para evolución posterior.
         DataType: Text
         Default: ="PRODUCT"
       MatrixCells:
         PropertyKind: Input
         DisplayName: MatrixCells
-        Description: Tabla opcional para matrices configuradas. Campos RowIndex, ColumnIndex, CellScore y BandKey.
+        Description: Tabla opcional para futuras matrices configuradas.
         DataType: Table
         Default: =Table({RowIndex:0,ColumnIndex:0,CellScore:-1,BandKey:""})
       SeverityValue:
         PropertyKind: Input
         DisplayName: SeverityValue
-        Description: Score actual del eje vertical; en AMEF representa Severidad.
+        Description: Severidad actual AMEF.
         DataType: Number
         Default: =4
       OccurrenceValue:
         PropertyKind: Input
         DisplayName: OccurrenceValue
-        Description: Score actual del eje horizontal; en AMEF representa Ocurrencia.
+        Description: Ocurrencia actual AMEF.
         DataType: Number
         Default: =3
       DetectionValue:
         PropertyKind: Input
         DisplayName: DetectionValue
-        Description: Métrica auxiliar de Detección para uso AMEF.
+        Description: Detección AMEF; no altera la posición en la matriz S×O.
         DataType: Number
         Default: =3
       DetectionLabel:
         PropertyKind: Input
         DisplayName: DetectionLabel
-        Description: Etiqueta visible para la métrica auxiliar de detección.
+        Description: Etiqueta visible de detección.
         DataType: Text
         Default: ="Detección"
       ShowDetection:
         PropertyKind: Input
         DisplayName: ShowDetection
-        Description: Muestra u oculta la métrica auxiliar de Detección.
+        Description: Muestra u oculta la métrica de detección.
         DataType: Boolean
         Default: =true
       RiskScore:
         PropertyKind: Input
         DisplayName: RiskScore
-        Description: Indicador global calculado por el host; en AMEF representa NPR.
+        Description: NPR calculado por el host. Si es 0, el componente muestra S×O×D.
         DataType: Number
-        Default: =36
+        Default: =0
       RiskScoreLabel:
         PropertyKind: Input
         DisplayName: RiskScoreLabel
-        Description: Etiqueta visible del indicador global.
+        Description: Etiqueta visible del NPR.
         DataType: Text
         Default: ="NPR"
       ShowRiskScore:
         PropertyKind: Input
         DisplayName: ShowRiskScore
-        Description: Muestra u oculta el indicador global del host.
+        Description: Muestra u oculta NPR.
         DataType: Boolean
         Default: =true
       CriticalOverride:
         PropertyKind: Input
         DisplayName: CriticalOverride
-        Description: Texto de sobreclasificación o excepción crítica.
+        Description: Texto reservado para sobreclasificación o excepción crítica.
         DataType: Text
         Default: ="No"
       LowMax:
         PropertyKind: Input
         DisplayName: LowMax
-        Description: Máximo del score de matriz para banda baja.
+        Description: Umbral máximo de banda baja.
         DataType: Number
         Default: =5
       ModerateMax:
         PropertyKind: Input
         DisplayName: ModerateMax
-        Description: Máximo del score de matriz para banda moderada.
+        Description: Umbral máximo de banda moderada.
         DataType: Number
         Default: =10
       HighMax:
         PropertyKind: Input
         DisplayName: HighMax
-        Description: Máximo del score de matriz para banda alta.
+        Description: Umbral máximo de banda alta.
         DataType: Number
         Default: =20
       LowLabel:
@@ -222,7 +223,7 @@ ComponentDefinitions:
       ScaleNote:
         PropertyKind: Input
         DisplayName: ScaleNote
-        Description: Nota sobre procedencia o validación de escalas y umbrales.
+        Description: Nota sobre procedencia de escalas y umbrales.
         DataType: Text
         Default: ="Matriz AMEF 5×5 · escalas y umbrales definidos por el host"
       OnSelectCell:
@@ -234,32 +235,32 @@ ComponentDefinitions:
       SelectedSeverityOut:
         PropertyKind: Output
         DisplayName: SelectedSeverityOut
-        Description: Score seleccionado del eje vertical.
+        Description: Severidad seleccionada.
         DataType: Number
       SelectedOccurrenceOut:
         PropertyKind: Output
         DisplayName: SelectedOccurrenceOut
-        Description: Score seleccionado del eje horizontal.
+        Description: Ocurrencia seleccionada.
         DataType: Number
       SelectedRowLabelOut:
         PropertyKind: Output
         DisplayName: SelectedRowLabelOut
-        Description: Etiqueta seleccionada del eje vertical.
+        Description: Etiqueta de severidad seleccionada.
         DataType: Text
       SelectedColumnLabelOut:
         PropertyKind: Output
         DisplayName: SelectedColumnLabelOut
-        Description: Etiqueta seleccionada del eje horizontal.
+        Description: Etiqueta de ocurrencia seleccionada.
         DataType: Text
       MatrixScoreOut:
         PropertyKind: Output
         DisplayName: MatrixScoreOut
-        Description: Score de la celda actual.
+        Description: S×O de la celda seleccionada.
         DataType: Number
       MatrixBandOut:
         PropertyKind: Output
         DisplayName: MatrixBandOut
-        Description: Banda cualitativa de la celda actual.
+        Description: Banda cualitativa de la celda seleccionada.
         DataType: Text
 
     Properties:
@@ -268,29 +269,33 @@ ComponentDefinitions:
       Width: =900
       SelectedSeverityOut: |-
         =
-        If(
-            IsBlank(galFLRiskMatrix.Selected.Value),
-            cmp_FL_RiskMatrixPro.SeverityValue,
-            With({_rowPos:RoundUp(Value(galFLRiskMatrix.Selected.Value)/Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),0)},Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),_rowPos)).ScaleScore)
+        With(
+            {_v:Coalesce(galFLRiskMatrix.Selected.Value,(5-Min(5,Max(1,cmp_FL_RiskMatrixPro.SeverityValue)))*5+Min(5,Max(1,cmp_FL_RiskMatrixPro.OccurrenceValue)))},
+            6-RoundUp(Value(_v)/5,0)
         )
       SelectedOccurrenceOut: |-
         =
-        If(
-            IsBlank(galFLRiskMatrix.Selected.Value),
-            cmp_FL_RiskMatrixPro.OccurrenceValue,
-            With({_colPos:Mod(Value(galFLRiskMatrix.Selected.Value)-1,Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)))+1},Last(FirstN(SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),_colPos)).ScaleScore)
+        With(
+            {_v:Coalesce(galFLRiskMatrix.Selected.Value,(5-Min(5,Max(1,cmp_FL_RiskMatrixPro.SeverityValue)))*5+Min(5,Max(1,cmp_FL_RiskMatrixPro.OccurrenceValue)))},
+            Mod(Value(_v)-1,5)+1
         )
       SelectedRowLabelOut: =Coalesce(LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedSeverityOut,ScaleLabel),Text(cmp_FL_RiskMatrixPro.SelectedSeverityOut))
       SelectedColumnLabelOut: =Coalesce(LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedOccurrenceOut,ScaleLabel),Text(cmp_FL_RiskMatrixPro.SelectedOccurrenceOut))
-      MatrixScoreOut: |-
-        =
-        With(
-            {_rowRec:LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedSeverityOut),_colRec:LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedOccurrenceOut)},
-            With({_configuredScore:LookUp(cmp_FL_RiskMatrixPro.MatrixCells,RowIndex=_rowRec.ScaleIndex && ColumnIndex=_colRec.ScaleIndex,CellScore)},If(Upper(cmp_FL_RiskMatrixPro.MatrixMode)="CONFIGURED" && !IsBlank(_configuredScore) && _configuredScore>=0,_configuredScore,cmp_FL_RiskMatrixPro.SelectedSeverityOut*cmp_FL_RiskMatrixPro.SelectedOccurrenceOut))
-        )
+      MatrixScoreOut: =cmp_FL_RiskMatrixPro.SelectedSeverityOut*cmp_FL_RiskMatrixPro.SelectedOccurrenceOut
       MatrixBandOut: |-
         =
-        With({_score:cmp_FL_RiskMatrixPro.MatrixScoreOut},If(_score<=cmp_FL_RiskMatrixPro.LowMax,cmp_FL_RiskMatrixPro.LowLabel,If(_score<=cmp_FL_RiskMatrixPro.ModerateMax,cmp_FL_RiskMatrixPro.ModerateLabel,If(_score<=cmp_FL_RiskMatrixPro.HighMax,cmp_FL_RiskMatrixPro.HighLabel,cmp_FL_RiskMatrixPro.CriticalLabel))))
+        With(
+            {_score:cmp_FL_RiskMatrixPro.MatrixScoreOut},
+            If(
+                _score<=cmp_FL_RiskMatrixPro.LowMax,
+                cmp_FL_RiskMatrixPro.LowLabel,
+                If(
+                    _score<=cmp_FL_RiskMatrixPro.ModerateMax,
+                    cmp_FL_RiskMatrixPro.ModerateLabel,
+                    If(_score<=cmp_FL_RiskMatrixPro.HighMax,cmp_FL_RiskMatrixPro.HighLabel,cmp_FL_RiskMatrixPro.CriticalLabel)
+                )
+            )
+        )
 
     Children:
       - conFLRiskRoot:
@@ -337,6 +342,7 @@ ComponentDefinitions:
                         Width: =Parent.Width
                         X: =0
                         Y: =13
+
             - lblFLRiskTitle:
                 Control: ModernText@1.0.0
                 Properties:
@@ -349,6 +355,7 @@ ComponentDefinitions:
                   Wrap: =false
                   X: =96
                   Y: =23
+
             - lblFLRiskSubtitle:
                 Control: ModernText@1.0.0
                 Properties:
@@ -360,6 +367,7 @@ ComponentDefinitions:
                   Wrap: =false
                   X: =96
                   Y: =56
+
             - conFLRiskContext:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
@@ -389,6 +397,7 @@ ComponentDefinitions:
                         Width: =Parent.Width
                         X: =0
                         Y: =13
+
             - lblFLRiskColAxis:
                 Control: ModernText@1.0.0
                 Properties:
@@ -401,6 +410,7 @@ ComponentDefinitions:
                   Width: =600
                   X: =180
                   Y: =103
+
             - galFLRiskColumnHeaders:
                 Control: Gallery@2.15.0
                 Variant: Horizontal
@@ -427,6 +437,7 @@ ComponentDefinitions:
                         Width: =Parent.TemplateWidth
                         X: =0
                         Y: =7
+
             - lblFLRiskRowAxis:
                 Control: ModernText@1.0.0
                 Properties:
@@ -440,6 +451,7 @@ ComponentDefinitions:
                   Wrap: =false
                   X: =28
                   Y: =165
+
             - galFLRiskRows:
                 Control: Gallery@2.15.0
                 Variant: Vertical
@@ -466,11 +478,13 @@ ComponentDefinitions:
                         Width: =Parent.TemplateWidth
                         X: =0
                         Y: =20
+
             - galFLRiskMatrix:
                 Control: Gallery@2.15.0
                 Variant: Vertical
                 Properties:
                   BorderColor: =Color.Transparent
+                  Default: =LookUp(Sequence(25),Value=(5-Min(5,Max(1,cmp_FL_RiskMatrixPro.SeverityValue)))*5+Min(5,Max(1,cmp_FL_RiskMatrixPro.OccurrenceValue)))
                   Height: =300
                   Items: =Sequence(25)
                   OnSelect: =cmp_FL_RiskMatrixPro.OnSelectCell()
@@ -486,17 +500,27 @@ ComponentDefinitions:
                   - btnFLRiskCell:
                       Control: Classic/Button@2.2.0
                       Properties:
-                        BorderColor: |-
-                          =
-                          With({_rowPos:RoundUp(Value(ThisItem.Value)/5,0),_colPos:Mod(Value(ThisItem.Value)-1,5)+1},With({_rowScore:6-_rowPos,_colScore:_colPos},If(_rowScore=cmp_FL_RiskMatrixPro.SeverityValue && _colScore=cmp_FL_RiskMatrixPro.OccurrenceValue,ColorValue("#2563EB"),RGBA(0,0,0,0))))
-                        BorderThickness: |-
-                          =
-                          With({_rowPos:RoundUp(Value(ThisItem.Value)/5,0),_colPos:Mod(Value(ThisItem.Value)-1,5)+1},With({_rowScore:6-_rowPos,_colScore:_colPos},If(_rowScore=cmp_FL_RiskMatrixPro.SeverityValue && _colScore=cmp_FL_RiskMatrixPro.OccurrenceValue,3,0)))
+                        BorderColor: =If(ThisItem.IsSelected,ColorValue("#2563EB"),RGBA(0,0,0,0))
+                        BorderThickness: =If(ThisItem.IsSelected,3,0)
                         Color: =ColorValue("#0F172A")
                         Fill: |-
                           =
-                          With({_rowPos:RoundUp(Value(ThisItem.Value)/5,0),_colPos:Mod(Value(ThisItem.Value)-1,5)+1},With({_score:(6-_rowPos)*_colPos},If(_score<=5,ColorValue("#D6F2D7"),If(_score<=10,ColorValue("#F2EDB4"),If(_score<=20,ColorValue("#F8D697"),ColorValue("#F3A0A7"))))))
-                        FontWeight: =FontWeight.Semibold
+                          With(
+                              {_rowPos:RoundUp(Value(ThisItem.Value)/5,0),_colPos:Mod(Value(ThisItem.Value)-1,5)+1},
+                              With(
+                                  {_score:(6-_rowPos)*_colPos},
+                                  If(
+                                      _score<=5,
+                                      ColorValue("#D6F2D7"),
+                                      If(
+                                          _score<=10,
+                                          ColorValue("#F2EDB4"),
+                                          If(_score<=20,ColorValue("#F8D697"),ColorValue("#F3A0A7"))
+                                      )
+                                  )
+                              )
+                          )
+                        FontWeight: =If(ThisItem.IsSelected,FontWeight.Bold,FontWeight.Semibold)
                         Height: =50
                         HoverFill: =Self.Fill
                         OnSelect: =Select(Parent)
@@ -512,6 +536,7 @@ ComponentDefinitions:
                         Width: =110
                         X: =5
                         Y: =5
+
             - recFLRiskDivider:
                 Control: Rectangle@2.3.0
                 Properties:
@@ -520,6 +545,7 @@ ComponentDefinitions:
                   Width: =Parent.Width-60
                   X: =30
                   Y: =486
+
             - conFLRiskDetection:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
@@ -529,6 +555,7 @@ ComponentDefinitions:
                   DropShadow: =DropShadow.None
                   Fill: =Color.Transparent
                   Height: =82
+                  Visible: =cmp_FL_RiskMatrixPro.ShowDetection
                   Width: =190
                   X: =42
                   Y: =501
@@ -584,6 +611,7 @@ ComponentDefinitions:
                         Width: =80
                         X: =70
                         Y: =39
+
             - conFLRiskSO:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
@@ -648,6 +676,7 @@ ComponentDefinitions:
                         Width: =90
                         X: =70
                         Y: =39
+
             - conFLRiskNPR:
                 Control: GroupContainer@1.5.0
                 Variant: ManualLayout
@@ -661,6 +690,7 @@ ComponentDefinitions:
                   RadiusBottomRight: =16
                   RadiusTopLeft: =16
                   RadiusTopRight: =16
+                  Visible: =cmp_FL_RiskMatrixPro.ShowRiskScore
                   Width: =328
                   X: =Parent.Width-Self.Width-42
                   Y: =504
@@ -712,10 +742,11 @@ ComponentDefinitions:
                         Color: =ColorValue("#1D4ED8")
                         FontWeight: =FontWeight.Bold
                         Size: =27
-                        Text: =Text(cmp_FL_RiskMatrixPro.RiskScore)
+                        Text: =Text(If(cmp_FL_RiskMatrixPro.RiskScore>0,cmp_FL_RiskMatrixPro.RiskScore,cmp_FL_RiskMatrixPro.MatrixScoreOut*cmp_FL_RiskMatrixPro.DetectionValue))
                         Width: =130
                         X: =82
                         Y: =35
+
             - recFLRiskFooterDivider:
                 Control: Rectangle@2.3.0
                 Properties:
@@ -724,6 +755,7 @@ ComponentDefinitions:
                   Width: =Parent.Width
                   X: =0
                   Y: =598
+
             - lblFLRiskFooterInfo:
                 Control: ModernText@1.0.0
                 Properties:
@@ -736,6 +768,7 @@ ComponentDefinitions:
                   Width: =24
                   X: =30
                   Y: =617
+
             - lblFLRiskScaleNote:
                 Control: ModernText@1.0.0
                 Properties:
