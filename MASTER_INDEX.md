@@ -3,7 +3,8 @@
 ## Gobierno
 
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
-- [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
+- [Protocolo incremental del Functional Lab v2](00-governance/cmms-functional-lab-incremental-protocol.md)
+- [Registro de gates de arquitectura](00-governance/architecture-gates.md)
 - [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
 - [Remediación library-first de las 14 desviaciones — 2026-08-11](00-governance/audits/2026-08-11-functional-lab-library-first-remediation.md)
 
@@ -60,6 +61,15 @@ La especificación `SPC-001_ESPECIFICACION_CODEX_AMEF_RCM.md` permanece como fue
 - [P-101 v2 — canónico library-first](06-ui-ux/functional-lab/cases/P101/p101-case.v2.json)
 - [P-101 v1 — legacy asset-centric](06-ui-ux/functional-lab/cases/P101/p101-case.v1.json)
 - [Guía de migración v1 → v2](06-ui-ux/functional-lab/development/fixture-v1-to-v2-migration.md)
+
+### Preparación técnica
+
+- [Compatibilidad Power Apps](06-ui-ux/functional-lab/development/compatibility.md)
+- [F01-00 — Auditoría Power Apps Foundation](06-ui-ux/functional-lab/development/f01-00-power-apps-foundation-audit.md)
+- [Runtime Adapter v2](06-ui-ux/functional-lab/development/adapters/runtime-adapter-v2.md)
+- [WS-01 — Library & Revision](06-ui-ux/functional-lab/development/workspaces/ws-01-library-revision.md)
+- [Catálogo de workspaces v2](06-ui-ux/functional-lab/development/workspaces/workspace-catalog-v2.md)
+- [Validador local del fixture v2](06-ui-ux/functional-lab/development/validation/validate-fixture-v2.py)
 
 ## Handoff funcional para IT
 
