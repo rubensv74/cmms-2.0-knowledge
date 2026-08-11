@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados en Studio / AnalysisCase pendiente
+**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados en Studio / validación pausada por FL-SC-004
 
 ## 1. Modelo canónico
 
@@ -70,15 +70,50 @@ cmp_FL_LineagePanelPro
 cmp_FL_ApplicabilityMatrixPro
 ```
 
-Evidencia acumulada:
+Evidencia acumulada antes de FL-SC-004:
 
 ```text
 SidebarPro / PageHeaderPro        INSTANCE_SAFE PASS previo
 TreePro                            runtime funcional en Activos PASS
 ApplicabilityMatrixPro             runtime funcional en Aplicación multi-activo PASS
-ProcessRailPro                     import corregido / próximo smoke AnalysisCase
-resto de componentes nuevos       Studio validation pendiente
+ProcessRailPro                     import corregido
 ```
+
+### FL-SC-004 — paleta de componentes
+
+Durante la inspección visual de `scr_FL_AMEF` se observó que varias instancias materializan como negro colores que en Source Code tienen defaults claros. Los controles propios de la pantalla sí conservan su paleta.
+
+Se ha publicado un patrón correctivo `safe palette` que mantiene los Inputs Color pero utiliza colores internos explícitos mientras `UseHostTheme=false`.
+
+Componentes revisados:
+
+```text
+cmp_FL_SidebarPro
+cmp_FL_PageHeaderPro
+cmp_FL_ProcessRailPro
+cmp_FL_LineagePanelPro
+cmp_FL_DecisionPanelPro
+cmp_FL_RiskMatrixPro
+cmp_FL_ApplicabilityMatrixPro
+```
+
+Sin cambio:
+
+```text
+cmp_FL_TreePro
+cmp_FL_GatePanelPro
+```
+
+Estado de estas nuevas revisiones:
+
+```text
+PASS_STATIC          PASS
+DEFINITION_ACCEPTED  pendiente de sustitución en Studio
+INSTANCE_SAFE        pendiente
+VISUAL_QA_VALIDATED  pendiente
+```
+
+Incidente: `development/incidents/FL-SC-004-component-color-defaults-render-black.md`.
 
 ## 4. Fixture P-101
 
@@ -106,7 +141,7 @@ ingeniería base separada de P-101                 PASS
 R01 aplicada a P-101 / P-102 / P-103              PASS
 criticidad/perfil/intervalo por aplicación         PASS
 APP-P101-R01 + perfil HIGH                         PASS
-ApplicabilityMatrixPro en runtime                  PASS
+ApplicabilityMatrixPro en runtime                  PASS previo a safe-palette RC
 ```
 
 Confirmaciones de usuario:
@@ -125,7 +160,7 @@ APLICACIÓN MULTI-ACTIVO OK
 2 Activos + criticidad                   PASS
 3 Biblioteca AMEF                        PASS
 4 Aplicación multi-activo                PASS
-5 AnalysisCase                           EN CURSO
+5 AnalysisCase                           PAUSADO — validar FL-SC-004 primero
 6 Failure Modes / causas                 pendiente
 7 AMEF                                   pendiente
 8 RCM                                    pendiente
@@ -134,26 +169,20 @@ APLICACIÓN MULTI-ACTIVO OK
 11 Trazabilidad / revisión / efectividad pendiente
 ```
 
-## 7. Próxima validación integrada — AnalysisCase
+## 7. Próximo gate — smoke visual de paleta
 
-Recorrido:
+Antes de continuar AnalysisCase:
 
-```text
-scr_FL_AnalysisRegister
-→ scr_FL_CaseOverview
-→ scr_FL_Context
-→ scr_FL_Functions
-```
+1. sustituir los 7 componentes safe-palette en Studio;
+2. guardar la app;
+3. iniciar desde `scr_FL_Home`;
+4. entrar en `P101-AMEF-RCM-001` por el flujo normal;
+5. abrir `scr_FL_AMEF`;
+6. verificar que Sidebar, PageHeader, ProcessRail, Lineage, RiskMatrix y DecisionPanel presentan contraste y superficies correctas.
 
-Criterios de aceptación:
+No es necesario volver a copiar las 25 pantallas.
 
-- `P101-AMEF-RCM-001` se abre desde el registro;
-- Case Overview referencia `AMEF-BOMBA-CENTRIFUGA / R01` y `APP-P101-R01`;
-- la criticidad `Alta` se muestra como contexto, no como resultado AMEF;
-- Process Rail muestra las 28 etapas y permite seleccionar/navegar sin error;
-- FL-01…FL-06 se presentan como revisión/aplicación contextual, no como creación desde cero;
-- Contexto y Funciones conservan lineage biblioteca → aplicación → caso;
-- la navegación no rompe P-101 ni la revisión R01 activa.
+Si esta prueba es satisfactoria, se reanuda la validación integrada desde AnalysisCase.
 
 ## 8. Asuntos deliberadamente abiertos
 
