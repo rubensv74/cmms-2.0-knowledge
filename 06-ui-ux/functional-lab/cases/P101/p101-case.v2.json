@@ -175,6 +175,21 @@
         "rationale": "Valoración demostrativa para revisar el comportamiento del Functional Lab.",
         "evidenceRefs": ["EVID-LIB-003", "EVID-LIB-004"],
         "validationStatus": "to_validate"
+      },
+      {
+        "consequenceAssessmentId": "CA-CWPUMP-007-01",
+        "failureModeId": "FM-CWPUMP-007",
+        "operationalContextProfileRef": "CTXPROFILE-CW-CONTINUOUS",
+        "riskMatrixVersionRef": "DEMO-RISK-5X5-V1",
+        "consequenceCategory": "operational",
+        "severityValue": 2,
+        "occurrenceValue": 2,
+        "detectionValue": 2,
+        "calculatedRiskResult": "DEMO-RISK-LOW",
+        "humanAssessment": "low_demo_only",
+        "rationale": "Valoración ficticia incluida únicamente para ejercitar en el laboratorio una salida RCM sin tarea programada; requiere validación y no constituye criterio técnico aprobado.",
+        "evidenceRefs": [],
+        "validationStatus": "to_validate"
       }
     ],
     "rcmAssessments": [
@@ -212,6 +227,35 @@
             "answer": "45 days",
             "rationale": "Hipótesis demostrativa a validar; no estándar corporativo.",
             "evidenceRefs": ["EVID-LIB-003"]
+          }
+        ]
+      },
+      {
+        "rcmAssessmentId": "RCM-CWPUMP-007-01",
+        "failureModeId": "FM-CWPUMP-007",
+        "consequenceAssessmentId": "CA-CWPUMP-007-01",
+        "decisionLogicVersionRef": "DEMO-RCM-LOGIC-V1",
+        "systemRecommendation": "no_scheduled_task_demo",
+        "humanDecision": "no_scheduled_task_demo",
+        "overrideReason": null,
+        "authorityRole": "Fixture demonstration only",
+        "status": "to_validate",
+        "answers": [
+          {
+            "answerId": "RCMA-CWPUMP-007-01",
+            "questionRef": "RCMQ-EVIDENT",
+            "sequence": 1,
+            "answer": "yes",
+            "rationale": "Respuesta ficticia para demostrar el recorrido alternativo del modelo.",
+            "evidenceRefs": []
+          },
+          {
+            "answerId": "RCMA-CWPUMP-007-02",
+            "questionRef": "RCMQ-SCHEDULED-TASK-JUSTIFIED",
+            "sequence": 2,
+            "answer": "no_demo_only",
+            "rationale": "No representa una decisión técnica aprobada; fuerza únicamente la rama de demostración NoScheduledTaskDecision.",
+            "evidenceRefs": []
           }
         ]
       }
@@ -319,7 +363,18 @@
         ]
       }
     ],
-    "noScheduledTaskDecisions": [],
+    "noScheduledTaskDecisions": [
+      {
+        "noScheduledTaskDecisionId": "NSTD-CWPUMP-007-01",
+        "fmeaRevisionId": "FMEAR-CWPUMP-001-R1",
+        "failureModeId": "FM-CWPUMP-007",
+        "rcmAssessmentId": "RCM-CWPUMP-007-01",
+        "decisionType": "no_scheduled_task_demo",
+        "rationale": "Rama ficticia incluida para validar que la ausencia de tarea sea un objeto explícito y auditable. No constituye una recomendación técnica para P-101 ni para la biblioteca real.",
+        "authorityRole": "Fixture demonstration only",
+        "status": "to_validate"
+      }
+    ],
     "economicAssessments": [
       {
         "economicAssessmentId": "EA-CWPUMP-003-01",
@@ -503,10 +558,16 @@
       { "layer": "library", "objectType": "FmeaDefinition", "objectId": "FMEA-CWPUMP-001", "sourceObjectId": null },
       { "layer": "library", "objectType": "FmeaRevision", "objectId": "FMEAR-CWPUMP-001-R1", "sourceObjectId": "FMEA-CWPUMP-001" },
       { "layer": "library", "objectType": "FailureMode", "objectId": "FM-CWPUMP-003", "sourceObjectId": "FMEAR-CWPUMP-001-R1" },
-      { "layer": "library", "objectType": "MaintenanceTask", "objectId": "MT-CWPUMP-001", "sourceObjectId": "FM-CWPUMP-003" },
+      { "layer": "library", "objectType": "RcmAssessment", "objectId": "RCM-CWPUMP-003-01", "sourceObjectId": "FM-CWPUMP-003" },
+      { "layer": "library", "objectType": "MaintenanceTask", "objectId": "MT-CWPUMP-001", "sourceObjectId": "RCM-CWPUMP-003-01" },
+      { "layer": "library", "objectType": "FailureMode", "objectId": "FM-CWPUMP-007", "sourceObjectId": "FMEAR-CWPUMP-001-R1" },
+      { "layer": "library", "objectType": "RcmAssessment", "objectId": "RCM-CWPUMP-007-01", "sourceObjectId": "FM-CWPUMP-007" },
+      { "layer": "library", "objectType": "NoScheduledTaskDecision", "objectId": "NSTD-CWPUMP-007-01", "sourceObjectId": "RCM-CWPUMP-007-01" },
       { "layer": "asset_application", "objectType": "FmeaAssetApplication", "objectId": "APP-P101-FMEAR1-001", "sourceObjectId": "FMEAR-CWPUMP-001-R1" },
       { "layer": "execution_plan", "objectType": "ExecutionPlan", "objectId": "PLAN-P101-001", "sourceObjectId": "APP-P101-FMEAR1-001" },
-      { "layer": "results", "objectType": "MaintenanceResult", "objectId": "MR-P101-20260801-001", "sourceObjectId": "PLAN-P101-001" },
+      { "layer": "execution_plan", "objectType": "ExecutionPlanTask", "objectId": "EPT-P101-001", "sourceObjectId": "PLAN-P101-001" },
+      { "layer": "results", "objectType": "MaintenanceResult", "objectId": "MR-P101-20260801-001", "sourceObjectId": "EPT-P101-001" },
+      { "layer": "results", "objectType": "ActualMaintenanceCost", "objectId": "AMC-P101-20260801-001", "sourceObjectId": "MR-P101-20260801-001" },
       { "layer": "results", "objectType": "EffectivenessReview", "objectId": "ER-P101-001", "sourceObjectId": "MR-P101-20260801-001" }
     ]
   }
