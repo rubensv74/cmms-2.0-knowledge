@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / validación integrada en Studio pendiente
+**Estado global:** corrección funcional D-01…D-14 implementada / `scr_FL_Home` runtime validado / smoke integrado de Activos pendiente
 
 ## 1. Modelo canónico
 
@@ -50,7 +50,7 @@ P-101 es una aplicación de `AMEF-BOMBA-CENTRIFUGA / R01`, no propietario de la 
 | D-13 | Job Plan / PM / WO / resultado separados | CORREGIDO |
 | D-14 | ciclos, reglas de agrupación y ObjectList | CORREGIDO |
 
-`CORREGIDO` no significa `INSTANCE_SAFE`: las nuevas piezas deben comprobarse en Power Apps Studio.
+`CORREGIDO` no significa automáticamente `INSTANCE_SAFE`: cada pieza debe comprobarse en Power Apps Studio.
 
 ## 3. Pantallas canónicas — 25
 
@@ -109,7 +109,8 @@ Estados:
 
 ```text
 SidebarPro / PageHeaderPro        INSTANCE_SAFE PASS previo
-TreePro                            QA final pendiente
+TreePro                            import corregido / smoke de Activos pendiente
+ProcessRailPro                     import corregido / smoke de AnalysisCase pendiente
 resto de componentes nuevos       PASS_STATIC / Studio pending
 ```
 
@@ -204,33 +205,56 @@ Referencia conceptual sincronizada:
 
 El bootstrap pre-auditoría `functional-lab-v2-bootstrap.powerfx` ha sido **eliminado** para evitar reinstalar accidentalmente el modelo anterior.
 
+### Evidencia Studio — 2026-08-11
+
+```text
+scr_FL_Home abre y ejecuta correctamente       PASS
+bootstrap alineado carga sin bloqueo           PASS
+navegación base visible                        PASS
+```
+
+Confirmación de usuario: `HOME OK`.
+
+Esto valida el punto de entrada y la inicialización global, pero no implica todavía que las 24 pantallas restantes sean `INSTANCE_SAFE`.
+
 ## 11. Próximo gate
 
-Seguir `power-apps/V2_INSTALLATION.md` y validar en Studio:
+Seguir `power-apps/V2_INSTALLATION.md`.
+
+Estado del plan:
 
 ```text
-1 Foundation
-2 Activos + criticidad
-3 Biblioteca AMEF
-4 Aplicación multi-activo
-5 AnalysisCase
-6 Failure Modes / causas
-7 AMEF
-8 RCM
-9 Task
-10 Plan Package / Maintenance Plans
-11 Trazabilidad / revisión / efectividad
+1 Home / bootstrap                    PASS
+2 Activos + criticidad                EN CURSO
+3 Biblioteca AMEF                     pendiente
+4 Aplicación multi-activo             pendiente
+5 AnalysisCase                        pendiente
+6 Failure Modes / causas              pendiente
+7 AMEF                                pendiente
+8 RCM                                 pendiente
+9 Task                                pendiente
+10 Plan Package / Maintenance Plans   pendiente
+11 Trazabilidad / revisión / efectividad pendiente
 ```
 
-Hasta entonces:
+Próxima validación integrada:
 
 ```text
-DEFINITION_ACCEPTED          pendiente para nuevas piezas
-INSTANCE_SAFE                pendiente para nuevas piezas
-PUBLIC_CONTRACT_VALIDATED    pendiente
-VISUAL_QA_VALIDATED          pendiente
-READY_FOR_INTEGRATION        no
+scr_FL_FLH
+→ scr_FL_Taxonomy
+→ scr_FL_ADR
+→ scr_FL_AssetCriticality
+→ scr_FL_Asset360
 ```
+
+Criterios de aceptación:
+
+- navegación entre las cinco vistas sin error;
+- P-101 permanece como activo seleccionado;
+- FLH se comporta como jerarquía padre-hijo;
+- ADR se presenta como proyección de relaciones, no como jerarquía física;
+- criticidad de P-101 aparece como dato de contexto independiente del riesgo AMEF;
+- Ficha 360 reúne contexto sin modificar datos maestros durante el análisis.
 
 ## 12. Asuntos deliberadamente abiertos
 
