@@ -319,7 +319,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#64748B")
                                     Size: =8
-                                    Text: ="Los datos reales no reescriben el análisis aprobado: generan evidencia para una nueva revisión controlada."
+                                    Text: |-
+                                      ="Los datos reales no reescriben el análisis aprobado: generan evidencia para una nueva revisión controlada."
                                     Width: =Parent.Width-36
                                     X: =18
                                     Y: =218
