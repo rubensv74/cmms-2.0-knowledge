@@ -1,8 +1,9 @@
-# CMMS 2.0 FUNCTIONAL LAB — LINEAGE PANEL PRO — STABLE READABLE RC1
+# CMMS 2.0 FUNCTIONAL LAB — LINEAGE PANEL PRO — HARDENED SAFE PALETTE RC2
 #
 # Base: Studio-proven historical Lineage component.
-# Scope: typography, spacing and height only.
-# Public contract intentionally unchanged from the proven baseline.
+# Scope: preserve public contract and identity while eliminating Color-input
+# materialization risk from the internal visual path.
+# Visible typography follows the Comfortable baseline (>=11).
 
 ComponentDefinitions:
   cmp_FL_LineagePanelPro:
@@ -54,31 +55,31 @@ ComponentDefinitions:
       AccentColor:
         PropertyKind: Input
         DisplayName: AccentColor
-        Description: Color de acento.
+        Description: Color de acento. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#0284C7")
       SurfaceColor:
         PropertyKind: Input
         DisplayName: SurfaceColor
-        Description: Fondo del componente.
+        Description: Fondo del componente. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#FFFFFF")
       BorderColor:
         PropertyKind: Input
         DisplayName: BorderColor
-        Description: Color del borde.
+        Description: Color del borde. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#E2E8F0")
       TextColor:
         PropertyKind: Input
         DisplayName: TextColor
-        Description: Color del texto principal.
+        Description: Color del texto principal. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#0F172A")
       MutedTextColor:
         PropertyKind: Input
         DisplayName: MutedTextColor
-        Description: Color del texto secundario.
+        Description: Color del texto secundario. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#64748B")
 
@@ -92,10 +93,10 @@ ComponentDefinitions:
           Control: GroupContainer@1.5.0
           Variant: ManualLayout
           Properties:
-            BorderColor: =cmp_FL_LineagePanelPro.BorderColor
+            BorderColor: =ColorValue("#E2E8F0")
             BorderThickness: =1
             DropShadow: =DropShadow.None
-            Fill: =cmp_FL_LineagePanelPro.SurfaceColor
+            Fill: =ColorValue("#FFFFFF")
             Height: =Parent.Height
             RadiusBottomLeft: =14
             RadiusBottomRight: =14
@@ -107,7 +108,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
                   Size: =15
                   Text: =cmp_FL_LineagePanelPro.Title
@@ -120,7 +121,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.MutedTextColor
+                  Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
                   Size: =11
                   Text: ="BIBLIOTECA / REVISIÓN"
@@ -133,7 +134,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
                   Size: =12
                   Text: =cmp_FL_LineagePanelPro.LibraryCode & " · " & cmp_FL_LineagePanelPro.RevisionCode
@@ -147,7 +148,7 @@ ComponentDefinitions:
                 Properties:
                   Align: =Align.Center
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.AccentColor
+                  Color: =ColorValue("#0284C7")
                   FontWeight: =FontWeight.Semibold
                   Size: =14
                   Text: ="→"
@@ -159,7 +160,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.MutedTextColor
+                  Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
                   Size: =11
                   Text: ="APLICACIÓN"
@@ -172,7 +173,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
                   Size: =12
                   Text: =cmp_FL_LineagePanelPro.ApplicationCode
@@ -186,7 +187,7 @@ ComponentDefinitions:
                 Properties:
                   Align: =Align.Center
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.AccentColor
+                  Color: =ColorValue("#0284C7")
                   FontWeight: =FontWeight.Semibold
                   Size: =14
                   Text: ="→"
@@ -198,7 +199,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.MutedTextColor
+                  Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
                   Size: =11
                   Text: ="ACTIVO / CONTEXTO"
@@ -211,7 +212,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
                   Size: =12
                   Text: =cmp_FL_LineagePanelPro.AssetCode & " · Criticidad " & cmp_FL_LineagePanelPro.CriticalityLabel
@@ -225,7 +226,7 @@ ComponentDefinitions:
                 Properties:
                   Align: =Align.Center
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.AccentColor
+                  Color: =ColorValue("#0284C7")
                   FontWeight: =FontWeight.Semibold
                   Size: =14
                   Text: ="→"
@@ -237,7 +238,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.MutedTextColor
+                  Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
                   Size: =11
                   Text: ="HANDOFF"
@@ -250,7 +251,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.TextColor
+                  Color: =ColorValue("#0F172A")
                   FontWeight: =FontWeight.Semibold
                   Size: =12
                   Text: =cmp_FL_LineagePanelPro.ExecutionLabel
@@ -263,7 +264,7 @@ ComponentDefinitions:
                 Control: ModernText@1.0.0
                 Properties:
                   AutoHeight: =true
-                  Color: =cmp_FL_LineagePanelPro.MutedTextColor
+                  Color: =ColorValue("#64748B")
                   Size: =11
                   Text: ="La ingeniería se hereda; los ajustes del activo quedan registrados en la aplicación y no modifican silenciosamente la biblioteca."
                   Width: =Parent.Width-36
