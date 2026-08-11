@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cmms2-execution-plan.schema.json",
+  "title": "CMMS 2.0 Execution Plan",
+  "type": "object",
+  "required": ["executionPlanId", "fmeaAssetApplicationId", "revisionNumber", "status", "tasks"],
+  "properties": {
+    "executionPlanId": { "type": "string" },
+    "fmeaAssetApplicationId": { "type": "string" },
+    "revisionNumber": { "type": ["string", "integer"] },
+    "status": { "type": "string" },
+    "effectiveFrom": { "type": ["string", "null"] },
+    "effectiveTo": { "type": ["string", "null"] },
+    "planningPolicyRef": { "type": ["string", "null"] },
+    "publishedSnapshotId": { "type": ["string", "null"] },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["executionPlanTaskId", "maintenanceTaskId", "intervalValue", "intervalUnit", "scope"],
+        "properties": {
+          "executionPlanTaskId": { "type": "string" },
+          "maintenanceTaskId": { "type": "string" },
+          "intervalValue": { "type": "number" },
+          "intervalUnit": { "type": "string" },
+          "intervalOverrideReason": { "type": ["string", "null"] },
+          "discipline": { "type": "string" },
+          "workCenter": { "type": "string" },
+          "crew": { "type": "integer" },
+          "tools": { "type": "string" },
+          "spares": { "type": "string" },
+          "shutdown": { "type": "string" },
+          "permit": { "type": "string" },
+          "scope": { "type": "array", "items": { "type": "string" } },
+          "grouping": { "type": "string" },
+          "procedureRef": { "type": ["string", "null"] },
+          "inspectionFormatRef": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "maintenanceCostEstimates": { "type": "array", "items": { "type": "object" } }
+  },
+  "additionalProperties": false
+}
