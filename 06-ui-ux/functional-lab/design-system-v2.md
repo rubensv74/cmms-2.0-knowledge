@@ -1,13 +1,14 @@
 # CMMS 2.0 Functional Lab — Design System v2
 
 **Estado:** canónico para arquitectura v2  
-**Fecha:** 2026-08-11
+**Fecha:** 2026-08-11  
+**Construcción:** regida por `30-playbooks/power-platform/modular-power-apps-screen-construction.md`
 
 ## 1. Objetivo
 
 Hacer que el Functional Lab se perciba como una aplicación CMMS empresarial real y premium, no como un navegador de prototipos ni como una presentación paso a paso.
 
-La interfaz debe comunicar simultáneamente:
+La interfaz debe comunicar:
 
 1. dónde está el usuario dentro del producto;
 2. qué objeto o caso está trabajando;
@@ -19,9 +20,7 @@ La interfaz debe comunicar simultáneamente:
 
 ## 2. Dos capas de navegación
 
-### 2.1 Navegación global — Sidebar
-
-El Sidebar representa módulos de producto:
+### Navegación global — Sidebar
 
 ```text
 Inicio
@@ -32,169 +31,149 @@ Gobernanza
 Configuración
 ```
 
-No debe enumerar las 28 etapas.
+No enumera las 28 etapas.
 
-### 2.2 Navegación del AnalysisCase — Process Rail
+### Navegación del AnalysisCase — Process Rail
 
-Dentro de un caso, `cmp_FL_ProcessRailPro` representa FL-01…FL-28.
+`cmp_FL_ProcessRailPro` representa FL-01…FL-28 dentro de un caso.
 
-Su función es:
-
-- mostrar progreso;
-- permitir consulta experta;
-- identificar etapa actual;
-- mostrar responsabilidad dominante;
-- hacer visible estado confirmado/draft/warning/blocked;
-- navegar a la pantalla de negocio correspondiente.
-
-No ejecuta las reglas del workflow; el host mantiene autoridad sobre controles de avance y navegación formal.
+Muestra progreso, etapa actual, responsabilidad dominante, estado y navegación de consulta. El host conserva autoridad sobre workflow y progresión formal.
 
 ## 3. Pantallas por trabajo real
 
-Una pantalla existe cuando un usuario CMMS reconocería un trabajo u objeto distinto.
+Una pantalla existe cuando un usuario CMMS reconocería un trabajo u objeto distinto. No se crea automáticamente una pantalla por `stageId` ni se fusionan trabajos distintos únicamente para reducir número de pantallas.
 
-Ejemplos:
+## 4. Tokens y roles visuales
+
+El design system no se gobierna mediante paletas independientes dentro de cada componente.
+
+Los colores se expresan conceptualmente mediante roles compartidos:
 
 ```text
-Árbol FLH
-Taxonomía
-Árbol ADR
-Ficha 360
-Registro de análisis
-Caso de análisis
-Funciones
-Modos de fallo
-AMEF
-Decisión RCM
-Evaluación económica
-Tarea
-Paquete de plan
-Trazabilidad
-Aprobación
-Efectividad
+Background
+Surface
+SurfaceAlt
+Border
+TextPrimary
+TextSecondary
+
+Primary
+PrimaryHover
+PrimarySelected
+
+SelectedBackground
+SelectedBorder
+SelectedAccent
+SelectedText
+
+Success
+Warning
+Danger
+
+Chart01
+Chart02
+Chart03
+Chart04
+Chart05
+Chart06
 ```
 
-No se fusionan etapas solo para reducir el número de pantallas.
+Los valores concretos utilizados hoy en componentes pueden actuar como fallback de compatibilidad, pero no son una segunda fuente de verdad semántica.
 
-Tampoco se crea automáticamente una pantalla por stageId.
+La gobernanza transversal se apoya en:
 
-## 4. Gramática visual de responsabilidad
+`functional-engineering-knowledge-base/15-standards/ux-ui/enterprise-design-system-token-governance.md`
+
+## 5. Gramática semántica de responsabilidad
 
 ### Master / referencia
 
-```text
-Slate / neutral
-#0F172A
-#334155
-#64748B
-#F8FAFC
-#E2E8F0
-```
-
-Uso:
-
-- datos maestros;
-- referencias externas;
-- metadatos;
-- información de solo lectura.
+Uso: datos maestros, referencias externas, metadatos y solo lectura.
 
 ### Sistema / cálculo / recomendación
 
-```text
-Blue / cyan
-#0284C7
-#0369A1
-#075985
-#F0F9FF
-#BAE6FD
-```
-
-Uso:
-
-- cálculo;
-- clasificación automática;
-- recomendación;
-- explicación de regla;
-- navegación activa.
+Uso: cálculo, clasificación automática, recomendación, explicación y navegación activa.
 
 ### Persona / autoridad
 
-```text
-Purple
-#7C3AED
-#6D28D9
-#FAF5FF
-#E9D5FF
-```
-
-Uso:
-
-- decisión humana;
-- rol con autoridad;
-- confirmación;
-- revisión multidisciplinar.
+Uso: decisión humana, rol con autoridad, confirmación y revisión multidisciplinar.
 
 ### Warning / excepción / override
 
-```text
-Amber / orange
-#F59E0B
-#B45309
-#EA580C
-#C2410C
-#FFFBEB
-#FFF7ED
-#FDE68A
-#FED7AA
-```
-
-Uso:
-
-- finding;
-- override;
-- excepción;
-- incertidumbre que permite continuar;
-- acción pendiente no bloqueante.
+Uso: finding, override, excepción o incertidumbre no bloqueante.
 
 ### Error / bloqueo
 
-```text
-Red
-#EF4444
-#B91C1C
-#FEF2F2
-#FECACA
-```
-
-Uso:
-
-- control de avance bloqueado;
-- error;
-- condición incompatible con avance formal.
+Uso: error, condición incompatible o avance formal bloqueado.
 
 ### Confirmado / aprobado
 
+Uso: evidencia confirmada, control superado, aprobación y resultado estable.
+
+El color no puede ser el único canal de significado cuando el estado es importante.
+
+## 6. Theme separado de estructura y comportamiento
+
+Una pieza puede alcanzar:
+
 ```text
-Green
-#22C55E
-#15803D
-#166534
-#F0FDF4
-#BBF7D0
+STRUCTURE       FROZEN
+BEHAVIOR        FROZEN
+DATA CONTRACT   FROZEN
+COLOR           PENDING
 ```
 
-Uso:
+En ese estado queda `FUNCTIONAL_FROZEN` y no debe reabrirse por un problema exclusivamente cromático.
 
-- evidencia confirmada;
-- control superado;
-- aprobación;
-- resultado estable.
+La aprobación final sigue:
 
-## 5. Tipografía — baseline Comfortable
+```text
+COLOR FOUNDATION APPROVED
+→ VISUAL_APPROVED
+→ FINAL_FROZEN
+```
 
-Base: `Segoe UI` / controles modernos equivalentes.
+## 7. Design System Lab
 
-La versión anterior utilizaba numerosos tamaños 7–10 y resultó insuficiente en Power Apps Studio y para demostraciones. Desde esta revisión, **Comfortable significa realmente legible**, no simplemente algo mayor que Compact.
+Toda duda sobre render, contraste, selección o materialización de color se valida primero en:
+
+```text
+scr_DesignSystemLab
+```
+
+Es una utility screen técnica, fuera de la navegación funcional y fuera de las 25 pantallas de producto.
+
+Debe cubrir como mínimo:
+
+```text
+Background / Surface / SurfaceAlt
+TextPrimary / TextSecondary
+Classic controls
+Modern controls
+Buttons
+Borders
+Selected / Hover / Pressed / Disabled / Focus
+Success / Warning / Danger
+Data visualisation palette
+contraste sobre superficies reales
+```
+
+Construcción obligatoria:
+
+```text
+DS-S01 skeleton + placeholders
+→ Studio validation
+→ geometry freeze
+→ DS-C01 token roles
+→ DS-C02 controls
+→ DS-C03 interaction states
+→ DS-C04 data visualisation
+→ COLOR FOUNDATION APPROVED
+```
+
+No se propaga una paleta directamente desde un editor externo o por considerar correctos los HEX.
+
+## 8. Tipografía — Comfortable
 
 Escala canónica:
 
@@ -212,57 +191,34 @@ Page title                 24–28
 KPI / principal value      24–32
 ```
 
-### Regla obligatoria
+Reglas:
 
-No utilizar texto visible de usuario con `Size < 11`.
+- no texto visible `<11`;
+- body principal `>=13`;
+- labels ordinarios `>=12`;
+- no reducir tipografía para hacer caber contenido;
+- usar más altura, scroll o reordenación.
 
-El cuerpo principal debe ser `>=13` y los labels ordinarios `>=12`.
+Detalle: `TYPOGRAPHY_AND_DENSITY_STANDARD.md`.
 
-No reducir tipografía para conseguir que el contenido quepa. Si falta espacio, usar más altura, scroll, reordenación o flujo vertical.
+## 9. Densidad
 
-El detalle completo está en:
-
-`TYPOGRAPHY_AND_DENSITY_STANDARD.md`
-
-## 6. Densidad y escala visual
-
-El perfil por defecto del Functional Lab es **Comfortable**.
-
-Geometría mínima recomendada:
+Perfil por defecto: **Comfortable**.
 
 ```text
-Botón primario          >= 44 px
-Botón secundario        >= 40 px
-Input estándar          >= 40 px
-Fila compacta           >= 42 px
-Fila Comfortable        >= 48 px
-Hit target              >= 40×40 px cuando sea posible
+Botón primario          >=44 px
+Botón secundario        >=40 px
+Input estándar          >=40 px
+Fila compacta           >=42 px
+Fila Comfortable        >=48 px
+Hit target              >=40×40 cuando sea posible
 ```
 
-Si el Process Rail con 28 etapas no cabe, debe usar scroll. No debe reducir texto para mostrar todas las etapas a la vez.
+El Process Rail usa scroll antes de reducir tipografía.
 
-Escala futura de usuario:
+## 10. Layout responsive
 
-```text
-Normal       100%
-Comfortable  115%  ← default
-Large        130%
-```
-
-Cuando se implemente, escalar conjuntamente:
-
-- texto;
-- padding;
-- altura de controles;
-- separación;
-- iconos;
-- targets interactivos.
-
-No crear zoom independiente dentro de cada componente.
-
-## 7. Layout responsive
-
-Objetivo completo:
+Objetivo:
 
 ```text
 Desktop
@@ -275,51 +231,36 @@ Móvil completo queda fuera de v2.
 Principios:
 
 - Sidebar colapsable;
-- contenido principal usa `Parent.Width` y proporciones;
-- paneles de dos columnas deben poder convertirse posteriormente a flujo vertical;
-- evitar coordenadas que dependan del ancho exacto 1200 salvo componentes canónicos ya probados;
-- no diseñar información crítica solo para hover;
-- priorizar legibilidad sobre densidad extrema.
+- contenido principal basado en `Parent.Width` y contratos claros;
+- dos columnas evolucionables a flujo vertical;
+- no depender de hover para información crítica;
+- legibilidad antes que densidad extrema.
 
-## 8. Page Header
+## 11. Page Header
 
-`cmp_FL_PageHeaderPro` identifica:
+`cmp_FL_PageHeaderPro` identifica pantalla/arquetipo, objeto/caso, journey cuando aplica, review state y progreso.
 
-- pantalla / archetype;
-- objeto o case code;
-- journey position cuando aplica;
-- review state;
-- progreso.
+En Activos no debe fingir una etapa de AnalysisCase.
 
-En pantallas de `AnalysisCase` puede mostrar journey.
+```text
+Page title  24–28
+Subtitle    13–14
+```
 
-En pantallas de Activos no debe fingir una etapa del journey si el usuario está fuera del análisis.
+## 12. TreePro
 
-El título de página debe quedar entre 24–28 y el subtítulo entre 13–14.
-
-## 9. TreePro
-
-`cmp_FL_TreePro` es foundation para:
-
-- FLH;
-- Taxonomía;
-- ADR.
+Foundation para FLH, Taxonomía y ADR.
 
 Principios:
 
-- profundidad variable;
 - modelo plano padre-hijo;
-- icono semántico mediante `RowIconKey`;
-- P-101 resaltado sin perder selección;
+- profundidad variable;
 - breadcrumb;
-- search;
+- búsqueda;
 - expand/collapse;
-- compresión de indentación en profundidad;
-- descripción detallada preferentemente en panel derecho.
-
-No usar 11 galerías anidadas para 11 niveles.
-
-Tipografía mínima:
+- P-101 resaltado sin perder selección;
+- compresión de indentación;
+- detalle preferentemente en panel derecho.
 
 ```text
 nodo principal       12–13
@@ -328,9 +269,9 @@ breadcrumb           12
 badge                11
 ```
 
-## 10. Process Rail
+## 13. Process Rail
 
-El rail debe mostrar:
+Debe mostrar:
 
 ```text
 estado
@@ -340,31 +281,27 @@ etapa
 responsabilidad dominante
 ```
 
-Código visual de responsabilidad actual:
+Códigos compactos actuales:
 
 ```text
-H  human
-R  recommendation
-C  calculation
-G  gate
+H human
+R recommendation
+C calculation
+G gate
 ```
 
-Estos códigos son compactos; el contexto de pantalla debe explicar su significado cuando sea necesario.
-
-Tipografía mínima:
+Texto visible mínimo:
 
 ```text
-stage label          12
-stageId              11
-phase label          11
-responsibility       11
+stage label      12
+stageId          11
+phase label      11
+responsibility   11
 ```
 
-## 11. Decision Panel
+## 14. Decision Panel
 
-`cmp_FL_DecisionPanelPro` debe evitar que una recomendación parezca una decisión.
-
-Estructura conceptual:
+Debe hacer imposible confundir recomendación y decisión.
 
 ```text
 SISTEMA
@@ -376,121 +313,109 @@ DECISIÓN HUMANA
 - valor
 - motivo
 - autoridad
-- override cuando existe
+- override
 ```
 
 Nunca ocultar la recomendación original después de un override.
 
-Título 16–18, body 13 y labels 12 como mínimo.
+## 15. Control de avance
 
-## 12. Gate Panel
+`cmp_FL_GatePanelPro` expresa estado, resumen, motivo, acción necesaria, responsable, output y acción de continuar.
 
-`cmp_FL_GatePanelPro` sustituye el patrón pobre de simplemente deshabilitar `Siguiente`.
-
-Todo control visible debe expresar:
+En UI visible se prefieren:
 
 ```text
-estado
-resumen
-motivo
-acción necesaria
-responsable
-output que se producirá
-acción de continuar
+Estado de la etapa
+Control de avance
+Requisitos para continuar
+Validación de la etapa
 ```
 
-Título 16–18, body 13 y labels 12 como mínimo.
+“Gate” queda como término técnico interno.
 
-## 13. Borrador vs confirmación
+## 16. Master data
 
-Interacción ordinaria:
-
-```text
-editar
-→ draft
-```
-
-Decisión con autoridad:
-
-```text
-review
-→ Confirmar / Aprobar
-→ decisión trazable
-```
-
-No obligar a guardar manualmente cada edición del formulario.
-
-## 14. Master data
-
-En pantallas de análisis, master data se representa como:
+En AnalysisCase:
 
 ```text
 DATO MAESTRO · SOLO LECTURA
 ```
 
-El análisis puede consumirlo y referenciarlo.
+No editar silenciosamente código/nombre maestro, FLH, taxonomía o ADR desde el análisis.
 
-No debe permitir editar:
+## 17. Honestidad del prototipo
 
-- código de activo;
-- nombre maestro;
-- jerarquía FLH;
-- taxonomía;
-- relaciones ADR maestras.
+No fingir capacidades productivas inexistentes:
 
-Una corrección del maestro pertenece a otro proceso.
+- PM/JobPlan/WO reales;
+- persistencia de auditoría remota;
+- seguridad definitiva;
+- Azure SQL ya integrado.
 
-## 15. Localization-ready
+Premium no equivale a simular backend inexistente.
 
-Idioma actual visible: español.
+## 18. Superficies de referencia
 
-Keys internas independientes del idioma:
+La estrategia anterior usaba `scr_FL_AMEF` como pantalla de referencia visual general. Esto queda refinado para separar responsabilidades:
 
-```text
-Home
-Assets
-Strategy
-Plans
-Governance
-Settings
-Context
-Functions
-AMEF
-RCM
-...
-```
+### `scr_DesignSystemLab`
 
-La v2 contiene un catálogo ES/EN inicial.
+Referencia exclusiva para:
 
-No activar selector bilingüe hasta que **todos** los textos visibles hayan sido migrados a keys. Una interfaz mitad ES / mitad EN no cumple el estándar.
+- tokens;
+- color;
+- contraste;
+- estados de controles;
+- render Classic/Modern;
+- selección;
+- data palette.
 
-## 16. Honestidad del prototipo
+### `scr_FL_Home`
 
-Todo módulo aún conceptual debe decirlo claramente.
+Referencia para:
 
-Ejemplos:
+- shell;
+- Sidebar;
+- Header;
+- spacing general;
+- jerarquía básica;
+- cards y densidad estándar.
 
-- Planes: no fingir PM/JobPlan/WO real;
-- Gobernanza: no fingir persistencia de auditoría remota;
-- Settings: no fingir seguridad productiva;
-- Azure SQL: no fingir que ya es el backend.
+Su geometría ya cuenta con evidencia positiva y debe preservarse.
 
-El objetivo premium no justifica simular capacidades inexistentes.
+### `scr_FL_AMEF`
 
-## 17. Gate de calidad visual
+**Stress test funcional de alta densidad**, no laboratorio de color.
 
-Una pantalla no puede declararse `VISUAL_QA_VALIDATED` si:
+Se utiliza después de que tokens y componentes hayan sido validados aisladamente para comprobar:
 
-- existe texto visible menor de 11;
-- el body principal es menor de 13;
-- hay clipping de texto;
-- se ha reducido tipografía para evitar scroll;
-- botones o inputs no crecen con la nueva escala;
-- la pantalla solo resulta legible acercándose físicamente al monitor.
+- Header + Sidebar + Process Rail;
+- lineage/contexto;
+- RiskMatrix 5×5;
+- Decision Panel;
+- control de avance;
+- densidad y scroll reales.
 
-La pantalla de referencia para validar la nueva foundation visual será `scr_FL_AMEF`, por ser la de mayor densidad y combinar Header, Process Rail, lineage, formularios, Risk Matrix, Decision Panel y Gate Panel.
+AMEF se reconstruye `skeleton first` porque su geometría actual no está congelada.
 
-## 18. Criterio premium
+## 19. Gate de calidad visual
+
+Una pantalla no es `VISUAL_QA_VALIDATED` si:
+
+- existe texto visible <11;
+- body principal <13;
+- hay clipping o mini-scrollbars accidentales;
+- se redujo tipografía para evitar scroll;
+- estados interactivos no son visibles;
+- la selección cambia de lenguaje entre componentes;
+- se aplicó una paleta no validada en Studio;
+- color es el único canal para un estado esencial.
+
+Consultar:
+
+`functional-engineering-knowledge-base/15-standards/ux-ui/power-apps-visual-quality-standard.md`
+
+## 20. Criterio premium
 
 Premium significa:
 
@@ -501,10 +426,10 @@ Premium significa:
 - acciones previsibles;
 - responsabilidad visible;
 - estados explicables;
-- componente reusable;
+- componentes reutilizables;
 - responsive;
 - accesibilidad;
 - ausencia de ruido visual;
 - acabado comparable a SaaS empresarial moderno.
 
-No significa añadir sombras, colores o controles por decoración.
+No significa añadir sombras, color o controles por decoración.
