@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "cmms2-functional-journey.schema.json",
-  "title": "CMMS 2.0 Functional Journey",
+  "title": "CMMS 2.0 Functional Journey v2",
   "type": "object",
   "required": ["version", "journeyId", "stages"],
   "properties": {
@@ -22,6 +22,10 @@
       "type": "string",
       "enum": ["existing_input", "user_input", "system_calculation", "system_recommendation", "human_decision", "gate", "output"]
     },
+    "layer": {
+      "type": "string",
+      "enum": ["library", "asset_application", "execution_plan", "results"]
+    },
     "item": {
       "type": "object",
       "required": ["id", "type", "label"],
@@ -30,6 +34,7 @@
         "type": { "$ref": "#/$defs/responsibilityType" },
         "label": { "type": "string" },
         "description": { "type": "string" },
+        "objectType": { "type": ["string", "null"] },
         "ruleId": { "type": ["string", "null"] },
         "required": { "type": "boolean" },
         "ruleStatus": { "$ref": "#/$defs/ruleStatus" }
@@ -38,11 +43,13 @@
     },
     "stage": {
       "type": "object",
-      "required": ["stageId", "phaseId", "workspaceId", "title", "businessQuestion", "items", "ruleStatus"],
+      "required": ["stageId", "phaseId", "workspaceId", "layer", "primaryObjectType", "title", "businessQuestion", "items", "ruleStatus"],
       "properties": {
         "stageId": { "type": "string", "pattern": "^FL-[0-9]{2}$" },
         "phaseId": { "type": "string", "pattern": "^P-[1-5]$" },
         "workspaceId": { "type": "string", "pattern": "^WS-[0-9]{2}$" },
+        "layer": { "$ref": "#/$defs/layer" },
+        "primaryObjectType": { "type": "string" },
         "title": { "type": "string" },
         "businessQuestion": { "type": "string" },
         "ownerRole": { "type": ["string", "null"] },
