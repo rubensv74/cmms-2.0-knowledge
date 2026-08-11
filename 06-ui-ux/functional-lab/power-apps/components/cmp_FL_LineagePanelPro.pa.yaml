@@ -1,8 +1,8 @@
-# CMMS 2.0 FUNCTIONAL LAB — LINEAGE PANEL PRO — HARDENED SAFE PALETTE RC2
+# CMMS 2.0 FUNCTIONAL LAB — LINEAGE PANEL PRO — HARDENED SAFE PALETTE RC3
 #
 # Base: Studio-proven historical Lineage component.
-# Scope: preserve public contract and identity while eliminating Color-input
-# materialization risk from the internal visual path.
+# Preserves public contract, component identity and the existing 126px host contract.
+# Internal visual colors do not depend on Color custom-property materialization.
 # Visible typography follows the Comfortable baseline (>=11).
 
 ComponentDefinitions:
@@ -55,37 +55,37 @@ ComponentDefinitions:
       AccentColor:
         PropertyKind: Input
         DisplayName: AccentColor
-        Description: Color de acento. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
+        Description: Color de acento. Conservado por compatibilidad de contrato; la RC3 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#0284C7")
       SurfaceColor:
         PropertyKind: Input
         DisplayName: SurfaceColor
-        Description: Fondo del componente. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
+        Description: Fondo del componente. Conservado por compatibilidad de contrato; la RC3 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#FFFFFF")
       BorderColor:
         PropertyKind: Input
         DisplayName: BorderColor
-        Description: Color del borde. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
+        Description: Color del borde. Conservado por compatibilidad de contrato; la RC3 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#E2E8F0")
       TextColor:
         PropertyKind: Input
         DisplayName: TextColor
-        Description: Color del texto principal. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
+        Description: Color del texto principal. Conservado por compatibilidad de contrato; la RC3 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#0F172A")
       MutedTextColor:
         PropertyKind: Input
         DisplayName: MutedTextColor
-        Description: Color del texto secundario. Se conserva por compatibilidad de contrato; la RC2 usa paleta interna segura.
+        Description: Color del texto secundario. Conservado por compatibilidad de contrato; la RC3 usa paleta interna segura.
         DataType: Color
         Default: =ColorValue("#64748B")
 
     Properties:
       Fill: =Color.Transparent
-      Height: =154
+      Height: =126
       Width: =900
 
     Children:
@@ -115,7 +115,7 @@ ComponentDefinitions:
                   Width: =Parent.Width-36
                   Wrap: =false
                   X: =18
-                  Y: =14
+                  Y: =9
 
             - lblFLLineageLibraryEyebrow:
                 Control: ModernText@1.0.0
@@ -128,7 +128,7 @@ ComponentDefinitions:
                   Width: =(Parent.Width-120)*0.26
                   Wrap: =false
                   X: =18
-                  Y: =48
+                  Y: =36
 
             - lblFLLineageLibraryValue:
                 Control: ModernText@1.0.0
@@ -141,7 +141,7 @@ ComponentDefinitions:
                   Width: =(Parent.Width-120)*0.26
                   Wrap: =false
                   X: =18
-                  Y: =72
+                  Y: =57
 
             - lblFLLineageArrow1:
                 Control: ModernText@1.0.0
@@ -154,7 +154,7 @@ ComponentDefinitions:
                   Text: ="→"
                   Width: =28
                   X: =18+(Parent.Width-120)*0.26
-                  Y: =70
+                  Y: =55
 
             - lblFLLineageApplicationEyebrow:
                 Control: ModernText@1.0.0
@@ -167,7 +167,7 @@ ComponentDefinitions:
                   Width: =(Parent.Width-120)*0.20
                   Wrap: =false
                   X: =46+(Parent.Width-120)*0.26
-                  Y: =48
+                  Y: =36
 
             - lblFLLineageApplicationValue:
                 Control: ModernText@1.0.0
@@ -180,7 +180,7 @@ ComponentDefinitions:
                   Width: =(Parent.Width-120)*0.20
                   Wrap: =false
                   X: =46+(Parent.Width-120)*0.26
-                  Y: =72
+                  Y: =57
 
             - lblFLLineageArrow2:
                 Control: ModernText@1.0.0
@@ -193,7 +193,7 @@ ComponentDefinitions:
                   Text: ="→"
                   Width: =28
                   X: =46+(Parent.Width-120)*0.46
-                  Y: =70
+                  Y: =55
 
             - lblFLLineageAssetEyebrow:
                 Control: ModernText@1.0.0
@@ -206,7 +206,7 @@ ComponentDefinitions:
                   Width: =(Parent.Width-120)*0.27
                   Wrap: =false
                   X: =74+(Parent.Width-120)*0.46
-                  Y: =48
+                  Y: =36
 
             - lblFLLineageAssetValue:
                 Control: ModernText@1.0.0
@@ -219,7 +219,7 @@ ComponentDefinitions:
                   Width: =(Parent.Width-120)*0.27
                   Wrap: =false
                   X: =74+(Parent.Width-120)*0.46
-                  Y: =72
+                  Y: =57
 
             - lblFLLineageArrow3:
                 Control: ModernText@1.0.0
@@ -232,7 +232,7 @@ ComponentDefinitions:
                   Text: ="→"
                   Width: =28
                   X: =74+(Parent.Width-120)*0.73
-                  Y: =70
+                  Y: =55
 
             - lblFLLineageExecutionEyebrow:
                 Control: ModernText@1.0.0
@@ -245,7 +245,7 @@ ComponentDefinitions:
                   Width: =Parent.Width-(102+(Parent.Width-120)*0.73)-18
                   Wrap: =false
                   X: =102+(Parent.Width-120)*0.73
-                  Y: =48
+                  Y: =36
 
             - lblFLLineageExecutionValue:
                 Control: ModernText@1.0.0
@@ -258,7 +258,7 @@ ComponentDefinitions:
                   Width: =Parent.Width-(102+(Parent.Width-120)*0.73)-18
                   Wrap: =false
                   X: =102+(Parent.Width-120)*0.73
-                  Y: =72
+                  Y: =57
 
             - lblFLLineageHint:
                 Control: ModernText@1.0.0
@@ -268,6 +268,6 @@ ComponentDefinitions:
                   Size: =11
                   Text: ="La ingeniería se hereda; los ajustes del activo quedan registrados en la aplicación y no modifican silenciosamente la biblioteca."
                   Width: =Parent.Width-36
-                  Wrap: =true
+                  Wrap: =false
                   X: =18
-                  Y: =112
+                  Y: =94
