@@ -1,75 +1,54 @@
-# Functional Lab — Recovery Baseline R0
+# Functional Lab — Recovery Baseline R0 — SUPERSEDED
 
-**Propósito:** disponer de un punto cero reproducible antes de continuar la Visual Foundation.
+**Estado:** `SUPERSEDED` desde 2026-08-11.  
+**Conservar únicamente como evidencia forense. No usar para instalar ni recuperar la app.**
 
-## Ensamblaje Home validado
+## Por qué queda retirado
 
-### Pantalla
+R0 demostró que era posible recuperar `HOME BASELINE PASS`, `FLH PASS`, `TAXONOMÍA PASS` y `ADR PASS` a partir de commits históricos. Sin embargo, el método tenía un defecto: recuperaba una fotografía antigua completa del archivo, incluyendo comportamientos visuales que posteriormente ya habían sido corregidos.
 
-- `scr_FL_Home.pa.yaml`
-- commit: `34059bf4beaf7f74e2245ad45959114ae8357cfc`
-- fuente histórica:
-  https://github.com/rubensv74/cmms-2.0-knowledge/blob/34059bf4beaf7f74e2245ad45959114ae8357cfc/06-ui-ux/functional-lab/power-apps/screens/scr_FL_Home.pa.yaml
+En concreto, algunas definiciones históricas utilizaban Inputs `Color` directamente para superficies, texto, selección y resaltado. Al reutilizarlas se reintrodujo el incidente de superficies negras observado en Studio.
 
-### Sidebar
+Además, instalar pantallas una a una dejó el grafo de navegación incompleto y provocó numerosos errores `Name isn't valid. 'scr_FL_...'` para destinos canónicos que todavía no existían en Studio.
 
-- `cmp_FL_SidebarPro.pa.yaml`
-- commit: `f322b7e07afa0975b7230a757c709989cbb04511`
-- fuente histórica:
-  https://github.com/rubensv74/cmms-2.0-knowledge/blob/f322b7e07afa0975b7230a757c709989cbb04511/06-ui-ux/functional-lab/power-apps/components/cmp_FL_SidebarPro.pa.yaml
-
-### Page Header
-
-- `cmp_FL_PageHeaderPro.pa.yaml`
-- commit: `f46f2f33f308d1ff0a3d02a7fa89fa027446e9b7`
-- fuente histórica:
-  https://github.com/rubensv74/cmms-2.0-knowledge/blob/f46f2f33f308d1ff0a3d02a7fa89fa027446e9b7/06-ui-ux/functional-lab/power-apps/components/cmp_FL_PageHeaderPro.pa.yaml
-
-### Lineage
-
-- `cmp_FL_LineagePanelPro.pa.yaml`
-- commit: `408a57e7aaadd575d494a0bc8a21612f8c72b4b4`
-- fuente histórica:
-  https://github.com/rubensv74/cmms-2.0-knowledge/blob/408a57e7aaadd575d494a0bc8a21612f8c72b4b4/06-ui-ux/functional-lab/power-apps/components/cmp_FL_LineagePanelPro.pa.yaml
-
-## Fallback AMEF pre-F03
-
-Estos archivos NO forman parte de la primera recuperación. Se guardan para evitar perder el último estado anterior a los experimentos F03/F04.
-
-### AMEF screen
-
-- commit: `81b50eb6ac61554695d922634ec62117d285ba4b`
-- fuente histórica:
-  https://github.com/rubensv74/cmms-2.0-knowledge/blob/81b50eb6ac61554695d922634ec62117d285ba4b/06-ui-ux/functional-lab/power-apps/screens/scr_FL_AMEF.pa.yaml
-
-### RiskMatrix pre-F03
-
-- commit: `756bd41d5cf520c0f513772566af25e644af6f7f`
-- fuente histórica:
-  https://github.com/rubensv74/cmms-2.0-knowledge/blob/756bd41d5cf520c0f513772566af25e644af6f7f/06-ui-ux/functional-lab/power-apps/components/cmp_FL_RiskMatrixPro.pa.yaml
-
-## Regla de uso
-
-1. no agregar copias nuevas de componentes en Studio;
-2. cualquier recuperación se hace in situ, preservando identidad;
-3. no restaurar AMEF durante R0-1;
-4. primero recuperar y validar Home;
-5. después cerrar Visual Foundation solo en Home;
-6. usar `scr_FL_FmeaLibrary` como segunda pantalla de propagación;
-7. AMEF vuelve al flujo únicamente cuando las dos anteriores estén canónicas.
-
-## Gate R0-1
+## Regla vigente
 
 ```text
-Home abre sin errores rojos
-P-101 se carga
-Sidebar/Header/Lineage renderizan
-navegación principal responde
-bootstrap permanece intacto
+NO usar commits históricos como fuente normal de instalación.
+NO mezclar pantalla histórica + componentes actuales.
+NO reconstruir el grafo pantalla a pantalla juzgando App Checker entre cada archivo.
 ```
 
-Si pasa:
+La única fuente canónica es:
 
 ```text
-HOME BASELINE PASS
+branch: feature/f01-premium-foundation
 ```
+
+### Componentes actuales
+
+`06-ui-ux/functional-lab/power-apps/components/`
+
+### Pantallas actuales
+
+`06-ui-ux/functional-lab/power-apps/screens/`
+
+### Auditoría que sustituye R0
+
+`RECOVERY_HARDENING_AUDIT_2026-08-11.md`
+
+### Procedimiento de instalación
+
+`../power-apps/V2_INSTALLATION.md`
+
+### Runbook operativo
+
+`TOMORROW_RUNBOOK_2026-08-12.md`
+
+## Evidencia histórica preservada
+
+Los commits históricos enumerados en versiones anteriores de este documento siguen siendo útiles para análisis forense y comparación, pero **no son candidatos de instalación**.
+
+## Regla de recuperación definitiva
+
+> La unidad de recuperación es un ensamblaje coherente de la rama canónica, no un conjunto de archivos históricos seleccionados individualmente.
