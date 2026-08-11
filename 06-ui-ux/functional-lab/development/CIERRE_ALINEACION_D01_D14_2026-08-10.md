@@ -1,6 +1,6 @@
 # Cierre de alineación D-01…D-14 — CMMS 2.0 Functional Lab
 
-**Fecha:** 2026-08-10  
+**Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
 **Estado:** corrección de modelo completada / `PASS_STATIC` / Studio QA pendiente
 
@@ -25,7 +25,7 @@ D-13  Job Plan / PM / WO / resultado separados         RESUELTA
 D-14  Agrupación sin pérdida de identidad por tag      RESUELTA EN CAPACIDAD
 ```
 
-`RESUELTA EN CAPACIDAD` significa que el modelo puede soportar la decisión, pero no fija todavía la política corporativa concreta.
+`RESUELTA EN CAPACIDAD` significa que el modelo soporta la decisión, pero no fija todavía la política corporativa concreta.
 
 ## Evidencia principal
 
@@ -90,9 +90,7 @@ Biblioteca → Aplicación → Contexto → Decisión → Ejecución → Mejora
 
 ## Validación estática
 
-Ver:
-
-`ALIGNED_STATIC_VALIDATION_2026-08-10.md`
+Ver `ALIGNED_STATIC_VALIDATION_2026-08-10.md`.
 
 Resultado:
 
@@ -104,11 +102,7 @@ Este estado no implica `INSTANCE_SAFE` ni `VISUAL_QA_VALIDATED`.
 
 ## Próximo gate técnico
 
-Instalar la arquitectura alineada siguiendo:
-
-`power-apps/V2_INSTALLATION.md`
-
-y ejecutar los siete smoke tests integrados.
+Instalar la arquitectura alineada siguiendo `power-apps/V2_INSTALLATION.md` y ejecutar los **11 smoke tests integrados**.
 
 ## Próximo gate funcional
 
