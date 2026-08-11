@@ -6,7 +6,9 @@
 
 CMMS 2.0 está en transición desde prototipos conceptuales HTML hacia **CMMS 2.0 Functional Lab**, una aplicación Power Apps destinada a validar el modelo funcional mediante casos ejecutables y producir documentación trazable para IT.
 
-La foundation del laboratorio ha sido corregida tras detectar una desviación estructural importante: el primer modelo ejecutable trataba P-101 como contenedor del AMEF. El modelo canónico vigente es ahora:
+La remediación de la primera foundation asset-centric queda **cerrada**. Las 14 desviaciones detectadas han sido corregidas en modelo conceptual, contratos, fixture, journey, arquitectura, componentes, guías y handoff funcional.
+
+Modelo canónico vigente:
 
 ```text
 Engineering Library
@@ -15,118 +17,158 @@ Engineering Library
 → Results & Learning
 ```
 
-## Completado
+## Remediación library-first completada — 2026-08-11
 
-### Fundamentos previos
+Quedan establecidos como principios canónicos:
 
-- Estructura documental inicial.
-- Prototipos HTML 01-03 de fundamentos del modelo de activos.
-- Prototipo 04 AMEF + RCM por sprints P04.0-P04.6.
-- AMEF–RCM Experience Center v3 con caso P-101 y recorrido guiado de 28 etapas.
-- Dossier de contexto para NotebookLM.
-- Especificación AMEF/RCM que ya introducía biblioteca reusable, revisiones, N:M, aplicabilidad y snapshots.
+- `FmeaDefinition` y `FmeaRevision` como raíz del conocimiento reusable;
+- revisiones publicadas inmutables;
+- `FmeaAssetApplication` para aplicar una revisión a un activo/contexto;
+- criticidad del activo independiente del riesgo AMEF;
+- `FailureCause` y `FailureEffect` explícitos;
+- RCM versionado con respuestas, recomendación, decisión humana y override;
+- salida explícita `NoScheduledTaskDecision`;
+- N:M `MaintenanceTask` ↔ `FailureMode`;
+- separación `MaintenanceTask` / `MaintenanceProcedure` / `InspectionFormat`;
+- separación `EconomicAssessment` / `MaintenanceCostEstimate` / `ActualMaintenanceCost`;
+- lineage por identificadores desde Engineering Library hasta Results & Learning.
 
-### Foundation Functional Lab v1 — 2026-08-10
+La evidencia de cierre 14/14 está en:
 
-- Auditoría de transición inicial.
-- Protocolo incremental adaptado desde Pulse.
-- Gate funcional previo al gate técnico.
-- Primer journey de 28 etapas.
-- Primera matriz persona vs sistema.
-- Arquitectura conceptual inicial.
-- Primeros schemas JSON.
-- Fixture P-101 v1.
-- Paquete documental modular para IT.
+- `00-governance/audits/2026-08-11-functional-lab-library-first-remediation.md`.
 
-### Remediación library-first — 2026-08-11
+## Artefactos canónicos preparados
 
-- Auditoría de 14 desviaciones arquitectónicas y funcionales.
-- Introducción de `FmeaDefinition` y `FmeaRevision` como padres de biblioteca.
-- Separación de `FmeaAssetApplication` para el contexto por activo.
-- Separación formal entre criticidad del activo y riesgo AMEF.
-- `FailureCause` y `FailureEffect` como objetos explícitos.
-- RCM versionado con respuestas, recomendación y decisión humana.
-- Salida explícita `NoScheduledTaskDecision`.
-- Relación N:M `MaintenanceTask` ↔ `FailureMode`.
-- Separación `MaintenanceTask` / `MaintenanceProcedure` / `InspectionFormat`.
-- Economía dividida en `EconomicAssessment`, `MaintenanceCostEstimate` y `ActualMaintenanceCost`.
-- Creación de `03-data-model/` como modelo conceptual canónico.
-- Contratos JSON separados por Library, Application, Plan y Results.
-- Fixture P-101 v2 library-first.
-- Journey v2 de 28 etapas y nueve workspaces.
-- Matriz persona vs sistema v2.
-- Arquitectura Functional Lab v2.
-- Contratos funcionales de componentes.
-- Estrategia de diseño premium adaptada a las cuatro capas.
-- Guía explícita de migración fixture v1→v2.
-- Guías del Experience Center actualizadas y runtime HTML v3 clasificado como evidencia histórica asset-centric.
+### Modelo y gobierno
 
-## En curso
+- `00-governance/cmms-functional-lab-incremental-protocol.md` — protocolo v2 con Domain Ownership Gate.
+- `00-governance/architecture-gates.md` — decisiones cerradas, validaciones funcionales y gates futuros.
+- `03-data-model/core/fmea-library-model.md` — modelo conceptual canónico.
+- `03-data-model/core/traceability-layers.md` — trazabilidad entre capas.
 
-- Alineación final de índices, roadmap, changelog y documentación transversal.
-- Auditoría de residuos asset-centric en documentación activa.
-- Preparación documental de `F01-00 — Auditoría Power Apps Foundation`.
+### Functional Lab
 
-## Siguiente gate técnico
+- `01-vision/cmms-functional-lab-vision.md` — visión v2.
+- `02-functional/process-model/functional-journey.md` — 28 etapas reorganizadas por capas.
+- `02-functional/process-model/human-system-decisions.md` — responsabilidad persona/sistema v2.
+- `06-ui-ux/functional-lab/architecture.md` — arquitectura layer-aware.
+- `06-ui-ux/functional-lab/component-contracts.md` — contratos funcionales de componentes.
+- `06-ui-ux/functional-lab/design-system.md` — estrategia SaaS premium.
 
-### F01-00 — Auditoría Power Apps Foundation
+### Contratos y caso
 
-Antes de generar YAML deben confirmarse en la Canvas app real:
+- `contracts/fmea-library.schema.json`.
+- `contracts/fmea-asset-application.schema.json`.
+- `contracts/execution-plan.schema.json`.
+- `contracts/maintenance-results.schema.json`.
+- `contracts/case-fixture.schema.json` v2.
+- `cases/P101/p101-case.v2.json` — fixture canónico.
+- `cases/P101/p101-case.v1.json` — legacy, solo evidencia histórica.
 
-- schema Source Code disponible;
-- convenciones y componentes reutilizables instalados;
-- controles seguros y versiones;
-- restricciones y errores conocidos;
-- baseline visual;
-- mecanismo inicial de adaptación fixture v2 → estado Power Fx.
+El fixture v2 demuestra expresamente:
 
-Este gate no implica decidir backend, SQL, Dataverse o API.
+- P-101 solo en Asset Application;
+- N:M tarea–modo en ambos sentidos;
+- rama RCM con tarea y rama con `NoScheduledTaskDecision`;
+- procedimiento y formato independientes;
+- economía prevista/decisional/real separada;
+- lineage hasta `ExecutionPlanTask`, resultado, coste real y revisión de efectividad.
 
-## Primera vertical slice después del gate
+### Preparación de Power Apps
 
-`WS-01 Library & Revision`
+- `development/compatibility.md`.
+- `development/f01-00-power-apps-foundation-audit.md`.
+- `development/adapters/runtime-adapter-v2.md`.
+- `development/workspaces/ws-01-library-revision.md`.
+- `development/workspaces/workspace-catalog-v2.md`.
+- `development/screens/functional-lab/screen-architecture.md`.
+- `development/screens/functional-lab/blocks/block-plan.md`.
+- `development/validation/validate-fixture-v2.py`.
 
-1. Premium App Shell Foundation.
-2. Layered runtime state mínimo.
-3. Adaptador P-101 v2.
-4. Navegación base.
-5. Contexto `FmeaDefinition` / `FmeaRevision`.
-6. Evidencia y trabajo sobre revisión editable.
-7. Gate de preparación.
-8. Output estructurado hacia WS-02.
-9. Hardening y documentación.
+La secuencia F01-01..F01-09 está especificada hasta el punto en que Power Apps Studio se vuelve imprescindible.
 
-P-101 no será el objeto principal de WS-01; aparecerá en WS-07 como `FmeaAssetApplication`.
+## Experience Center
 
-## Riesgos principales vigentes
+El runtime HTML v3 se conserva deliberadamente como **evidencia histórica asset-centric**. No se seguirá desarrollando como modelo canónico.
 
-- Volver a introducir estructura asset-centric desde la UI aunque el modelo de datos sea correcto.
-- Confundir criticidad del activo con riesgo AMEF.
-- Convertir una tarea en un contenedor de procedimiento y formato.
-- Perder la N:M tarea–modo por simplificación de interfaz.
-- Tratar ausencia de tarea como ausencia de decisión.
-- Mezclar estimación económica con coste real.
-- Convertir hipótesis conceptuales en automatismos sin validación.
-- Introducir backend o integraciones antes de que el laboratorio las necesite.
-- Crear YAML contra componentes o dialectos no comprobados en la app real.
+Sus guías de negocio y el recorrido P-101 sí han sido actualizados para enseñar:
 
-## Asuntos todavía por validar
+```text
+Library
+→ Application
+→ Plan
+→ Results
+```
 
-No se consideran desviaciones ni se cierran automáticamente:
+El destino de implementación es Functional Lab v2.
+
+## Gates de arquitectura
+
+No ha surgido una nueva decisión estructural que requiera intervención.
+
+Siguen abiertos, pero dormidos hasta que el alcance llegue a ellos:
+
+- persistencia productiva;
+- frontera API/backend;
+- identidad/autorización;
+- motor de reglas;
+- implementación física de revisiones/snapshots;
+- integración Asset Master/FLH/taxonomía/ADR;
+- generación de Job Plans/PM/WO u objetos equivalentes;
+- estrategia documental productiva;
+- multi-cliente/tenancy.
+
+No se deben decidir por adelantado.
+
+## Asuntos funcionales todavía `to_validate`
+
+No se consideran desviaciones:
 
 - matriz corporativa de riesgo;
 - esquema de criticidad;
 - árbol RCM definitivo;
 - umbrales P–F;
 - fórmulas económicas;
-- roles y workflow de aprobación;
-- granularidad definitiva de procedimientos/formatos;
-- backend, persistencia e integración productivos.
+- roles/workflow de aprobación;
+- nomenclaturas/catálogos finales;
+- criterios exactos para exigir procedimiento/formato;
+- frecuencias y límites técnicos del fixture.
+
+El Functional Lab puede simularlos, siempre etiquetados como no aprobados.
+
+## Frontera técnica actual — TG-001
+
+La rama `agent/functional-lab-foundation` no contiene actualmente una Canvas app real, `.msapp` ni Source Code `.pa.yaml` del Functional Lab.
+
+Por tanto no es seguro generar todavía YAML: obligaría a inventar dialecto Source Code, versiones de controles, componentes instalados, theme y baseline de App Checker.
+
+La siguiente acción ejecutable, cuando exista una Canvas app baseline, es:
+
+1. inventariar controles/componentes reales;
+2. confirmar Source Code y App Checker;
+3. implementar únicamente `F01-01 — Premium App Shell Foundation`;
+4. validar en Studio;
+5. continuar bloque a bloque.
+
+Este límite es **técnico**, no una decisión de arquitectura.
+
+## Riesgos principales vigentes
+
+- reintroducir estructura asset-centric desde UI/Power Fx;
+- confundir criticidad del activo con riesgo AMEF;
+- simplificar la N:M a un campo único;
+- fusionar tarea/procedimiento/formato;
+- tratar ausencia de tarea como ausencia de decisión;
+- mezclar estimación económica y coste real;
+- editar una revisión publicada desde una capa contextual;
+- convertir hipótesis en automatismos corporativos;
+- generar Source Code contra un baseline no inspeccionado.
 
 ## Fuentes de verdad principales
 
 - `00-governance/audits/2026-08-11-functional-lab-library-first-remediation.md`
 - `00-governance/cmms-functional-lab-incremental-protocol.md`
+- `00-governance/architecture-gates.md`
 - `01-vision/cmms-functional-lab-vision.md`
 - `02-functional/process-model/functional-journey.md`
 - `02-functional/process-model/human-system-decisions.md`
