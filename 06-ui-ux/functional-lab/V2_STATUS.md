@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** D-01…D-14 corregido / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados / F03 AMEF readability reference `PASS_STATIC`
+**Estado global:** D-01…D-14 corregido / Home + Activos + Biblioteca AMEF + Aplicación multi-activo validados / AMEF premium stage-focused publicado como candidato Studio
 
 ## 1. Modelo canónico
 
@@ -61,7 +61,7 @@ BIBLIOTECA AMEF OK
 APLICACIÓN MULTI-ACTIVO OK
 ```
 
-## 4. Foundation visual — F03
+## 4. Foundation visual
 
 La inspección de `scr_FL_AMEF` reveló dos problemas que obligaron a pausar la propagación a las 25 pantallas:
 
@@ -74,9 +74,7 @@ Además se incorporó la regla de identidad de Canvas Components:
 
 > una definición corregida no debe agregarse como nueva copia si el componente ya tiene instancias; debe actualizarse in situ o migrarse de forma controlada.
 
-### Baseline Comfortable
-
-`TYPOGRAPHY_AND_DENSITY_STANDARD.md` establece:
+Baseline Comfortable:
 
 ```text
 texto visible mínimo     11
@@ -91,57 +89,66 @@ button                    12–13
 
 No se reducirá tipografía para evitar scroll.
 
-## 5. F03 — AMEF Readability Reference
+## 5. RiskMatrixPro premium 5×5
 
-La referencia canónica está implementada en:
+`cmp_FL_RiskMatrixPro` tiene como fuente de verdad visual la referencia premium aprobada durante la revisión del 11 de agosto.
 
-`power-apps/blocks/F03-AMEF-READABILITY-REFERENCE/`
-
-Target:
+La RC3 canónica conserva:
 
 ```text
-1366×768
-browser zoom 100%
-Comfortable density
+900×650
+5×5 como caso principal AMEF
+Severidad 5→1
+Ocurrencia 1→5
+selección S=4 / O=3
+Detección=3
+S×O=12
+NPR=36
+KPI strip inferior
+nota de escala discreta
 ```
 
-Definiciones actualizadas como candidatos **con el mismo nombre/identidad canónica**:
+La matriz no debe volver a convertirse en una tabla compacta para hacerla caber.
+
+Estado RC3:
 
 ```text
-cmp_FL_SidebarPro
-cmp_FL_PageHeaderPro
-cmp_FL_ProcessRailPro
-cmp_FL_LineagePanelPro
-cmp_FL_RiskMatrixPro
-cmp_FL_DecisionPanelPro
-cmp_FL_GatePanelPro
-scr_FL_AMEF
+SOURCE candidate          publicado
+Studio render             evidencia disponible
+VISUAL_QA final           pendiente
 ```
 
-No se modifican en F03:
+## 6. scr_FL_AMEF — workspace por etapa
+
+Se retira la composición que intentaba mostrar simultáneamente efectos, matriz, decisión y gate.
+
+Nuevo patrón:
 
 ```text
-cmp_FL_TreePro
-cmp_FL_ApplicabilityMatrixPro
-resto de pantallas
+FL-07          Efectos + contexto + criticidad
+FL-09          Matriz de riesgo AMEF premium 5×5
+FL-08/10/11    Resultado AMEF + decisión humana + control de avance
 ```
 
-### Geometría de referencia
+El Process Rail permanece visible y actúa como navegación interna entre las etapas AMEF sin recrear la pantalla.
+
+Para liberar superficie útil en este workspace denso:
 
 ```text
-Sidebar                 220
-Header host              100
-ProcessRail              300 + scroll
-Lineage/context          108
-Effects                  304
-RiskMatrix               304
-Decision                 216
-Gate                     216
+Sidebar        colapsado a 76
+ProcessRail    250
+Header         100
+Work area      resto del ancho
+RiskMatrix     900×650 centrada en FL-09
 ```
 
-El layout elimina los bloques verticales redundantes anteriores y gana espacio reorganizando información, no miniaturizándola.
+Esto permite mantener la matriz premium sin reducir tipografía ni deformar las celdas.
 
-## 6. Semántica AMEF preservada
+Archivo canónico:
+
+`power-apps/screens/scr_FL_AMEF.pa.yaml`
+
+## 7. Semántica AMEF preservada
 
 Fixture P-101:
 
@@ -157,47 +164,11 @@ La matriz sigue siendo `Matriz de riesgo AMEF` S×O.
 
 La criticidad del activo permanece como contexto externo al AMEF.
 
-## 7. Estado de validación F03
+La decisión final de consecuencia sigue siendo autoridad humana, separada del cálculo y de la recomendación del sistema.
 
-```text
-SOURCE / YAML REVIEW            PASS
-KNOWN COMPATIBILITY SCAN        PASS
-TYPOGRAPHY BASELINE             PASS_STATIC
-REFERENCE GEOMETRY              PASS_STATIC
-COMPONENT IDENTITY STRATEGY     DOCUMENTED
+## 8. Próximo gate Studio
 
-DEFINITION_ACCEPTED             pendiente de Studio
-INSTANCE_SAFE                   pendiente para esta revisión
-VISUAL_QA_VALIDATED             pendiente
-READY_FOR_INTEGRATION           NO
-```
-
-Documentos:
-
-```text
-F03.../README.md
-F03.../STUDIO_IN_PLACE_UPDATE.md
-F03.../STATIC_VALIDATION.md
-```
-
-## 8. Próximo gate — una única actualización y smoke
-
-No se deben volver a copiar las 25 pantallas.
-
-Actualizar **in situ** en Studio, en este orden:
-
-```text
-1 cmp_FL_SidebarPro
-2 cmp_FL_PageHeaderPro
-3 cmp_FL_ProcessRailPro
-4 cmp_FL_LineagePanelPro
-5 cmp_FL_RiskMatrixPro
-6 cmp_FL_DecisionPanelPro
-7 cmp_FL_GatePanelPro
-8 scr_FL_AMEF
-```
-
-Después ejecutar una única validación:
+Actualizar in situ únicamente las definiciones que hayan cambiado y validar:
 
 ```text
 Home
@@ -206,24 +177,28 @@ Home
 → AMEF
 ```
 
-Criterios principales:
+Comprobación discriminante:
 
 ```text
-no duplicación de componentes
-instancias siguen asociadas
-paleta correcta
+FL-07  muestra efectos/contexto sin clipping
+FL-09  muestra RiskMatrixPro 900×650 completa
+FL-08/10/11 muestran decisión + gate
+Process Rail conmuta entre estas vistas sin error
+P-101 se mantiene cargado
+S=4 / O=3 / D=3 / NPR=36
 texto legible a 100%
-ProcessRail con scroll
-matriz 5×5 legible
-D=3
-NPR=36
-sistema vs decisión humana diferenciados
-gate legible
 sin bloques negros
-uso cómodo a 1366×768
+sin duplicación de componentes
 ```
 
-Solo si este gate pasa se propagará el patrón al resto del Functional Lab.
+Hasta esta validación:
+
+```text
+PASS_STATIC / source candidate    SÍ
+DEFINITION_ACCEPTED               pendiente Studio para esta revisión
+VISUAL_QA_VALIDATED               NO
+READY_FOR_INTEGRATION             NO
+```
 
 ## 9. Estado del plan integrado
 
@@ -232,9 +207,9 @@ Solo si este gate pasa se propagará el patrón al resto del Functional Lab.
 2 Activos + criticidad                   PASS
 3 Biblioteca AMEF                        PASS
 4 Aplicación multi-activo                PASS
-5 AnalysisCase                           PAUSADO — F03 visual gate
+5 AnalysisCase                           PAUSADO — gate visual AMEF
 6 Failure Modes / causas                 pendiente
-7 AMEF                                   F03 PASS_STATIC / Studio QA pendiente
+7 AMEF                                   candidato premium publicado / Studio QA pendiente
 8 RCM                                    pendiente
 9 Task                                   pendiente
 10 Plan Package / Maintenance Plans      pendiente
