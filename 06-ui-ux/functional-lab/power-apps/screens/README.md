@@ -1,5 +1,24 @@
 # Power Apps Screens — Functional Lab alineado
 
+**Fuente canónica:** rama `feature/f01-premium-foundation`  
+**Estado:** 25 fuentes publicadas / instalación completa y Visual QA pendientes de Power Apps Studio.
+
+## Regla de instalación
+
+Estas pantallas forman un **grafo único**. Varias contienen `Navigate(...)` hacia otras pantallas del mismo conjunto.
+
+Por tanto:
+
+```text
+crear primero las 25 identidades en Studio
+→ actualizar los 9 componentes in situ
+→ sustituir después el Source Code de las 25 pantallas desde esta carpeta
+```
+
+No evaluar `Name isn't valid. 'scr_FL_...'` con un grafo parcial si el nombre señalado pertenece a esta lista y aún no ha sido creado en Studio.
+
+No instalar pantallas desde commits históricos individuales.
+
 ## Canónicas — 25 pantallas
 
 | Módulo | Pantalla | Propósito |
@@ -42,10 +61,31 @@ JobPlan ≠ PreventiveMaintenancePlan
 PreventiveMaintenancePlan ≠ WorkOrder
 ```
 
+## Bootstrap
+
+`scr_FL_Home.OnVisible` es la autoridad del fixture alineado. No reinstalar el bootstrap legacy.
+
+## Visual QA
+
+Las pantallas aún contienen deuda tipográfica histórica en algunos textos auxiliares. No aplicar reemplazos globales ciegos. El estándar obligatorio es:
+
+```text
+mínimo visible 11
+supporting     12
+body           13–14
+section title  16–18
+page title     24–28
+button         12–13
+```
+
+Primero cerrar `FOUNDATION INTEGRATED PASS`; después corregir una pantalla de referencia y propagar el patrón una vez validado que no introduce clipping.
+
 ## Legacy
 
-`scr_FL_WorkspaceShell.pa.yaml` pertenece a la arquitectura v1. Se conserva como evidencia histórica de trabajo ya validado, pero no se instala ni amplía como pantalla canónica.
+`scr_FL_WorkspaceShell.pa.yaml` pertenece a la arquitectura v1. Se conserva como evidencia histórica y no se instala como pantalla canónica.
 
-## Instalación
+## Guías
 
-Seguir `../V2_INSTALLATION.md`.
+- `../V2_INSTALLATION.md`
+- `../../development/RECOVERY_HARDENING_AUDIT_2026-08-11.md`
+- `../../development/TOMORROW_RUNBOOK_2026-08-12.md`
