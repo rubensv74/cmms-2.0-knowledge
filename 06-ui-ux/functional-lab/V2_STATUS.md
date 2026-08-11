@@ -1,70 +1,72 @@
-# CMMS 2.0 Functional Lab — Estado canónico v2
+# CMMS 2.0 Functional Lab — Estado canónico alineado
 
-**Fecha:** 2026-08-10  
+**Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** Architecture v2 generated / `PASS_STATIC` / Studio integrated QA pending
+**Estado global:** modelo funcional corregido tras auditoría / `PASS_STATIC` de base / validación integrada en Studio pendiente
 
-## 1. Qué es canónico desde ahora
+## 1. Cambio de modelo
 
-La arquitectura v2 sustituye como dirección de producto al modelo v1 de un único `WorkspaceShell` con nueve workspaces agrupados.
+La auditoría de las últimas reuniones detectó 14 desviaciones entre la v2 inicial y el modelo funcional realmente acordado.
 
-La evidencia v1 se conserva porque validó correctamente Sidebar, PageHeader, App Shell, Runtime P-101, WS-01, WS-02 y el motor profundo de TreePro.
+La corrección no elimina `AnalysisCase`; cambia su papel.
 
-No se añadirá funcionalidad nueva al WorkspaceShell v1.
-
-## 2. Decisiones cerradas
+El modelo canónico pasa a ser:
 
 ```text
-Identidad             CMMS 2.0 Functional Lab
-Shell                  módulos reales de producto
-Journey                28 etapas visibles mediante Process Rail
-Pantallas              por objeto / trabajo de negocio
-Navegación             guiada + consulta experta
-FLH/Taxonomía/ADR      tres pantallas separadas
-Caso                   AnalysisCase; P-101 es fixture inicial
-Maestro                solo lectura durante análisis
-Persistencia UX        draft ordinario + confirmación explícita
-Roles                  5 roles iniciales
-Colaboración            multirrol
-Dispositivos            desktop + tablet
-Idioma                  español actual, ES/EN-ready
-Backend                 Azure SQL-oriented, adapter boundary
-Componentes             reutilizables / future Component Library
-Autoridad               humano salvo automatización aprobada
-IA                      recomendación explicable, no autoridad implícita
+BIBLIOTECA DE INGENIERÍA
+FmeaDefinition
+  └─ FmeaRevision
+      ├─ funciones
+      ├─ fallos funcionales
+      ├─ modos
+      ├─ causas / mecanismos
+      ├─ efectos
+      ├─ lógica RCM versionada
+      └─ tareas propuestas
+                ↓
+CONTEXTO DE PLANTA
+TechnicalObject + FLH + Taxonomía + ADR + AssetCriticalityAssessment
+                ↓
+APLICACIÓN
+FmeaAssetApplication + perfil + variantes + overrides
+                ↓
+ANÁLISIS CONTEXTUAL
+AnalysisCase + 28 etapas + riesgo AMEF + decisión RCM
+                ↓
+EJECUTABILIDAD
+MaintenanceTask + intervalo + recursos + procedimiento opcional
+                ↓
+AGRUPACIÓN / HANDOFF
+PlanScopeItem → JobPlan/Route → PM → WorkOrder → ExecutionResult
+                ↓
+MEJORA
+coste real + efectividad + cambio de biblioteca/aplicación
 ```
 
-## 3. Foundation de componentes
+P-101 es una aplicación contextual de `AMEF-BOMBA-CENTRIFUGA / R01`; ya no es propietario de la ingeniería AMEF reusable.
 
-| Componente | Estado |
-|---|---|
-| `cmp_FL_SidebarPro` | INSTANCE_SAFE PASS |
-| `cmp_FL_PageHeaderPro` | INSTANCE_SAFE PASS |
-| `cmp_FL_TreePro` | motor profundo cargado; QA visual final pendiente |
-| `cmp_FL_ProcessRailPro` | PASS_STATIC / Studio pending |
-| `cmp_FL_DecisionPanelPro` | PASS_STATIC / Studio pending |
-| `cmp_FL_GatePanelPro` | PASS_STATIC / Studio pending |
-| `cmp_FL_RiskMatrixPro` | PASS_STATIC / Studio pending |
+## 2. Las 14 observaciones de auditoría
 
-`cmp_FL_RiskMatrixPro` es dimensionalmente configurable. No impone 5×5 ni 10×10.
+| ID | Observación | Corrección canónica | Estado de modelo |
+|---|---|---|---|
+| D-01 | Falta biblioteca AMEF reutilizable | `FmeaDefinition` + `FmeaRevision` + pantallas Biblioteca/Revisión | CORREGIDO |
+| D-02 | Riesgo AMEF confundido con criticidad del activo | `AssetCriticalityAssessment` separado; S×O = Matriz de riesgo AMEF | CORREGIDO |
+| D-03 | Falta aplicación a múltiples activos | `FmeaAssetApplication` + `ApplicabilityMatrixPro` | CORREGIDO |
+| D-04 | Falta perfil por criticidad/contexto | `MaintenanceApplicabilityProfile` + `TaskProfileVariant` | CORREGIDO |
+| D-05 | Falta causa/mecanismo | `FailureCause` | CORREGIDO |
+| D-06 | Falta N:M tarea ↔ modo | `ProposedTaskFailureMode` | CORREGIDO |
+| D-07 | Procedimiento/checklist no modelado | `MaintenanceProcedure` + `TaskProcedureLink` opcional | CORREGIDO |
+| D-08 | Estado operativo solo en paquete | restricciones pasan a `MaintenanceTask` | CORREGIDO |
+| D-09 | Duración/H-H/carga insuficientes | duración, crew, H-H, disciplina y work center | CORREGIDO |
+| D-10 | Economía mezclaba capas de coste | `EconomicAssessment` / `MaintenanceCostEstimate` / `ActualMaintenanceCost` | CORREGIDO |
+| D-11 | Árbol RCM codificado | `DecisionLogic` + revisión + preguntas + transiciones + respuestas | CORREGIDO |
+| D-12 | Alcance principal/soportes insuficiente | `PlanScopeItem` conserva `TechnicalObjectId` | CORREGIDO |
+| D-13 | Handoff Job Plan / PM / WO poco preciso | contratos separados + `ExecutionResult` | CORREGIDO |
+| D-14 | Falta optimización de planes/rutas | `MaintenanceCycle`, `RouteGroupingRule`, `ObjectList` | CORREGIDO |
 
-**Configuración canónica actual de P-101:**
+`CORREGIDO` significa que el **modelo funcional, contratos, runtime de demostración y arquitectura de pantallas** ya lo contemplan. No significa que todas las nuevas piezas hayan superado Power Apps Studio.
 
-```text
-Severidad     1..5
-Ocurrencia    1..5
-Matriz        5×5 = 25 celdas
-Detección     1..5, separada de la matriz
-S inicial     4
-O inicial     3
-D inicial     3
-S×O inicial  12
-NPR inicial   36
-```
-
-La escala 1–5 procede del modelo ya utilizado en los prototipos AMEF. Los umbrales de color siguen siendo demostrativos y pendientes de validación corporativa.
-
-## 4. Pantallas v2 generadas
+## 3. Pantallas canónicas
 
 ### Inicio
 - `scr_FL_Home`
@@ -73,9 +75,15 @@ La escala 1–5 procede del modelo ya utilizado en los prototipos AMEF. Los umbr
 - `scr_FL_FLH`
 - `scr_FL_Taxonomy`
 - `scr_FL_ADR`
+- `scr_FL_AssetCriticality`
 - `scr_FL_Asset360`
 
-### Estrategia de mantenimiento
+### Estrategia — ingeniería reutilizable
+- `scr_FL_FmeaLibrary`
+- `scr_FL_FmeaRevision`
+- `scr_FL_AssetApplication`
+
+### Estrategia — aplicación / AnalysisCase
 - `scr_FL_AnalysisRegister`
 - `scr_FL_CaseOverview`
 - `scr_FL_Context`
@@ -90,127 +98,186 @@ La escala 1–5 procede del modelo ya utilizado en los prototipos AMEF. Los umbr
 - `scr_FL_ReviewApproval`
 - `scr_FL_Effectiveness`
 
-### Shell de producto
+### Handoff / producto
 - `scr_FL_MaintenancePlans`
 - `scr_FL_Governance`
 - `scr_FL_Settings`
 
-**Total: 21 pantallas canónicas.**
+**Total: 25 pantallas canónicas.**
 
-## 5. Cobertura FL-01…FL-28
+El antiguo `scr_FL_WorkspaceShell` queda únicamente como evidencia histórica y no forma parte del modelo actual.
+
+## 4. Componentes canónicos
+
+| Componente | Función | Estado |
+|---|---|---|
+| `cmp_FL_SidebarPro` | navegación global | INSTANCE_SAFE PASS |
+| `cmp_FL_PageHeaderPro` | cabecera contextual | INSTANCE_SAFE PASS |
+| `cmp_FL_TreePro` | FLH / Taxonomía / representación ADR | QA final pendiente |
+| `cmp_FL_ProcessRailPro` | 28 etapas | PASS_STATIC / Studio pending |
+| `cmp_FL_DecisionPanelPro` | recomendación vs decisión humana | PASS_STATIC / Studio pending |
+| `cmp_FL_GatePanelPro` | control de avance explicable | PASS_STATIC / Studio pending |
+| `cmp_FL_RiskMatrixPro` | matriz de riesgo configurable | PASS_STATIC / Studio pending |
+| `cmp_FL_LineagePanelPro` | Biblioteca → Aplicación → Activo → ejecución | PASS_STATIC / Studio pending |
+| `cmp_FL_ApplicabilityMatrixPro` | aplicación multi-activo/perfil | PASS_STATIC / Studio pending |
+
+No se crea un componente nuevo para cada observación. Solo se extrae a componente lo que realmente es visual y reutilizable.
+
+## 5. P-101 como caso de demostración
 
 ```text
-FL-01..03   Context
-FL-04..05   Functions
-FL-06       FailureModes
-FL-07..11   AMEF
-FL-12..16   RCM
-FL-17       Economics
-FL-18..19   Task
-FL-20..22   PlanPackage
-FL-23..24   Traceability
-FL-25..26   ReviewApproval
-FL-27..28   Effectiveness
+FmeaDefinition        AMEF-BOMBA-CENTRIFUGA
+FmeaRevision          R01 · aprobada / congelada
+Application           APP-P101-R01
+TechnicalObject       P-101
+AssetCriticality      Alta · CRIT-P101-R03
+ApplicabilityProfile  HIGH
+AnalysisCase          P101-AMEF-RCM-001
 ```
 
-No se ha eliminado ninguna etapa para ahorrar pantallas.
+La misma revisión R01 se demuestra aplicada también a P-102 y P-103, con perfiles e intervalos distintos sin duplicar la ingeniería base.
 
-### FL-09 — criticidad y NPR
-
-La pantalla `scr_FL_AMEF` distingue:
+## 6. AMEF — separación corregida
 
 ```text
-Selección humana S + O (1..5)
-        ↓
-Matriz visual 5×5 S×O
-        ↓
-score de matriz y banda visual
+CRITICIDAD DEL ACTIVO
+AssetCriticalityAssessment
+→ dato contextual de planta
 
-Valoración humana D (1..5)
-        ↓
+RIESGO DEL MODO DE FALLO
+Severidad + Ocurrencia
+→ Matriz de riesgo AMEF S×O
+
+Detección
+→ valor separado
+
 S × O × D
-        ↓
-NPR calculado por el sistema
+→ NPR calculado
 ```
 
-La matriz S×O y el NPR están relacionados, pero no son el mismo indicador.
-
-## 6. Runtime v2
-
-`power-apps/runtime/functional-lab-v2-bootstrap.powerfx`
-
-El runtime conserva los valores AMEF originales del prototipo P-101:
+Para P-101 se conserva la escala usada en los prototipos:
 
 ```text
-Set(varFLSeverity,4)
-Set(varFLOccurrence,3)
-Set(varFLDetection,3)
-NPR = 36
+S 1..5
+O 1..5
+D 1..5
+S=4, O=3, D=3
+S×O=12
+NPR=36
 ```
 
-Las colecciones y variables actúan como adapter del laboratorio. La UI está orientada a contratos persistentes para una futura conexión de datos.
+Los umbrales de color continúan siendo demostrativos y pendientes de decisión corporativa.
 
-## 7. Estado P-101 de arranque
+## 7. RCM — lógica versionada
+
+La experiencia puede seguir mostrando preguntas sencillas, pero el contrato ya no presupone una secuencia rígida de campos.
 
 ```text
-FL-01..FL-06   confirmed
-FL-07          draft / current
-FL-08..FL-28   not_started
+DecisionLogic
+→ DecisionLogicRevision
+→ DecisionQuestion
+→ DecisionTransition
+→ RcmAssessment
+→ RcmAssessmentAnswer
 ```
 
-## 8. Responsabilidad visual
+El árbol concreto y su correspondencia corporativa siguen dentro de los asuntos pendientes de validar.
+
+## 8. Tarea y ejecutabilidad
+
+La pantalla de tarea debe poder distinguir:
 
 ```text
-Slate / neutral     dato maestro / referencia
-Cyan / blue         cálculo o información del sistema
-Purple              autoridad / decisión humana
-Amber / orange      advertencia / override / excepción
-Red                 bloqueo / error
-Green               confirmado / aprobado / control superado
+ProposedMaintenanceTask     biblioteca
+TaskProfileVariant          ajuste por aplicación
+MaintenanceTask             tarea ejecutable
+MaintenanceProcedure        procedimiento/checklist opcional
+ResourceRequirement         mano de obra/material/herramienta/servicio
+IntervalJustification       intervalo confirmado
+MaintenanceCostEstimate     coste derivado de tarea + frecuencia + recursos
 ```
 
-`DecisionPanelPro` separa resultado/recomendación del sistema de decisión humana.
+Condiciones como parada, aislamiento o permiso pertenecen a la tarea y después se agregan al paquete.
 
-`GatePanelPro` separa estado, motivo, acción requerida, responsable y output.
+## 9. Planes y agrupación
 
-`RiskMatrixPro` separa selección humana S/O, posición y banda de matriz, valor humano D y NPR calculado por software.
-
-## 9. Validación estática
-
-Resultado actual:
+La agrupación nunca elimina identidad por tag.
 
 ```text
-PASS_STATIC
+PlanScopeItem
+→ RouteGroupingRule
+→ ObjectList
+→ JobPlan / Route
+→ PreventiveMaintenancePlan
+→ WorkOrder
+→ ExecutionResult por TechnicalObject
+→ ActualMaintenanceCost
 ```
 
-La sustitución de `scr_FL_AMEF` por la configuración 5×5 se validó con parser YAML antes de publicarse. Esto no sustituye Power Apps Studio.
+Esto permite optimizar número de rutas/planes sin perder trazabilidad individual.
 
-## 10. Gate actual
+## 10. Runtime de demostración
 
-Ejecutar `power-apps/V2_INSTALLATION.md`.
+El bootstrap ejecutable canónico está actualmente integrado en `scr_FL_Home.OnVisible` mediante `varFLAlignedInitialized`.
 
-Los seis smoke tests representativos son:
+Carga:
+
+- criticidad independiente para P-101/P-102/P-103;
+- biblioteca AMEF de familias de equipo;
+- revisiones;
+- funciones/fallos/modos/causas/efectos;
+- tareas propuestas y cobertura N:M;
+- aplicaciones multi-activo;
+- variantes por perfil;
+- `AnalysisCase` contextual;
+- 28 etapas y datos de demostración posteriores.
+
+El archivo `power-apps/runtime/functional-lab-v2-bootstrap.powerfx` se conserva temporalmente como referencia histórica y **no debe utilizarse para reinstalar la versión alineada** hasta su sincronización final; la autoridad actual es `scr_FL_Home.OnVisible`.
+
+## 11. Validación pendiente
+
+La corrección funcional de las 14 observaciones está cerrada a nivel de modelo. El siguiente gate es técnico/visual:
 
 ```text
-1 Foundation components
-2 Home / product shell
-3 FLH / TreePro
-4 CaseOverview / ProcessRail
-5 FailureModes / DecisionPanel
-6 AMEF / RiskMatrix 5×5 + NPR + decision + GatePanel
+1 Foundation de 9 componentes
+2 Home y bootstrap alineado
+3 Activos: FLH / Taxonomía / ADR / Criticidad / 360
+4 Biblioteca AMEF + Revisión
+5 Aplicación multi-activo
+6 AnalysisCase + Process Rail
+7 Failure Modes + causas + decisión
+8 AMEF + riesgo S/O/D + criticidad externa
+9 RCM versionable
+10 Task + procedimiento + recursos + H-H
+11 Plan Package + alcance + agrupación
+12 Maintenance Plans + Job Plan/PM/WO + trazabilidad por tag
+13 Traceability / Review / Effectiveness
 ```
 
-## 11. Definición de terminado de la reconstrucción
+Hasta completar Studio:
 
-Completados:
+```text
+DEFINITION_ACCEPTED          pending para nuevas piezas
+INSTANCE_SAFE                pending para nuevas piezas
+PUBLIC_CONTRACT_VALIDATED    pending
+VISUAL_QA_VALIDATED          pending
+READY_FOR_INTEGRATION        no
+```
 
-- decisiones y ADR versionados;
-- mapa de pantallas;
-- contratos de dominio;
-- siete componentes Foundation;
-- 21 pantallas;
-- runtime v2;
-- PASS_STATIC;
-- instalación y smoke plan.
+## 12. Asuntos deliberadamente pendientes de decisión
 
-Pendiente para declarar `INSTANCE_SAFE / VISUAL_QA`: validación integrada en Power Apps Studio.
+No se han cerrado por inferencia:
+
+- escalas AMEF corporativas definitivas;
+- umbrales/bandas/colores de riesgo;
+- árbol RCM corporativo definitivo;
+- reglas P-F e intervalo;
+- autoridades/permisos finales;
+- evidencias mínimas y niveles de confianza;
+- reglas de sobreclasificación;
+- criterios de aprobación;
+- KPIs y umbrales de efectividad;
+- tecnología/sistema destino de integración;
+- arquitectura física de base de datos.
+
+Estos asuntos se decidirán después de validar la corrección de las 14 desviaciones.
