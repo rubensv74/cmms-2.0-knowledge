@@ -1,38 +1,50 @@
-# Power Apps Screens — Architecture v2
+# Power Apps Screens — Functional Lab alineado
 
-## Canonical v2
+## Canónicas — 25 pantallas
 
-| Module | Screen | Purpose |
+| Módulo | Pantalla | Propósito |
 |---|---|---|
-| Home | `scr_FL_Home` | Inicio, KPIs, trabajo actual, acceso a activos/casos |
-| Assets | `scr_FL_FLH` | Jerarquía FLH |
-| Assets | `scr_FL_Taxonomy` | Clasificación / taxonomía |
-| Assets | `scr_FL_ADR` | Relaciones ADR |
-| Assets | `scr_FL_Asset360` | Ficha consolidada del objeto técnico |
-| Strategy | `scr_FL_AnalysisRegister` | Registro de AnalysisCase |
-| Strategy | `scr_FL_CaseOverview` | Object page del caso + Process Rail de 28 etapas |
-| Strategy | `scr_FL_Context` | FL-01..03 |
-| Strategy | `scr_FL_Functions` | FL-04..05 |
-| Strategy | `scr_FL_FailureModes` | FL-06 |
-| Strategy | `scr_FL_AMEF` | FL-07..11 |
-| Strategy | `scr_FL_RCM` | FL-12..16 |
-| Strategy | `scr_FL_Economics` | FL-17 |
-| Strategy | `scr_FL_Task` | FL-18..19 |
-| Strategy | `scr_FL_PlanPackage` | FL-20..22 |
-| Strategy | `scr_FL_Traceability` | FL-23..24 |
-| Strategy | `scr_FL_ReviewApproval` | FL-25..26 |
-| Strategy | `scr_FL_Effectiveness` | FL-27..28 |
-| Plans | `scr_FL_MaintenancePlans` | Preview honesto de planes derivados |
-| Governance | `scr_FL_Governance` | Vista transversal de versión/findings/change |
-| Settings | `scr_FL_Settings` | Rol simulado, idioma futuro, arquitectura del lab |
+| Inicio | `scr_FL_Home` | Arranque, navegación y fixture alineado |
+| Activos | `scr_FL_FLH` | Jerarquía FLH |
+| Activos | `scr_FL_Taxonomy` | Clasificación / taxonomía |
+| Activos | `scr_FL_ADR` | Relaciones ADR |
+| Activos | `scr_FL_AssetCriticality` | Criticidad contextual independiente del AMEF |
+| Activos | `scr_FL_Asset360` | Ficha consolidada del TechnicalObject |
+| Estrategia | `scr_FL_FmeaLibrary` | Biblioteca AMEF reusable por familia |
+| Estrategia | `scr_FL_FmeaRevision` | Revisión versionada de ingeniería base |
+| Estrategia | `scr_FL_AssetApplication` | Aplicación multi-activo, perfiles y overrides |
+| Estrategia | `scr_FL_AnalysisRegister` | Registro de AnalysisCase contextuales |
+| Estrategia | `scr_FL_CaseOverview` | Caso + lineage + Process Rail |
+| Estrategia | `scr_FL_Context` | FL-01..03 · alcance, contexto y aplicabilidad |
+| Estrategia | `scr_FL_Functions` | FL-04..05 · funciones/fallos heredados y overrides |
+| Estrategia | `scr_FL_FailureModes` | FL-06 · modos y causas aplicables |
+| Estrategia | `scr_FL_AMEF` | FL-07..11 · riesgo AMEF S/O/D separado de criticidad |
+| Estrategia | `scr_FL_RCM` | FL-12..16 · lógica RCM versionable y decisión |
+| Estrategia | `scr_FL_Economics` | FL-17 · comparación económica preliminar |
+| Estrategia | `scr_FL_Task` | FL-18..19 · tarea ejecutable, recursos, H-H, procedimiento |
+| Estrategia | `scr_FL_PlanPackage` | FL-20..22 · alcance físico y agrupación candidata |
+| Estrategia | `scr_FL_Traceability` | FL-23..24 · Biblioteca → ejecución |
+| Estrategia | `scr_FL_ReviewApproval` | FL-25..26 · revisión, aprobación, snapshot |
+| Estrategia | `scr_FL_Effectiveness` | FL-27..28 · resultados y mejora |
+| Planes | `scr_FL_MaintenancePlans` | Job Plan/Route, PM, WO y resultados por tag |
+| Gobernanza | `scr_FL_Governance` | revisiones, aprobaciones, findings y cambios |
+| Configuración | `scr_FL_Settings` | preferencias y reglas conceptuales configurables |
+
+## Principios protegidos
+
+```text
+FmeaRevision ≠ AnalysisCase
+AssetCriticality ≠ RiskAssessment AMEF
+ProposedMaintenanceTask ≠ MaintenanceTask
+MaintenanceTask ≠ MaintenanceProcedure
+MaintenanceTask ≠ JobPlan
+JobPlan ≠ PreventiveMaintenancePlan
+PreventiveMaintenancePlan ≠ WorkOrder
+```
 
 ## Legacy
 
-`scr_FL_WorkspaceShell.pa.yaml` pertenece a la arquitectura v1 basada en workspaces agrupados.
-
-Se conserva temporalmente como evidencia histórica porque contiene resultados ya validados de WS-01 y WS-02, pero **no debe utilizarse como pantalla canónica de la arquitectura v2**.
-
-No añadir nuevas funcionalidades a `scr_FL_WorkspaceShell`.
+`scr_FL_WorkspaceShell.pa.yaml` pertenece a la arquitectura v1. Se conserva como evidencia histórica de trabajo ya validado, pero no se instala ni amplía como pantalla canónica.
 
 ## Instalación
 
