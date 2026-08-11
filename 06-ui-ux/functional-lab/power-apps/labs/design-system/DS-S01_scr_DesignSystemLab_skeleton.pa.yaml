@@ -1,0 +1,442 @@
+# BLOCK DS-S01 — Design System Lab skeleton
+# TYPE: S — Structural
+# OPERATION: CREATE / REPLACE SCREEN STRUCTURE
+# TARGET: scr_DesignSystemLab
+# DEPENDS ON: none
+# TOUCHES: scr_DesignSystemLab only
+# DO NOT MODIFY: Functional Lab screens, reusable components, bootstrap, navigation
+# VALIDATION: render + geometry + no overlap + no blocking App Checker regression
+# EXPECTED STATUS AFTER STUDIO VALIDATION: STRUCTURE FROZEN / COLOR PENDING
+
+Screens:
+  scr_DesignSystemLab:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+
+    Children:
+      - conDSLabRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+            X: =0
+            Y: =0
+
+          Children:
+            - conDSLabHeader:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#FFFFFF")
+                  Height: =96
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                  X: =0
+                  Y: =0
+
+                Children:
+                  - lblDSLabEyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="DESIGN SYSTEM LAB · DS-S01"
+                        Width: =Parent.Width-260
+                        Wrap: =false
+                        X: =24
+                        Y: =14
+
+                  - lblDSLabTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =26
+                        Text: ="Laboratorio visual CMMS 2.0"
+                        Width: =Parent.Width-260
+                        Wrap: =false
+                        X: =24
+                        Y: =34
+
+                  - lblDSLabSubtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =13
+                        Text: ="Skeleton estructural · sin componentes funcionales · color todavía no aprobado"
+                        Width: =Parent.Width-260
+                        Wrap: =false
+                        X: =24
+                        Y: =70
+
+                  - conDSLabState:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F8FAFC")
+                        Height: =56
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =190
+                        X: =Parent.Width-Self.Width-24
+                        Y: =20
+
+                      Children:
+                        - lblDSLabStateLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =11
+                              Text: ="ESTADO"
+                              Width: =Parent.Width-20
+                              X: =10
+                              Y: =8
+
+                        - lblDSLabStateValue:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =13
+                              Text: ="IN_CONSTRUCTION"
+                              Width: =Parent.Width-20
+                              X: =10
+                              Y: =29
+
+            - conDSLabBody:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  Height: =Parent.Height-120
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-32
+                  X: =16
+                  Y: =108
+
+                Children:
+                  - ph_TokenRoles:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =(Parent.Height-24)*0.37
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =(Parent.Width-12)*0.64
+                        X: =0
+                        Y: =0
+
+                      Children:
+                        - lblDSTokenTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="ph_TokenRoles"
+                              Width: =Parent.Width-32
+                              X: =16
+                              Y: =16
+
+                        - lblDSTokenPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Future DS-C01 · roles semánticos compartidos y muestras de tokens"
+                              Width: =Parent.Width-32
+                              Wrap: =true
+                              X: =16
+                              Y: =46
+
+                  - ph_Text:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =ph_TokenRoles.Height
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-ph_TokenRoles.Width-12
+                        X: =ph_TokenRoles.Width+12
+                        Y: =0
+
+                      Children:
+                        - lblDSTextTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="ph_Text"
+                              Width: =Parent.Width-32
+                              X: =16
+                              Y: =16
+
+                        - lblDSTextPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Tipografía, overflow, contenido largo y legibilidad"
+                              Width: =Parent.Width-32
+                              Wrap: =true
+                              X: =16
+                              Y: =46
+
+                  - ph_ClassicControls:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =(Parent.Height-24)*0.37
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =(Parent.Width-36)/4
+                        X: =0
+                        Y: =ph_TokenRoles.Height+12
+
+                      Children:
+                        - lblDSClassicTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: ="ph_ClassicControls"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =14
+
+                        - lblDSClassicPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Classic controls"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =44
+
+                  - ph_ModernControls:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =ph_ClassicControls.Height
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =ph_ClassicControls.Width
+                        X: =ph_ClassicControls.X+ph_ClassicControls.Width+12
+                        Y: =ph_ClassicControls.Y
+
+                      Children:
+                        - lblDSModernTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: ="ph_ModernControls"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =14
+
+                        - lblDSModernPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Modern controls"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =44
+
+                  - ph_InteractionStates:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =ph_ClassicControls.Height
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =ph_ClassicControls.Width
+                        X: =ph_ModernControls.X+ph_ModernControls.Width+12
+                        Y: =ph_ClassicControls.Y
+
+                      Children:
+                        - lblDSInteractionTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: ="ph_InteractionStates"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =14
+
+                        - lblDSInteractionPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Hover · Pressed · Selected · Disabled · Focus"
+                              Width: =Parent.Width-28
+                              Wrap: =true
+                              X: =14
+                              Y: =44
+
+                  - ph_DataViz:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =ph_ClassicControls.Height
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-ph_InteractionStates.X-ph_InteractionStates.Width-12
+                        X: =ph_InteractionStates.X+ph_InteractionStates.Width+12
+                        Y: =ph_ClassicControls.Y
+
+                      Children:
+                        - lblDSDataVizTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: ="ph_DataViz"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =14
+
+                        - lblDSDataVizPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Chart01…Chart06 · selección separada de data palette"
+                              Width: =Parent.Width-28
+                              Wrap: =true
+                              X: =14
+                              Y: =44
+
+                  - ph_Status:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-Self.Y
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width
+                        X: =0
+                        Y: =ph_ClassicControls.Y+ph_ClassicControls.Height+12
+
+                      Children:
+                        - lblDSStatusTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: ="ph_Status"
+                              Width: =Parent.Width-32
+                              X: =16
+                              Y: =12
+
+                        - lblDSStatusPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Después de validar DS-S01, congelar geometría. No introducir tokens ni componentes reales en este bloque."
+                              Width: =Parent.Width-32
+                              Wrap: =true
+                              X: =16
+                              Y: =40
