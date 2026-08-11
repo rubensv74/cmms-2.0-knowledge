@@ -1,95 +1,78 @@
-# F04 — AMEF Final Integration Gate
+# F04 — AMEF Final Integration Gate — SUPERSEDED
 
-**Fecha:** 2026-08-11  
-**Objetivo:** cerrar `cmp_FL_RiskMatrixPro` + `scr_FL_AMEF` y congelar el patrón visual/funcional antes de propagarlo al resto de pantallas.
+**Estado:** `SUPERSEDED` desde 2026-08-11.  
+**No ejecutar como procedimiento de integración.**
 
-## Archivos canónicos
+## Motivo
 
-- `../../components/cmp_FL_RiskMatrixPro.pa.yaml`
-- `../../screens/scr_FL_AMEF.pa.yaml`
+F04 proponía actualizar simultáneamente `cmp_FL_RiskMatrixPro` y `scr_FL_AMEF` y cerrar un smoke integrado. La revisión posterior demostró que la pantalla AMEF todavía no tenía una geometría estable y que mezclar estructura, componente, integración y color en el mismo incremento dificultaba aislar regresiones.
 
-## Estado que se valida
-
-### RiskMatrixPro FINAL RC4
-
-- 900×650;
-- AMEF 5×5;
-- S=4 / O=3 como fixture inicial;
-- Gallery `Default` sincronizado con `SeverityValue` + `OccurrenceValue`;
-- celda seleccionada mediante `ThisItem.IsSelected`;
-- `SelectedSeverityOut=4`;
-- `SelectedOccurrenceOut=3`;
-- `MatrixScoreOut=12`;
-- D=3;
-- NPR=36;
-- sin texto visible menor de 11;
-- sin rediseño adicional previsto si supera el smoke final.
-
-### scr_FL_AMEF Stage-Focused
-
-La pantalla no muestra Efectos + Matriz + Decisión simultáneamente.
+Además, la estrategia vigente exige:
 
 ```text
-FL-07                  → workspace Efectos
-FL-09                  → RiskMatrixPro premium 900×650
-FL-08 / FL-10 / FL-11  → decisión humana + control de avance
+skeleton first
+→ placeholders
+→ block S/C/I
+→ Studio validation
+→ freeze
+→ next block
 ```
 
-El Process Rail permanece visible y el sidebar queda colapsado en este workspace de alta densidad.
+Por tanto, F04 se conserva únicamente como **evidencia histórica del objetivo funcional de AMEF**, no como bloque ejecutable.
 
-## Actualización en Studio
+## Qué se conserva de F04
 
-Actualizar **in situ**, preservando identidad:
+Continúan siendo requisitos válidos:
 
 ```text
-1. cmp_FL_RiskMatrixPro
-2. scr_FL_AMEF
+RiskMatrix 900×650
+AMEF 5×5
+S=4
+O=3
+D=3
+S×O=12
+NPR=36
+criticidad separada del riesgo AMEF
+sistema separado de decisión humana
+Process Rail visible y legible
 ```
 
-No crear copias `_1` / `1`.
+## Qué queda retirado
 
-## Smoke final único
-
-Ejecutar desde runtime:
+No ejecutar:
 
 ```text
-Home
-→ Registro de análisis
-→ P101-AMEF-RCM-001
-→ AMEF
+actualizar RiskMatrix + scr_FL_AMEF en un solo incremento
+pegar pantalla AMEF monolítica
+propagar patrón AMEF a otras pantallas después de un único smoke
+usar AMEF como laboratorio de color
 ```
 
-Validar:
+## Sustitución vigente
+
+Seguir:
 
 ```text
-FL-07
-[ ] solo se ve Efectos/contexto
-[ ] D editable 1–5
-[ ] no aparece la matriz superpuesta
-
-FL-09
-[ ] solo se ve la matriz premium
-[ ] S=4 / O=3 seleccionados inicialmente
-[ ] S×O=12
-[ ] D=3
-[ ] NPR=36
-[ ] seleccionar otra celda cambia S/O/S×O y el host recalcula NPR
-[ ] ninguna fila/celda se corta
-
-FL-10
-[ ] aparece decisión humana + gate
-[ ] no aparece matriz ni panel Efectos
-[ ] sistema y autoridad humana se distinguen visualmente
+../../../../development/TOMORROW_RUNBOOK_2026-08-12.md
+../../../../development/FREEZE_REGISTER_2026-08-11.md
+../../../../development/RECOVERY_HARDENING_AUDIT_2026-08-11.md
+../S-AMEF-01/CONTRACT.md
 ```
 
-## Criterio de cierre
-
-Si pasa este smoke:
+Secuencia AMEF planificada:
 
 ```text
-cmp_FL_RiskMatrixPro     VISUAL_QA_VALIDATED
-scr_FL_AMEF              VISUAL_QA_VALIDATED
-F03/F04 visual pattern   FROZEN
+S-AMEF-01  skeleton completo
+→ validate / GEOMETRY FROZEN
+C-AMEF-01  Sidebar
+C-AMEF-02  Header
+C-AMEF-03  Process Rail
+C-AMEF-04  FL-07 contextual effects
+C-AMEF-05  FL-09 RiskMatrix
+C-AMEF-06  Decision
+C-AMEF-07  status/control de avance
+I-AMEF-01  stage switching
+I-AMEF-02  S/O/D → S×O/NPR
 ```
 
-Después de este punto no se realizarán más iteraciones cosméticas sobre AMEF salvo defecto bloqueante. El siguiente trabajo será propagar el patrón Comfortable + stage-focused al resto de Functional Lab.
+Cada bloque se valida antes del siguiente. Cualquier reparación utiliza su bloque `FIX` correspondiente.
