@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos validados en Studio / Biblioteca AMEF pendiente
+**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos + Biblioteca AMEF validados en Studio / Aplicación multi-activo pendiente
 
 ## 1. Modelo canónico
 
@@ -111,6 +111,7 @@ Estados:
 SidebarPro / PageHeaderPro        INSTANCE_SAFE PASS previo
 TreePro                            runtime funcional dentro del smoke Activos PASS
 ProcessRailPro                     import corregido / smoke de AnalysisCase pendiente
+ApplicabilityMatrixPro             próximo smoke multi-activo
 resto de componentes nuevos       PASS_STATIC / Studio pending
 ```
 
@@ -217,11 +218,17 @@ P-101 estable durante recorrido                PASS
 FLH como jerarquía padre-hijo                  PASS
 ADR como relaciones no físicas                 PASS
 criticidad separada del riesgo AMEF            PASS
+Biblioteca AMEF por familia                    PASS
+FmeaRevision R01 reutilizable                  PASS
+funciones/fallos/modos/causas/efectos          PASS
+tareas propuestas en revisión                  PASS
+cobertura N:M tarea ↔ modo comprensible        PASS
+ingeniería base separada de P-101              PASS
 ```
 
-Confirmaciones de usuario: `HOME OK` y `ACTIVOS OK`.
+Confirmaciones de usuario: `HOME OK`, `ACTIVOS OK` y `BIBLIOTECA AMEF OK`.
 
-Esto valida el punto de entrada y el bloque de Activos, pero no implica todavía que todas las pantallas restantes sean `INSTANCE_SAFE`.
+Esto valida el punto de entrada, el bloque de Activos y la Biblioteca AMEF, pero no implica todavía que las pantallas restantes sean `INSTANCE_SAFE`.
 
 ## 11. Próximo gate
 
@@ -232,8 +239,8 @@ Estado del plan:
 ```text
 1 Home / bootstrap                    PASS
 2 Activos + criticidad                PASS
-3 Biblioteca AMEF                     EN CURSO
-4 Aplicación multi-activo             pendiente
+3 Biblioteca AMEF                     PASS
+4 Aplicación multi-activo             EN CURSO
 5 AnalysisCase                        pendiente
 6 Failure Modes / causas              pendiente
 7 AMEF                                pendiente
@@ -246,19 +253,17 @@ Estado del plan:
 Próxima validación integrada:
 
 ```text
-scr_FL_FmeaLibrary
-→ scr_FL_FmeaRevision
+scr_FL_AssetApplication
 ```
 
 Criterios de aceptación:
 
-- la biblioteca muestra ingeniería AMEF por familia de equipo;
-- la revisión R01 existe como fuente reutilizable;
-- funciones y fallos funcionales aparecen en la revisión;
-- modos, causas/mecanismos y efectos están visibles y diferenciados;
-- las tareas propuestas pertenecen a la revisión, no a P-101;
-- la cobertura N:M tarea ↔ modo se puede entender en pantalla;
-- la revisión se presenta como ingeniería común que después se aplica a activos compatibles.
+- la revisión `R01` aparece aplicada a varios activos compatibles;
+- P-101, P-102 y P-103 comparten la misma ingeniería base sin duplicarla;
+- cada activo puede conservar criticidad, perfil y variante de intervalo diferentes;
+- P-101 mantiene `APP-P101-R01` y perfil `HIGH`;
+- la pantalla deja claro qué procede de la biblioteca y qué pertenece al contexto de cada activo;
+- la matriz de aplicabilidad funciona sin error en Studio.
 
 ## 12. Asuntos deliberadamente abiertos
 
