@@ -1,7 +1,8 @@
-# CMMS 2.0 FUNCTIONAL LAB — PROCESS RAIL PRO — SAFE PALETTE RC
+# CMMS 2.0 FUNCTIONAL LAB — PROCESS RAIL PRO — COMFORTABLE READABILITY RC
 #
-# Keeps the public contract used by the 25 screens.
-# Safe palette is used unless UseHostTheme=true.
+# Preserves component identity and public contract.
+# The rail uses scroll before reducing typography.
+# Safe palette remains active unless UseHostTheme=true.
 
 ComponentDefinitions:
   cmp_FL_ProcessRailPro:
@@ -42,7 +43,7 @@ ComponentDefinitions:
       CompactMode:
         PropertyKind: Input
         DisplayName: CompactMode
-        Description: Reduce la altura de fila.
+        Description: Reduce padding y altura sin reducir la tipografía bajo el estándar Comfortable.
         DataType: Boolean
         Default: =false
 
@@ -150,6 +151,7 @@ ComponentDefinitions:
             RadiusTopLeft: =14
             RadiusTopRight: =14
             Width: =Parent.Width
+
           Children:
             - lblFLRailEyebrow:
                 Control: ModernText@1.0.0
@@ -157,12 +159,12 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.AccentColor,ColorValue("#0284C7"))
                   FontWeight: =FontWeight.Semibold
-                  Size: =8
+                  Size: =11
                   Text: ="RECORRIDO DEL ANÁLISIS"
                   Width: =Parent.Width-32
                   Wrap: =false
                   X: =16
-                  Y: =16
+                  Y: =14
 
             - lblFLRailTitle:
                 Control: ModernText@1.0.0
@@ -170,12 +172,12 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.TextColor,ColorValue("#0F172A"))
                   FontWeight: =FontWeight.Semibold
-                  Size: =15
+                  Size: =16
                   Text: ="28 etapas"
                   Width: =Parent.Width-32
                   Wrap: =false
                   X: =16
-                  Y: =39
+                  Y: =38
 
             - galFLRailStages:
                 Control: Gallery@2.15.0
@@ -193,10 +195,11 @@ ComponentDefinitions:
                   ShowScrollbar: =true
                   TemplateFill: =Color.Transparent
                   TemplatePadding: =2
-                  TemplateSize: =If(cmp_FL_ProcessRailPro.CompactMode,48,62)
+                  TemplateSize: =If(cmp_FL_ProcessRailPro.CompactMode,54,66)
                   Width: =Parent.Width-20
                   X: =10
-                  Y: =70
+                  Y: =74
+
                 Children:
                   - btnFLRailRowSurface:
                       Control: Classic/Button@2.2.0
@@ -246,10 +249,10 @@ ComponentDefinitions:
                               "warning",ColorValue("#F59E0B"),
                               ColorValue("#CBD5E1")
                           )
-                        Height: =8
-                        Width: =8
+                        Height: =10
+                        Width: =10
                         X: =10
-                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,20,26)
+                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,22,28)
 
                   - lblFLRailStageId:
                       Control: ModernText@1.0.0
@@ -257,11 +260,11 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.MutedTextColor,ColorValue("#64748B"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
+                        Size: =11
                         Text: =Text(ThisItem.StageId)
-                        Width: =46
-                        X: =26
-                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,8,10)
+                        Width: =48
+                        X: =28
+                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,7,9)
 
                   - lblFLRailPhase:
                       Control: ModernText@1.0.0
@@ -269,7 +272,7 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.AccentColor,ColorValue("#0284C7"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
+                        Size: =11
                         Text: =Upper(Text(ThisItem.PhaseLabel))
                         Visible: |-
                           =
@@ -285,10 +288,10 @@ ComponentDefinitions:
                                   ""
                               )<>Text(ThisItem.PhaseId)
                           )
-                        Width: =Parent.TemplateWidth-82
+                        Width: =Parent.TemplateWidth-106
                         Wrap: =false
-                        X: =72
-                        Y: =3
+                        X: =78
+                        Y: =2
 
                   - lblFLRailStageLabel:
                       Control: ModernText@1.0.0
@@ -296,12 +299,12 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =If(Text(ThisItem.StageId)=Text(cmp_FL_ProcessRailPro.ActiveStageId),FontWeight.Semibold,FontWeight.Normal)
-                        Size: =If(cmp_FL_ProcessRailPro.CompactMode,8,9)
+                        Size: =12
                         Text: =Text(ThisItem.StageLabel)
-                        Width: =Parent.TemplateWidth-82
+                        Width: =Parent.TemplateWidth-106
                         Wrap: =false
-                        X: =72
-                        Y: =If(cmp_FL_ProcessRailPro.ShowPhaseHeaders,If(cmp_FL_ProcessRailPro.CompactMode,20,27),If(cmp_FL_ProcessRailPro.CompactMode,13,17))
+                        X: =78
+                        Y: =If(cmp_FL_ProcessRailPro.ShowPhaseHeaders,If(cmp_FL_ProcessRailPro.CompactMode,25,30),If(cmp_FL_ProcessRailPro.CompactMode,16,20))
 
                   - lblFLRailResponsibility:
                       Control: ModernText@1.0.0
@@ -319,7 +322,7 @@ ComponentDefinitions:
                               ColorValue("#64748B")
                           )
                         FontWeight: =FontWeight.Semibold
-                        Size: =7
+                        Size: =11
                         Text: |-
                           =
                           Switch(
@@ -330,6 +333,6 @@ ComponentDefinitions:
                               "gate","G",
                               ""
                           )
-                        Width: =20
-                        X: =Parent.TemplateWidth-28
-                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,8,10)
+                        Width: =24
+                        X: =Parent.TemplateWidth-32
+                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,7,9)
