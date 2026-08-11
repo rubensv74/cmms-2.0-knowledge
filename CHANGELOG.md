@@ -2,6 +2,79 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [1.0.0] - 2026-08-11
+
+### Cambio estructural
+
+La foundation de CMMS Functional Lab se ha refactorizado desde un modelo centrado en el activo P-101 hacia una arquitectura **library-first**:
+
+```text
+Engineering Library
+→ Asset Application
+→ Execution Plan
+→ Results & Learning
+```
+
+### Añadido
+
+- Auditoría de remediación de 14 desviaciones.
+- `03-data-model/` como área canónica del modelo conceptual.
+- Modelo detallado con `FmeaDefinition` y `FmeaRevision`.
+- `FmeaAssetApplication` para separar aplicación/contexto por activo.
+- `FailureCause` y `FailureEffect` explícitos.
+- Modelo RCM con lógica versionada, respuestas, recomendación y decisión humana.
+- `NoScheduledTaskDecision` para resultados sin tarea programada.
+- Relación N:M `MaintenanceTask` ↔ `FailureMode`.
+- Separación `MaintenanceTask`, `MaintenanceProcedure` e `InspectionFormat`.
+- Economía separada en `EconomicAssessment`, `MaintenanceCostEstimate` y `ActualMaintenanceCost`.
+- Modelo transversal de trazabilidad por identificadores.
+- Schemas JSON separados para Engineering Library, Asset Application, Execution Plan y Results.
+- Fixture P-101 v2 como aplicación de una biblioteca reusable.
+- Guía de migración fixture v1→v2.
+- Contratos funcionales de componentes layer-aware.
+- Estrategia premium de diseño adaptada a workspaces y capas.
+
+### Refactorizado
+
+- Visión del Functional Lab.
+- Functional Journey de 28 etapas.
+- Matriz persona vs sistema.
+- Arquitectura del Functional Lab.
+- `case-fixture.schema.json` como contrato compuesto v2.
+- `functional-journey.schema.json` con `layer` y `primaryObjectType`.
+- README y estado de implementación.
+- Roadmap e índice maestro.
+- Guías de flujo de negocio del Experience Center.
+- Recorrido didáctico P-101 para explicar Library → Application → Plan → Results.
+
+### Corregido
+
+- P-101 deja de ser el padre conceptual del AMEF.
+- Riesgo AMEF deja de denominarse o tratarse como criticidad del activo.
+- `criticalOverride` de v1 queda deprecado y sin migración automática.
+- Tarea y modo dejan de estar relacionados mediante un único `focusMode`.
+- Procedimiento/formato dejan de estar embebidos conceptualmente en la tarea.
+- Coste esperado, estimado y real dejan de mezclarse en un mismo agregado.
+- La trazabilidad deja de depender de textos del caso.
+
+### Legacy
+
+- `p101-case.v1.json` se conserva como evidencia asset-centric y no debe alimentar nuevos bloques.
+- El runtime HTML Experience Center v3.0 se conserva como prototipo histórico; sus guías de negocio sí se han actualizado al modelo v2.
+
+### Decisiones no cerradas
+
+No se han convertido en requisitos definitivos:
+
+- matriz corporativa de riesgo;
+- esquema corporativo de criticidad;
+- árbol RCM definitivo;
+- umbrales P–F;
+- fórmulas económicas;
+- workflow/roles definitivos;
+- granularidad final de procedimientos y formatos;
+- backend, base de datos, APIs, flows o integración productiva.
+
 ## [0.9.0] - 2026-08-10
 
 ### Añadido
@@ -14,8 +87,8 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 - Matriz preliminar persona vs sistema.
 - Arquitectura conceptual del Functional Lab.
 - Schemas JSON para journey y fixtures.
-- Conversión del caso P-101 existente a fixture JSON canónico.
-- Estado incremental de implementación y primer vertical slice WS-01.
+- Conversión del caso P-101 existente a fixture JSON canónico v1.
+- Estado incremental de implementación y primer vertical slice WS-01 v1.
 - Estructura modular de documentación funcional para IT.
 
 ### Actualizado
