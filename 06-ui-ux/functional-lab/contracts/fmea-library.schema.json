@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cmms2-fmea-library.schema.json",
+  "title": "CMMS 2.0 FMEA/RCM Engineering Library",
+  "type": "object",
+  "required": [
+    "fmeaDefinition",
+    "fmeaRevision",
+    "functions",
+    "functionalFailures",
+    "failureModes",
+    "failureCauses",
+    "failureEffects",
+    "consequenceAssessments",
+    "rcmAssessments",
+    "maintenanceTasks",
+    "taskFailureModeLinks",
+    "maintenanceProcedures",
+    "inspectionFormats",
+    "noScheduledTaskDecisions",
+    "economicAssessments",
+    "maintenanceCostEstimates",
+    "governance"
+  ],
+  "properties": {
+    "fmeaDefinition": {
+      "type": "object",
+      "required": ["fmeaDefinitionId", "code", "name"],
+      "properties": {
+        "fmeaDefinitionId": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "equipmentTypeRef": { "type": "string" },
+        "functionalScopeRef": { "type": "string" },
+        "ownerRole": { "type": "string" },
+        "lifecycleStatus": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "fmeaRevision": {
+      "type": "object",
+      "required": ["fmeaRevisionId", "fmeaDefinitionId", "revisionNumber", "status", "riskMatrixVersionRef", "rcmLogicVersionRef"],
+      "properties": {
+        "fmeaRevisionId": { "type": "string" },
+        "fmeaDefinitionId": { "type": "string" },
+        "revisionNumber": { "type": ["string", "integer"] },
+        "status": { "type": "string" },
+        "validFrom": { "type": ["string", "null"] },
+        "validTo": { "type": ["string", "null"] },
+        "changeReason": { "type": "string" },
+        "sourceRevisionId": { "type": ["string", "null"] },
+        "riskMatrixVersionRef": { "type": "string" },
+        "rcmLogicVersionRef": { "type": "string" },
+        "publishedSnapshotId": { "type": ["string", "null"] },
+        "validationStatus": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "functions": { "type": "array", "items": { "$ref": "#/$defs/function" } },
+    "functionalFailures": { "type": "array", "items": { "$ref": "#/$defs/functionalFailure" } },
+    "failureModes": { "type": "array", "items": { "$ref": "#/$defs/failureMode" } },
+    "failureCauses": { "type": "array", "items": { "$ref": "#/$defs/failureCause" } },
+    "failureEffects": { "type": "array", "items": { "$ref": "#/$defs/failureEffect" } },
+    "consequenceAssessments": { "type": "array", "items": { "$ref": "#/$defs/consequenceAssessment" } },
+    "rcmAssessments": { "type": "array", "items": { "$ref": "#/$defs/rcmAssessment" } },
+    "maintenanceTasks": { "type": "array", "items": { "$ref": "#/$defs/maintenanceTask" } },
+    "taskFailureModeLinks": { "type": "array", "items": { "$ref": "#/$defs/taskFailureModeLink" } },
+    "maintenanceProcedures": { "type": "array", "items": { "type": "object", "required": ["maintenanceProcedureId", "code", "name", "revision", "status"] } },
+    "inspectionFormats": { "type": "array", "items": { "type": "object", "required": ["inspectionFormatId", "code", "name", "revision", "status", "fields"] } },
+    "noScheduledTaskDecisions": { "type": "array", "items": { "type": "object", "required": ["noScheduledTaskDecisionId", "fmeaRevisionId", "failureModeId", "decisionType", "rationale", "status"] } },
+    "economicAssessments": { "type": "array", "items": { "type": "object", "required": ["economicAssessmentId", "fmeaRevisionId", "scopeRef", "scenarioWithoutPolicy", "scenarioWithPolicy", "validationStatus"] } },
+    "maintenanceCostEstimates": { "type": "array", "items": { "type": "object", "required": ["maintenanceCostEstimateId", "scopeType", "scopeId", "currency", "estimatedCostPerRun", "estimatedAnnualCost"] } },
+    "governance": { "type": "object", "required": ["validationStatus", "evidenceSources", "approvals"] }
+  },
+  "$defs": {
+    "function": {
+      "type": "object",
+      "required": ["fmeaFunctionId", "fmeaRevisionId", "sequence", "statement"],
+      "properties": {
+        "fmeaFunctionId": { "type": "string" },
+        "fmeaRevisionId": { "type": "string" },
+        "sequence": { "type": "integer" },
+        "functionType": { "type": "string" },
+        "statement": { "type": "string" },
+        "performanceStandard": { "type": "string" },
+        "unitRef": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "functionalFailure": {
+      "type": "object",
+      "required": ["functionalFailureId", "fmeaFunctionId", "sequence", "statement"],
+      "properties": {
+        "functionalFailureId": { "type": "string" },
+        "fmeaFunctionId": { "type": "string" },
+        "sequence": { "type": "integer" },
+        "failureType": { "type": "string" },
+        "statement": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "failureMode": {
+      "type": "object",
+      "required": ["failureModeId", "functionalFailureId", "code", "statement", "status"],
+      "properties": {
+        "failureModeId": { "type": "string" },
+        "functionalFailureId": { "type": "string" },
+        "code": { "type": "string" },
+        "statement": { "type": "string" },
+        "status": { "type": "string" },
+        "inclusionRationale": { "type": "string" },
+        "exclusionRationale": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "failureCause": {
+      "type": "object",
+      "required": ["failureCauseId", "failureModeId", "causeType", "statement"],
+      "properties": {
+        "failureCauseId": { "type": "string" },
+        "failureModeId": { "type": "string" },
+        "causeType": { "type": "string" },
+        "statement": { "type": "string" },
+        "evidenceRef": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "failureEffect": {
+      "type": "object",
+      "required": ["failureEffectId", "failureModeId", "effectLevel", "sequence", "statement"],
+      "properties": {
+        "failureEffectId": { "type": "string" },
+        "failureModeId": { "type": "string" },
+        "effectLevel": { "type": "string" },
+        "sequence": { "type": "integer" },
+        "statement": { "type": "string" },
+        "evidenceRef": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "consequenceAssessment": {
+      "type": "object",
+      "required": ["consequenceAssessmentId", "failureModeId", "riskMatrixVersionRef", "consequenceCategory", "validationStatus"],
+      "properties": {
+        "consequenceAssessmentId": { "type": "string" },
+        "failureModeId": { "type": "string" },
+        "operationalContextProfileRef": { "type": "string" },
+        "riskMatrixVersionRef": { "type": "string" },
+        "consequenceCategory": { "type": "string" },
+        "severityValue": { "type": ["number", "null"] },
+        "occurrenceValue": { "type": ["number", "null"] },
+        "detectionValue": { "type": ["number", "null"] },
+        "calculatedRiskResult": { "type": ["string", "number", "null"] },
+        "humanAssessment": { "type": "string" },
+        "rationale": { "type": "string" },
+        "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+        "validationStatus": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "rcmAssessment": {
+      "type": "object",
+      "required": ["rcmAssessmentId", "failureModeId", "decisionLogicVersionRef", "systemRecommendation", "humanDecision", "answers"],
+      "properties": {
+        "rcmAssessmentId": { "type": "string" },
+        "failureModeId": { "type": "string" },
+        "consequenceAssessmentId": { "type": "string" },
+        "decisionLogicVersionRef": { "type": "string" },
+        "systemRecommendation": { "type": "string" },
+        "humanDecision": { "type": "string" },
+        "overrideReason": { "type": ["string", "null"] },
+        "authorityRole": { "type": "string" },
+        "status": { "type": "string" },
+        "answers": { "type": "array", "items": { "type": "object", "required": ["answerId", "questionRef", "sequence", "answer"] } }
+      },
+      "additionalProperties": false
+    },
+    "maintenanceTask": {
+      "type": "object",
+      "required": ["maintenanceTaskId", "fmeaRevisionId", "code", "name", "objective", "status"],
+      "properties": {
+        "maintenanceTaskId": { "type": "string" },
+        "fmeaRevisionId": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "objective": { "type": "string" },
+        "maintenanceTypeRef": { "type": "string" },
+        "activityRef": { "type": "string" },
+        "techniqueRef": { "type": "string" },
+        "triggerBasis": { "type": "string" },
+        "defaultIntervalValue": { "type": ["number", "null"] },
+        "defaultIntervalUnit": { "type": ["string", "null"] },
+        "intervalBasisRef": { "type": ["string", "null"] },
+        "executionStateRequirementRef": { "type": ["string", "null"] },
+        "disciplineRef": { "type": ["string", "null"] },
+        "executorRoleRef": { "type": ["string", "null"] },
+        "procedureRef": { "type": ["string", "null"] },
+        "inspectionFormatRef": { "type": ["string", "null"] },
+        "status": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "taskFailureModeLink": {
+      "type": "object",
+      "required": ["maintenanceTaskFailureModeId", "maintenanceTaskId", "failureModeId", "treatmentPurpose"],
+      "properties": {
+        "maintenanceTaskFailureModeId": { "type": "string" },
+        "maintenanceTaskId": { "type": "string" },
+        "failureModeId": { "type": "string" },
+        "treatmentPurpose": { "type": "string" },
+        "rationale": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
