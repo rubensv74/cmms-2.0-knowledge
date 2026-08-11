@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11  
 **Rama:** `feature/f01-premium-foundation`  
-**Estado global:** corrección funcional D-01…D-14 implementada / `scr_FL_Home` runtime validado / smoke integrado de Activos pendiente
+**Estado global:** corrección funcional D-01…D-14 implementada / Home + Activos validados en Studio / Biblioteca AMEF pendiente
 
 ## 1. Modelo canónico
 
@@ -109,7 +109,7 @@ Estados:
 
 ```text
 SidebarPro / PageHeaderPro        INSTANCE_SAFE PASS previo
-TreePro                            import corregido / smoke de Activos pendiente
+TreePro                            runtime funcional dentro del smoke Activos PASS
 ProcessRailPro                     import corregido / smoke de AnalysisCase pendiente
 resto de componentes nuevos       PASS_STATIC / Studio pending
 ```
@@ -211,11 +211,17 @@ El bootstrap pre-auditoría `functional-lab-v2-bootstrap.powerfx` ha sido **elim
 scr_FL_Home abre y ejecuta correctamente       PASS
 bootstrap alineado carga sin bloqueo           PASS
 navegación base visible                        PASS
+FLH → Taxonomía → ADR                          PASS
+Criticidad → Ficha 360                         PASS
+P-101 estable durante recorrido                PASS
+FLH como jerarquía padre-hijo                  PASS
+ADR como relaciones no físicas                 PASS
+criticidad separada del riesgo AMEF            PASS
 ```
 
-Confirmación de usuario: `HOME OK`.
+Confirmaciones de usuario: `HOME OK` y `ACTIVOS OK`.
 
-Esto valida el punto de entrada y la inicialización global, pero no implica todavía que las 24 pantallas restantes sean `INSTANCE_SAFE`.
+Esto valida el punto de entrada y el bloque de Activos, pero no implica todavía que todas las pantallas restantes sean `INSTANCE_SAFE`.
 
 ## 11. Próximo gate
 
@@ -225,8 +231,8 @@ Estado del plan:
 
 ```text
 1 Home / bootstrap                    PASS
-2 Activos + criticidad                EN CURSO
-3 Biblioteca AMEF                     pendiente
+2 Activos + criticidad                PASS
+3 Biblioteca AMEF                     EN CURSO
 4 Aplicación multi-activo             pendiente
 5 AnalysisCase                        pendiente
 6 Failure Modes / causas              pendiente
@@ -240,21 +246,19 @@ Estado del plan:
 Próxima validación integrada:
 
 ```text
-scr_FL_FLH
-→ scr_FL_Taxonomy
-→ scr_FL_ADR
-→ scr_FL_AssetCriticality
-→ scr_FL_Asset360
+scr_FL_FmeaLibrary
+→ scr_FL_FmeaRevision
 ```
 
 Criterios de aceptación:
 
-- navegación entre las cinco vistas sin error;
-- P-101 permanece como activo seleccionado;
-- FLH se comporta como jerarquía padre-hijo;
-- ADR se presenta como proyección de relaciones, no como jerarquía física;
-- criticidad de P-101 aparece como dato de contexto independiente del riesgo AMEF;
-- Ficha 360 reúne contexto sin modificar datos maestros durante el análisis.
+- la biblioteca muestra ingeniería AMEF por familia de equipo;
+- la revisión R01 existe como fuente reutilizable;
+- funciones y fallos funcionales aparecen en la revisión;
+- modos, causas/mecanismos y efectos están visibles y diferenciados;
+- las tareas propuestas pertenecen a la revisión, no a P-101;
+- la cobertura N:M tarea ↔ modo se puede entender en pantalla;
+- la revisión se presenta como ingeniería común que después se aplica a activos compatibles.
 
 ## 12. Asuntos deliberadamente abiertos
 
