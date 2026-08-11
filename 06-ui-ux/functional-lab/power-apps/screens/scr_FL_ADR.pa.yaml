@@ -305,7 +305,8 @@ Screens:
                                     AutoHeight: =true
                                     Color: =ColorValue("#334155")
                                     Size: =10
-                                    Text: ="ADR complementa la jerarquía mostrando dependencias que no son necesariamente padre-hijo físicas: accionamiento, proceso, redundancia, monitorización y otras relaciones relevantes para mantenimiento."
+                                    Text: |-
+                                      ="ADR complementa la jerarquía mostrando dependencias que no son necesariamente padre-hijo físicas: accionamiento, proceso, redundancia, monitorización y otras relaciones relevantes para mantenimiento."
                                     Width: =Parent.Width-28
                                     Wrap: =true
                                     X: =14
