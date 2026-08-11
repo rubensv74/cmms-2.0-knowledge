@@ -1,7 +1,8 @@
-# CMMS 2.0 FUNCTIONAL LAB — APPLICABILITY MATRIX PRO — SAFE PALETTE RC
+# CMMS 2.0 FUNCTIONAL LAB — APPLICABILITY MATRIX PRO — HARDENED READABILITY RC2
 #
-# Preserves multi-asset applicability behavior.
+# Preserves multi-asset applicability behavior and public contract.
 # Safe palette is used unless UseHostTheme=true.
+# Visible typography follows the Comfortable baseline (>=11).
 
 ComponentDefinitions:
   cmp_FL_ApplicabilityMatrixPro:
@@ -91,7 +92,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =Color.Transparent
-      Height: =330
+      Height: =350
       SelectedApplicationCodeOut: =Coalesce(galFLApplicability.Selected.ApplicationCode,"")
       SelectedAssetCodeOut: =Coalesce(galFLApplicability.Selected.AssetCode,"")
       SelectedRecordOut: =galFLApplicability.Selected
@@ -119,7 +120,7 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
                   FontWeight: =FontWeight.Semibold
-                  Size: =12
+                  Size: =16
                   Text: =cmp_FL_ApplicabilityMatrixPro.Title
                   Width: =Parent.Width-32
                   X: =16
@@ -130,12 +131,12 @@ ComponentDefinitions:
                 Properties:
                   AutoHeight: =true
                   Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.MutedTextColor,ColorValue("#64748B"))
-                  Size: =8
+                  Size: =12
                   Text: ="La misma revisión AMEF puede aplicarse a varios activos. El perfil y el intervalo pueden variar sin duplicar la ingeniería base."
                   Width: =Parent.Width-32
                   Wrap: =true
                   X: =16
-                  Y: =38
+                  Y: =42
 
             - lblFLApplicabilityHAsset:
                 Control: ModernText@1.0.0
@@ -143,11 +144,11 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
-                  Size: =7
+                  Size: =11
                   Text: ="ACTIVO"
                   Width: =300
                   X: =16
-                  Y: =74
+                  Y: =84
 
             - lblFLApplicabilityHCrit:
                 Control: ModernText@1.0.0
@@ -155,11 +156,11 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
-                  Size: =7
+                  Size: =11
                   Text: ="CRITICIDAD"
                   Width: =100
                   X: =350
-                  Y: =74
+                  Y: =84
 
             - lblFLApplicabilityHStatus:
                 Control: ModernText@1.0.0
@@ -167,11 +168,11 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
-                  Size: =7
+                  Size: =11
                   Text: ="APLICABILIDAD"
                   Width: =120
                   X: =465
-                  Y: =74
+                  Y: =84
 
             - lblFLApplicabilityHProfile:
                 Control: ModernText@1.0.0
@@ -179,11 +180,11 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
-                  Size: =7
+                  Size: =11
                   Text: ="PERFIL"
                   Width: =85
                   X: =600
-                  Y: =74
+                  Y: =84
 
             - lblFLApplicabilityHInterval:
                 Control: ModernText@1.0.0
@@ -191,26 +192,26 @@ ComponentDefinitions:
                   AutoHeight: =true
                   Color: =ColorValue("#64748B")
                   FontWeight: =FontWeight.Semibold
-                  Size: =7
+                  Size: =11
                   Text: ="INTERVALO"
                   Width: =110
                   X: =700
-                  Y: =74
+                  Y: =84
 
             - galFLApplicability:
                 Control: Gallery@2.15.0
                 Variant: Vertical
                 Properties:
                   BorderColor: =Color.Transparent
-                  Height: =Parent.Height-104
+                  Height: =Parent.Height-118
                   Items: =cmp_FL_ApplicabilityMatrixPro.Items
                   OnSelect: =cmp_FL_ApplicabilityMatrixPro.OnSelectApplication()
                   ShowScrollbar: =false
                   TemplatePadding: =0
-                  TemplateSize: =54
+                  TemplateSize: =60
                   Width: =Parent.Width-24
                   X: =12
-                  Y: =96
+                  Y: =110
                 Children:
                   - btnFLApplicabilityRow:
                       Control: Classic/Button@2.2.0
@@ -238,23 +239,23 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =12
                         Text: =ThisItem.AssetCode & " · " & ThisItem.AssetName
                         Width: =320
                         Wrap: =false
                         X: =12
-                        Y: =10
+                        Y: =13
 
                   - lblFLApplicabilityCriticality:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
                         Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
-                        Size: =9
+                        Size: =12
                         Text: =ThisItem.Criticality
                         Width: =100
                         X: =338
-                        Y: =10
+                        Y: =13
 
                   - lblFLApplicabilityStatus:
                       Control: ModernText@1.0.0
@@ -262,11 +263,11 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =ColorValue("#15803D")
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =12
                         Text: =ThisItem.ApplicabilityStatus
                         Width: =120
                         X: =453
-                        Y: =10
+                        Y: =13
 
                   - lblFLApplicabilityProfile:
                       Control: ModernText@1.0.0
@@ -274,19 +275,19 @@ ComponentDefinitions:
                         AutoHeight: =true
                         Color: =ColorValue("#7C3AED")
                         FontWeight: =FontWeight.Semibold
-                        Size: =9
+                        Size: =12
                         Text: =ThisItem.ProfileCode
                         Width: =80
                         X: =588
-                        Y: =10
+                        Y: =13
 
                   - lblFLApplicabilityInterval:
                       Control: ModernText@1.0.0
                       Properties:
                         AutoHeight: =true
                         Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
-                        Size: =9
+                        Size: =12
                         Text: =ThisItem.IntervalSummary
                         Width: =Parent.TemplateWidth-690
                         X: =688
-                        Y: =10
+                        Y: =13
