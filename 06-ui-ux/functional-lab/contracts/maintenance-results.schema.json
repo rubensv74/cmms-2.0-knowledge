@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cmms2-maintenance-results.schema.json",
+  "title": "CMMS 2.0 Maintenance Results",
+  "type": "object",
+  "required": ["maintenanceResults", "actualMaintenanceCosts", "effectivenessReviews"],
+  "properties": {
+    "maintenanceResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["maintenanceResultId", "executionPlanTaskId", "executedAt", "outcome"],
+        "properties": {
+          "maintenanceResultId": { "type": "string" },
+          "executionPlanTaskId": { "type": "string" },
+          "executedAt": { "type": "string" },
+          "outcome": { "type": "string" },
+          "measurements": { "type": "array", "items": { "type": "object" } },
+          "findings": { "type": "array", "items": { "type": "string" } },
+          "evidenceRefs": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "actualMaintenanceCosts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["actualMaintenanceCostId", "maintenanceResultId", "currency", "totalCost"],
+        "properties": {
+          "actualMaintenanceCostId": { "type": "string" },
+          "maintenanceResultId": { "type": "string" },
+          "currency": { "type": "string" },
+          "laborCost": { "type": "number" },
+          "materialCost": { "type": "number" },
+          "otherCost": { "type": "number" },
+          "totalCost": { "type": "number" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "effectivenessReviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["effectivenessReviewId", "fmeaAssetApplicationId", "decision"],
+        "properties": {
+          "effectivenessReviewId": { "type": "string" },
+          "fmeaAssetApplicationId": { "type": "string" },
+          "decision": { "type": "string" },
+          "observations": { "type": "string" },
+          "engineeringChangeRequestId": { "type": ["string", "null"] },
+          "status": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
