@@ -29,13 +29,14 @@ Biblioteca AMEF
 1. [Guía guiada para la demostración](guides/GUIA_DEMOSTRACION_CMMS_FUNCTIONAL_LAB.md)
 2. [Guía de experiencia funcional del usuario](guides/GUIA_EXPERIENCIA_FUNCIONAL_USUARIO.md)
 3. [Auditoría de alineación D-01…D-14](development/AUDITORIA_ALINEACION_ULTIMAS_REUNIONES_2026-08-10.md)
-4. [Arquitectura](architecture.md)
-5. [Estado canónico](V2_STATUS.md)
-6. [ADRs](adr/README.md)
-7. [Mapa de pantallas](screen-map.md)
-8. [Contratos de dominio](domain-contracts.md)
-9. [Catálogo de componentes](component-catalog.md)
-10. [Instalación y smoke tests](power-apps/V2_INSTALLATION.md)
+4. [Cierre y evidencia D-01…D-14](development/CIERRE_ALINEACION_D01_D14_2026-08-10.md)
+5. [Arquitectura](architecture.md)
+6. [Estado canónico](V2_STATUS.md)
+7. [ADRs](adr/README.md)
+8. [Mapa de pantallas](screen-map.md)
+9. [Contratos de dominio](domain-contracts.md)
+10. [Catálogo de componentes](component-catalog.md)
+11. [Instalación y smoke tests](power-apps/V2_INSTALLATION.md)
 
 ## Cambios protegidos por la auditoría
 
@@ -53,8 +54,8 @@ El modelo ya incorpora:
 - duración, cuadrilla y H-H;
 - economía preliminar, coste planificado y coste real separados;
 - lógica RCM versionable;
-- alcance físico por TechnicalObject;
-- Job Plan / PM / WO / ExecutionResult diferenciados;
+- alcance físico por `TechnicalObject`;
+- Job Plan / PM / WO / `ExecutionResult` diferenciados;
 - reglas de agrupación sin pérdida de identidad por tag.
 
 ## Power Apps
@@ -75,9 +76,7 @@ cmp_FL_ApplicabilityMatrixPro
 
 ### Pantallas — 25
 
-La lista canónica está en:
-
-`power-apps/screens/README.md`
+La lista canónica está en `power-apps/screens/README.md`.
 
 Las cuatro pantallas añadidas por la auditoría son:
 
@@ -154,15 +153,15 @@ Estas son las siguientes decisiones funcionales a validar una vez que la arquite
 
 ## Estado de validación
 
-La corrección de modelo y Source Code está implementada.
+La corrección de modelo y Source Code está implementada y ha superado la validación estática documentada.
 
 El siguiente paso es:
 
 ```text
-revalidación estática integral
+PASS_STATIC completado
 → instalación de 9 componentes
 → instalación de 25 pantallas
-→ 7 smoke tests integrados
+→ 11 smoke tests integrados
 → Visual QA
 → decisiones corporativas abiertas
 ```
