@@ -76,7 +76,7 @@ ComponentDefinitions:
       Items:
         PropertyKind: Input
         DisplayName: Items
-        Description: Tabla plana padre-hijo. RowIconKey permite asignar iconografía semántica sin depender del nivel.
+        Description: Tabla plana padre-hijo con visibilidad y expansión controladas por el host.
         DataType: Table
         Default: |-
           =
@@ -368,9 +368,8 @@ ComponentDefinitions:
                     )
 
                 Children:
-                  - conFLTreeRowSurface:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
+                  - btnFLTreeRowSurface:
+                      Control: Classic/Button@2.2.0
                       Properties:
                         BorderColor: |-
                           =
@@ -384,8 +383,9 @@ ComponentDefinitions:
                                   RGBA(0,0,0,0)
                               )
                           )
+                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =If(Text(ThisItem.RowNodeId)=Text(galFLTreeRows.Selected.RowNodeId) || Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.SelectedNodeId) || Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),1,0)
-                        DropShadow: =DropShadow.None
+                        Color: =Color.Transparent
                         Fill: |-
                           =
                           If(
@@ -399,11 +399,14 @@ ComponentDefinitions:
                               )
                           )
                         Height: =Parent.TemplateHeight-4
+                        HoverFill: =If(Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),cmp_FL_TreePro.HighlightFill,ColorValue("#F8FAFC"))
                         OnSelect: =Select(Parent)
+                        PressedFill: =If(Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId),cmp_FL_TreePro.HighlightFill,cmp_FL_TreePro.SelectionFill)
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
+                        Text: =""
                         Width: =Parent.TemplateWidth
                         X: =0
                         Y: =2
@@ -473,13 +476,13 @@ ComponentDefinitions:
                           )
                         Y: =If(cmp_FL_TreePro.CompactMode,7,9)
 
-                  - conFLTreeIconChip:
-                      Control: GroupContainer@1.5.0
-                      Variant: ManualLayout
+                  - btnFLTreeIconChip:
+                      Control: Classic/Button@2.2.0
                       Properties:
                         BorderColor: =RGBA(0,0,0,0)
+                        BorderStyle: =BorderStyle.None
                         BorderThickness: =0
-                        DropShadow: =DropShadow.None
+                        Color: =Color.Transparent
                         Fill: |-
                           =
                           Switch(
@@ -494,11 +497,14 @@ ComponentDefinitions:
                               ColorValue("#F8FAFC")
                           )
                         Height: =24
+                        HoverFill: =Self.Fill
                         OnSelect: =Select(Parent)
+                        PressedFill: =Self.Fill
                         RadiusBottomLeft: =7
                         RadiusBottomRight: =7
                         RadiusTopLeft: =7
                         RadiusTopRight: =7
+                        Text: =""
                         Visible: =cmp_FL_TreePro.ShowIcons
                         Width: =24
                         X: =btnFLTreeToggle.X+26
@@ -531,14 +537,13 @@ ComponentDefinitions:
                               "flag",Icon.Flag,
                               "lock",Icon.Lock,
                               "message",Icon.Message,
-                              "trend",Icon.Trending,
                               Icon.Document
                           )
                         OnSelect: =Select(Parent)
                         Visible: =cmp_FL_TreePro.ShowIcons
                         Width: =14
-                        X: =conFLTreeIconChip.X+5
-                        Y: =conFLTreeIconChip.Y+5
+                        X: =btnFLTreeIconChip.X+5
+                        Y: =btnFLTreeIconChip.Y+5
 
                   - recFLTreeHighlightAccent:
                       Control: Rectangle@2.3.0
@@ -547,9 +552,10 @@ ComponentDefinitions:
                         BorderThickness: =0
                         Fill: =ColorValue("#F97316")
                         Height: =Parent.TemplateHeight-12
+                        OnSelect: =Select(Parent)
                         Visible: =Text(ThisItem.RowNodeId)=Text(cmp_FL_TreePro.HighlightNodeId)
                         Width: =3
-                        X: =conFLTreeRowSurface.X+2
+                        X: =btnFLTreeRowSurface.X+2
                         Y: =6
 
                   - lblFLTreeRow:
@@ -596,7 +602,7 @@ ComponentDefinitions:
                               )
                           )
                         Wrap: =false
-                        X: =If(cmp_FL_TreePro.ShowIcons,conFLTreeIconChip.X+32,btnFLTreeToggle.X+28)
+                        X: =If(cmp_FL_TreePro.ShowIcons,btnFLTreeIconChip.X+32,btnFLTreeToggle.X+28)
                         Y: =If(cmp_FL_TreePro.ShowDescriptions && !cmp_FL_TreePro.CompactMode,4,2)
 
                   - lblFLTreeDescription:
