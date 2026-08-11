@@ -50,8 +50,7 @@ const GUIDES={
     ["Valorar consecuencias","Clasificar seguridad, medioambiente, operación, no operación u ocultas según el método vigente."],
     ["Calcular indicadores","Aplicar S/O/D u otras dimensiones únicamente según la matriz/version seleccionada."],
     ["Revisar controles","Documentar controles existentes y comprobar su eficacia/evidencia."],
-    ["Superar el gate","Confirmar que el expediente puede entrar en RCM o dejar clara la excepción."
-    ]
+    ["Superar el gate","Confirmar que el expediente puede entrar en RCM o dejar clara la excepción."]
   ],
   "roles":[
     "Fiabilidad facilita consistencia y trazabilidad.",
@@ -132,8 +131,7 @@ const GUIDES={
     ["Leer criticidad","Recibir AssetCriticalitySnapshot desde un esquema/fuente independiente del riesgo AMEF."],
     ["Evaluar aplicabilidad","El sistema sugiere y una persona valida tareas, perfiles, variantes u overrides."],
     ["Instanciar el plan","Crear ExecutionPlanTask conservando MaintenanceTaskId de origen."],
-    ["Contextualizar ejecución","Definir intervalo efectivo, recursos, alcance, procedimiento/formato y agrupación sin modificar la biblioteca."
-    ]
+    ["Contextualizar ejecución","Definir intervalo efectivo, recursos, alcance, procedimiento/formato y agrupación sin modificar la biblioteca."]
   ],
   "roles":[
     "Fiabilidad valida la aplicabilidad de la revisión.",
@@ -172,8 +170,7 @@ const GUIDES={
     ["Comparar hipótesis","Contrastar P–F, frecuencia, hallazgos, eficacia y coste con lo esperado."],
     ["Determinar el alcance","Decidir si el problema pertenece al activo/plan o cuestiona la biblioteca."],
     ["Ajustar contexto si procede","Crear nueva revisión de aplicación/plan cuando la ingeniería reusable siga siendo válida."],
-    ["Reabrir ingeniería si procede","Abrir EngineeringChangeRequest y una nueva FmeaRevision sin modificar la publicada."
-    ]
+    ["Reabrir ingeniería si procede","Abrir EngineeringChangeRequest y una nueva FmeaRevision sin modificar la publicada."]
   ],
   "roles":[
     "Mantenimiento registra ejecución y hallazgos.",
@@ -203,7 +200,7 @@ const GUIDES={
   "example":"Si una tendencia aparece antes de lo previsto, primero se determina si P-101 necesita un ajuste contextual o si la hipótesis P–F reusable es incorrecta. Solo el segundo caso justifica revisar la biblioteca."
 }
 };
-const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function list(items){return items.map(x=>`<li>${esc(x)}</li>`).join('')}
 function build(g){const steps=g.steps.map((x,i)=>`<div class="biz-step"><span class="biz-step-num">${String(i+1).padStart(2,'0')}</span><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div>`).join('');return `<div class="biz-modal" id="businessGuideModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="businessGuideTitle"><div class="biz-dialog"><div class="biz-head"><div><span class="biz-kicker">Guía práctica del flujo de negocio</span><h2 id="businessGuideTitle">${esc(g.title)}</h2><p>${esc(g.subtitle)}</p></div><button class="biz-close" type="button" data-biz-close aria-label="Cerrar guía">×</button></div><div class="biz-body"><div class="biz-question"><b>Pregunta que debe responder el negocio</b>${esc(g.question)}</div><h3>Flujo lógico</h3><div class="biz-flow">${steps}</div><div class="biz-grid"><div class="biz-card"><h3>Quién interviene</h3><ul>${list(g.roles)}</ul></div><div class="biz-card"><h3>Decisiones que deben quedar registradas</h3><ul>${list(g.decisions)}</ul></div><div class="biz-card output"><h3>Resultado esperado</h3><ul>${list(g.outputs)}</ul></div><div class="biz-card warning"><h3>Errores que conviene evitar</h3><ul>${list(g.mistakes)}</ul></div></div><div class="biz-example"><b>Ejemplo práctico · P-101 como aplicación</b><p>${esc(g.example)}</p></div></div><div class="biz-footer"><small>Esta guía describe el proceso de negocio propuesto para CMMS 2.0; no explica cómo utilizar la pantalla.</small><button type="button" data-biz-close>Volver al análisis</button></div></div></div>`}
 function init(){const script=document.currentScript||[...document.scripts].find(s=>s.dataset.businessGuide);const id=script?.dataset.businessGuide||document.body.dataset.businessGuide;const g=GUIDES[id];if(!g||document.getElementById('businessInfoBtn'))return;const host=document.querySelector('header .actions')||document.querySelector('header nav')||document.querySelector('header');if(!host)return;const trigger=document.createElement('button');trigger.className='btn biz-info-trigger';trigger.id='businessInfoBtn';trigger.type='button';trigger.title='Guía práctica del flujo de negocio';trigger.setAttribute('aria-label','Abrir guía práctica del flujo de negocio');trigger.innerHTML='<span aria-hidden="true">ⓘ</span>';host.appendChild(trigger);document.body.insertAdjacentHTML('beforeend',build(g));const modal=document.getElementById('businessGuideModal');const close=()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');trigger.focus()};const open=()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');modal.querySelector('[data-biz-close]')?.focus()};trigger.addEventListener('click',open);modal.querySelectorAll('[data-biz-close]').forEach(x=>x.addEventListener('click',close));modal.addEventListener('click',e=>{if(e.target===modal)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close()})}
