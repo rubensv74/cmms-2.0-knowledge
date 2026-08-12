@@ -107,8 +107,8 @@ SOURCE_VALID
 | Bloque / pantalla | Estado | Structure | Behavior | Color | Evidencia / siguiente paso |
 |---|---|---:|---:|---:|---|
 | `scr_DesignSystemLab` / `DS-S01` | `IN_CONSTRUCTION` | **FROZEN** | OPEN | PENDING | `DS-S01 STRUCTURE FROZEN` confirmado en Studio el 2026-08-12 |
-| `DS-C01 Semantic Token Roles` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | PENDING | reemplazar solo `ph_TokenRoles`; Studio validation pendiente |
-| `DS-C02 Classic + Modern controls` | `PLANNED` | FROZEN | OPEN | PENDING | no generar antes de DS-C01 PASS |
+| `DS-C01 Semantic Token Roles` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | PENDING | `DS-C01 PASS` confirmado visualmente en Studio el 2026-08-12; `ph_TokenRoles` congelado |
+| `DS-C02 Classic + Modern controls` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | PENDING | sustituir solo `ph_ClassicControls` + `ph_ModernControls`; Studio validation pendiente |
 | `DS-C03 Interaction states` | `PLANNED` | FROZEN | OPEN | PENDING | no generar antes de DS-C02 PASS |
 | `DS-C04 Data visualisation` | `PLANNED` | FROZEN | OPEN | PENDING | no generar antes de DS-C03 PASS |
 
@@ -131,6 +131,17 @@ ph_Status geometry
 
 Un bloque C puede sustituir contenido de su placeholder, pero no alterar X/Y/Width/Height del slot.
 
+## Freeze de DS-C01
+
+Desde `DS-C01 PASS` queda protegido:
+
+```text
+ph_TokenRoles content
+16 semantic role candidates
+```
+
+Cualquier cambio posterior requiere `DS-C01-FIX` explícito.
+
 ---
 
 # Evidencia Studio preservada
@@ -145,6 +156,7 @@ FLH PASS
 TAXONOMÍA PASS
 ADR PASS
 DS-S01 STRUCTURE FROZEN
+DS-C01 PASS
 ```
 
 ## Regla de actualización
