@@ -36,8 +36,8 @@ COLOR           PENDING | APPROVED
 | `cmp_FL_SidebarPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
 | `cmp_FL_PageHeaderPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
 | `cmp_FL_TreePro` | `VISUAL_APPROVED` | **FROZEN RC3** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION → smoke dirigido Activos** |
-| `cmp_FL_ProcessRailPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
-| `cmp_FL_DecisionPanelPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
+| `cmp_FL_ProcessRailPro` | `VISUAL_APPROVED` | **FROZEN** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION** |
+| `cmp_FL_DecisionPanelPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | **CL-C03 isolated Studio gate** |
 | `cmp_FL_GatePanelPro` | `FUNCTIONAL` | FROZEN RC2 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 | `cmp_FL_RiskMatrixPro` | `FUNCTIONAL` | FROZEN 900×650 / 5×5 | OPEN | APPROVED foundation / integration pending | S4/O3/D3 isolated smoke |
 | `cmp_FL_LineagePanelPro` | `FUNCTIONAL` | FROZEN H=126 RC3 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
@@ -146,6 +146,8 @@ Los roles/tokens no se rediseñan desde componentes individuales. Cualquier camb
 |---|---|---:|---:|---:|---|
 | `scr_ComponentLab` / `CL-S01` | `FUNCTIONAL_FROZEN` | **FROZEN** | FROZEN lab purpose | APPROVED foundation | `CL-S01 STRUCTURE FROZEN`; harness preservado para futuros componentes |
 | `CL-C01 TreePro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | **`CL-C01 TREEPRO PASS` — RC3 READY_FOR_INTEGRATION** |
+| `CL-C02 ProcessRailPro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | **`CL-C02 PROCESSRAIL PASS` — READY_FOR_INTEGRATION** |
+| `CL-C03 DecisionPanelPro` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | APPROVED foundation | `SOURCE PRECHECK PASS / STUDIO PENDING` |
 
 ## Cierre CL-C01
 
@@ -159,7 +161,19 @@ VISUAL_QA_VALIDATED             PASS
 READY_FOR_INTEGRATION           PASS
 ```
 
-El cierre de CL-C01 no promueve automáticamente las pantallas host. FLH, Taxonomía y ADR requieren únicamente smoke dirigido; su geometría no se reabre.
+## Cierre CL-C02
+
+```text
+cmp_FL_ProcessRailPro
+SOURCE_VALID                    PASS
+COMPONENT_DEFINITION_ACCEPTED   PASS
+INSTANCE_SAFE                   PASS
+PUBLIC_CONTRACT_VALIDATED       PASS
+VISUAL_QA_VALIDATED             PASS
+READY_FOR_INTEGRATION           PASS
+```
+
+Los cierres de componentes no promueven automáticamente sus pantallas host. La integración funcional mantiene sus propios smoke tests sin reabrir geometría aprobada.
 
 ## Geometry freeze de CL-S01
 
@@ -206,6 +220,8 @@ COLOR FOUNDATION APPROVED
 CL-S01 STRUCTURE FROZEN
 CL-C01 TREEPRO PASS
 TREEPRO RC3 READY_FOR_INTEGRATION
+CL-C02 PROCESSRAIL PASS
+PROCESSRAIL READY_FOR_INTEGRATION
 ```
 
 ## Regla de actualización
