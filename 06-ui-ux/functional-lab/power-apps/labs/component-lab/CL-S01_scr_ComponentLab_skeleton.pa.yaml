@@ -1,0 +1,270 @@
+# BLOCK CL-S01 — Component Lab skeleton
+# TYPE: S — Structural
+# OPERATION: CREATE / REPLACE SCREEN STRUCTURE
+# TARGET: scr_ComponentLab
+# DEPENDS ON: COLOR FOUNDATION APPROVED
+# TOUCHES: scr_ComponentLab only
+# DO NOT MODIFY: scr_DesignSystemLab, Functional Lab screens, reusable components, bootstrap, navigation
+# PURPOSE: create an isolated large-surface harness for one reusable component at a time
+# VALIDATION: render + geometry + no overlap + no blocking App Checker regression
+# EXPECTED STATUS AFTER STUDIO VALIDATION: COMPONENT LAB STRUCTURE FROZEN
+
+Screens:
+  scr_ComponentLab:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+
+    Children:
+      - conComponentLabRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+            X: =0
+            Y: =0
+
+          Children:
+            - conComponentLabHeader:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#FFFFFF")
+                  Height: =88
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                  X: =0
+                  Y: =0
+
+                Children:
+                  - lblComponentLabEyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="COMPONENT LAB · CL-S01"
+                        Width: =Parent.Width-240
+                        Wrap: =false
+                        X: =24
+                        Y: =12
+
+                  - lblComponentLabTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =24
+                        Text: ="Validación aislada de componentes"
+                        Width: =Parent.Width-240
+                        Wrap: =false
+                        X: =24
+                        Y: =32
+
+                  - lblComponentLabSubtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =12
+                        Text: ="Una instancia por vez · contrato público · runtime · visual QA"
+                        Width: =Parent.Width-240
+                        Wrap: =false
+                        X: =24
+                        Y: =65
+
+                  - conComponentLabState:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F8FAFC")
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =185
+                        X: =Parent.Width-Self.Width-24
+                        Y: =17
+
+                      Children:
+                        - lblComponentLabStateLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =11
+                              Text: ="ESTADO"
+                              Width: =Parent.Width-20
+                              X: =10
+                              Y: =7
+
+                        - lblComponentLabStateValue:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =12
+                              Text: ="IN_CONSTRUCTION"
+                              Width: =Parent.Width-20
+                              X: =10
+                              Y: =28
+
+            - conComponentLabBody:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  Height: =Parent.Height-112
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-32
+                  X: =16
+                  Y: =100
+
+                Children:
+                  - ph_ComponentUnderTest:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Max(700,Parent.Width-324)
+                        X: =0
+                        Y: =0
+
+                      Children:
+                        - lblComponentUnderTestTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="ph_ComponentUnderTest"
+                              Width: =Parent.Width-32
+                              X: =16
+                              Y: =16
+
+                        - lblComponentUnderTestPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Slot grande para una única instancia reusable. No acumular componentes."
+                              Width: =Parent.Width-32
+                              Wrap: =true
+                              X: =16
+                              Y: =46
+
+                        - recComponentFitReference:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =ColorValue("#BFDBFE")
+                              BorderThickness: =1
+                              Fill: =RGBA(239,246,255,0.24)
+                              Height: =Min(650,Parent.Height-112)
+                              Width: =Min(900,Parent.Width-32)
+                              X: =16
+                              Y: =88
+
+                        - lblComponentFitReference:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#2563EB")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =11
+                              Text: ="Referencia de capacidad · hasta 900×650"
+                              Width: =recComponentFitReference.Width-24
+                              X: =recComponentFitReference.X+12
+                              Y: =recComponentFitReference.Y+12
+
+                  - ph_TestControls:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#CBD5E1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =300
+                        X: =Parent.Width-Self.Width
+                        Y: =0
+
+                      Children:
+                        - lblTestControlsTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="ph_TestControls"
+                              Width: =Parent.Width-28
+                              X: =14
+                              Y: =16
+
+                        - lblTestControlsPurpose:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =12
+                              Text: ="Fixture, acciones y resultados del smoke del componente actual."
+                              Width: =Parent.Width-28
+                              Wrap: =true
+                              X: =14
+                              Y: =46
+
+                        - lblTestControlsGate:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =12
+                              Text: ="Gate:\nDefinition accepted\nInstance safe\nPublic contract\nVisual QA"
+                              Width: =Parent.Width-28
+                              Wrap: =true
+                              X: =14
+                              Y: =112
