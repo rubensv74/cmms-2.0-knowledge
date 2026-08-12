@@ -35,7 +35,7 @@ COLOR           PENDING | APPROVED
 |---|---|---:|---:|---:|---|
 | `cmp_FL_SidebarPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
 | `cmp_FL_PageHeaderPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
-| `cmp_FL_TreePro` | `FUNCTIONAL` | FROZEN RC3 | OPEN | APPROVED foundation / integration pending | **CL-C01 isolated Studio gate** |
+| `cmp_FL_TreePro` | `VISUAL_APPROVED` | **FROZEN RC3** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION → smoke dirigido Activos** |
 | `cmp_FL_ProcessRailPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 | `cmp_FL_DecisionPanelPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 | `cmp_FL_GatePanelPro` | `FUNCTIONAL` | FROZEN RC2 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
@@ -61,9 +61,9 @@ SOURCE_VALID
 | Pantalla | Estado | Structure | Behavior | Color | Restricción |
 |---|---|---:|---:|---:|---|
 | `scr_FL_Home` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation / theme integration pending | no reconstruir bootstrap/shell/cards/navigation |
-| `scr_FL_FLH` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo revalidar después de CL-C01 PASS |
-| `scr_FL_Taxonomy` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo revalidar después de CL-C01 PASS |
-| `scr_FL_ADR` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo revalidar después de CL-C01 PASS |
+| `scr_FL_FLH` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | smoke dirigido con TreePro RC3; no reconstruir |
+| `scr_FL_Taxonomy` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | smoke dirigido con TreePro RC3; no reconstruir |
+| `scr_FL_ADR` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | smoke dirigido con TreePro RC3; no reconstruir |
 | `scr_FL_AssetCriticality` | `FUNCTIONAL` | FROZEN source | OPEN until smoke | APPROVED foundation / theme integration pending | criticidad ≠ riesgo AMEF |
 | `scr_FL_Asset360` | `FUNCTIONAL` | FROZEN source | OPEN until smoke | APPROVED foundation / theme integration pending | master data read-only |
 
@@ -144,8 +144,22 @@ Los roles/tokens no se rediseñan desde componentes individuales. Cualquier camb
 
 | Bloque / pantalla | Estado | Structure | Behavior | Color | Evidencia / siguiente paso |
 |---|---|---:|---:|---:|---|
-| `scr_ComponentLab` / `CL-S01` | `IN_CONSTRUCTION` | **FROZEN** | OPEN | APPROVED foundation | **`CL-S01 STRUCTURE FROZEN` confirmado en Studio 2026-08-12** |
-| `CL-C01 TreePro` | `PLANNED` | inherits FROZEN geometry | OPEN | APPROVED foundation | validar RC3: definition → instance → contract → visual QA → save/reopen |
+| `scr_ComponentLab` / `CL-S01` | `FUNCTIONAL_FROZEN` | **FROZEN** | FROZEN lab purpose | APPROVED foundation | `CL-S01 STRUCTURE FROZEN`; harness preservado para futuros componentes |
+| `CL-C01 TreePro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | **`CL-C01 TREEPRO PASS` — RC3 READY_FOR_INTEGRATION** |
+
+## Cierre CL-C01
+
+```text
+cmp_FL_TreePro RC3
+SOURCE_VALID                    PASS
+COMPONENT_DEFINITION_ACCEPTED   PASS
+INSTANCE_SAFE                   PASS
+PUBLIC_CONTRACT_VALIDATED       PASS
+VISUAL_QA_VALIDATED             PASS
+READY_FOR_INTEGRATION           PASS
+```
+
+El cierre de CL-C01 no promueve automáticamente las pantallas host. FLH, Taxonomía y ADR requieren únicamente smoke dirigido; su geometría no se reabre.
 
 ## Geometry freeze de CL-S01
 
@@ -190,6 +204,8 @@ DS-C03 PASS
 DS-C04-FIX PASS
 COLOR FOUNDATION APPROVED
 CL-S01 STRUCTURE FROZEN
+CL-C01 TREEPRO PASS
+TREEPRO RC3 READY_FOR_INTEGRATION
 ```
 
 ## Regla de actualización
