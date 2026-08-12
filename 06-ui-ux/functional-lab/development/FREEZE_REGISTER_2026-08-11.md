@@ -37,9 +37,9 @@ COLOR           PENDING | APPROVED
 | `cmp_FL_PageHeaderPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
 | `cmp_FL_TreePro` | `VISUAL_APPROVED` | **FROZEN RC3** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION → smoke dirigido Activos** |
 | `cmp_FL_ProcessRailPro` | `VISUAL_APPROVED` | **FROZEN** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION** |
-| `cmp_FL_DecisionPanelPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | **CL-C03 isolated Studio gate** |
-| `cmp_FL_GatePanelPro` | `FUNCTIONAL` | FROZEN RC2 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
-| `cmp_FL_RiskMatrixPro` | `FUNCTIONAL` | FROZEN 900×650 / 5×5 | OPEN | APPROVED foundation / integration pending | S4/O3/D3 isolated smoke |
+| `cmp_FL_DecisionPanelPro` | `VISUAL_APPROVED` | **FROZEN RC + CL-C03-FIX-01** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION** |
+| `cmp_FL_GatePanelPro` | `VISUAL_APPROVED` | **FROZEN RC2** | **FROZEN / PUBLIC_CONTRACT_VALIDATED** | APPROVED foundation | **READY_FOR_INTEGRATION** |
+| `cmp_FL_RiskMatrixPro` | `FUNCTIONAL` | **FROZEN RC4 / 900×650 / 5×5** | OPEN | APPROVED foundation / integration pending | **CL-C05 S4/O3/D3 isolated smoke** |
 | `cmp_FL_LineagePanelPro` | `FUNCTIONAL` | FROZEN H=126 RC3 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 | `cmp_FL_ApplicabilityMatrixPro` | `FUNCTIONAL` | FROZEN RC2 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 
@@ -147,7 +147,9 @@ Los roles/tokens no se rediseñan desde componentes individuales. Cualquier camb
 | `scr_ComponentLab` / `CL-S01` | `FUNCTIONAL_FROZEN` | **FROZEN** | FROZEN lab purpose | APPROVED foundation | `CL-S01 STRUCTURE FROZEN`; harness preservado para futuros componentes |
 | `CL-C01 TreePro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | **`CL-C01 TREEPRO PASS` — RC3 READY_FOR_INTEGRATION** |
 | `CL-C02 ProcessRailPro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | **`CL-C02 PROCESSRAIL PASS` — READY_FOR_INTEGRATION** |
-| `CL-C03 DecisionPanelPro` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | APPROVED foundation | `SOURCE PRECHECK PASS / STUDIO PENDING` |
+| `CL-C03 DecisionPanelPro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | visual FIX aprobado; continuidad operativa aceptada; **READY_FOR_INTEGRATION** |
+| `CL-C04 GatePanelPro` | `VISUAL_APPROVED` | inherits FROZEN geometry | **FROZEN** | APPROVED foundation | **`CL-C04 GATEPANEL PASS` — RC2 READY_FOR_INTEGRATION** |
+| `CL-C05 RiskMatrixPro` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | APPROVED foundation | **SOURCE PRECHECK PASS / STUDIO PENDING** |
 
 ## Cierre CL-C01
 
@@ -165,6 +167,32 @@ READY_FOR_INTEGRATION           PASS
 
 ```text
 cmp_FL_ProcessRailPro
+SOURCE_VALID                    PASS
+COMPONENT_DEFINITION_ACCEPTED   PASS
+INSTANCE_SAFE                   PASS
+PUBLIC_CONTRACT_VALIDATED       PASS
+VISUAL_QA_VALIDATED             PASS
+READY_FOR_INTEGRATION           PASS
+```
+
+## Cierre CL-C03
+
+```text
+cmp_FL_DecisionPanelPro
+SOURCE_VALID                    PASS
+COMPONENT_DEFINITION_ACCEPTED   PASS
+INSTANCE_SAFE                   PASS
+PUBLIC_CONTRACT_VALIDATED       PASS
+VISUAL_QA_VALIDATED             PASS after CL-C03-FIX-01
+READY_FOR_INTEGRATION           PASS
+```
+
+La RC integrada conserva el aumento de altura aprobado para evitar clipping de `RecommendationExplanation` sin reducir tipografía.
+
+## Cierre CL-C04
+
+```text
+cmp_FL_GatePanelPro RC2
 SOURCE_VALID                    PASS
 COMPONENT_DEFINITION_ACCEPTED   PASS
 INSTANCE_SAFE                   PASS
@@ -222,6 +250,11 @@ CL-C01 TREEPRO PASS
 TREEPRO RC3 READY_FOR_INTEGRATION
 CL-C02 PROCESSRAIL PASS
 PROCESSRAIL READY_FOR_INTEGRATION
+CL-C03 VISUAL FIX PASS / operational continuation accepted
+DECISIONPANEL READY_FOR_INTEGRATION
+CL-C04 GATEPANEL PASS
+GATEPANEL RC2 READY_FOR_INTEGRATION
+CL-C05 SOURCE PRECHECK PASS / STUDIO PENDING
 ```
 
 ## Regla de actualización
