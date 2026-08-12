@@ -1,7 +1,8 @@
-# CMMS 2.0 FUNCTIONAL LAB — DECISION PANEL PRO — COMFORTABLE READABILITY RC
+# CMMS 2.0 FUNCTIONAL LAB — DECISION PANEL PRO — COMFORTABLE READABILITY RC2
 #
 # Preserves public contract and system/recommendation/human authority separation.
-# Information is consolidated to gain space; typography is not reduced.
+# CL-C03-FIX-01 integrated: additional vertical room prevents representative recommendation/reason clipping.
+# Typography is not reduced.
 
 ComponentDefinitions:
   cmp_FL_DecisionPanelPro:
@@ -199,7 +200,7 @@ ComponentDefinitions:
 
     Properties:
       Fill: =If(cmp_FL_DecisionPanelPro.UseHostTheme,cmp_FL_DecisionPanelPro.SurfaceColor,ColorValue("#FFFFFF"))
-      Height: =214
+      Height: =252
       Width: =620
 
     Children:
@@ -265,7 +266,7 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =ColorValue("#F0F9FF")
-                  Height: =80
+                  Height: =104
                   RadiusBottomLeft: =11
                   RadiusBottomRight: =11
                   RadiusTopLeft: =11
@@ -334,7 +335,7 @@ ComponentDefinitions:
                   BorderThickness: =1
                   DropShadow: =DropShadow.None
                   Fill: =If(cmp_FL_DecisionPanelPro.IsOverride,ColorValue("#FFF7ED"),ColorValue("#FAF5FF"))
-                  Height: =80
+                  Height: =104
                   RadiusBottomLeft: =11
                   RadiusBottomRight: =11
                   RadiusTopLeft: =11
