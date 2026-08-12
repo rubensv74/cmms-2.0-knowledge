@@ -1,0 +1,145 @@
+# BLOCK CL-C05-FIX-03A — RiskMatrix dynamic dimension outputs/default selection
+# TYPE: FIX — component behavior
+# ACTION: REPLACE PROPERTIES BLOCK
+# TARGET: cmp_FL_RiskMatrixPro / Properties
+# DEPENDS ON: RC5 VISUAL_QA_VALIDATED + CL-C05-FIX-02 runtime band fix
+# TOUCHES: component Properties only
+# DO NOT MODIFY: CustomProperties, Children, 900x650 external geometry, visual RC5 composition
+# VALIDATION: 5x5 / 4x6 / 6x4 selected scores and MatrixBandOut must follow RowScale/ColumnScale
+# EXPECTED STATUS: SOURCE_VALID / STUDIO PENDING
+
+Properties:
+  Fill: =Color.Transparent
+  Height: =650
+  Width: =900
+
+  SelectedSeverityOut: |-
+    =
+    With(
+        {
+            _rows:SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+            _colCount:Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),
+            _rowIndex:Coalesce(
+                LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SeverityValue,ScaleIndex),
+                Max(cmp_FL_RiskMatrixPro.RowScale,ScaleIndex)
+            ),
+            _colIndex:Coalesce(
+                LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.OccurrenceValue,ScaleIndex),
+                Min(cmp_FL_RiskMatrixPro.ColumnScale,ScaleIndex)
+            )
+        },
+        With(
+            {
+                _defaultValue:
+                    CountRows(Filter(cmp_FL_RiskMatrixPro.RowScale,ScaleIndex>_rowIndex))*_colCount+
+                    CountRows(Filter(cmp_FL_RiskMatrixPro.ColumnScale,ScaleIndex<_colIndex))+1
+            },
+            With(
+                {_v:Coalesce(galFLRiskMatrix.Selected.Value,_defaultValue)},
+                Value(
+                    Last(
+                        FirstN(
+                            _rows,
+                            RoundUp(Value(_v)/_colCount,0)
+                        )
+                    ).ScaleScore
+                )
+            )
+        )
+    )
+
+  SelectedOccurrenceOut: |-
+    =
+    With(
+        {
+            _cols:SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+            _colCount:Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),
+            _rowIndex:Coalesce(
+                LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SeverityValue,ScaleIndex),
+                Max(cmp_FL_RiskMatrixPro.RowScale,ScaleIndex)
+            ),
+            _colIndex:Coalesce(
+                LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.OccurrenceValue,ScaleIndex),
+                Min(cmp_FL_RiskMatrixPro.ColumnScale,ScaleIndex)
+            )
+        },
+        With(
+            {
+                _defaultValue:
+                    CountRows(Filter(cmp_FL_RiskMatrixPro.RowScale,ScaleIndex>_rowIndex))*_colCount+
+                    CountRows(Filter(cmp_FL_RiskMatrixPro.ColumnScale,ScaleIndex<_colIndex))+1
+            },
+            With(
+                {_v:Coalesce(galFLRiskMatrix.Selected.Value,_defaultValue)},
+                Value(
+                    Last(
+                        FirstN(
+                            _cols,
+                            Mod(Value(_v)-1,_colCount)+1
+                        )
+                    ).ScaleScore
+                )
+            )
+        )
+    )
+
+  SelectedRowLabelOut: =Coalesce(LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedSeverityOut,ScaleLabel),Text(cmp_FL_RiskMatrixPro.SelectedSeverityOut))
+  SelectedColumnLabelOut: =Coalesce(LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.SelectedOccurrenceOut,ScaleLabel),Text(cmp_FL_RiskMatrixPro.SelectedOccurrenceOut))
+  MatrixScoreOut: =cmp_FL_RiskMatrixPro.SelectedSeverityOut*cmp_FL_RiskMatrixPro.SelectedOccurrenceOut
+
+  MatrixBandOut: |-
+    =
+    With(
+        {
+            _rows:SortByColumns(cmp_FL_RiskMatrixPro.RowScale,"ScaleIndex",SortOrder.Descending),
+            _cols:SortByColumns(cmp_FL_RiskMatrixPro.ColumnScale,"ScaleIndex",SortOrder.Ascending),
+            _colCount:Max(1,CountRows(cmp_FL_RiskMatrixPro.ColumnScale)),
+            _rowIndex:Coalesce(
+                LookUp(cmp_FL_RiskMatrixPro.RowScale,ScaleScore=cmp_FL_RiskMatrixPro.SeverityValue,ScaleIndex),
+                Max(cmp_FL_RiskMatrixPro.RowScale,ScaleIndex)
+            ),
+            _colIndex:Coalesce(
+                LookUp(cmp_FL_RiskMatrixPro.ColumnScale,ScaleScore=cmp_FL_RiskMatrixPro.OccurrenceValue,ScaleIndex),
+                Min(cmp_FL_RiskMatrixPro.ColumnScale,ScaleIndex)
+            )
+        },
+        With(
+            {
+                _defaultValue:
+                    CountRows(Filter(cmp_FL_RiskMatrixPro.RowScale,ScaleIndex>_rowIndex))*_colCount+
+                    CountRows(Filter(cmp_FL_RiskMatrixPro.ColumnScale,ScaleIndex<_colIndex))+1
+            },
+            With(
+                {_v:Coalesce(galFLRiskMatrix.Selected.Value,_defaultValue)},
+                With(
+                    {
+                        _rowPos:RoundUp(Value(_v)/_colCount,0),
+                        _colPos:Mod(Value(_v)-1,_colCount)+1
+                    },
+                    With(
+                        {
+                            _score:
+                                Value(Last(FirstN(_rows,_rowPos)).ScaleScore)*
+                                Value(Last(FirstN(_cols,_colPos)).ScaleScore),
+                            _low:Coalesce(cmp_FL_RiskMatrixPro.LowMax,5),
+                            _moderate:Coalesce(cmp_FL_RiskMatrixPro.ModerateMax,10),
+                            _high:Coalesce(cmp_FL_RiskMatrixPro.HighMax,20)
+                        },
+                        If(
+                            _score<=_low,
+                            cmp_FL_RiskMatrixPro.LowLabel,
+                            If(
+                                _score<=_moderate,
+                                cmp_FL_RiskMatrixPro.ModerateLabel,
+                                If(
+                                    _score<=_high,
+                                    cmp_FL_RiskMatrixPro.HighLabel,
+                                    cmp_FL_RiskMatrixPro.CriticalLabel
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
