@@ -7,7 +7,7 @@
 # DO NOT MODIFY: scr_ComponentLab geometry, scr_DesignSystemLab, cmp_FL_TreePro, Functional Lab screens, ProcessRailPro public contract
 # PURPOSE: validate a real cmp_FL_ProcessRailPro instance with phase headers, statuses, responsibility semantics, inaccessible stage, selection outputs and density switching
 # COLOR: UseHostTheme=false; safe fallback only; no Theme redesign
-# VALIDATION: load fixture; render; select accessible stage; blocked stage remains inaccessible; phase headers; status/responsibility semantics; compact toggle; outputs; no black surfaces; no clipping
+# VALIDATION: load fixture; render; select accessible stage without changing formal active stage; blocked stage remains inaccessible; phase headers; status/responsibility semantics; compact toggle; outputs; no black surfaces; no clipping
 # EXPECTED STATUS AFTER PASS: cmp_FL_ProcessRailPro -> READY_FOR_INTEGRATION candidate
 #
 # PRECONDITION — COMPONENT DEFINITION
@@ -75,8 +75,7 @@
             OnSelectStage: |-
               =
               Set(varCLRailSelectedStage,cmpCLRail.SelectedStageIdOut);
-              Set(varCLRailSelectedScreen,cmpCLRail.SelectedScreenKeyOut);
-              Set(varCLRailActiveStage,cmpCLRail.SelectedStageIdOut)
+              Set(varCLRailSelectedScreen,cmpCLRail.SelectedScreenKeyOut)
             ShowPhaseHeaders: =Coalesce(varCLRailShowPhases,true)
             UseHostTheme: =false
             Width: =300
