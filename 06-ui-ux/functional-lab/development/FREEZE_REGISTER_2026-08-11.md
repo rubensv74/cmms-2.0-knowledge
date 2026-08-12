@@ -107,9 +107,9 @@ SOURCE_VALID
 | Bloque / pantalla | Estado | Structure | Behavior | Color | Evidencia / siguiente paso |
 |---|---|---:|---:|---:|---|
 | `scr_DesignSystemLab` / `DS-S01` | `IN_CONSTRUCTION` | **FROZEN** | OPEN | PENDING | `DS-S01 STRUCTURE FROZEN` confirmado en Studio el 2026-08-12 |
-| `DS-C01 Semantic Token Roles` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | PENDING | `DS-C01 PASS`; `ph_TokenRoles` congelado |
+| `DS-C01 Semantic Token Roles` | `IN_CONSTRUCTION` | inherits FROZEN geometry | **REOPENED BY FIX** | PENDING | PASS inicial en editor; runtime ancho reveló solape de 4 etiquetas de la cuarta columna; aplicar `DS-C01-FIX-01` |
 | `DS-C02 Classic + Modern controls` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | PENDING | `DS-C02 PASS`; Classic/Button, Classic/TextInput, ModernText y ModernTextInput renderizados correctamente |
-| `DS-C03 Interaction states` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | PENDING | sustituir solo `ph_InteractionStates`; validar Default/Selected/Disabled/Hover/Pressed/Focus |
+| `DS-C03 Interaction states` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | PENDING | contenido visible correcto en captura; gate bloqueado hasta cerrar `DS-C01-FIX-01` y confirmar Hover/Pressed/Focus |
 | `DS-C04 Data visualisation` | `PLANNED` | FROZEN | OPEN | PENDING | no generar antes de DS-C03 PASS |
 
 ## Geometry freeze de DS-S01
@@ -129,22 +129,25 @@ ph_DataViz geometry
 ph_Status geometry
 ```
 
-Un bloque C puede sustituir contenido de su placeholder, pero no alterar X/Y/Width/Height del slot.
+Un bloque C/FIX puede sustituir contenido interno del placeholder declarado, pero no alterar X/Y/Width/Height del slot salvo reapertura estructural explícita.
 
-## Freeze de bloques aprobados del laboratorio
+## Estado de bloques del laboratorio
 
 ```text
-DS-C01 PASS
-→ ph_TokenRoles content FROZEN
-→ 16 semantic role candidates FROZEN hasta FIX explícito
+DS-C01 PASS inicial
+→ REOPENED por defecto responsive observado en runtime ancho
+→ DS-C01-FIX-01 toca solo lblDSBorder / lblDSPrimaryHover / lblDSSelectedAccent / lblDSDanger
+→ tokens, swatches, colores y geometría siguen congelados
 
 DS-C02 PASS
 → ph_ClassicControls content FROZEN
 → ph_ModernControls content FROZEN
 → ModernTextInput@1.1.1 queda demostrado como renderizable en el entorno actual
-```
 
-Cualquier modificación posterior exige un `FIX` explícito del bloque correspondiente.
+DS-C03
+→ no se considera FAIL por el defecto DS-C01
+→ permanece IN_CONSTRUCTION hasta cerrar el FIX precedente y confirmar interacción
+```
 
 ---
 
@@ -160,7 +163,7 @@ FLH PASS
 TAXONOMÍA PASS
 ADR PASS
 DS-S01 STRUCTURE FROZEN
-DS-C01 PASS
+DS-C01 PASS inicial — posteriormente reabierto por responsive FIX
 DS-C02 PASS
 ```
 
@@ -172,4 +175,4 @@ Después de cada bloque validado:
 2. registrar estado y capa congelada;
 3. mantener `COLOR=PENDING` hasta completar DS-C01…DS-C04;
 4. no promover otras piezas por asociación;
-5. si falla, crear el `FIX` del mismo bloque antes de continuar.
+5. si falla una pieza previa, abrir un `FIX` explícito sin modificar el bloque actual que reveló el defecto.
