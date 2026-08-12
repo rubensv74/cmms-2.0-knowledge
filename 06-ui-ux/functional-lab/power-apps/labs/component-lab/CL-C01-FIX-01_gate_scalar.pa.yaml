@@ -1,0 +1,21 @@
+# BLOCK CL-C01-FIX-01 — Gate label YAML scalar
+# TYPE: FIX
+# TARGET: scr_ComponentLab / ph_TestControls / lblCLTreeGate
+# DEPENDS ON: CL-C01 parse failure PA1001 at (333,25)
+# TOUCHES: lblCLTreeGate only
+# DO NOT MODIFY: cmp_FL_TreePro, fixture, outputs, Tree instance, Component Lab geometry, any Functional Lab screen
+# CAUSE: inline Power Fx text contained literal `: ` and PaYaml interpreted the plain scalar as an invalid mapping
+# VALIDATION: paste control replacement; Studio parses; no PA1001; no other control changes
+
+- lblCLTreeGate:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#64748B")
+      Size: =11
+      Text: |-
+        ="Gate: Definition → Instance → Contract → Visual QA → Save/Reopen"
+      Width: =Parent.Width-28
+      Wrap: =true
+      X: =14
+      Y: =548
