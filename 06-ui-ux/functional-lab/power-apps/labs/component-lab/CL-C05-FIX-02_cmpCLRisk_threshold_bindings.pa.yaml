@@ -1,0 +1,45 @@
+# CL-C05-FIX-02 — cmpCLRisk explicit demo threshold bindings
+# TYPE: FIX — Integration/runtime harness
+# ACTION: REPLACE CONTROL
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest / cmpCLRisk
+# DEPENDS ON: RC5 visual composition accepted
+# TOUCHES: cmpCLRisk instance bindings only
+# DO NOT MODIFY: ph_ComponentUnderTest geometry, RC5 geometry, S/O/D/NPR semantics, other controls
+# PURPOSE: ensure the isolated fixture supplies its demonstration band thresholds explicitly
+#
+# Replace ONLY the existing cmpCLRisk control with this block.
+
+- cmpCLRisk:
+    Control: CanvasComponent
+    ComponentName: cmp_FL_RiskMatrixPro
+    Properties:
+      ContextLabel: ="P-101"
+      CriticalLabel: ="Crítico"
+      DetectionLabel: ="Detección"
+      DetectionValue: =Coalesce(varCLRiskD,3)
+      Height: =650
+      HighLabel: ="Alto"
+      HighMax: =20
+      LowLabel: ="Bajo"
+      LowMax: =5
+      MatrixMode: ="PRODUCT"
+      ModerateLabel: ="Moderado"
+      ModerateMax: =10
+      OccurrenceValue: =Coalesce(varCLRiskO,3)
+      OnSelectCell: |-
+        =
+        Set(varCLRiskS,cmpCLRisk.SelectedSeverityOut);
+        Set(varCLRiskO,cmpCLRisk.SelectedOccurrenceOut);
+        Set(varCLRiskLastEvent,"CELL")
+      RiskScore: =0
+      RiskScoreLabel: ="NPR"
+      ScaleNote: ="Fixture P-101 · AMEF S×O 5×5 · D separada · umbrales de demostración"
+      SeverityValue: =Coalesce(varCLRiskS,4)
+      ShowDetection: =true
+      ShowRiskScore: =true
+      Subtitle: ="Modo de fallo · degradación de rodamientos"
+      Title: ="Matriz de riesgo AMEF"
+      UseHostTheme: =false
+      Width: =900
+      X: =Max(0,(Parent.Width-Self.Width)/2)
+      Y: =0
