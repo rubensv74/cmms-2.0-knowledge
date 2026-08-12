@@ -1,0 +1,393 @@
+# BLOCK DS-C01 — Semantic Token Roles
+# TYPE: C — Component/content
+# OPERATION: REPLACE CONTROL
+# TARGET: ph_TokenRoles
+# PARENT/ANCHOR: conDSLabBody
+# DEPENDS ON: DS-S01 STRUCTURE FROZEN
+# TOUCHES: ph_TokenRoles only
+# DO NOT MODIFY: ph_Text, ph_ClassicControls, ph_ModernControls, ph_InteractionStates, ph_DataViz, ph_Status, conDSLabBody geometry, header, any Functional Lab screen/component
+# PURPOSE: validate shared semantic color roles in Power Apps Studio using direct ColorValue constants
+# COLOR STATUS BEFORE: PENDING
+# VALIDATION: all 16 roles render as specified; no unexpected black surfaces; labels/HEX legible; geometry unchanged
+# EXPECTED STATUS AFTER PASS: DS-C01 VISUAL_APPROVED / COLOR still PENDING until DS-C02..DS-C04 complete
+#
+# PASTE INSTRUCTION:
+# Replace ONLY the existing '- ph_TokenRoles:' block inside conDSLabBody.Children.
+
+- ph_TokenRoles:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =(Parent.Height-24)*0.37
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =(Parent.Width-12)*0.64
+      X: =0
+      Y: =0
+
+    Children:
+      - lblDSTokenTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Roles semánticos · DS-C01"
+            Width: =Parent.Width-32
+            X: =16
+            Y: =12
+
+      - lblDSTokenPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Validación aislada de tokens compartidos. Estos valores son candidatos; no se propagan todavía a componentes."
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =38
+
+      - recDSBackground:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Fill: =ColorValue("#F6F8FB")
+            Height: =28
+            Width: =28
+            X: =16
+            Y: =66
+      - lblDSBackground:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Background" & Char(10) & "#F6F8FB"
+            Width: =(Parent.Width-96)/4
+            X: =50
+            Y: =63
+
+      - recDSSurface:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Fill: =ColorValue("#FFFFFF")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.25+8
+            Y: =66
+      - lblDSSurface:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Surface" & Char(10) & "#FFFFFF"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.25+42
+            Y: =63
+
+      - recDSSurfaceAlt:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Fill: =ColorValue("#F8FAFC")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.50
+            Y: =66
+      - lblDSSurfaceAlt:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="SurfaceAlt" & Char(10) & "#F8FAFC"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.50+34
+            Y: =63
+
+      - recDSBorder:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#94A3B8")
+            BorderThickness: =1
+            Fill: =ColorValue("#E2E8F0")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.75-8
+            Y: =66
+      - lblDSBorder:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Border" & Char(10) & "#E2E8F0"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.75+26
+            Y: =63
+
+      - recDSTextPrimary:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#0F172A")
+            BorderThickness: =1
+            Fill: =ColorValue("#0F172A")
+            Height: =28
+            Width: =28
+            X: =16
+            Y: =106
+      - lblDSTextPrimary:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="TextPrimary" & Char(10) & "#0F172A"
+            Width: =(Parent.Width-96)/4
+            X: =50
+            Y: =103
+
+      - recDSTextSecondary:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#64748B")
+            BorderThickness: =1
+            Fill: =ColorValue("#64748B")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.25+8
+            Y: =106
+      - lblDSTextSecondary:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="TextSecondary" & Char(10) & "#64748B"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.25+42
+            Y: =103
+
+      - recDSPrimary:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Fill: =ColorValue("#0284C7")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.50
+            Y: =106
+      - lblDSPrimary:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Primary" & Char(10) & "#0284C7"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.50+34
+            Y: =103
+
+      - recDSPrimaryHover:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#0369A1")
+            BorderThickness: =1
+            Fill: =ColorValue("#0369A1")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.75-8
+            Y: =106
+      - lblDSPrimaryHover:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="PrimaryHover" & Char(10) & "#0369A1"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.75+26
+            Y: =103
+
+      - recDSPrimarySelected:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#075985")
+            BorderThickness: =1
+            Fill: =ColorValue("#075985")
+            Height: =28
+            Width: =28
+            X: =16
+            Y: =146
+      - lblDSPrimarySelected:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="PrimarySelected" & Char(10) & "#075985"
+            Width: =(Parent.Width-96)/4
+            X: =50
+            Y: =143
+
+      - recDSSelectedBackground:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#BFDBFE")
+            BorderThickness: =1
+            Fill: =ColorValue("#EFF6FF")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.25+8
+            Y: =146
+      - lblDSSelectedBackground:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="SelectedBackground" & Char(10) & "#EFF6FF"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.25+42
+            Y: =143
+
+      - recDSSelectedBorder:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#BFDBFE")
+            BorderThickness: =1
+            Fill: =ColorValue("#BFDBFE")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.50
+            Y: =146
+      - lblDSSelectedBorder:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="SelectedBorder" & Char(10) & "#BFDBFE"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.50+34
+            Y: =143
+
+      - recDSSelectedAccent:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#2563EB")
+            BorderThickness: =1
+            Fill: =ColorValue("#2563EB")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.75-8
+            Y: =146
+      - lblDSSelectedAccent:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="SelectedAccent" & Char(10) & "#2563EB"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.75+26
+            Y: =143
+
+      - recDSSelectedText:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#1D4ED8")
+            BorderThickness: =1
+            Fill: =ColorValue("#1D4ED8")
+            Height: =28
+            Width: =28
+            X: =16
+            Y: =186
+      - lblDSSelectedText:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="SelectedText" & Char(10) & "#1D4ED8"
+            Width: =(Parent.Width-96)/4
+            X: =50
+            Y: =183
+
+      - recDSSuccess:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#15803D")
+            BorderThickness: =1
+            Fill: =ColorValue("#15803D")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.25+8
+            Y: =186
+      - lblDSSuccess:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Success" & Char(10) & "#15803D"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.25+42
+            Y: =183
+
+      - recDSWarning:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#B45309")
+            BorderThickness: =1
+            Fill: =ColorValue("#B45309")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.50
+            Y: =186
+      - lblDSWarning:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Warning" & Char(10) & "#B45309"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.50+34
+            Y: =183
+
+      - recDSDanger:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#B91C1C")
+            BorderThickness: =1
+            Fill: =ColorValue("#B91C1C")
+            Height: =28
+            Width: =28
+            X: =Parent.Width*0.75-8
+            Y: =186
+      - lblDSDanger:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Danger" & Char(10) & "#B91C1C"
+            Width: =(Parent.Width-96)/4
+            X: =Parent.Width*0.75+26
+            Y: =183
