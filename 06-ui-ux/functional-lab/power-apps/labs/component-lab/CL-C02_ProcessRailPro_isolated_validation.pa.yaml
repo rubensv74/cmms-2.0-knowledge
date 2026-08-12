@@ -1,0 +1,340 @@
+# BLOCK CL-C02 — ProcessRailPro isolated validation harness
+# TYPE: C — Component validation harness
+# ACTION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: CL-S01 STRUCTURE FROZEN + COLOR FOUNDATION APPROVED + cmp_FL_ProcessRailPro definition accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, scr_DesignSystemLab, cmp_FL_TreePro, Functional Lab screens, ProcessRailPro public contract
+# PURPOSE: validate a real cmp_FL_ProcessRailPro instance with phase headers, statuses, responsibility semantics, inaccessible stage, selection outputs and density switching
+# COLOR: UseHostTheme=false; safe fallback only; no Theme redesign
+# VALIDATION: load fixture; render; select accessible stage; blocked stage remains inaccessible; phase headers; status/responsibility semantics; compact toggle; outputs; no black surfaces; no clipping
+# EXPECTED STATUS AFTER PASS: cmp_FL_ProcessRailPro -> READY_FOR_INTEGRATION candidate
+#
+# PRECONDITION — COMPONENT DEFINITION
+# Update the EXISTING cmp_FL_ProcessRailPro definition in situ from:
+# power-apps/components/cmp_FL_ProcessRailPro.pa.yaml
+# Do NOT add a second component identity.
+# Save and confirm Studio accepts the definition before pasting this harness.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children replace ONLY:
+# 1) ph_ComponentUnderTest
+# 2) ph_TestControls
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(700,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - lblCLRailTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="cmp_FL_ProcessRailPro · isolated validation"
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =14
+
+      - lblCLRailHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Recorrido AMEF + RCM · fases, estados, responsabilidad, accesibilidad y selección"
+            Width: =Parent.Width-32
+            Wrap: =true
+            X: =16
+            Y: =44
+
+      - cmpCLRail:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_ProcessRailPro
+          Properties:
+            ActiveStageId: =Coalesce(varCLRailActiveStage,"FL-09")
+            CompactMode: =Coalesce(varCLRailCompact,false)
+            Height: =Min(640,Parent.Height-104)
+            Items: =colCLRailStages
+            OnSelectStage: |-
+              =
+              Set(varCLRailSelectedStage,cmpCLRail.SelectedStageIdOut);
+              Set(varCLRailSelectedScreen,cmpCLRail.SelectedScreenKeyOut);
+              Set(varCLRailActiveStage,cmpCLRail.SelectedStageIdOut)
+            ShowPhaseHeaders: =Coalesce(varCLRailShowPhases,true)
+            UseHostTheme: =false
+            Width: =300
+            X: =16
+            Y: =88
+
+      - lblCLRailReading:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="El rail debe conservar 300 px y usar scroll antes que reducir la tipografía."
+            Width: =Parent.Width-cmpCLRail.Width-64
+            Wrap: =true
+            X: =cmpCLRail.X+cmpCLRail.Width+24
+            Y: =96
+
+      - lblCLRailLegendTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Semántica esperada"
+            Width: =Parent.Width-cmpCLRail.Width-64
+            X: =cmpCLRail.X+cmpCLRail.Width+24
+            Y: =150
+
+      - lblCLRailLegend:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="H · decisión humana" & Char(10) &
+              "R · recomendación del sistema" & Char(10) &
+              "C · cálculo del sistema" & Char(10) &
+              "G · control de avance"
+            Width: =Parent.Width-cmpCLRail.Width-64
+            Wrap: =true
+            X: =cmpCLRail.X+cmpCLRail.Width+24
+            Y: =180
+
+      - lblCLRailBlockedHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#B45309")
+            FontWeight: =FontWeight.Semibold
+            Size: =12
+            Text: ="FL-12 está bloqueada y no debe activar OnSelectStage."
+            Width: =Parent.Width-cmpCLRail.Width-64
+            Wrap: =true
+            X: =cmpCLRail.X+cmpCLRail.Width+24
+            Y: =300
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLRailTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Process Rail · smoke test"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLRailTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Fixture controlado con AMEF, RCM y un gate bloqueado."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLRailLoad:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =42
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              ClearCollect(
+                  colCLRailStages,
+                  {StageOrder:7,StageId:"FL-07",PhaseId:"P3",PhaseLabel:"AMEF",StageLabel:"Definir efectos del fallo",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                  {StageOrder:8,StageId:"FL-08",PhaseId:"P3",PhaseLabel:"AMEF",StageLabel:"Valorar severidad",Status:"confirmed",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                  {StageOrder:9,StageId:"FL-09",PhaseId:"P3",PhaseLabel:"AMEF",StageLabel:"Valorar ocurrencia",Status:"draft",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:true,IsAccessible:true,HasWarning:false},
+                  {StageOrder:10,StageId:"FL-10",PhaseId:"P3",PhaseLabel:"AMEF",StageLabel:"Calcular riesgo AMEF",Status:"draft",ResponsibilityType:"calculation",ResponsibleRole:"Sistema",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                  {StageOrder:11,StageId:"FL-11",PhaseId:"P3",PhaseLabel:"AMEF",StageLabel:"Revisar prioridad de riesgo",Status:"warning",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"AMEF",IsCurrent:false,IsAccessible:true,HasWarning:true},
+                  {StageOrder:12,StageId:"FL-12",PhaseId:"P4",PhaseLabel:"RCM",StageLabel:"Validar prerrequisitos RCM",Status:"blocked",ResponsibilityType:"gate",ResponsibleRole:"Control de avance",ScreenKey:"RCM",IsCurrent:false,IsAccessible:false,HasWarning:true},
+                  {StageOrder:13,StageId:"FL-13",PhaseId:"P4",PhaseLabel:"RCM",StageLabel:"Aplicar lógica RCM",Status:"not_started",ResponsibilityType:"recommendation",ResponsibleRole:"Sistema",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                  {StageOrder:14,StageId:"FL-14",PhaseId:"P4",PhaseLabel:"RCM",StageLabel:"Confirmar estrategia",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                  {StageOrder:15,StageId:"FL-15",PhaseId:"P4",PhaseLabel:"RCM",StageLabel:"Registrar justificación",Status:"not_started",ResponsibilityType:"human",ResponsibleRole:"Ingeniería de Fiabilidad",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false},
+                  {StageOrder:16,StageId:"FL-16",PhaseId:"P4",PhaseLabel:"RCM",StageLabel:"Cerrar decisión RCM",Status:"not_started",ResponsibilityType:"gate",ResponsibleRole:"Control de avance",ScreenKey:"RCM",IsCurrent:false,IsAccessible:true,HasWarning:false}
+              );
+              Set(varCLRailActiveStage,"FL-09");
+              Set(varCLRailSelectedStage,"FL-09");
+              Set(varCLRailSelectedScreen,"AMEF");
+              Set(varCLRailCompact,false);
+              Set(varCLRailShowPhases,true)
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Cargar fixture"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =94
+
+      - btnCLRailDensity:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: =Set(varCLRailCompact,!Coalesce(varCLRailCompact,false))
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: =If(Coalesce(varCLRailCompact,false),"Usar Comfortable","Usar Compact")
+            Width: =Parent.Width-28
+            X: =14
+            Y: =144
+
+      - btnCLRailPhases:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: =Set(varCLRailShowPhases,!Coalesce(varCLRailShowPhases,true))
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: =If(Coalesce(varCLRailShowPhases,true),"Ocultar fases","Mostrar fases")
+            Width: =Parent.Width-28
+            X: =14
+            Y: =192
+
+      - lblCLRailOutputsTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Outputs"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =252
+
+      - lblCLRailSelectedId:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedStageIdOut · " & Coalesce(cmpCLRail.SelectedStageIdOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =282
+
+      - lblCLRailSelectedScreen:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedScreenKeyOut · " & Coalesce(cmpCLRail.SelectedScreenKeyOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =316
+
+      - lblCLRailActive:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="ActiveStageId · " & Coalesce(varCLRailActiveStage,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =350
+
+      - lblCLRailDensityState:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Density · " & If(Coalesce(varCLRailCompact,false),"Compact","Comfortable")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =384
+
+      - lblCLRailGate:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: |-
+              ="Gate · Definition → Instance → Contract → Visual QA → Save/Reopen"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =446
