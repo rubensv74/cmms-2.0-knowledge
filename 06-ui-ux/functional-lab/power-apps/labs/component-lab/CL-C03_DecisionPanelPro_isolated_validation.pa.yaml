@@ -1,0 +1,334 @@
+# BLOCK CL-C03 — DecisionPanelPro isolated validation harness
+# TYPE: C — Component validation harness
+# ACTION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: CL-S01 STRUCTURE FROZEN + COLOR FOUNDATION APPROVED + cmp_FL_DecisionPanelPro definition accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, scr_DesignSystemLab, cmp_FL_TreePro, cmp_FL_ProcessRailPro, Functional Lab screens, DecisionPanelPro public contract
+# PURPOSE: validate system result, system recommendation, human decision, override semantics, confirm/override events and disabled confirm state
+# COLOR: UseHostTheme=false; safe fallback only; no Theme redesign
+# VALIDATION: load fixture; render; confirm recommendation; reset; override recommendation; toggle CanConfirm; event output; no black surfaces; no clipping
+# EXPECTED STATUS AFTER PASS: cmp_FL_DecisionPanelPro -> READY_FOR_INTEGRATION candidate
+#
+# PRECONDITION — COMPONENT DEFINITION
+# Update the EXISTING cmp_FL_DecisionPanelPro definition in situ from:
+# power-apps/components/cmp_FL_DecisionPanelPro.pa.yaml
+# Do NOT add a second component identity.
+# Save and confirm Studio accepts the definition before pasting this harness.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children replace ONLY:
+# 1) ph_ComponentUnderTest
+# 2) ph_TestControls
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(700,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - lblCLDecisionTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="cmp_FL_DecisionPanelPro · isolated validation"
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =14
+
+      - lblCLDecisionHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Caso P-101 · recomendación RCM separada de la autoridad humana"
+            Width: =Parent.Width-32
+            Wrap: =true
+            X: =16
+            Y: =44
+
+      - cmpCLDecision:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_DecisionPanelPro
+          Properties:
+            CanConfirm: =Coalesce(varCLDecisionCanConfirm,true)
+            CanOverride: =true
+            ConfirmLabel: ="Confirmar recomendación"
+            ContextText: ="P-101 · modo de fallo asociado a degradación de rodamientos y evidencia de condición disponible."
+            DecisionReason: =Coalesce(varCLDecisionReason,"")
+            DecisionState: =If(Coalesce(varCLDecisionConfirmed,false),"confirmed","pending")
+            Height: =214
+            HumanDecisionValue: =Coalesce(varCLDecisionHumanValue,"")
+            IsOverride: =Coalesce(varCLDecisionOverride,false)
+            OnConfirmDecision: |-
+              =
+              Set(varCLDecisionConfirmed,true);
+              Set(varCLDecisionHumanValue,"Mantenimiento por condición");
+              Set(varCLDecisionReason,"Confirmada tras revisar criticidad, detectabilidad y evidencia de condición");
+              Set(varCLDecisionOverride,false);
+              Set(varCLDecisionLastEvent,"CONFIRM")
+            OnOverrideDecision: |-
+              =
+              Set(varCLDecisionConfirmed,true);
+              Set(varCLDecisionHumanValue,"Preventivo calendarizado");
+              Set(varCLDecisionReason,"Override justificado por indisponibilidad temporal de instrumentación online");
+              Set(varCLDecisionOverride,true);
+              Set(varCLDecisionLastEvent,"OVERRIDE")
+            OverrideLabel: ="Modificar decisión"
+            RecommendationExplanation: ="Seguimiento de vibración y temperatura con tendencia."
+            RecommendationLabel: ="Recomendación"
+            RecommendationValue: ="Mantenimiento por condición"
+            RequiredRole: ="Ingeniería de Fiabilidad"
+            ShowDecision: =true
+            ShowRecommendation: =true
+            ShowSystemResult: =true
+            SystemResultLabel: ="Resultado lógico RCM"
+            SystemResultValue: ="Tarea aplicable"
+            Title: ="Decisión de estrategia · P-101"
+            UseHostTheme: =false
+            Width: =Min(620,Parent.Width-32)
+            X: =16
+            Y: =88
+
+      - lblCLDecisionExpectedTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Semántica esperada"
+            Width: =Parent.Width-64
+            X: =16
+            Y: =330
+
+      - lblCLDecisionExpected:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="Sistema · resultado calculado" & Char(10) &
+              "Recomendación · propuesta del sistema" & Char(10) &
+              "Decisión humana · autoridad formal" & Char(10) &
+              "Override · decisión humana distinta y justificada"
+            Width: =Parent.Width-64
+            Wrap: =true
+            X: =16
+            Y: =360
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLDecisionTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Decision Panel · smoke test"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLDecisionTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Confirma, restablece, prueba override y deshabilita la confirmación."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLDecisionLoad:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =42
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              Set(varCLDecisionConfirmed,false);
+              Set(varCLDecisionHumanValue,"");
+              Set(varCLDecisionReason,"");
+              Set(varCLDecisionOverride,false);
+              Set(varCLDecisionCanConfirm,true);
+              Set(varCLDecisionLastEvent,"READY")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Cargar fixture"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =104
+
+      - btnCLDecisionReset:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLDecisionConfirmed,false);
+              Set(varCLDecisionHumanValue,"");
+              Set(varCLDecisionReason,"");
+              Set(varCLDecisionOverride,false);
+              Set(varCLDecisionLastEvent,"RESET")
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Restablecer decisión"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =154
+
+      - btnCLDecisionConfirmState:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: =Set(varCLDecisionCanConfirm,!Coalesce(varCLDecisionCanConfirm,true))
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: =If(Coalesce(varCLDecisionCanConfirm,true),"Deshabilitar confirmar","Habilitar confirmar")
+            Width: =Parent.Width-28
+            X: =14
+            Y: =202
+
+      - lblCLDecisionStateTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Estado del harness"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =262
+
+      - lblCLDecisionLastEvent:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Último evento · " & Coalesce(varCLDecisionLastEvent,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =292
+
+      - lblCLDecisionHumanValue:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Decisión · " & Coalesce(varCLDecisionHumanValue,"Pendiente")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =326
+
+      - lblCLDecisionOverrideState:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =If(Coalesce(varCLDecisionOverride,false),ColorValue("#B45309"),ColorValue("#475569"))
+            FontWeight: =If(Coalesce(varCLDecisionOverride,false),FontWeight.Semibold,FontWeight.Normal)
+            Size: =12
+            Text: ="Override · " & If(Coalesce(varCLDecisionOverride,false),"Sí","No")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =374
+
+      - lblCLDecisionConfirmState:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Confirmar · " & If(Coalesce(varCLDecisionCanConfirm,true),"Habilitado","Deshabilitado")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =408
+
+      - lblCLDecisionGate:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: |-
+              ="Gate · Definition → Instance → Contract → Events → Visual QA → Save/Reopen"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =470
