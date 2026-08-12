@@ -330,7 +330,8 @@
             AutoHeight: =true
             Color: =ColorValue("#64748B")
             Size: =11
-            Text: ="Gate: Definition → Instance → Contract → Visual QA → Save/Reopen"
+            Text: |-
+              ="Gate: Definition → Instance → Contract → Visual QA → Save/Reopen"
             Width: =Parent.Width-28
             Wrap: =true
             X: =14
