@@ -1,0 +1,164 @@
+# BLOCK DS-C03 — Interaction states
+# TYPE: C — Component/content
+# OPERATION: REPLACE CONTROL
+# TARGET: ph_InteractionStates
+# PARENT/ANCHOR: conDSLabBody
+# DEPENDS ON: DS-S01 STRUCTURE FROZEN + DS-C01 PASS + DS-C02 PASS
+# TOUCHES: ph_InteractionStates only
+# DO NOT MODIFY: ph_TokenRoles, ph_Text, ph_ClassicControls, ph_ModernControls, ph_DataViz, ph_Status, conDSLabBody geometry, header, any Functional Lab screen/component
+# PURPOSE: validate default, selected, disabled, hover, pressed and native focus rendering using the candidate semantic roles
+# GEOMETRY: placeholder X/Y/Width/Height contract preserved exactly
+# COLOR STATUS BEFORE: PENDING
+# VALIDATION: static states render; hover/pressed interaction uses PrimaryHover/PrimarySelected; ModernTextInput accepts focus without black/unexpected surface; no clipping; geometry unchanged
+# EXPECTED STATUS AFTER PASS: DS-C03 VISUAL_APPROVED / COLOR still PENDING until DS-C04 completes
+#
+# PASTE INSTRUCTION:
+# Inside conDSLabBody.Children, replace ONLY the complete '- ph_InteractionStates:' block.
+
+- ph_InteractionStates:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =ph_ClassicControls.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =ph_ClassicControls.Width
+      X: =ph_ModernControls.X+ph_ModernControls.Width+12
+      Y: =ph_ClassicControls.Y
+
+    Children:
+      - lblDSInteractionTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =15
+            Text: ="Interaction states · DS-C03"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =12
+
+      - lblDSInteractionPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Default · Selected · Disabled · Hover/Pressed · Focus"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =38
+
+      - btnDSStateDefault:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =32
+            HoverFill: =ColorValue("#F8FAFC")
+            PressedFill: =ColorValue("#E2E8F0")
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Default"
+            Width: =(Parent.Width-38)/2
+            X: =14
+            Y: =62
+
+      - btnDSStateSelected:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#BFDBFE")
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Color: =ColorValue("#1D4ED8")
+            Fill: =ColorValue("#EFF6FF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =32
+            HoverFill: =ColorValue("#EFF6FF")
+            PressedFill: =ColorValue("#DBEAFE")
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Selected"
+            Width: =btnDSStateDefault.Width
+            X: =btnDSStateDefault.X+btnDSStateDefault.Width+10
+            Y: =btnDSStateDefault.Y
+
+      - btnDSStateDisabled:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Color: =Color.White
+            DisabledBorderColor: =ColorValue("#CBD5E1")
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =ColorValue("#E2E8F0")
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =32
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Disabled"
+            Width: =btnDSStateDefault.Width
+            X: =14
+            Y: =102
+
+      - btnDSStateInteractive:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =32
+            HoverFill: =ColorValue("#0369A1")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Hover / pulsa"
+            Width: =btnDSStateDefault.Width
+            X: =btnDSStateSelected.X
+            Y: =btnDSStateDisabled.Y
+
+      - txtDSStateFocus:
+          Control: ModernTextInput@1.1.1
+          Properties:
+            Appearance: =Appearance.Outline
+            Default: =""
+            Height: =34
+            Placeholder: ="Haz clic para validar Focus"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =142
