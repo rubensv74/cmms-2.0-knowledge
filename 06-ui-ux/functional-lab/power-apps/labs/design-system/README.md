@@ -11,148 +11,130 @@ Aislar la validación de tokens, color y comportamiento visual de Power Apps ant
 ## Secuencia
 
 ```text
-DS-S01  Skeleton + placeholders
-        ↓ validate / freeze geometry
-DS-C01  Semantic token roles
+DS-S01  Skeleton + placeholders             ✅ STRUCTURE FROZEN
+        ↓
+DS-C01  Semantic token roles                ← ACTIVO
         ↓ validate
-DS-C02  Classic + Modern controls
+DS-C02  Classic + Modern controls            PLANNED
         ↓ validate
-DS-C03  Interaction states
+DS-C03  Interaction states                   PLANNED
         ↓ validate
-DS-C04  Data visualisation roles
+DS-C04  Data visualisation roles             PLANNED
         ↓ validate
-DS-H01  Contrast / accessibility / theme consolidation
+DS-H01  Contrast / accessibility / theme     PLANNED
         ↓
 COLOR FOUNDATION APPROVED
 ```
 
-No generar DS-C01 hasta que DS-S01 haya sido pegado y aprobado en Studio.
+No generar el siguiente bloque hasta validar el actual en Studio.
 
 ---
 
 # DS-S01 — Screen skeleton
 
+**Resultado Studio:** `DS-S01 STRUCTURE FROZEN` confirmado el 2026-08-12.
+
+Quedan congelados X/Y/Width/Height y distribución de:
+
+```text
+conDSLabRoot
+conDSLabHeader
+conDSLabBody
+ph_TokenRoles
+ph_Text
+ph_ClassicControls
+ph_ModernControls
+ph_InteractionStates
+ph_DataViz
+ph_Status
+```
+
+Un bloque C puede sustituir el contenido de su placeholder, pero no rediseñar el slot.
+
+---
+
+# DS-C01 — Semantic Token Roles
+
 ## BLOCK
 
 ```text
-BLOCK DS-S01 — Design System Lab skeleton
-Operation: CREATE / REPLACE SCREEN STRUCTURE
-Target control/property: scr_DesignSystemLab
-Parent/anchor: screen root
-Dependencies: none
-Scope: structural geometry + placeholders only
-Compatibility: GroupContainer@1.5.0 + ModernText@1.0.0; no component dependency
-Expected status: STRUCTURE FROZEN after Studio validation
+BLOCK DS-C01 — Semantic Token Roles
+Operation: REPLACE CONTROL
+Target: ph_TokenRoles
+Parent/anchor: conDSLabBody
+Dependencies: DS-S01 STRUCTURE FROZEN
+Scope: semantic role swatches only
+Expected status after PASS: DS-C01 VISUAL_APPROVED; COLOR remains PENDING
 ```
 
 ## TOUCHES
 
 ```text
-scr_DesignSystemLab only
+ph_TokenRoles only
 ```
 
 ## DO NOT MODIFY
 
 ```text
-scr_FL_Home
-scr_FL_FLH
-scr_FL_Taxonomy
-scr_FL_ADR
-scr_FL_AMEF
-all reusable components
-bootstrap
-navigation
+ph_Text
+ph_ClassicControls
+ph_ModernControls
+ph_InteractionStates
+ph_DataViz
+ph_Status
+conDSLabBody geometry
+header
+all Functional Lab screens
+all reusable Functional Lab components
 ```
 
-## Placeholder contracts
-
-### ph_TokenRoles
+## Roles candidatos a validar
 
 ```text
-Purpose: semantic token swatches and role names
-Geometry: top row, left ~64%
-Future content: DS-C01 token roles
-Expected inputs: none at S01
-Expected outputs/events: none
-Status: STRUCTURAL
+Background            #F6F8FB
+Surface               #FFFFFF
+SurfaceAlt            #F8FAFC
+Border                #E2E8F0
+TextPrimary           #0F172A
+TextSecondary         #64748B
+Primary               #0284C7
+PrimaryHover          #0369A1
+PrimarySelected       #075985
+SelectedBackground    #EFF6FF
+SelectedBorder        #BFDBFE
+SelectedAccent        #2563EB
+SelectedText          #1D4ED8
+Success               #15803D
+Warning               #B45309
+Danger                #B91C1C
 ```
 
-### ph_Text
+Estos valores son **candidatos de Theme**. No se propagan a componentes después de DS-C01; todavía deben superar controles/estados/data visualisation.
+
+## Archivo
+
+`DS-C01_semantic_token_roles.pa.yaml`
+
+El archivo sustituye únicamente el bloque existente `- ph_TokenRoles:` dentro de `conDSLabBody.Children`.
+
+## Validation DS-C01
 
 ```text
-Purpose: typography samples and long-text checks
-Geometry: top row, right ~36%
-Future content: typography / overflow sample set
-Expected inputs: shared typography roles
-Expected outputs/events: none
-Status: STRUCTURAL
-```
-
-### ph_ClassicControls
-
-```text
-Purpose: Classic control rendering
-Geometry: second row, first quarter
-Future content: buttons/inputs/labels
-Status: STRUCTURAL
-```
-
-### ph_ModernControls
-
-```text
-Purpose: Modern control rendering
-Geometry: second row, second quarter
-Future content: Modern text/input/control states
-Status: STRUCTURAL
-```
-
-### ph_InteractionStates
-
-```text
-Purpose: Default/Hover/Pressed/Selected/Disabled/Focus samples
-Geometry: second row, third quarter
-Future content: DS-C03
-Status: STRUCTURAL
-```
-
-### ph_DataViz
-
-```text
-Purpose: chart/data-role palette validation
-Geometry: second row, fourth quarter
-Future content: DS-C04
-Status: STRUCTURAL
-```
-
-### ph_Status
-
-```text
-Purpose: display lab validation state and notes
-Geometry: full-width bottom row
-Future content: gate summary / validation notes
-Status: STRUCTURAL
-```
-
-## Validation DS-S01
-
-Después de pegar:
-
-```text
-TEST 1 — scr_DesignSystemLab carga/renderiza
-TEST 2 — cero error Power Fx bloqueante nuevo
-TEST 3 — siete placeholders visibles y no solapados
-TEST 4 — ninguna pantalla/componente funcional fue modificado
-TEST 5 — geometría legible a 100%; textos >=11; sin clipping
+TEST 1 — Studio acepta y guarda el bloque
+TEST 2 — no aparece error bloqueante nuevo
+TEST 3 — los 16 roles muestran el color esperado, sin negro inesperado
+TEST 4 — nombres y HEX son legibles
+TEST 5 — no hay clipping/solapamiento dentro de ph_TokenRoles
+TEST 6 — X/Y/Width/Height del placeholder no cambian
+TEST 7 — ninguna otra zona del DesignSystemLab cambia
 ```
 
 Si pasa, registrar:
 
 ```text
-scr_DesignSystemLab
-STRUCTURE = FROZEN
-BEHAVIOR = OPEN
+DS-C01 PASS
+DS-C01 VISUAL_APPROVED
 COLOR = PENDING
-STATUS = IN_CONSTRUCTION
 ```
 
-Solo entonces se redacta/pega `DS-C01`.
+Solo entonces se genera `DS-C02`.
