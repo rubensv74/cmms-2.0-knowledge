@@ -1,7 +1,7 @@
 # Functional Lab — Power Apps Source Code Compatibility
 
 **Estado:** activo antes de cualquier YAML  
-**Actualizado:** 2026-08-11
+**Actualizado:** 2026-08-12
 
 ## Autoridad de construcción
 
@@ -34,7 +34,7 @@ Antes de cualquier `.pa.yaml`:
 5. reutilizar patrones positivos de PULSE/Functional Lab cuando existan;
 6. separar fuente, definición, instancia, contrato y QA visual;
 7. para nuevas `CustomProperties`, usar contrato completo por `PropertyKind`;
-8. convertir fórmulas inline con literales `: ` a bloque YAML `|-`;
+8. convertir a bloque YAML `|-` cualquier fórmula inline que contenga secuencias sensibles de YAML como literal `: ` o ` #` dentro de un string Power Fx;
 9. evitar `GroupContainer` con `Children` dentro de plantillas Gallery salvo contraejemplo validado;
 10. no usar SVG inline como fallback visual;
 11. no declarar `INSTANCE_SAFE` sin prueba real en Studio;
@@ -111,7 +111,8 @@ El color puede permanecer `PENDING` mientras estructura, comportamiento y contra
 | CanvasComponent solo en Git | PA2301 | instalar/validar componente antes de pantalla consumidora |
 | ModernText con altura rígida | clipping/mini-scroll | `AutoHeight=true` por defecto |
 | Input CustomProperty reducido | contrato inestable | usar `PropertyKind + DisplayName + Description + DataType + Default` |
-| Power Fx inline con literal `: ` | PA1001 | bloque YAML `|-` |
+| Power Fx inline con literal `: ` | PA1001 / scalar ambiguo | bloque YAML `|-` |
+| Power Fx inline con string que contiene ` #` | YAML trunca desde `#` como comentario; Studio recibe fórmula incompleta | usar bloque YAML `|-` o construir `#` mediante Power Fx sin secuencia YAML sensible |
 | `Classic/TextInput@2.3.2` | patrón positivo | reutilizable para edición |
 | GroupContainer anidado en Gallery | PA1001 `Expected Scalar` | controles planos dentro del template |
 | SVG inline | render poco fiable | no usar como fallback |
@@ -119,6 +120,29 @@ El color puede permanecer `PENDING` mientras estructura, comportamiento y contra
 | grafo parcial + `Navigate(scr_FL_X)` | `Name isn't valid` mientras `scr_FL_X` no exista | crear identidad faltante antes de diagnosticar fórmula |
 | rollback por archivo histórico | reintroduce defectos posteriores ya corregidos | usar rama/ensamblaje coherente; histórico solo forense |
 | Color input afectado por FL-SC-004 | render visual inesperado en algunas instancias | validar rol/token en DesignSystemLab antes de propagar |
+
+### Evidencia YAML-HASH-001 — DS-C04
+
+Se observó en Studio que:
+
+```text
+Text: ="Chart01 · #2563EB"
+```
+
+es un scalar YAML inline no entrecomillado a nivel YAML. La secuencia ` #` inicia un comentario YAML y el valor efectivo queda truncado antes de cerrar el string Power Fx. Studio muestra una fórmula equivalente a:
+
+```text
+="Chart01 ·
+```
+
+La forma segura es:
+
+```text
+Text: |-
+  ="Chart01 · #2563EB"
+```
+
+Esta regla se aplica a cualquier propiedad Power Fx inline, no solo a `Text`.
 
 ## Referencia positiva primero
 
