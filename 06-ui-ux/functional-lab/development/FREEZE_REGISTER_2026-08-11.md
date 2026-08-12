@@ -35,7 +35,7 @@ COLOR           PENDING | APPROVED
 |---|---|---:|---:|---:|---|
 | `cmp_FL_SidebarPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | PENDING | no tocar salvo fallo real |
 | `cmp_FL_PageHeaderPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | PENDING | no tocar salvo fallo real |
-| `cmp_FL_TreePro` | `FUNCTIONAL` | FROZEN RC3 | OPEN | PENDING | isolated Studio gate |
+| `cmp_FL_TreePro` | `FUNCTIONAL` | FROZEN RC3 | OPEN | PENDING | isolated Studio gate; ModernTextInput ya probado en DS-C02 |
 | `cmp_FL_ProcessRailPro` | `FUNCTIONAL` | FROZEN source | OPEN | PENDING | isolated Studio gate |
 | `cmp_FL_DecisionPanelPro` | `FUNCTIONAL` | FROZEN source | OPEN | PENDING | isolated Studio gate |
 | `cmp_FL_GatePanelPro` | `FUNCTIONAL` | FROZEN RC2 | OPEN | PENDING | isolated Studio gate |
@@ -107,9 +107,9 @@ SOURCE_VALID
 | Bloque / pantalla | Estado | Structure | Behavior | Color | Evidencia / siguiente paso |
 |---|---|---:|---:|---:|---|
 | `scr_DesignSystemLab` / `DS-S01` | `IN_CONSTRUCTION` | **FROZEN** | OPEN | PENDING | `DS-S01 STRUCTURE FROZEN` confirmado en Studio el 2026-08-12 |
-| `DS-C01 Semantic Token Roles` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | PENDING | `DS-C01 PASS` confirmado visualmente en Studio el 2026-08-12; `ph_TokenRoles` congelado |
-| `DS-C02 Classic + Modern controls` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | PENDING | sustituir solo `ph_ClassicControls` + `ph_ModernControls`; Studio validation pendiente |
-| `DS-C03 Interaction states` | `PLANNED` | FROZEN | OPEN | PENDING | no generar antes de DS-C02 PASS |
+| `DS-C01 Semantic Token Roles` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | PENDING | `DS-C01 PASS`; `ph_TokenRoles` congelado |
+| `DS-C02 Classic + Modern controls` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | PENDING | `DS-C02 PASS`; Classic/Button, Classic/TextInput, ModernText y ModernTextInput renderizados correctamente |
+| `DS-C03 Interaction states` | `IN_CONSTRUCTION` | inherits FROZEN geometry | OPEN | PENDING | sustituir solo `ph_InteractionStates`; validar Default/Selected/Disabled/Hover/Pressed/Focus |
 | `DS-C04 Data visualisation` | `PLANNED` | FROZEN | OPEN | PENDING | no generar antes de DS-C03 PASS |
 
 ## Geometry freeze de DS-S01
@@ -131,16 +131,20 @@ ph_Status geometry
 
 Un bloque C puede sustituir contenido de su placeholder, pero no alterar X/Y/Width/Height del slot.
 
-## Freeze de DS-C01
-
-Desde `DS-C01 PASS` queda protegido:
+## Freeze de bloques aprobados del laboratorio
 
 ```text
-ph_TokenRoles content
-16 semantic role candidates
+DS-C01 PASS
+→ ph_TokenRoles content FROZEN
+→ 16 semantic role candidates FROZEN hasta FIX explícito
+
+DS-C02 PASS
+→ ph_ClassicControls content FROZEN
+→ ph_ModernControls content FROZEN
+→ ModernTextInput@1.1.1 queda demostrado como renderizable en el entorno actual
 ```
 
-Cualquier cambio posterior requiere `DS-C01-FIX` explícito.
+Cualquier modificación posterior exige un `FIX` explícito del bloque correspondiente.
 
 ---
 
@@ -157,6 +161,7 @@ TAXONOMÍA PASS
 ADR PASS
 DS-S01 STRUCTURE FROZEN
 DS-C01 PASS
+DS-C02 PASS
 ```
 
 ## Regla de actualización
