@@ -1,0 +1,337 @@
+# BLOCK CL-C01 — TreePro isolated validation harness
+# TYPE: C — Component validation harness
+# OPERATION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: CL-S01 STRUCTURE FROZEN + cmp_FL_TreePro RC3 definition accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, scr_DesignSystemLab, FLH, Taxonomy, ADR, any other Functional Lab screen, TreePro public contract
+# PURPOSE: validate one real cmp_FL_TreePro instance, its search/selection/toggle outputs and visual QA before revalidating frozen Asset screens
+# COLOR: use component current safe fallback; no Theme redesign in this block
+# VALIDATION: load fixture; render; search; select; expand/collapse; outputs; save/reopen; no black surfaces; no clipping
+# EXPECTED STATUS AFTER PASS: cmp_FL_TreePro -> READY_FOR_INTEGRATION candidate
+#
+# PRECONDITION A — COMPONENT DEFINITION
+# Update the EXISTING cmp_FL_TreePro definition in situ from the canonical RC3 source:
+# power-apps/components/cmp_FL_TreePro.pa.yaml
+# Do NOT add a second component copy.
+# Save and confirm Studio accepts the definition before pasting this harness.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children:
+# 1) replace ONLY the complete ph_ComponentUnderTest block with the block below;
+# 2) replace ONLY the complete ph_TestControls block with the block below.
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(700,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - lblCLTreeTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="cmp_FL_TreePro · isolated validation"
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =14
+
+      - lblCLTreeHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Carga el fixture, prueba búsqueda, selección y expand/collapse. P-101 debe permanecer resaltado."
+            Width: =Parent.Width-32
+            Wrap: =true
+            X: =16
+            Y: =44
+
+      - cmpCLTree:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_TreePro
+          Properties:
+            AllowSearch: =true
+            CompactMode: =true
+            DeepIndentSize: =9
+            DepthCompressionStart: =6
+            Height: =Min(560,Parent.Height-104)
+            HighlightBadgeText: ="ACTIVO"
+            HighlightNodeId: ="CL-P101"
+            IndentSize: =16
+            Items: =colCLTreeNodes
+            MaxVisualDepth: =8
+            OnSelectNode: =Set(varCLTreeSelectedNode,cmpCLTree.SelectedNodeIdOut)
+            OnToggleNode: |-
+              =
+              With(
+                  {
+                      _nodeId:cmpCLTree.ToggleNodeIdOut,
+                      _target:cmpCLTree.ToggleTargetExpandedOut,
+                      _sortPath:LookUp(colCLTreeNodes,RowNodeId=cmpCLTree.ToggleNodeIdOut,RowSortPath)
+                  },
+                  Patch(
+                      colCLTreeNodes,
+                      LookUp(colCLTreeNodes,RowNodeId=_nodeId),
+                      {RowIsExpanded:_target}
+                  );
+                  If(
+                      _target,
+                      UpdateIf(colCLTreeNodes,RowParentNodeId=_nodeId,{RowIsVisible:true}),
+                      UpdateIf(
+                          colCLTreeNodes,
+                          StartsWith(RowSortPath,_sortPath & "/"),
+                          {RowIsVisible:false,RowIsExpanded:false}
+                      )
+                  )
+              )
+            SearchText: =""
+            SelectedNodeId: =Coalesce(varCLTreeSelectedNode,"CL-P101")
+            ShowBreadcrumb: =true
+            ShowDescriptions: =false
+            ShowHighlightBadge: =true
+            ShowIcons: =true
+            ShowLines: =true
+            Width: =Min(620,Parent.Width-32)
+            X: =16
+            Y: =88
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLTreeTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="TreePro · smoke test"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLTreeTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Fixture controlado para validar contrato público e instancia real."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLTreeLoad:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =42
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              ClearCollect(
+                  colCLTreeNodes,
+                  {RowNodeId:"CL-ROOT",RowParentNodeId:"",RowLevel:1,RowLabel:"Planta DEMO",RowDescription:"Raíz del fixture",RowSortPath:"001",RowPath:"Planta DEMO",RowNodeType:"plant",RowIconKey:"home",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+                  {RowNodeId:"CL-AREA",RowParentNodeId:"CL-ROOT",RowLevel:2,RowLabel:"Área de servicios",RowDescription:"",RowSortPath:"001/001",RowPath:"Planta DEMO > Área de servicios",RowNodeType:"area",RowIconKey:"folder",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+                  {RowNodeId:"CL-SYS",RowParentNodeId:"CL-AREA",RowLevel:3,RowLabel:"Sistema de refrigeración",RowDescription:"",RowSortPath:"001/001/001",RowPath:"Planta DEMO > Área de servicios > Sistema de refrigeración",RowNodeType:"system",RowIconKey:"settings",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+                  {RowNodeId:"CL-TRAIN",RowParentNodeId:"CL-SYS",RowLevel:4,RowLabel:"Tren de bombeo P-100",RowDescription:"",RowSortPath:"001/001/001/001",RowPath:"... > Sistema de refrigeración > Tren de bombeo P-100",RowNodeType:"equipment",RowIconKey:"settings",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+                  {RowNodeId:"CL-SET",RowParentNodeId:"CL-TRAIN",RowLevel:5,RowLabel:"Conjunto bomba-motor",RowDescription:"",RowSortPath:"001/001/001/001/001",RowPath:"... > Tren de bombeo P-100 > Conjunto bomba-motor",RowNodeType:"equipment",RowIconKey:"settings",RowHasChildren:true,RowIsExpanded:true,RowIsVisible:true},
+                  {RowNodeId:"CL-P101",RowParentNodeId:"CL-SET",RowLevel:6,RowLabel:"P-101 · Bomba centrífuga",RowDescription:"Activo principal",RowSortPath:"001/001/001/001/001/001",RowPath:"... > Conjunto bomba-motor > P-101",RowNodeType:"tag",RowIconKey:"flag",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true},
+                  {RowNodeId:"CL-P102",RowParentNodeId:"CL-SET",RowLevel:6,RowLabel:"P-102 · Bomba de reserva",RowDescription:"Reserva",RowSortPath:"001/001/001/001/001/002",RowPath:"... > Conjunto bomba-motor > P-102",RowNodeType:"tag",RowIconKey:"document",RowHasChildren:false,RowIsExpanded:false,RowIsVisible:true}
+              );
+              Set(varCLTreeSelectedNode,"CL-P101")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Cargar fixture"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =94
+
+      - btnCLTreeReset:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLTreeSelectedNode,"CL-P101");
+              UpdateIf(colCLTreeNodes,true,{RowIsVisible:true,RowIsExpanded:true})
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Restablecer"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =144
+
+      - lblCLTreeOutputsTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Outputs"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =202
+
+      - lblCLTreeSelectedId:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedNodeIdOut · " & Coalesce(cmpCLTree.SelectedNodeIdOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =230
+
+      - lblCLTreeSelectedLabel:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedLabelOut · " & Coalesce(cmpCLTree.SelectedLabelOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =264
+
+      - lblCLTreeSelectedLevel:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedLevelOut · " & Text(cmpCLTree.SelectedLevelOut)
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =298
+
+      - lblCLTreeSelectedParent:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedParentIdOut · " & Coalesce(cmpCLTree.SelectedParentIdOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =332
+
+      - lblCLTreeSelectedPath:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="SelectedPathOut · " & Coalesce(cmpCLTree.SelectedPathOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =366
+
+      - lblCLTreeToggleTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Toggle contract"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =430
+
+      - lblCLTreeToggleNode:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="ToggleNodeIdOut · " & Coalesce(cmpCLTree.ToggleNodeIdOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =458
+
+      - lblCLTreeToggleTarget:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="ToggleTargetExpandedOut · " & If(cmpCLTree.ToggleTargetExpandedOut,"true","false")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =492
+
+      - lblCLTreeGate:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Gate: Definition → Instance → Contract → Visual QA → Save/Reopen"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =548
