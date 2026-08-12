@@ -35,7 +35,7 @@ COLOR           PENDING | APPROVED
 |---|---|---:|---:|---:|---|
 | `cmp_FL_SidebarPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
 | `cmp_FL_PageHeaderPro` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation | no tocar salvo fallo real |
-| `cmp_FL_TreePro` | `FUNCTIONAL` | FROZEN RC3 | OPEN | APPROVED foundation / integration pending | isolated Studio gate; ModernTextInput ya probado en DS-C02 |
+| `cmp_FL_TreePro` | `FUNCTIONAL` | FROZEN RC3 | OPEN | APPROVED foundation / integration pending | **CL-C01 isolated Studio gate** |
 | `cmp_FL_ProcessRailPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 | `cmp_FL_DecisionPanelPro` | `FUNCTIONAL` | FROZEN source | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
 | `cmp_FL_GatePanelPro` | `FUNCTIONAL` | FROZEN RC2 | OPEN | APPROVED foundation / integration pending | isolated Studio gate |
@@ -61,9 +61,9 @@ SOURCE_VALID
 | Pantalla | Estado | Structure | Behavior | Color | Restricción |
 |---|---|---:|---:|---:|---|
 | `scr_FL_Home` | `FUNCTIONAL_FROZEN` | FROZEN | FROZEN | APPROVED foundation / theme integration pending | no reconstruir bootstrap/shell/cards/navigation |
-| `scr_FL_FLH` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo integrar Tree validado |
-| `scr_FL_Taxonomy` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo integrar Tree validado |
-| `scr_FL_ADR` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo integrar Tree validado |
+| `scr_FL_FLH` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo revalidar después de CL-C01 PASS |
+| `scr_FL_Taxonomy` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo revalidar después de CL-C01 PASS |
+| `scr_FL_ADR` | `FUNCTIONAL_FROZEN` condicionado a Tree RC3 | FROZEN | FROZEN intent | APPROVED foundation / theme integration pending | solo revalidar después de CL-C01 PASS |
 | `scr_FL_AssetCriticality` | `FUNCTIONAL` | FROZEN source | OPEN until smoke | APPROVED foundation / theme integration pending | criticidad ≠ riesgo AMEF |
 | `scr_FL_Asset360` | `FUNCTIONAL` | FROZEN source | OPEN until smoke | APPROVED foundation / theme integration pending | master data read-only |
 
@@ -107,14 +107,14 @@ SOURCE_VALID
 | Bloque / pantalla | Estado | Structure | Behavior | Color | Evidencia |
 |---|---|---:|---:|---:|---|
 | `scr_DesignSystemLab` / `DS-S01` | `VISUAL_APPROVED` | **FROZEN** | FROZEN lab purpose | **APPROVED** | `DS-S01 STRUCTURE FROZEN` + DS-C01…04 cerrados en Studio |
-| `DS-C01 Semantic Token Roles` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | PASS inicial + `DS-C01-FIX-01` validado en ejecución posterior; 16 roles renderizan correctamente |
+| `DS-C01 Semantic Token Roles` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | PASS + responsive FIX validado |
 | `DS-C02 Classic + Modern controls` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | Classic/Button, Classic/TextInput, ModernText y ModernTextInput correctos |
-| `DS-C03 Interaction states` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | Default/Selected/Disabled/Hover-Pressed/Focus incorporados sin regresión del lab |
-| `DS-C04 Data visualisation` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | `DS-C04-FIX PASS`; Chart01…06 renderizan y selección se mantiene separada de data palette |
+| `DS-C03 Interaction states` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | Default/Selected/Disabled/Hover-Pressed/Focus correctos |
+| `DS-C04 Data visualisation` | `VISUAL_APPROVED` | inherits FROZEN geometry | FROZEN content | **APPROVED** | `DS-C04-FIX PASS`; Chart01…06 correctos |
 
 ## COLOR FOUNDATION APPROVED
 
-Desde 2026-08-12 queda aprobado como foundation el lenguaje semántico validado en Studio:
+Desde 2026-08-12 queda aprobado el lenguaje semántico:
 
 ```text
 Background
@@ -136,25 +136,38 @@ Danger
 Chart01…Chart06
 ```
 
-Esto no significa que todas las pantallas ya hayan integrado el Theme. Significa que **los roles/tokens ya no se rediseñan desde componentes individuales**.
+Los roles/tokens no se rediseñan desde componentes individuales. Cualquier cambio futuro requiere un bloque Theme/DesignSystem explícito y nueva validación en `scr_DesignSystemLab`.
 
-Cualquier cambio futuro de un token aprobado requiere un bloque Theme/DesignSystem explícito y nueva validación en `scr_DesignSystemLab`.
+---
 
-## Geometry freeze de DS-S01
+# Component Lab
+
+| Bloque / pantalla | Estado | Structure | Behavior | Color | Evidencia / siguiente paso |
+|---|---|---:|---:|---:|---|
+| `scr_ComponentLab` / `CL-S01` | `IN_CONSTRUCTION` | **FROZEN** | OPEN | APPROVED foundation | **`CL-S01 STRUCTURE FROZEN` confirmado en Studio 2026-08-12** |
+| `CL-C01 TreePro` | `PLANNED` | inherits FROZEN geometry | OPEN | APPROVED foundation | validar RC3: definition → instance → contract → visual QA → save/reopen |
+
+## Geometry freeze de CL-S01
 
 Quedan protegidos:
 
 ```text
-conDSLabRoot
-conDSLabHeader
-conDSLabBody
-ph_TokenRoles geometry
-ph_Text geometry
-ph_ClassicControls geometry
-ph_ModernControls geometry
-ph_InteractionStates geometry
-ph_DataViz geometry
-ph_Status geometry
+conComponentLabRoot
+conComponentLabHeader
+conComponentLabBody
+ph_ComponentUnderTest geometry
+ph_TestControls geometry
+```
+
+Los bloques `CL-Cxx` pueden sustituir el **contenido** de los dos placeholders para probar un único componente, pero no modificar X/Y/Width/Height de los slots.
+
+## Regla de aislamiento
+
+```text
+un componente bajo prueba por vez
+→ limpiar/reemplazar el harness anterior
+→ no acumular componentes
+→ no editar pantallas funcionales durante el gate aislado
 ```
 
 ---
@@ -176,6 +189,7 @@ DS-C02 PASS
 DS-C03 PASS
 DS-C04-FIX PASS
 COLOR FOUNDATION APPROVED
+CL-S01 STRUCTURE FROZEN
 ```
 
 ## Regla de actualización
