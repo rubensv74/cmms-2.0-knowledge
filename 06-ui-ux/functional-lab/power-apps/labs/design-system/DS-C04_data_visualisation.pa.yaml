@@ -1,0 +1,240 @@
+# BLOCK DS-C04 — Data visualisation roles
+# TYPE: C — Component/content
+# OPERATION: REPLACE PLACEHOLDER CONTENT BLOCK
+# TARGET: ph_DataViz
+# PARENT/ANCHOR: conDSLabBody
+# DEPENDS ON: DS-S01 STRUCTURE FROZEN + DS-C01 PASS/FIX + DS-C02 PASS + DS-C03 PASS
+# TOUCHES: ph_DataViz only
+# DO NOT MODIFY: ph_TokenRoles, ph_Text, ph_ClassicControls, ph_ModernControls, ph_InteractionStates, ph_Status, conDSLabBody geometry, header, any Functional Lab screen/component
+# PURPOSE: validate a six-role categorical data palette in Studio and keep data-series color semantically separate from selection/status color
+# GEOMETRY: placeholder X/Y/Width/Height contract preserved exactly
+# COLOR STATUS BEFORE: PENDING
+# VALIDATION: Chart01…Chart06 render distinctly; labels legible; no unexpected black surfaces; selected example preserves its series color; geometry unchanged
+# EXPECTED STATUS AFTER PASS: DS-C04 VISUAL_APPROVED / candidate COLOR FOUNDATION APPROVED after full DesignSystemLab smoke
+#
+# PASTE INSTRUCTION:
+# Inside conDSLabBody.Children, replace ONLY the complete block beginning at
+# '- ph_DataViz:' and ending immediately before '- ph_Status:'.
+
+- ph_DataViz:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =ph_ClassicControls.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Parent.Width-ph_InteractionStates.X-ph_InteractionStates.Width-12
+      X: =ph_InteractionStates.X+ph_InteractionStates.Width+12
+      Y: =ph_ClassicControls.Y
+
+    Children:
+      - lblDSDataVizTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =15
+            Text: ="Data visualisation · DS-C04"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =12
+
+      - lblDSDataVizPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Chart01…Chart06 · series, no estados"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =38
+
+      - recDSChart01:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#2563EB")
+            BorderThickness: =1
+            Fill: =ColorValue("#2563EB")
+            Height: =18
+            Width: =18
+            X: =14
+            Y: =66
+
+      - lblDSChart01:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Chart01 · #2563EB"
+            Width: =(Parent.Width-50)/2
+            Wrap: =false
+            X: =40
+            Y: =64
+
+      - recDSChart02:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#0E7490")
+            BorderThickness: =1
+            Fill: =ColorValue("#0E7490")
+            Height: =18
+            Width: =18
+            X: =Parent.Width*0.52
+            Y: =66
+
+      - lblDSChart02:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Chart02 · #0E7490"
+            Width: =Parent.Width-Self.X-10
+            Wrap: =false
+            X: =recDSChart02.X+26
+            Y: =64
+
+      - recDSChart03:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#7C3AED")
+            BorderThickness: =1
+            Fill: =ColorValue("#7C3AED")
+            Height: =18
+            Width: =18
+            X: =14
+            Y: =96
+
+      - lblDSChart03:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Chart03 · #7C3AED"
+            Width: =(Parent.Width-50)/2
+            Wrap: =false
+            X: =40
+            Y: =94
+
+      - recDSChart04:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#C2410C")
+            BorderThickness: =1
+            Fill: =ColorValue("#C2410C")
+            Height: =18
+            Width: =18
+            X: =Parent.Width*0.52
+            Y: =96
+
+      - lblDSChart04:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Chart04 · #C2410C"
+            Width: =Parent.Width-Self.X-10
+            Wrap: =false
+            X: =recDSChart04.X+26
+            Y: =94
+
+      - recDSChart05:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#BE185D")
+            BorderThickness: =1
+            Fill: =ColorValue("#BE185D")
+            Height: =18
+            Width: =18
+            X: =14
+            Y: =126
+
+      - lblDSChart05:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Chart05 · #BE185D"
+            Width: =(Parent.Width-50)/2
+            Wrap: =false
+            X: =40
+            Y: =124
+
+      - recDSChart06:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =ColorValue("#15803D")
+            BorderThickness: =1
+            Fill: =ColorValue("#15803D")
+            Height: =18
+            Width: =18
+            X: =Parent.Width*0.52
+            Y: =126
+
+      - lblDSChart06:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =11
+            Text: ="Chart06 · #15803D"
+            Width: =Parent.Width-Self.X-10
+            Wrap: =false
+            X: =recDSChart06.X+26
+            Y: =124
+
+      - conDSDataVizSelectedExample:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#BFDBFE")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#EFF6FF")
+            Height: =36
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Width: =Parent.Width-28
+            X: =14
+            Y: =156
+
+          Children:
+            - recDSDataVizSelectedSeries:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =ColorValue("#7C3AED")
+                  BorderThickness: =1
+                  Fill: =ColorValue("#7C3AED")
+                  Height: =18
+                  Width: =54
+                  X: =10
+                  Y: =9
+
+            - lblDSDataVizSelectedExample:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#1D4ED8")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="Seleccionado · conserva Chart03"
+                  Width: =Parent.Width-84
+                  Wrap: =false
+                  X: =74
+                  Y: =8

@@ -15,7 +15,82 @@ CMMS 2.0 Functional Lab se diseñará utilizando como referencia obligatoria el 
 
 Como fuentes de implementación probada se podrán consultar además los documentos y componentes activos de `rubensv74/app_pulse`.
 
-## 2. Regla de diseño
+## 2. Idioma y localización
+
+El idioma funcional y visual por defecto del CMMS 2.0 Functional Lab es **español (`es-ES`)**.
+
+Reglas:
+
+- todo texto visible para el usuario debe estar en español;
+- títulos, subtítulos, navegación, estados, botones, ayudas, mensajes, tooltips, empty states y ejemplos deben redactarse en español;
+- los datos ficticios del caso P-101 se presentarán en español cuando formen parte de la experiencia visible;
+- la documentación funcional del Functional Lab se redactará en español por defecto;
+- los identificadores internos de Power Apps, claves técnicas, nombres de controles, propiedades públicas y claves de navegación pueden conservarse en inglés cuando ya sean estables y su traducción no aporte valor funcional;
+- mantener un identificador interno en inglés nunca justifica mostrar su texto visible en inglés;
+- cualquier término técnico que deba mantenerse por reconocimiento de industria debe acompañarse de una representación comprensible en español cuando sea necesario.
+
+Ejemplo:
+
+```text
+Key interno     Context
+Texto visible   Caso y contexto
+
+Key interno     Overview
+Texto visible   Resumen
+```
+
+Esta regla se aplica desde Foundation y debe comprobarse en el QA visual de cada componente y pantalla.
+
+### 2.1 Principio future-ready para aplicaciones bilingües
+
+Para futuras aplicaciones, el estándar objetivo será **Español / Inglés con cambio de idioma en runtime**, sin duplicar pantallas ni componentes.
+
+Idiomas iniciales previstos:
+
+```text
+Español  es-ES
+Inglés   en-GB o en-US según contexto del producto
+```
+
+La arquitectura deberá separar los textos visibles de la lógica mediante claves semánticas estables:
+
+```text
+CLAVE SEMÁNTICA
+      ↓
+CATÁLOGO DE TRADUCCIONES
+      ↓
+IDIOMA ACTIVO
+      ↓
+TEXTO VISIBLE
+```
+
+Ejemplo:
+
+```text
+NAV_CONTEXT
+es → Caso y contexto
+en → Case & Context
+
+STATUS_READY_REVIEW
+es → Listo para revisión
+en → Ready for review
+```
+
+El selector de idioma pertenecerá al **App Shell** y afectará a toda la aplicación. No se crearán pantallas duplicadas por idioma.
+
+Además del texto, la localización deberá contemplar:
+
+- formato de fecha y hora;
+- separadores numéricos y decimales;
+- moneda cuando aplique;
+- mensajes con variables y pluralización;
+- mayor longitud de algunos textos entre idiomas;
+- fallback cuando falte una traducción;
+- persistencia de la preferencia de idioma del usuario cuando exista soporte para ello.
+
+Para el Functional Lab actual esta capacidad queda documentada como **future-ready** y no se incorpora al alcance inmediato de F01.
+
+## 3. Regla de diseño
 
 Antes del Bloque 01 de cada pantalla o workspace se deben declarar:
 
@@ -29,24 +104,24 @@ PREMIUM_COMPONENTS
 
 No se empieza por controles. Primero se define el trabajo que debe realizar el usuario y después se selecciona la arquitectura de interacción.
 
-## 3. Arquetipos
+## 4. Arquetipos
 
 No se impone un único arquetipo a toda la aplicación.
 
 El shell global será común, pero cada workspace deberá declarar un arquetipo dominante. Entre los candidatos más probables para el Functional Lab están:
 
-- `Object 360` para contexto de activo/caso;
-- `Operational Review Workspace` para revisión secuencial y toma de decisiones;
-- `Data Explorer` para funciones, fallos, modos, tareas o relaciones cuando el volumen lo requiera;
-- `Workflow Builder` para lógicas de decisión cuando la interacción sea realmente de construcción/configuración de reglas;
-- `Configuration Studio` para catálogos, matrices o reglas gobernadas;
-- `Audit Timeline` para trazabilidad y reconstrucción del razonamiento;
-- `Exception Resolution Queue` para observaciones, bloqueos y excepciones;
-- `Operational Control Tower` solo cuando exista una necesidad real de priorización agregada y drill-down operativo.
+- `Object 360` / `Objeto 360` para contexto de activo/caso;
+- `Operational Review Workspace` / espacio de revisión operativa para revisión secuencial y toma de decisiones;
+- `Data Explorer` / explorador de datos para funciones, fallos, modos, tareas o relaciones cuando el volumen lo requiera;
+- `Workflow Builder` / constructor de flujo para lógicas de decisión cuando la interacción sea realmente de construcción/configuración de reglas;
+- `Configuration Studio` / estudio de configuración para catálogos, matrices o reglas gobernadas;
+- `Audit Timeline` / línea temporal de auditoría para trazabilidad y reconstrucción del razonamiento;
+- `Exception Resolution Queue` / cola de resolución de excepciones para observaciones, bloqueos y excepciones;
+- `Operational Control Tower` / torre de control operativa solo cuando exista una necesidad real de priorización agregada y drill-down operativo.
 
 La selección se validará por workspace. Una etapa funcional no equivale automáticamente a una pantalla.
 
-## 4. Componentes premium
+## 5. Componentes premium
 
 La aplicación debe construirse con una biblioteca de componentes premium reutilizables.
 
@@ -79,7 +154,7 @@ cmp_PieChartPro
 
 No todos deben instalarse. Cada incorporación debe justificarse por una necesidad funcional real.
 
-## 5. Diseño premium desde Foundation
+## 6. Diseño premium desde Foundation
 
 El enfoque incremental no significa construir primero una interfaz pobre para embellecerla después.
 
@@ -94,11 +169,12 @@ Desde el primer bloque deben quedar definidos:
 - estrategia responsive;
 - comportamiento loading/empty/error;
 - criterios de accesibilidad;
+- idioma y localización;
 - contrato de componentes previstos.
 
 Los primeros bloques pueden ser estructuralmente mínimos, pero deben pertenecer desde el inicio a la arquitectura visual definitiva.
 
-## 6. Gate visual
+## 7. Gate visual
 
 Un bloque puede superar sintaxis y App Checker y seguir fallando visualmente.
 
@@ -114,10 +190,11 @@ Además del gate técnico se exigirá:
 [ ] foco visible
 [ ] geometría consistente
 [ ] densidad adecuada
+[ ] todos los textos visibles en español
 [ ] revisión en Power Apps Studio
 ```
 
-## 7. Consecuencia sobre F01
+## 8. Consecuencia sobre F01
 
 F01-01 seguirá siendo un incremento pequeño, pero ya no se considera un `shell neutro`.
 
@@ -129,6 +206,7 @@ Antes de redactar su YAML deben estar confirmados en la app real:
 - controles y versiones disponibles;
 - componentes premium que ya estén instalados;
 - estrategia para incorporar los componentes fundacionales que falten;
-- baseline visual y de App Checker.
+- baseline visual y de App Checker;
+- baseline de idioma español.
 
 No se avanzará a F01-02 hasta validar el shell en Studio.

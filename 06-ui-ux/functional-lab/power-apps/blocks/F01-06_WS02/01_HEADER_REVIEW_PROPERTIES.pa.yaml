@@ -1,0 +1,67 @@
+# F01-06 — WS-02 — HEADER REVIEW PROPERTIES
+# Target: cmpFL_Header > Properties
+# Replace the complete ReviewHint and ReviewState properties with this block.
+
+ReviewHint: |-
+  =
+  Switch(
+      varFL_ActiveKey,
+      "Context",
+          If(
+              !IsBlank(varFL_Service) &&
+              !IsBlank(varFL_Boundary) &&
+              !IsBlank(varFL_Constraints) &&
+              CountRows(colFL_EvidenceSources)>=3 &&
+              varFL_WS01EvidenceConfirmed,
+              "Gate WS-01 superado",
+              "Validación pendiente"
+          ),
+      "Functions",
+          If(
+              CountRows(colFL_WS01Output)>0 &&
+              !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))) &&
+              !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))) &&
+              !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))) &&
+              !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))) &&
+              !IsBlank(varFL_WS02SelectedModeCode) &&
+              (
+                  varFL_WS02SelectedModeCode=LookUp(colFL_FailureModes,IsFocus,Code) ||
+                  !IsBlank(Trim(Coalesce(varFL_WS02ModeReason,"")))
+              ),
+              "Gate WS-02 superado",
+              "Validación pendiente"
+          ),
+      "Caso cargado"
+  )
+
+ReviewState: |-
+  =
+  Switch(
+      varFL_ActiveKey,
+      "Context",
+          If(
+              !IsBlank(varFL_Service) &&
+              !IsBlank(varFL_Boundary) &&
+              !IsBlank(varFL_Constraints) &&
+              CountRows(colFL_EvidenceSources)>=3 &&
+              varFL_WS01EvidenceConfirmed,
+              "Preparado para continuar",
+              "En revisión"
+          ),
+      "Functions",
+          If(
+              CountRows(colFL_WS01Output)>0 &&
+              !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))) &&
+              !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))) &&
+              !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))) &&
+              !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))) &&
+              !IsBlank(varFL_WS02SelectedModeCode) &&
+              (
+                  varFL_WS02SelectedModeCode=LookUp(colFL_FailureModes,IsFocus,Code) ||
+                  !IsBlank(Trim(Coalesce(varFL_WS02ModeReason,"")))
+              ),
+              "Preparado para continuar",
+              "En revisión"
+          ),
+      "Caso cargado"
+  )

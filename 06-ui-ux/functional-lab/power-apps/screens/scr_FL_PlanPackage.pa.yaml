@@ -1,0 +1,412 @@
+Screens:
+  scr_FL_PlanPackage:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-20" || varFLCurrentStageId="FL-21" || varFLCurrentStageId="FL-22"),Set(varFLCurrentStageId,"FL-20"));
+        If(IsBlank(varFLSelectedGroupingRule),Set(varFLSelectedGroupingRule,"GRP-FREQ-01"))
+
+    Children:
+      - conFLPlanPackageRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLPlanPackageNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLPlanPackageNav.SelectedKey);
+                    Switch(
+                        cmpFLPlanPackageNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLPlanPackageMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLPlanPackageNav.Width
+                  X: =cmpFLPlanPackageNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLPlanPackageHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="PLANIFICACIÓN"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLMaintenanceTaskName
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="Alcance por tag + agrupación"
+                        ReviewState: ="Paquete en preparación"
+                        Subtitle: ="Definimos recursos, objetos incluidos y una agrupación gestionable. Agrupar trabajo nunca elimina la identidad, resultado ni coste de cada tag."
+                        Title: ="Recursos, alcance y paquete de plan"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLPlanPackageRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLPlanPackageHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLPlanPackageRail.SelectedStageIdOut);
+                          Switch(
+                              cmpFLPlanPackageRail.SelectedScreenKeyOut,
+                              "Context",Navigate(scr_FL_Context,ScreenTransition.None),
+                              "Functions",Navigate(scr_FL_Functions,ScreenTransition.None),
+                              "FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),
+                              "AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),
+                              "RCM",Navigate(scr_FL_RCM,ScreenTransition.None),
+                              "Economics",Navigate(scr_FL_Economics,ScreenTransition.None),
+                              "Task",Navigate(scr_FL_Task,ScreenTransition.None),
+                              "PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),
+                              "Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),
+                              "ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),
+                              "Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None)
+                          )
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLPlanPackageHeader.Height+12
+                  - conFLPlanPackageWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLPlanPackageHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLPlanPackageRail.Width-60
+                        X: =cmpFLPlanPackageRail.X+cmpFLPlanPackageRail.Width+12
+                        Y: =cmpFLPlanPackageHeader.Height+12
+                      Children:
+                        - conFLPlanPackageResources:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =188
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width*0.46-6
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLPlanPackageResourcesTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-20 · RECURSOS Y CARGA"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLPlanPackageResourcesSummary:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =11
+                                    Text: =varFLDiscipline & " · " & varFLWorkCenter
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =40
+                              - lblFLPlanPackageWorkload:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =9
+                                    Text: ="Duración estimada · " & Text(varFLEstimatedDurationHours,"0.00") & " h" & Char(10) & "Cuadrilla · " & Text(varFLCrewSize) & Char(10) & "Carga · " & Text(varFLEstimatedManHours,"0.00") & " H-H"
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =68
+                              - lblFLPlanPackageRestrictions:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Estado " & varFLRequiredOperatingState & " · Parada " & If(varFLRequiresShutdown,"Sí","No") & " · " & varFLPermitRequirement
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =136
+                        - conFLPlanPackageScope:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#DDD6FE")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =188
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLPlanPackageResources.Width-12
+                              X: =conFLPlanPackageResources.Width+12
+                              Y: =0
+                            Children:
+                              - lblFLPlanPackageScopeTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-21 · ALCANCE FÍSICO"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLPlanPackageScopeHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="El equipo principal puede incluir soportes dentro del paquete, pero cada objeto conserva identidad y trazabilidad propia."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =36
+                              - galFLPlanPackageScope:
+                                  Control: Gallery@2.15.0
+                                  Variant: Vertical
+                                  Properties:
+                                    BorderColor: =Color.Transparent
+                                    Height: =112
+                                    Items: =colFLPlanScopeItems
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =2
+                                    TemplateSize: =34
+                                    Width: =Parent.Width-28
+                                    X: =14
+                                    Y: =66
+                                  Children:
+                                    - lblFLPlanPackageScopeTag:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =8
+                                          Text: =ThisItem.TechnicalObjectCode
+                                          Width: =80
+                                          X: =6
+                                          Y: =7
+                                    - lblFLPlanPackageScopeRole:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#475569")
+                                          Size: =8
+                                          Text: =ThisItem.RoleInScope
+                                          Width: =150
+                                          X: =92
+                                          Y: =7
+                                    - lblFLPlanPackageScopeTask:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =If(ThisItem.Included,ColorValue("#15803D"),ColorValue("#94A3B8"))
+                                          Size: =8
+                                          Text: =If(ThisItem.Included,"Incluido · " & ThisItem.TaskCode,"Referencia / no incluido")
+                                          Width: =Parent.TemplateWidth-250
+                                          X: =248
+                                          Y: =7
+                        - conFLPlanPackageGrouping:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =238
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =200
+                            Children:
+                              - lblFLPlanPackageGroupingTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =10
+                                    Text: ="Agrupación y optimización"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLPlanPackageGroupingHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="El objetivo es evitar una proliferación innecesaria de rutas/planes. Las reglas pueden considerar frecuencia, actividad, ubicación o ejecutor sin perder el resultado por tag."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =38
+                              - galFLPlanPackageGrouping:
+                                  Control: Gallery@2.15.0
+                                  Variant: Vertical
+                                  Properties:
+                                    BorderColor: =Color.Transparent
+                                    Height: =128
+                                    Items: =SortByColumns(colFLGroupingRules,"Priority",SortOrder.Ascending)
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =2
+                                    TemplateSize: =38
+                                    Width: =Parent.Width*0.58-24
+                                    X: =12
+                                    Y: =76
+                                  Children:
+                                    - btnFLPlanPackageGroupingRule:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =If(ThisItem.RuleCode=varFLSelectedGroupingRule,ColorValue("#0284C7"),ColorValue("#E2E8F0"))
+                                          BorderThickness: =If(ThisItem.RuleCode=varFLSelectedGroupingRule,2,1)
+                                          Color: =If(ThisItem.RuleCode=varFLSelectedGroupingRule,Color.White,ColorValue("#0F172A"))
+                                          Fill: =If(ThisItem.RuleCode=varFLSelectedGroupingRule,ColorValue("#0284C7"),ColorValue("#FFFFFF"))
+                                          Height: =Parent.TemplateHeight-4
+                                          OnSelect: =Set(varFLSelectedGroupingRule,ThisItem.RuleCode)
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =8
+                                          Text: =ThisItem.Name & " · " & ThisItem.GroupingDimension
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =2
+                              - lblFLPlanPackageCandidateTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: ="SALIDA CANDIDATA"
+                                    Width: =Parent.Width*0.38-24
+                                    X: =Parent.Width*0.60
+                                    Y: =82
+                              - lblFLPlanPackageCandidate:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =11
+                                    Text: =First(colFLJobPlans).JobPlanCode & " · " & First(colFLJobPlans).Name
+                                    Width: =Parent.Width*0.38-24
+                                    Wrap: =true
+                                    X: =Parent.Width*0.60
+                                    Y: =106
+                              - lblFLPlanPackageCandidateRule:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Regla seleccionada · " & LookUp(colFLGroupingRules,RuleCode=varFLSelectedGroupingRule,Name)
+                                    Width: =Parent.Width*0.38-24
+                                    Wrap: =true
+                                    X: =Parent.Width*0.60
+                                    Y: =148
+                        - cmpFLPlanPackageGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =CountRows(Filter(colFLPlanScopeItems,Included))>0 && varFLEstimatedManHours>0 && !IsBlank(varFLSelectedGroupingRule)
+                              ContinueLabel: ="Continuar a trazabilidad"
+                              GateStatus: =If(CountRows(Filter(colFLPlanScopeItems,Included))>0 && varFLEstimatedManHours>0 && !IsBlank(varFLSelectedGroupingRule),"passed","blocked")
+                              GateTitle: ="Control de preparación FL-22"
+                              Height: =Parent.Height-450
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-20" || StageId="FL-21" || StageId="FL-22",{Status:"confirmed",IsCurrent:false});
+                                Set(varFLCurrentStageId,"FL-23");
+                                UpdateIf(colFLStageExecutions,StageId="FL-23",{IsCurrent:true});
+                                Navigate(scr_FL_Traceability,ScreenTransition.None)
+                              OutputLabel: ="MaintenancePlanPackage + PlanScopeItem + JobPlan/Route candidate"
+                              Reason: ="La agrupación conserva TechnicalObjectId en la ejecución; no convierte varios tags en un único historial."
+                              RequiredAction: ="Confirmar recursos, alcance y criterio de agrupación"
+                              ResponsibleRole: ="Mantenimiento / Planificación"
+                              Summary: =If(CountRows(Filter(colFLPlanScopeItems,Included))>0 && varFLEstimatedManHours>0 && !IsBlank(varFLSelectedGroupingRule),"Paquete preparado para gobernanza","Paquete incompleto")
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =450

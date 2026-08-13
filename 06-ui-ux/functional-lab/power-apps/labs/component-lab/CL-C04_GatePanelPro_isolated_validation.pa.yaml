@@ -1,0 +1,326 @@
+# BLOCK CL-C04 — GatePanelPro isolated validation harness
+# TYPE: C — Component validation harness
+# ACTION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: CL-S01 STRUCTURE FROZEN + COLOR FOUNDATION APPROVED + cmp_FL_GatePanelPro RC2 definition accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, scr_DesignSystemLab, TreePro, ProcessRailPro, DecisionPanelPro, Functional Lab screens, GatePanelPro public contract
+# PURPOSE: validate blocked/warning/passed semantics, CanContinue disabled state, OnContinue event and readable responsive content
+# COLOR: safe RC2 palette only; no Theme redesign
+# VALIDATION: blocked -> warning -> passed; continue disabled until passed; event fires only when enabled; no clipping; no black surfaces
+# EXPECTED STATUS AFTER PASS: cmp_FL_GatePanelPro -> READY_FOR_INTEGRATION candidate
+#
+# PRECONDITION — COMPONENT DEFINITION
+# Update the EXISTING cmp_FL_GatePanelPro definition in situ from:
+# power-apps/components/cmp_FL_GatePanelPro.pa.yaml
+# Do NOT add a second component identity.
+# Save and confirm Studio accepts the definition before pasting this harness.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children replace ONLY:
+# 1) ph_ComponentUnderTest
+# 2) ph_TestControls
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(700,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - lblCLGateTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="cmp_FL_GatePanelPro · isolated validation"
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =14
+
+      - lblCLGateHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Control de avance FL-12 · bloqueado, advertencia y superado"
+            Width: =Parent.Width-32
+            Wrap: =true
+            X: =16
+            Y: =44
+
+      - cmpCLGate:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_GatePanelPro
+          Properties:
+            CanContinue: =Coalesce(varCLGateStatus,"blocked")="passed"
+            ContinueLabel: ="Continuar a lógica RCM"
+            GateStatus: =Coalesce(varCLGateStatus,"blocked")
+            GateTitle: ="Control de avance · FL-12"
+            Height: =216
+            OnContinue: =Set(varCLGateLastEvent,"CONTINUE")
+            OutputLabel: ="AnalysisCase habilitado para lógica RCM"
+            Reason: |-
+              =
+              Switch(
+                  Coalesce(varCLGateStatus,"blocked"),
+                  "passed","Los prerrequisitos RCM están completos y trazables.",
+                  "warning","La información mínima está disponible, pero existe una advertencia que debe quedar documentada.",
+                  "Falta confirmar la evaluación AMEF antes de aplicar la lógica RCM."
+              )
+            RequiredAction: |-
+              =
+              Switch(
+                  Coalesce(varCLGateStatus,"blocked"),
+                  "passed","Ninguna acción pendiente. Puede continuar.",
+                  "warning","Revisar la advertencia y documentar su aceptación antes de continuar.",
+                  "Completar y confirmar AMEF FL-07 a FL-11."
+              )
+            ResponsibleRole: ="Ingeniería de Fiabilidad"
+            Summary: |-
+              =
+              Switch(
+                  Coalesce(varCLGateStatus,"blocked"),
+                  "passed","Etapa preparada para continuar",
+                  "warning","Revisión adicional recomendada",
+                  "No se puede iniciar RCM"
+              )
+            Width: =Min(620,Parent.Width-32)
+            X: =16
+            Y: =88
+
+      - lblCLGateExpectedTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Semántica esperada"
+            Width: =Parent.Width-64
+            X: =16
+            Y: =334
+
+      - lblCLGateExpected:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="Bloqueado · impide continuar" & Char(10) &
+              "Advertencia · requiere revisión documentada" & Char(10) &
+              "Superado · habilita la siguiente etapa" & Char(10) &
+              "La acción debe depender de CanContinue, no del color"
+            Width: =Parent.Width-64
+            Wrap: =true
+            X: =16
+            Y: =364
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLGateTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Control de avance · smoke test"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLGateTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Recorre los tres estados y valida que Continuar solo se habilita al superar el control."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLGateBlocked:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLGateStatus,"blocked");
+              Set(varCLGateLastEvent,"BLOCKED")
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="1 · Bloqueado"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =112
+
+      - btnCLGateWarning:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLGateStatus,"warning");
+              Set(varCLGateLastEvent,"WARNING")
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="2 · Advertencia"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =160
+
+      - btnCLGatePassed:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              Set(varCLGateStatus,"passed");
+              Set(varCLGateLastEvent,"PASSED")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="3 · Superado"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =208
+
+      - lblCLGateStateTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Estado del harness"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =272
+
+      - lblCLGateStatus:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Status · " & Upper(Coalesce(varCLGateStatus,"blocked"))
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =302
+
+      - lblCLGateCanContinue:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="CanContinue · " & If(Coalesce(varCLGateStatus,"blocked")="passed","true","false")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =336
+
+      - lblCLGateLastEvent:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Último evento · " & Coalesce(varCLGateLastEvent,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =370
+
+      - lblCLGateInstruction:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="En Bloqueado y Advertencia, Continuar debe estar deshabilitado. En Superado debe habilitarse y registrar CONTINUE."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =420
+
+      - lblCLGateGate:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: |-
+              ="Gate · Definition → Instance → Contract → Disabled state → Event → Visual QA → Save/Reopen"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =500

@@ -1,0 +1,298 @@
+Screens:
+  scr_FL_ReviewApproval:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-25" || varFLCurrentStageId="FL-26"),Set(varFLCurrentStageId,"FL-25"));
+        If(
+            IsEmpty(colFLApprovals),
+            ClearCollect(
+                colFLApprovals,
+                {Order:1,Role:"Mantenimiento / Planificación",Status:"Pendiente",Comment:""},
+                {Order:2,Role:"Operaciones",Status:"Pendiente",Comment:""},
+                {Order:3,Role:"Ingeniería de Fiabilidad",Status:"Pendiente",Comment:""},
+                {Order:4,Role:"Asset Owner / Aprobador",Status:"Pendiente",Comment:""}
+            )
+        )
+
+    Children:
+      - conFLReviewRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLReviewNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLReviewNav.SelectedKey);
+                    Switch(cmpFLReviewNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLReviewMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLReviewNav.Width
+                  X: =cmpFLReviewNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLReviewHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="REVISIÓN MULTIDISCIPLINAR"
+                        CaseCode: =varFLActiveCaseCode
+                        CaseType: ="Versión " & varFLCaseVersion
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: ="FL-25 y FL-26"
+                        ReviewState: =If(CountRows(Filter(colFLApprovals,Status="Aprobado"))=4,"Aprobaciones completas","Revisión pendiente")
+                        Subtitle: ="Conserva posiciones, autoridad y resolución antes de congelar una versión inmutable del análisis."
+                        Title: ="Revisión y aprobación"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLReviewRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLReviewHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLReviewRail.SelectedStageIdOut);
+                          Switch(cmpFLReviewRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLReviewHeader.Height+12
+                  - conFLReviewWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLReviewHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLReviewRail.Width-60
+                        X: =cmpFLReviewRail.X+cmpFLReviewRail.Width+12
+                        Y: =cmpFLReviewHeader.Height+12
+                      Children:
+                        - conFLReviewResolution:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E9D5FF")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FAF5FF")
+                              Height: =162
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                            Children:
+                              - lblFLReviewResolutionLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-25 · RESOLUCIÓN MULTIDISCIPLINAR"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLReviewResolutionText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =11
+                                    Text: =varFLReviewResolution
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =46
+                              - lblFLReviewOwner:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#7C3AED")
+                                    Size: =9
+                                    Text: |-
+                                      ="Responsable de seguimiento: " & varFLReviewOwner
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =116
+                        - conFLReviewApprovals:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =284
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =174
+                            Children:
+                              - lblFLReviewApprovalsLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-26 · MATRIZ DE APROBACIÓN"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLReviewApprovalsHint:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =9
+                                    Text: ="La acción permanece bloqueada hasta que FL-24 esté confirmado. Cada aprobación representa una autoridad distinta."
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =38
+                              - galFLReviewApprovals:
+                                  Control: Gallery@2.15.0
+                                  Variant: Vertical
+                                  Properties:
+                                    BorderColor: =Color.Transparent
+                                    Height: =208
+                                    Items: =SortByColumns(colFLApprovals,"Order",SortOrder.Ascending)
+                                    ShowScrollbar: =false
+                                    TemplateFill: =Color.Transparent
+                                    TemplatePadding: =3
+                                    TemplateSize: =48
+                                    Width: =Parent.Width-28
+                                    X: =14
+                                    Y: =68
+                                  Children:
+                                    - lblFLReviewRole:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#0F172A")
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =10
+                                          Text: =ThisItem.Role
+                                          Width: =Parent.TemplateWidth*0.52
+                                          X: =4
+                                          Y: =12
+                                    - lblFLReviewStatus:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =If(ThisItem.Status="Aprobado",ColorValue("#15803D"),ColorValue("#64748B"))
+                                          FontWeight: =FontWeight.Semibold
+                                          Size: =9
+                                          Text: =ThisItem.Status
+                                          Width: =100
+                                          X: =Parent.TemplateWidth*0.58
+                                          Y: =12
+                                    - btnFLReviewApprove:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =If(ThisItem.Status="Aprobado",ColorValue("#BBF7D0"),ColorValue("#E2E8F0"))
+                                          BorderThickness: =1
+                                          Color: =If(ThisItem.Status="Aprobado",ColorValue("#166534"),ColorValue("#0F172A"))
+                                          DisplayMode: =If(LookUp(colFLStageExecutions,StageId="FL-24",Status)="confirmed" && ThisItem.Status<>"Aprobado",DisplayMode.Edit,DisplayMode.Disabled)
+                                          Fill: =If(ThisItem.Status="Aprobado",ColorValue("#F0FDF4"),ColorValue("#FFFFFF"))
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =32
+                                          OnSelect: =Patch(colFLApprovals,ThisItem,{Status:"Aprobado",Comment:"Aprobación simulada en Functional Lab"});Set(varFLCaseDraft,true)
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =9
+                                          Text: =If(ThisItem.Status="Aprobado","Aprobado","Aprobar")
+                                          Width: =96
+                                          X: =Parent.TemplateWidth-Self.Width-4
+                                          Y: =6
+                        - cmpFLReviewGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =LookUp(colFLStageExecutions,StageId="FL-24",Status)="confirmed" && CountRows(Filter(colFLApprovals,Status="Aprobado"))=4 && !IsBlank(varFLReviewResolution)
+                              ContinueLabel: ="Aprobar y congelar v1.0"
+                              GateStatus: =If(LookUp(colFLStageExecutions,StageId="FL-24",Status)<>"confirmed","blocked",If(CountRows(Filter(colFLApprovals,Status="Aprobado"))=4,"passed","warning"))
+                              GateTitle: ="Gate de aprobación"
+                              Height: =190
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-25" || StageId="FL-26",{Status:"approved"});
+                                Set(varFLCaseLifecycleStatus,"Approved");
+                                Set(varFLCaseVersion,"1.0");
+                                Set(varFLCaseDraft,false);
+                                Set(varFLCurrentStageId,"FL-27");
+                                Navigate(scr_FL_Effectiveness,ScreenTransition.None)
+                              OutputLabel: ="VersionSnapshot 1.0 inmutable + aprobaciones trazables"
+                              Reason: =If(LookUp(colFLStageExecutions,StageId="FL-24",Status)<>"confirmed","El control de calidad todavía no permite aprobar.",If(CountRows(Filter(colFLApprovals,Status="Aprobado"))<4,"Faltan autoridades por aprobar.","La revisión y las cuatro autoridades están completas."))
+                              RequiredAction: ="Completar revisión multidisciplinar y todas las aprobaciones"
+                              ResponsibleRole: ="Asset Owner / Aprobador"
+                              Summary: =If(CountRows(Filter(colFLApprovals,Status="Aprobado"))=4,"Preparado para congelar versión","Aprobaciones incompletas")
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =470

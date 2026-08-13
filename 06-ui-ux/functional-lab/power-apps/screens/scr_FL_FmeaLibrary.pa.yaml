@@ -1,0 +1,382 @@
+Screens:
+  scr_FL_FmeaLibrary:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Strategy")
+
+    Children:
+      - conFLFmeaLibraryRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLFmeaLibraryNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveFmeaCode
+                  CurrentCaseName: ="Biblioteca AMEF"
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLFmeaLibraryNav.SelectedKey);
+                    Switch(
+                        cmpFLFmeaLibraryNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+
+            - conFLFmeaLibraryMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLFmeaLibraryNav.Width
+                  X: =cmpFLFmeaLibraryNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLFmeaLibraryHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="BIBLIOTECA DE INGENIERÍA"
+                        CaseCode: ="AMEF"
+                        CaseType: ="Reutilizable por familia de equipo"
+                        Height: =132
+                        JourneyHint: ="Fuente de verdad técnica anterior a cualquier aplicación a un tag"
+                        JourneyPosition: ="BIBLIOTECA"
+                        ProgressCurrent: =0
+                        ProgressTotal: =28
+                        ReviewHint: ="Revisiones controladas"
+                        ReviewState: ="Ingeniería reusable"
+                        Subtitle: ="Funciones, fallos, modos, causas, efectos y tareas base se mantienen una vez y después se aplican a los activos compatibles."
+                        Title: ="Biblioteca AMEF"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+
+                  - conFLFmeaLibraryToolbar:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =54
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =144
+                      Children:
+                        - btnFLFmeaLibraryCurrent:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
+                              BorderThickness: =1
+                              Color: =ColorValue("#0369A1")
+                              Fill: =ColorValue("#F0F9FF")
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              HoverFill: =ColorValue("#E0F2FE")
+                              OnSelect: =false
+                              PressedFill: =ColorValue("#BAE6FD")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Biblioteca AMEF"
+                              Width: =150
+                              X: =12
+                              Y: =11
+                        - btnFLFmeaLibraryApplications:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              HoverFill: =ColorValue("#F8FAFC")
+                              OnSelect: =Navigate(scr_FL_AssetApplication,ScreenTransition.None)
+                              PressedFill: =ColorValue("#F1F5F9")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Aplicaciones a activos"
+                              Width: =170
+                              X: =172
+                              Y: =11
+                        - btnFLFmeaLibraryCases:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#CBD5E1")
+                              BorderThickness: =1
+                              Color: =ColorValue("#334155")
+                              Fill: =ColorValue("#FFFFFF")
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              HoverFill: =ColorValue("#F8FAFC")
+                              OnSelect: =Navigate(scr_FL_AnalysisRegister,ScreenTransition.None)
+                              PressedFill: =ColorValue("#F1F5F9")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Casos de análisis"
+                              Width: =145
+                              X: =352
+                              Y: =11
+
+                  - conFLFmeaLibraryList:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-222
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width*0.58-30
+                        X: =24
+                        Y: =210
+                      Children:
+                        - lblFLFmeaLibraryListTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =12
+                              Text: ="Definiciones disponibles"
+                              Width: =Parent.Width-32
+                              X: =16
+                              Y: =14
+                        - lblFLFmeaLibraryListHint:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =8
+                              Text: ="La biblioteca se organiza por familia/tipo de equipo. Una revisión aprobada puede reutilizarse en múltiples activos."
+                              Width: =Parent.Width-32
+                              Wrap: =true
+                              X: =16
+                              Y: =38
+                        - galFLFmeaLibrary:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =Color.Transparent
+                              Height: =Parent.Height-82
+                              Items: =colFLFmeaDefinitions
+                              ShowScrollbar: =false
+                              TemplatePadding: =0
+                              TemplateSize: =82
+                              Width: =Parent.Width-24
+                              X: =12
+                              Y: =72
+                            Children:
+                              - btnFLFmeaLibraryRow:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =If(ThisItem.Code=varFLActiveFmeaCode,ColorValue("#0284C7"),ColorValue("#E2E8F0"))
+                                    BorderThickness: =1
+                                    Color: =Color.Transparent
+                                    Fill: =If(ThisItem.Code=varFLActiveFmeaCode,ColorValue("#F0F9FF"),ColorValue("#FFFFFF"))
+                                    Height: =Parent.TemplateHeight-6
+                                    HoverFill: =ColorValue("#F8FAFC")
+                                    OnSelect: |-
+                                      =
+                                      Set(varFLActiveFmeaDefinitionId,ThisItem.FmeaDefinitionId);
+                                      Set(varFLActiveFmeaCode,ThisItem.Code)
+                                    PressedFill: =ColorValue("#E0F2FE")
+                                    RadiusBottomLeft: =9
+                                    RadiusBottomRight: =9
+                                    RadiusTopLeft: =9
+                                    RadiusTopRight: =9
+                                    Text: =""
+                                    Width: =Parent.TemplateWidth
+                                    X: =0
+                                    Y: =3
+                              - lblFLFmeaLibraryCode:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =8
+                                    Text: =ThisItem.Code
+                                    Width: =Parent.TemplateWidth-28
+                                    X: =14
+                                    Y: =12
+                              - lblFLFmeaLibraryName:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =10
+                                    Text: =ThisItem.Name
+                                    Width: =Parent.TemplateWidth-150
+                                    Wrap: =false
+                                    X: =14
+                                    Y: =34
+                              - lblFLFmeaLibraryState:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: =ThisItem.LifecycleStatus
+                                    Width: =120
+                                    X: =Parent.TemplateWidth-132
+                                    Y: =34
+
+                  - conFLFmeaLibraryDetail:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =Parent.Height-222
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-conFLFmeaLibraryList.Width-60
+                        X: =conFLFmeaLibraryList.X+conFLFmeaLibraryList.Width+12
+                        Y: =210
+                      Children:
+                        - lblFLFmeaLibraryDetailEyebrow:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =8
+                              Text: ="INGENIERÍA REUTILIZABLE"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =18
+                        - lblFLFmeaLibraryDetailTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: =LookUp(colFLFmeaDefinitions,Code=varFLActiveFmeaCode,Name)
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =42
+                        - lblFLFmeaLibraryFamily:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =9
+                              Text: =LookUp(colFLFmeaDefinitions,Code=varFLActiveFmeaCode,EquipmentFamilyName)
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =72
+                        - lblFLFmeaLibraryRevision:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =10
+                              Text: ="Revisión aprobada · " & Coalesce(LookUp(colFLFmeaRevisions,FmeaDefinitionId=varFLActiveFmeaDefinitionId && RevisionStatus="Approved",RevisionCode),"Sin revisión aprobada")
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =108
+                        - lblFLFmeaLibraryCounts:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =9
+                              Text: ="La revisión de P-101 contiene funciones, fallos funcionales, modos, causas, efectos y tareas propuestas. Ninguno de estos objetos pertenece al tag P-101."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =148
+                        - btnFLFmeaLibraryOpen:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#0284C7")
+                              BorderThickness: =1
+                              Color: =Color.White
+                              Fill: =ColorValue("#0284C7")
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =38
+                              HoverFill: =ColorValue("#0369A1")
+                              OnSelect: |-
+                                =
+                                Set(varFLActiveFmeaRevisionId,Coalesce(LookUp(colFLFmeaRevisions,FmeaDefinitionId=varFLActiveFmeaDefinitionId && RevisionStatus="Approved",FmeaRevisionId),varFLActiveFmeaRevisionId));
+                                Set(varFLActiveFmeaRevisionCode,Coalesce(LookUp(colFLFmeaRevisions,FmeaDefinitionId=varFLActiveFmeaDefinitionId && RevisionStatus="Approved",RevisionCode),varFLActiveFmeaRevisionCode));
+                                Navigate(scr_FL_FmeaRevision,ScreenTransition.None)
+                              PressedFill: =ColorValue("#075985")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Abrir revisión"
+                              Width: =150
+                              X: =18
+                              Y: =218

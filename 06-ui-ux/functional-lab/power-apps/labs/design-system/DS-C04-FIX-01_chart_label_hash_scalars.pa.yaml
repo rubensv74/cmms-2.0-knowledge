@@ -1,0 +1,89 @@
+# BLOCK DS-C04-FIX-01 — Chart label hash scalar repair
+# TYPE: FIX
+# OPERATION: REPLACE SIX LABEL CONTROLS
+# TARGET: lblDSChart01..lblDSChart06 inside ph_DataViz
+# DEPENDS ON: DS-C04 installed in Studio
+# TOUCHES: lblDSChart01, lblDSChart02, lblDSChart03, lblDSChart04, lblDSChart05, lblDSChart06 only
+# DO NOT MODIFY: rectangles/swatches, selected example, ph_DataViz geometry, DS-C01, DS-C02, DS-C03, any Functional Lab screen/component
+# CAUSE: in an unquoted YAML plain scalar, the sequence ' #...' begins a YAML comment; Studio receives a truncated Power Fx string such as ="Chart01 ·
+# FIX: express Text formulas as YAML block scalars so '#' remains part of the Power Fx string
+# VALIDATION: six labels show full 'ChartNN · #HEX' text, no red formula errors, swatches/geometry unchanged
+# EXPECTED STATUS AFTER PASS: DS-C04-FIX-01 PASS; then DS-C04 can be evaluated for VISUAL_APPROVED
+
+- lblDSChart01:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: |-
+        ="Chart01 · #2563EB"
+      Width: =(Parent.Width-50)/2
+      Wrap: =false
+      X: =40
+      Y: =64
+
+- lblDSChart02:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: |-
+        ="Chart02 · #0E7490"
+      Width: =Parent.Width-Self.X-10
+      Wrap: =false
+      X: =recDSChart02.X+26
+      Y: =64
+
+- lblDSChart03:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: |-
+        ="Chart03 · #7C3AED"
+      Width: =(Parent.Width-50)/2
+      Wrap: =false
+      X: =40
+      Y: =94
+
+- lblDSChart04:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: |-
+        ="Chart04 · #C2410C"
+      Width: =Parent.Width-Self.X-10
+      Wrap: =false
+      X: =recDSChart04.X+26
+      Y: =94
+
+- lblDSChart05:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: |-
+        ="Chart05 · #BE185D"
+      Width: =(Parent.Width-50)/2
+      Wrap: =false
+      X: =40
+      Y: =124
+
+- lblDSChart06:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: |-
+        ="Chart06 · #15803D"
+      Width: =Parent.Width-Self.X-10
+      Wrap: =false
+      X: =recDSChart06.X+26
+      Y: =124

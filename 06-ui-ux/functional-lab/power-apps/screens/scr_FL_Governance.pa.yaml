@@ -1,0 +1,342 @@
+Screens:
+  scr_FL_Governance:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Governance")
+
+    Children:
+      - conFLGovRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLGovNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Governance"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLGovNav.SelectedKey);
+                    Switch(cmpFLGovNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLGovMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLGovNav.Width
+                  X: =cmpFLGovNav.Width
+                  Y: =0
+                Children:
+                  - lblFLGovEyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =9
+                        Text: ="CMMS 2.0 · CONTROL Y TRAZABILIDAD"
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =20
+                  - lblFLGovTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =23
+                        Text: =LookUp(colFLText,Key="SCREEN_GOV_TITLE",If(varFLLocale="en",EN,ES))
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =46
+                  - lblFLGovSubtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =10
+                        Text: ="Vista transversal de versiones, aprobaciones, findings y solicitudes de cambio."
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =82
+                  - conFLGovStatus:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#BAE6FD")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F8FCFF")
+                        Height: =92
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =126
+                      Children:
+                        - lblFLGovStatusLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0369A1")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =8
+                              Text: ="PREVIEW FUNCIONAL"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =14
+                        - lblFLGovStatusText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              Size: =10
+                              Text: ="La gobernanza ya existe en los objetos del AnalysisCase. Este módulo será su vista transversal cuando conectemos persistencia y múltiples casos."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =40
+                  - conFLGovVersion:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =210
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =(Parent.Width-60)*0.48
+                        X: =24
+                        Y: =232
+                      Children:
+                        - lblFLGovVersionLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="VERSIÓN DEL CASO ACTIVO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLGovVersionValue:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =24
+                              Text: ="v" & varFLCaseVersion
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =48
+                        - lblFLGovVersionStatus:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =If(varFLCaseLifecycleStatus="Approved",ColorValue("#15803D"),ColorValue("#0369A1"))
+                              FontWeight: =FontWeight.Semibold
+                              Size: =10
+                              Text: =varFLCaseLifecycleStatus
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =90
+                        - lblFLGovVersionRule:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =9
+                              Text: ="Una versión aprobada debe ser inmutable. Cualquier ajuste posterior abre una nueva revisión o ChangeRequest."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =124
+                        - btnFLGovOpenReview:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              Color: =ColorValue("#0F172A")
+                              Fill: =ColorValue("#FFFFFF")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =36
+                              OnSelect: =Navigate(scr_FL_ReviewApproval,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Abrir revisión"
+                              Width: =130
+                              X: =18
+                              Y: =162
+                  - conFLGovFindings:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#FDE68A")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFBEB")
+                        Height: =210
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-conFLGovVersion.Width-60
+                        X: =conFLGovVersion.X+conFLGovVersion.Width+12
+                        Y: =232
+                      Children:
+                        - lblFLGovFindingsLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#B45309")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="FINDINGS Y EXCEPCIONES"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLGovFindingTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =14
+                              Text: =If(varFLQualityResolved,"Baseline de vibración · Resuelto","Baseline de vibración · Abierto")
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =48
+                        - lblFLGovFindingText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =9
+                              Text: =varFLAMEFException
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =84
+                        - lblFLGovFindingResolution:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              Size: =9
+                              Text: =varFLReviewResolution
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =134
+                  - conFLGovChange:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =If(varFLChangeRequestOpened,ColorValue("#FED7AA"),ColorValue("#E2E8F0"))
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =If(varFLChangeRequestOpened,ColorValue("#FFF7ED"),ColorValue("#FFFFFF"))
+                        Height: =190
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =456
+                      Children:
+                        - lblFLGovChangeLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =If(varFLChangeRequestOpened,ColorValue("#C2410C"),ColorValue("#64748B"))
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="SOLICITUDES DE CAMBIO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLGovChangeTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: =If(varFLChangeRequestOpened,"Revisión de P–F, intervalo y baseline","Sin solicitud abierta")
+                              Width: =Parent.Width-210
+                              X: =18
+                              Y: =48
+                        - lblFLGovChangeText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =10
+                              Text: =If(varFLChangeRequestOpened,varFLReopenScope,"Los datos de efectividad todavía no han generado un cambio formal.")
+                              Width: =Parent.Width-210
+                              Wrap: =true
+                              X: =18
+                              Y: =82
+                        - btnFLGovEffect:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorValue("#E2E8F0")
+                              BorderThickness: =1
+                              Color: =ColorValue("#0F172A")
+                              Fill: =ColorValue("#FFFFFF")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =38
+                              OnSelect: =Navigate(scr_FL_Effectiveness,ScreenTransition.None)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Ver efectividad"
+                              Width: =140
+                              X: =Parent.Width-Self.Width-18
+                              Y: =Parent.Height-Self.Height-18

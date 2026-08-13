@@ -1,0 +1,338 @@
+# CMMS 2.0 FUNCTIONAL LAB — PROCESS RAIL PRO — COMFORTABLE READABILITY RC
+#
+# Preserves component identity and public contract.
+# The rail uses scroll before reducing typography.
+# Safe palette remains active unless UseHostTheme=true.
+
+ComponentDefinitions:
+  cmp_FL_ProcessRailPro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      Items:
+        PropertyKind: Input
+        DisplayName: Items
+        Description: Etapas del journey funcional a representar.
+        DataType: Table
+        Default: |-
+          =
+          Table(
+              {
+                  StageOrder:1,
+                  StageId:"FL-01",
+                  PhaseId:"P1",
+                  PhaseLabel:"Comprender el problema",
+                  StageLabel:"Definir el activo y sus límites",
+                  Status:"not_started",
+                  ResponsibilityType:"human",
+                  ResponsibleRole:"Ingeniería de Fiabilidad",
+                  ScreenKey:"Context",
+                  IsCurrent:true,
+                  IsAccessible:true,
+                  HasWarning:false
+              }
+          )
+
+      ActiveStageId:
+        PropertyKind: Input
+        DisplayName: ActiveStageId
+        Description: Identificador de la etapa activa.
+        DataType: Text
+        Default: ="FL-01"
+
+      CompactMode:
+        PropertyKind: Input
+        DisplayName: CompactMode
+        Description: Reduce padding y altura sin reducir la tipografía bajo el estándar Comfortable.
+        DataType: Boolean
+        Default: =false
+
+      ShowPhaseHeaders:
+        PropertyKind: Input
+        DisplayName: ShowPhaseHeaders
+        Description: Muestra el nombre de la fase en la primera etapa de cada grupo.
+        DataType: Boolean
+        Default: =true
+
+      UseHostTheme:
+        PropertyKind: Input
+        DisplayName: UseHostTheme
+        Description: Usa colores del host. Desactivado por defecto por compatibilidad Studio.
+        DataType: Boolean
+        Default: =false
+
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Color principal de acento.
+        DataType: Color
+        Default: =ColorValue("#0284C7")
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Fondo principal.
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      SurfaceAltColor:
+        PropertyKind: Input
+        DisplayName: SurfaceAltColor
+        Description: Fondo alternativo de fila.
+        DataType: Color
+        Default: =ColorValue("#F8FAFC")
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Color de borde.
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Texto principal.
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Texto secundario.
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      OnSelectStage:
+        PropertyKind: Event
+        DisplayName: OnSelectStage
+        Description: Se ejecuta cuando se selecciona una etapa accesible.
+        ReturnType: None
+        Default: =false
+
+      SelectedStageIdOut:
+        PropertyKind: Output
+        DisplayName: SelectedStageIdOut
+        Description: Identificador de la etapa seleccionada.
+        DataType: Text
+
+      SelectedScreenKeyOut:
+        PropertyKind: Output
+        DisplayName: SelectedScreenKeyOut
+        Description: Clave de pantalla asociada a la etapa seleccionada.
+        DataType: Text
+
+      SelectedRecordOut:
+        PropertyKind: Output
+        DisplayName: SelectedRecordOut
+        Description: Registro completo de la etapa seleccionada.
+        DataType: Record
+
+    Properties:
+      Fill: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.SurfaceColor,ColorValue("#FFFFFF"))
+      Height: =640
+      SelectedRecordOut: =galFLRailStages.Selected
+      SelectedScreenKeyOut: =Text(Coalesce(galFLRailStages.Selected.ScreenKey,""))
+      SelectedStageIdOut: =Text(Coalesce(galFLRailStages.Selected.StageId,cmp_FL_ProcessRailPro.ActiveStageId,""))
+      Width: =300
+
+    Children:
+      - conFLRailRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.BorderColor,ColorValue("#E2E8F0"))
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.SurfaceColor,ColorValue("#FFFFFF"))
+            Height: =Parent.Height
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width
+
+          Children:
+            - lblFLRailEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.AccentColor,ColorValue("#0284C7"))
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="RECORRIDO DEL ANÁLISIS"
+                  Width: =Parent.Width-32
+                  Wrap: =false
+                  X: =16
+                  Y: =14
+
+            - lblFLRailTitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.TextColor,ColorValue("#0F172A"))
+                  FontWeight: =FontWeight.Semibold
+                  Size: =16
+                  Text: ="28 etapas"
+                  Width: =Parent.Width-32
+                  Wrap: =false
+                  X: =16
+                  Y: =38
+
+            - galFLRailStages:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  BorderColor: =Color.Transparent
+                  Height: =Parent.Height-Self.Y-14
+                  Items: =SortByColumns(cmp_FL_ProcessRailPro.Items,"StageOrder",SortOrder.Ascending)
+                  OnSelect: |-
+                    =
+                    If(
+                        Coalesce(ThisItem.IsAccessible,true),
+                        cmp_FL_ProcessRailPro.OnSelectStage()
+                    )
+                  ShowScrollbar: =true
+                  TemplateFill: =Color.Transparent
+                  TemplatePadding: =2
+                  TemplateSize: =If(cmp_FL_ProcessRailPro.CompactMode,54,66)
+                  Width: =Parent.Width-20
+                  X: =10
+                  Y: =74
+
+                Children:
+                  - btnFLRailRowSurface:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: |-
+                          =
+                          If(
+                              Text(ThisItem.StageId)=Text(cmp_FL_ProcessRailPro.ActiveStageId) || Coalesce(ThisItem.IsCurrent,false),
+                              ColorValue("#BAE6FD"),
+                              RGBA(0,0,0,0)
+                          )
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =If(Text(ThisItem.StageId)=Text(cmp_FL_ProcessRailPro.ActiveStageId) || Coalesce(ThisItem.IsCurrent,false),1,0)
+                        Color: =Color.Transparent
+                        DisplayMode: =If(Coalesce(ThisItem.IsAccessible,true),DisplayMode.Edit,DisplayMode.Disabled)
+                        Fill: |-
+                          =
+                          If(
+                              Text(ThisItem.StageId)=Text(cmp_FL_ProcessRailPro.ActiveStageId) || Coalesce(ThisItem.IsCurrent,false),
+                              ColorValue("#F0F9FF"),
+                              If(Coalesce(ThisItem.IsAccessible,true),Color.Transparent,ColorValue("#F8FAFC"))
+                          )
+                        Height: =Parent.TemplateHeight-4
+                        HoverFill: =If(Coalesce(ThisItem.IsAccessible,true),ColorValue("#F0F9FF"),ColorValue("#F8FAFC"))
+                        OnSelect: =Select(Parent)
+                        PressedFill: =ColorValue("#E0F2FE")
+                        RadiusBottomLeft: =9
+                        RadiusBottomRight: =9
+                        RadiusTopLeft: =9
+                        RadiusTopRight: =9
+                        Text: =""
+                        Width: =Parent.TemplateWidth
+                        X: =0
+                        Y: =2
+
+                  - recFLRailStatus:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: |-
+                          =
+                          Switch(
+                              Lower(Text(ThisItem.Status)),
+                              "confirmed",ColorValue("#22C55E"),
+                              "approved",ColorValue("#22C55E"),
+                              "draft",ColorValue("#F59E0B"),
+                              "blocked",ColorValue("#EF4444"),
+                              "warning",ColorValue("#F59E0B"),
+                              ColorValue("#CBD5E1")
+                          )
+                        Height: =10
+                        Width: =10
+                        X: =10
+                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,22,28)
+
+                  - lblFLRailStageId:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.MutedTextColor,ColorValue("#64748B"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: =Text(ThisItem.StageId)
+                        Width: =48
+                        X: =28
+                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,7,9)
+
+                  - lblFLRailPhase:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.AccentColor,ColorValue("#0284C7"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: =Upper(Text(ThisItem.PhaseLabel))
+                        Visible: |-
+                          =
+                          cmp_FL_ProcessRailPro.ShowPhaseHeaders &&
+                          (
+                              Value(ThisItem.StageOrder)=1 ||
+                              Coalesce(
+                                  LookUp(
+                                      cmp_FL_ProcessRailPro.Items,
+                                      StageOrder=Value(ThisItem.StageOrder)-1,
+                                      PhaseId
+                                  ),
+                                  ""
+                              )<>Text(ThisItem.PhaseId)
+                          )
+                        Width: =Parent.TemplateWidth-106
+                        Wrap: =false
+                        X: =78
+                        Y: =2
+
+                  - lblFLRailStageLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_ProcessRailPro.UseHostTheme,cmp_FL_ProcessRailPro.TextColor,ColorValue("#0F172A"))
+                        FontWeight: =If(Text(ThisItem.StageId)=Text(cmp_FL_ProcessRailPro.ActiveStageId),FontWeight.Semibold,FontWeight.Normal)
+                        Size: =12
+                        Text: =Text(ThisItem.StageLabel)
+                        Width: =Parent.TemplateWidth-106
+                        Wrap: =false
+                        X: =78
+                        Y: =If(cmp_FL_ProcessRailPro.ShowPhaseHeaders,If(cmp_FL_ProcessRailPro.CompactMode,25,30),If(cmp_FL_ProcessRailPro.CompactMode,16,20))
+
+                  - lblFLRailResponsibility:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Right
+                        AutoHeight: =true
+                        Color: |-
+                          =
+                          Switch(
+                              Lower(Text(ThisItem.ResponsibilityType)),
+                              "human",ColorValue("#7C3AED"),
+                              "recommendation",ColorValue("#0369A1"),
+                              "calculation",ColorValue("#0369A1"),
+                              "gate",ColorValue("#B45309"),
+                              ColorValue("#64748B")
+                          )
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: |-
+                          =
+                          Switch(
+                              Lower(Text(ThisItem.ResponsibilityType)),
+                              "human","H",
+                              "recommendation","R",
+                              "calculation","C",
+                              "gate","G",
+                              ""
+                          )
+                        Width: =24
+                        X: =Parent.TemplateWidth-32
+                        Y: =If(cmp_FL_ProcessRailPro.CompactMode,7,9)

@@ -1,0 +1,275 @@
+Screens:
+  scr_FL_Traceability:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-23" || varFLCurrentStageId="FL-24"),Set(varFLCurrentStageId,"FL-23"))
+
+    Children:
+      - conFLTraceRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLTraceNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLTraceNav.SelectedKey);
+                    Switch(cmpFLTraceNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLTraceMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLTraceNav.Width
+                  X: =cmpFLTraceNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLTraceHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="TRAZABILIDAD Y CALIDAD"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                        Height: =132
+                        JourneyHint: ="FL-23 / FL-24 · reconstruir y comprobar"
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: =varFLActiveApplicationCode
+                        ReviewState: ="Trazabilidad disponible"
+                        Subtitle: ="Una decisión debe poder reconstruirse desde la revisión AMEF hasta la ejecución real y volver desde el resultado hacia la ingeniería."
+                        Title: ="Trazabilidad integral"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLTraceRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLTraceHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLTraceRail.SelectedStageIdOut);
+                          Switch(cmpFLTraceRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLTraceHeader.Height+12
+                  - conFLTraceWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLTraceHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLTraceRail.Width-60
+                        X: =cmpFLTraceRail.X+cmpFLTraceRail.Width+12
+                        Y: =cmpFLTraceHeader.Height+12
+                      Children:
+                        - cmpFLTraceLineage:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_LineagePanelPro
+                            Properties:
+                              ApplicationCode: =varFLActiveApplicationCode
+                              AssetCode: =varFLActiveAssetCode
+                              CriticalityLabel: =varFLActiveCriticality
+                              ExecutionLabel: =First(colFLPmPlans).PlanCode & " → " & First(colFLWorkOrders).WorkOrderCode
+                              Height: =126
+                              LibraryCode: =varFLActiveFmeaCode
+                              RevisionCode: =varFLActiveFmeaRevisionCode
+                              Title: ="Cadena de procedencia"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                        - conFLTraceChain:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =330
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =138
+                            Children:
+                              - lblFLTraceChainTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-23 · DE LA INGENIERÍA A LA EJECUCIÓN"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =14
+                              - lblFLTraceLibrary:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="1  " & varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =48
+                              - lblFLTraceMode:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="2  " & varFLSelectedFailureMode & " · " & LookUp(colFLFmeaFailureModes,Code=varFLSelectedFailureMode,Name) & " · " & Coalesce(LookUp(colFLFmeaFailureCauses,FailureCauseId=varFLSelectedFailureCause,CauseCode),"sin causa")
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =82
+                              - lblFLTraceRCM:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="3  RCM " & varFLDecisionLogicCode & " · " & varFLDecisionLogicRevision & " → " & varFLRCMHumanStrategy
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =116
+                              - lblFLTraceTask:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="4  " & LookUp(colFLProposedTasks,ProposedMaintenanceTaskId=varFLActiveProposedTaskId,TaskCode) & " → variante " & varFLActiveTaskVariantId & " → " & varFLMaintenanceTaskName
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =150
+                              - lblFLTracePlan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="5  " & First(colFLJobPlans).JobPlanCode & " → " & First(colFLPmPlans).PlanCode
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =184
+                              - lblFLTraceWO:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="6  " & First(colFLWorkOrders).WorkOrderCode & " · " & First(colFLWorkOrders).TechnicalObjectCode & " → " & First(colFLExecutionResults).ResultCode & " · " & Text(First(colFLExecutionResults).MeasurementValue) & " " & First(colFLExecutionResults).MeasurementUnit
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =218
+                              - lblFLTraceReturn:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#15803D")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="7  Resultado real → EffectivenessMeasurement → posible ChangeRequest a aplicación o biblioteca"
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =252
+                              - lblFLTraceIdentity:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Aunque una ruta agrupe varios equipos, el WorkOrder/ExecutionResult conserva TechnicalObjectId. Esa es la clave para no perder historia ni coste por tag."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =288
+                        - cmpFLTraceGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =!IsBlank(varFLActiveFmeaRevisionCode) && !IsBlank(varFLActiveApplicationCode) && !IsBlank(varFLSelectedFailureMode) && !IsBlank(varFLRCMHumanStrategy) && !IsBlank(varFLMaintenanceTaskName)
+                              ContinueLabel: ="Continuar a revisión"
+                              GateStatus: =If(!IsBlank(varFLActiveFmeaRevisionCode) && !IsBlank(varFLActiveApplicationCode) && !IsBlank(varFLSelectedFailureMode) && !IsBlank(varFLRCMHumanStrategy) && !IsBlank(varFLMaintenanceTaskName),"passed","blocked")
+                              GateTitle: ="FL-24 · Control de calidad"
+                              Height: =Parent.Height-480
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-23" || StageId="FL-24",{Status:"confirmed",IsCurrent:false});
+                                Set(varFLCurrentStageId,"FL-25");
+                                UpdateIf(colFLStageExecutions,StageId="FL-25",{IsCurrent:true});
+                                Navigate(scr_FL_ReviewApproval,ScreenTransition.None)
+                              OutputLabel: ="TraceLink chain + quality result"
+                              Reason: ="La cadena conserva origen técnico, contexto, decisión, plan y resultado por tag."
+                              RequiredAction: ="Resolver cualquier salto de trazabilidad antes de aprobación"
+                              ResponsibleRole: ="Ingeniería de Fiabilidad"
+                              Summary: ="Trazabilidad integral reconstruible"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =480

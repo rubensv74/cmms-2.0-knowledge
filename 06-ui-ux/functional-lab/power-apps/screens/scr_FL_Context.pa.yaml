@@ -1,0 +1,294 @@
+Screens:
+  scr_FL_Context:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: |-
+        =
+        Set(varFLNavKey,"Strategy");
+        If(!(varFLCurrentStageId="FL-01" || varFLCurrentStageId="FL-02" || varFLCurrentStageId="FL-03"),Set(varFLCurrentStageId,"FL-01"))
+
+    Children:
+      - conFLContextRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLContextNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLContextNav.SelectedKey);
+                    Switch(cmpFLContextNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLContextMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLContextNav.Width
+                  X: =cmpFLContextNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLContextHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="CONTEXTO DE APLICACIÓN"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: =varFLActiveApplicationCode
+                        ReviewState: ="Aplicación contextual"
+                        Subtitle: ="No definimos de nuevo el AMEF. Confirmamos activo, revisión, límites, condiciones de operación, criticidad y evidencias antes de revisar la ingeniería heredada."
+                        Title: ="Contexto del análisis"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLContextRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLContextHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLContextRail.SelectedStageIdOut);
+                          Switch(cmpFLContextRail.SelectedScreenKeyOut,"Context",Navigate(scr_FL_Context,ScreenTransition.None),"Functions",Navigate(scr_FL_Functions,ScreenTransition.None),"FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),"AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),"RCM",Navigate(scr_FL_RCM,ScreenTransition.None),"Economics",Navigate(scr_FL_Economics,ScreenTransition.None),"Task",Navigate(scr_FL_Task,ScreenTransition.None),"PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),"Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),"ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),"Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None))
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLContextHeader.Height+12
+                  - conFLContextWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLContextHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLContextRail.Width-60
+                        X: =cmpFLContextRail.X+cmpFLContextRail.Width+12
+                        Y: =cmpFLContextHeader.Height+12
+                      Children:
+                        - cmpFLContextLineage:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_LineagePanelPro
+                            Properties:
+                              ApplicationCode: =varFLActiveApplicationCode
+                              AssetCode: =varFLActiveAssetCode
+                              CriticalityLabel: =varFLActiveCriticality
+                              ExecutionLabel: ="Contexto en revisión"
+                              Height: =126
+                              LibraryCode: =varFLActiveFmeaCode
+                              RevisionCode: =varFLActiveFmeaRevisionCode
+                              Title: ="FL-01 · Qué estamos aplicando y a qué activo"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                        - conFLContextOperational:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =222
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =(Parent.Width-12)*0.52
+                              X: =0
+                              Y: =138
+                            Children:
+                              - lblFLContextOperationalTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-02 · CONTEXTO OPERACIONAL"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =16
+                              - lblFLContextService:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =11
+                                    Text: ="Servicio · Agua de refrigeración al E-201"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =44
+                              - lblFLContextDuty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =9
+                                    Text: ="Demanda · 120 m³/h a 6 bar" & Char(10) & "Modo · servicio continuo" & Char(10) & "Redundancia · " & LookUp(colFLAssetCriticality,TechnicalObjectCode=varFLActiveAssetCode,RedundancyContext)
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =76
+                              - lblFLContextBoundary:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Límite del caso · brida de aspiración → brida de descarga, incluyendo motor M-101, acoplamiento y protecciones cuando formen parte del alcance analizado."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =154
+                        - conFLContextReadiness:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#FED7AA")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =222
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLContextOperational.Width-12
+                              X: =conFLContextOperational.Width+12
+                              Y: =138
+                            Children:
+                              - lblFLContextReadinessTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#C2410C")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="FL-03 · PREPARACIÓN Y CRITICIDAD"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =16
+                              - lblFLContextCriticality:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Criticidad " & varFLActiveCriticality
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =46
+                              - lblFLContextCriticalitySource:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Revisión de criticidad · " & varFLActiveCriticalityRevision
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =76
+                              - lblFLContextEvidence:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =9
+                                    Text: ="Evidencia disponible · histórico de vibración, rondas operativas, documentación técnica y revisión AMEF R01."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =108
+                              - btnFLContextCriticality:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorValue("#EA580C")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#C2410C")
+                                    Fill: =ColorValue("#FFF7ED")
+                                    Height: =34
+                                    OnSelect: =Navigate(scr_FL_AssetCriticality,ScreenTransition.None)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Size: =8
+                                    Text: ="Abrir criticidad"
+                                    Width: =135
+                                    X: =18
+                                    Y: =164
+                        - cmpFLContextGate:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_GatePanelPro
+                            Properties:
+                              CanContinue: =!IsBlank(varFLActiveAssetCode) && !IsBlank(varFLActiveFmeaRevisionCode) && !IsBlank(varFLActiveApplicationCode) && !IsBlank(varFLActiveCriticality)
+                              ContinueLabel: ="Revisar funciones heredadas"
+                              GateStatus: =If(!IsBlank(varFLActiveAssetCode) && !IsBlank(varFLActiveFmeaRevisionCode) && !IsBlank(varFLActiveApplicationCode) && !IsBlank(varFLActiveCriticality),"passed","blocked")
+                              GateTitle: ="Control de preparación FL-01..03"
+                              Height: =Parent.Height-372
+                              OnContinue: |-
+                                =
+                                UpdateIf(colFLStageExecutions,StageId="FL-01" || StageId="FL-02" || StageId="FL-03",{Status:"confirmed",IsCurrent:false});
+                                Set(varFLCurrentStageId,"FL-04");
+                                UpdateIf(colFLStageExecutions,StageId="FL-04",{IsCurrent:true});
+                                Navigate(scr_FL_Functions,ScreenTransition.None)
+                              OutputLabel: ="Activo + revisión + aplicación + criticidad + contexto confirmados"
+                              Reason: ="El siguiente paso revisa ingeniería heredada; no crea funciones desde cero."
+                              RequiredAction: ="Confirmar fuente técnica y contexto de planta"
+                              ResponsibleRole: ="Ingeniería de Fiabilidad + Operaciones"
+                              Summary: ="Contexto preparado"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =372

@@ -1,0 +1,420 @@
+# CMMS 2.0 FUNCTIONAL LAB — PAGE HEADER PRO — COMFORTABLE READABILITY RC
+#
+# Preserves the existing component identity and public contract.
+# Safe palette remains the default while UseHostTheme=false.
+# Typography follows TYPOGRAPHY_AND_DENSITY_STANDARD.md.
+
+ComponentDefinitions:
+  cmp_FL_PageHeaderPro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      WorkspaceCode:
+        PropertyKind: Input
+        DisplayName: WorkspaceCode
+        Description: Código del espacio de trabajo mostrado en la cabecera
+        DataType: Text
+        Default: ="ESTRATEGIA"
+
+      Archetype:
+        PropertyKind: Input
+        DisplayName: Archetype
+        Description: Arquetipo principal de interacción del espacio de trabajo
+        DataType: Text
+        Default: ="OBJETO 360"
+
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Título principal del espacio de trabajo
+        DataType: Text
+        Default: ="Caso y contexto"
+
+      Subtitle:
+        PropertyKind: Input
+        DisplayName: Subtitle
+        Description: Descripción breve del propósito del espacio de trabajo
+        DataType: Text
+        Default: ="Comprender el activo, sus límites y el contexto operativo."
+
+      CaseCode:
+        PropertyKind: Input
+        DisplayName: CaseCode
+        Description: Código del caso actual del Laboratorio Funcional
+        DataType: Text
+        Default: ="P-101"
+
+      CaseType:
+        PropertyKind: Input
+        DisplayName: CaseType
+        Description: Descripción breve del tipo de activo o caso
+        DataType: Text
+        Default: ="Bomba centrífuga"
+
+      JourneyPosition:
+        PropertyKind: Input
+        DisplayName: JourneyPosition
+        Description: Posición actual dentro del recorrido funcional
+        DataType: Text
+        Default: ="01 / 28"
+
+      JourneyHint:
+        PropertyKind: Input
+        DisplayName: JourneyHint
+        Description: Nombre breve de la etapa actual del recorrido
+        DataType: Text
+        Default: ="Contexto"
+
+      ReviewState:
+        PropertyKind: Input
+        DisplayName: ReviewState
+        Description: Estado actual de revisión funcional
+        DataType: Text
+        Default: ="En revisión"
+
+      ReviewHint:
+        PropertyKind: Input
+        DisplayName: ReviewHint
+        Description: Explicación secundaria del estado de revisión
+        DataType: Text
+        Default: ="Evidencia disponible"
+
+      ProgressCurrent:
+        PropertyKind: Input
+        DisplayName: ProgressCurrent
+        Description: Etapa numérica actual utilizada por el indicador de progreso
+        DataType: Number
+        Default: =1
+
+      ProgressTotal:
+        PropertyKind: Input
+        DisplayName: ProgressTotal
+        Description: Número total de etapas utilizado por el indicador de progreso
+        DataType: Number
+        Default: =28
+
+      UseHostTheme:
+        PropertyKind: Input
+        DisplayName: UseHostTheme
+        Description: Usa los colores suministrados por el host. Desactivado por defecto por compatibilidad Studio.
+        DataType: Boolean
+        Default: =false
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Color de la superficie principal de la cabecera
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      SurfaceAltColor:
+        PropertyKind: Input
+        DisplayName: SurfaceAltColor
+        Description: Superficie alternativa utilizada por las tarjetas de contexto
+        DataType: Color
+        Default: =ColorValue("#F8FAFC")
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Color neutro de bordes y pista de progreso
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Color del texto principal de la cabecera
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Color del texto secundario de la cabecera
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Color de acento del Laboratorio Funcional
+        DataType: Color
+        Default: =ColorValue("#0284C7")
+
+      SuccessColor:
+        PropertyKind: Input
+        DisplayName: SuccessColor
+        Description: Color de acento para estados satisfactorios
+        DataType: Color
+        Default: =ColorValue("#22C55E")
+
+      SuccessTextColor:
+        PropertyKind: Input
+        DisplayName: SuccessTextColor
+        Description: Color principal del texto de estado satisfactorio
+        DataType: Color
+        Default: =ColorValue("#14532D")
+
+      SuccessMutedTextColor:
+        PropertyKind: Input
+        DisplayName: SuccessMutedTextColor
+        Description: Color secundario del texto de estado satisfactorio
+        DataType: Color
+        Default: =ColorValue("#166534")
+
+      SuccessSoftColor:
+        PropertyKind: Input
+        DisplayName: SuccessSoftColor
+        Description: Fondo suave para estados satisfactorios
+        DataType: Color
+        Default: =ColorValue("#F0FDF4")
+
+      SuccessBorderColor:
+        PropertyKind: Input
+        DisplayName: SuccessBorderColor
+        Description: Color de borde para estados satisfactorios
+        DataType: Color
+        Default: =ColorValue("#BBF7D0")
+
+    Properties:
+      Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SurfaceColor,ColorValue("#FFFFFF"))
+      Height: =112
+      Width: =1200
+
+    Children:
+      - conFLPH_Root:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.BorderColor,ColorValue("#E2E8F0"))
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SurfaceColor,ColorValue("#FFFFFF"))
+            Height: =Parent.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+
+          Children:
+            - lblFLPH_Eyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.AccentColor,ColorValue("#0284C7"))
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: =Upper(cmp_FL_PageHeaderPro.WorkspaceCode & " · " & cmp_FL_PageHeaderPro.Archetype)
+                  Width: =Parent.Width-510
+                  Wrap: =false
+                  X: =24
+                  Y: =10
+
+            - lblFLPH_Title:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.TextColor,ColorValue("#0F172A"))
+                  FontWeight: =FontWeight.Semibold
+                  Size: =24
+                  Text: =cmp_FL_PageHeaderPro.Title
+                  Width: =Parent.Width-510
+                  Wrap: =false
+                  X: =24
+                  Y: =30
+
+            - lblFLPH_Subtitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.MutedTextColor,ColorValue("#64748B"))
+                  Size: =13
+                  Text: =cmp_FL_PageHeaderPro.Subtitle
+                  Width: =Parent.Width-510
+                  Wrap: =true
+                  X: =24
+                  Y: =66
+
+            - conFLPH_Case:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.BorderColor,ColorValue("#E2E8F0"))
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SurfaceAltColor,ColorValue("#F8FAFC"))
+                  Height: =78
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =150
+                  X: =Parent.Width-474
+                  Y: =16
+
+                Children:
+                  - lblFLPH_CaseLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.MutedTextColor,ColorValue("#64748B"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="CASO ACTUAL"
+                        Width: =Parent.Width-20
+                        X: =10
+                        Y: =8
+
+                  - lblFLPH_CaseCode:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.TextColor,ColorValue("#0F172A"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =13
+                        Text: =If(IsBlank(cmp_FL_PageHeaderPro.CaseCode),"—",cmp_FL_PageHeaderPro.CaseCode)
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                        X: =10
+                        Y: =29
+
+                  - lblFLPH_CaseType:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.MutedTextColor,ColorValue("#64748B"))
+                        Size: =11
+                        Text: =cmp_FL_PageHeaderPro.CaseType
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                        X: =10
+                        Y: =52
+
+            - conFLPH_Journey:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.BorderColor,ColorValue("#E2E8F0"))
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SurfaceAltColor,ColorValue("#F8FAFC"))
+                  Height: =78
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =138
+                  X: =Parent.Width-314
+                  Y: =16
+
+                Children:
+                  - lblFLPH_JourneyLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.MutedTextColor,ColorValue("#64748B"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="RECORRIDO"
+                        Width: =Parent.Width-20
+                        X: =10
+                        Y: =8
+
+                  - lblFLPH_JourneyPosition:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.TextColor,ColorValue("#0F172A"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =13
+                        Text: =cmp_FL_PageHeaderPro.JourneyPosition
+                        Width: =Parent.Width-20
+                        X: =10
+                        Y: =29
+
+                  - lblFLPH_JourneyHint:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.MutedTextColor,ColorValue("#64748B"))
+                        Size: =11
+                        Text: =cmp_FL_PageHeaderPro.JourneyHint
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                        X: =10
+                        Y: =52
+
+            - conFLPH_Review:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SuccessBorderColor,ColorValue("#BBF7D0"))
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SuccessSoftColor,ColorValue("#F0FDF4"))
+                  Height: =78
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =150
+                  X: =Parent.Width-166
+                  Y: =16
+
+                Children:
+                  - lblFLPH_ReviewLabel:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SuccessMutedTextColor,ColorValue("#166534"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =11
+                        Text: ="ESTADO"
+                        Width: =Parent.Width-20
+                        X: =10
+                        Y: =8
+
+                  - lblFLPH_ReviewState:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SuccessTextColor,ColorValue("#14532D"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =13
+                        Text: =cmp_FL_PageHeaderPro.ReviewState
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                        X: =10
+                        Y: =29
+
+                  - lblFLPH_ReviewHint:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.SuccessMutedTextColor,ColorValue("#166534"))
+                        Size: =11
+                        Text: =cmp_FL_PageHeaderPro.ReviewHint
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                        X: =10
+                        Y: =52
+
+            - recFLPH_ProgressTrack:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.BorderColor,ColorValue("#E2E8F0"))
+                  Height: =3
+                  Width: =Parent.Width
+                  X: =0
+                  Y: =Parent.Height-3
+
+            - recFLPH_ProgressValue:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =If(cmp_FL_PageHeaderPro.UseHostTheme,cmp_FL_PageHeaderPro.AccentColor,ColorValue("#0284C7"))
+                  Height: =3
+                  Width: =Parent.Width*Max(0,Min(1,cmp_FL_PageHeaderPro.ProgressCurrent/Max(1,cmp_FL_PageHeaderPro.ProgressTotal)))
+                  X: =0
+                  Y: =Parent.Height-3

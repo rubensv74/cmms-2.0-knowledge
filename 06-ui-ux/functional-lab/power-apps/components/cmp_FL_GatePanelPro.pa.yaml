@@ -1,0 +1,269 @@
+# CMMS 2.0 FUNCTIONAL LAB — GATE PANEL PRO — HARDENED SAFE PALETTE RC2
+#
+# Preserves public contract and component identity.
+# Root surface is fixed to the safe palette to avoid Color-input materialization issues.
+# Responsive narrow layout: text uses full width; action sits at the bottom.
+
+ComponentDefinitions:
+  cmp_FL_GatePanelPro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      GateTitle:
+        PropertyKind: Input
+        DisplayName: GateTitle
+        Description: Título del gate.
+        DataType: Text
+        Default: ="Gate de etapa"
+
+      GateStatus:
+        PropertyKind: Input
+        DisplayName: GateStatus
+        Description: Estado passed, warning o blocked.
+        DataType: Text
+        Default: ="blocked"
+
+      Summary:
+        PropertyKind: Input
+        DisplayName: Summary
+        Description: Resumen del estado del gate.
+        DataType: Text
+        Default: ="Requiere completar la revisión"
+
+      Reason:
+        PropertyKind: Input
+        DisplayName: Reason
+        Description: Explicación principal del estado.
+        DataType: Text
+        Default: ="Falta información obligatoria."
+
+      RequiredAction:
+        PropertyKind: Input
+        DisplayName: RequiredAction
+        Description: Acción necesaria para resolver el gate.
+        DataType: Text
+        Default: ="Completa los datos pendientes."
+
+      ResponsibleRole:
+        PropertyKind: Input
+        DisplayName: ResponsibleRole
+        Description: Rol que puede resolver el gate.
+        DataType: Text
+        Default: ="Ingeniería de Fiabilidad"
+
+      OutputLabel:
+        PropertyKind: Input
+        DisplayName: OutputLabel
+        Description: Output disponible al superar el gate.
+        DataType: Text
+        Default: ="Output preparado para la siguiente etapa"
+
+      CanContinue:
+        PropertyKind: Input
+        DisplayName: CanContinue
+        Description: Habilita la acción de continuar.
+        DataType: Boolean
+        Default: =false
+
+      ContinueLabel:
+        PropertyKind: Input
+        DisplayName: ContinueLabel
+        Description: Texto de la acción de continuar.
+        DataType: Text
+        Default: ="Continuar"
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Fondo base. Conservado por compatibilidad de contrato; la RC2 usa paleta interna segura.
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Borde base. Conservado por compatibilidad de contrato.
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Texto principal. Conservado por compatibilidad de contrato.
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Texto secundario. Conservado por compatibilidad de contrato.
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      OnContinue:
+        PropertyKind: Event
+        DisplayName: OnContinue
+        Description: Se ejecuta al continuar después de superar el gate.
+        ReturnType: None
+        Default: =false
+
+    Properties:
+      Fill: =ColorValue("#FFFFFF")
+      Height: =216
+      Width: =620
+
+    Children:
+      - conFLGateRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: |-
+              =
+              Switch(
+                  Lower(cmp_FL_GatePanelPro.GateStatus),
+                  "passed",ColorValue("#BBF7D0"),
+                  "warning",ColorValue("#FDE68A"),
+                  "blocked",ColorValue("#FECACA"),
+                  ColorValue("#E2E8F0")
+              )
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: |-
+              =
+              Switch(
+                  Lower(cmp_FL_GatePanelPro.GateStatus),
+                  "passed",ColorValue("#F0FDF4"),
+                  "warning",ColorValue("#FFFBEB"),
+                  "blocked",ColorValue("#FEF2F2"),
+                  ColorValue("#FFFFFF")
+              )
+            Height: =Parent.Height
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width
+
+          Children:
+            - conFLGateDot:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: |-
+                    =
+                    Switch(
+                        Lower(cmp_FL_GatePanelPro.GateStatus),
+                        "passed",ColorValue("#22C55E"),
+                        "warning",ColorValue("#F59E0B"),
+                        "blocked",ColorValue("#EF4444"),
+                        ColorValue("#94A3B8")
+                    )
+                  Height: =10
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =10
+                  X: =18
+                  Y: =18
+
+            - lblFLGateEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: |-
+                    =
+                    Switch(
+                        Lower(cmp_FL_GatePanelPro.GateStatus),
+                        "passed",ColorValue("#15803D"),
+                        "warning",ColorValue("#B45309"),
+                        "blocked",ColorValue("#B91C1C"),
+                        ColorValue("#64748B")
+                    )
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: =Upper(cmp_FL_GatePanelPro.GateTitle)
+                  Width: =Parent.Width-58
+                  Wrap: =false
+                  X: =36
+                  Y: =12
+
+            - lblFLGateSummary:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =16
+                  Text: =cmp_FL_GatePanelPro.Summary
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =38
+
+            - lblFLGateReason:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  Size: =13
+                  Text: =cmp_FL_GatePanelPro.Reason
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =68
+
+            - lblFLGateAction:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: |-
+                    ="Acción · " & cmp_FL_GatePanelPro.RequiredAction
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =101
+
+            - lblFLGateRole:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  Size: =11
+                  Text: |-
+                    =cmp_FL_GatePanelPro.ResponsibleRole & " · Output → " & cmp_FL_GatePanelPro.OutputLabel
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =132
+
+            - btnFLGateContinue:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorValue("#0284C7")
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  Color: =Color.White
+                  DisplayMode: =If(cmp_FL_GatePanelPro.CanContinue,DisplayMode.Edit,DisplayMode.Disabled)
+                  Fill: =ColorValue("#0284C7")
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =42
+                  HoverFill: =ColorValue("#0369A1")
+                  OnSelect: =cmp_FL_GatePanelPro.OnContinue()
+                  PressedFill: =ColorValue("#075985")
+                  RadiusBottomLeft: =9
+                  RadiusBottomRight: =9
+                  RadiusTopLeft: =9
+                  RadiusTopRight: =9
+                  Size: =12
+                  Text: =cmp_FL_GatePanelPro.ContinueLabel
+                  Width: =Min(190,Parent.Width-36)
+                  X: =Parent.Width-Self.Width-18
+                  Y: =Parent.Height-Self.Height-12

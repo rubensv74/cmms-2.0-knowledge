@@ -1,114 +1,91 @@
 # Functional Lab — Implementation Status
 
 **Fecha:** 2026-08-10  
-**Estado general:** F01 — Power Apps Foundation  
-**Último gate superado:** auditoría estática y arquitectura técnica F01-00  
-**Validación Power Apps:** pendiente de app baseline real
+**Estado general:** F01 — Power Apps Functional Foundation + vertical slices  
+**Último gate superado:** `F01-06 WS-02 Funciones y fallos` — VALIDATED PASS  
+**Gate actual:** `Discovery pre-journey FLH / Taxonomía / ADR` + preparación `WS-03`
 
 ## 1. Estado de incrementos
 
 | Incremento | Estado | Resultado |
 |---|---|---|
-| F00-01 Auditoría de transición | completed | Riesgos, fuentes y orden de trabajo identificados. |
-| F00-02 Protocolo incremental CMMS | completed | Adaptación del protocolo de Pulse con gate funcional previo. |
-| F00-03 Visión del Functional Lab | completed | Propósito y frontera definidos. |
-| F00-04 Functional Journey | completed | 28 etapas y 9 workspaces iniciales formalizados. |
-| F00-05 Persona vs sistema | completed | Matriz preliminar de responsabilidades creada. |
-| F00-06 Contratos JSON | completed | Schemas base de journey y fixture creados. |
-| F00-07 Fixture P-101 | completed | Caso existente convertido a JSON canónico. |
-| F00-08 Arquitectura del Lab | completed | Capas, estado, workspaces y límites definidos. |
-| F00-09 Paquete documental IT | completed | Estructura modular de handoff definida. |
-| F01-00 Auditoría Power Apps Foundation | partial | Auditoría estática y compatibilidad completadas; falta app real y Studio. |
-| F01-01 Shell de pantalla | blocked-by-runtime-baseline | Primer bloque técnico. |
-| F01-02 Runtime state mínimo | planned | Estado local del laboratorio. |
-| F01-03 Adaptador P-101 | planned | JSON → colecciones Power Fx. |
-| F01-04 Navegación base | planned | Navegación entre workspaces sin lógica funcional avanzada. |
-| F01-05 WS-01 Contexto visual | planned | Mostrar caso y datos existentes. |
-| F01-06 WS-01 Edición | planned | Inputs humanos del contexto. |
-| F01-07 WS-01 Gate evidencia | planned | Preparación de datos y explicación del bloqueo. |
-| F01-08 WS-01 Output | planned | Salida estructurada hacia WS-02. |
-| F01-09 Hardening WS-01 | planned | Empty/error/dirty/accessibility y documentación. |
+| F00-01..F00-09 | completed | Base funcional, journey, fixture, arquitectura y handoff definidos. |
+| F01-00 Auditoría Power Apps Foundation | completed | Compatibilidad contrastada con referencias reales PULSE. |
+| F01-00A cmp_FL_SidebarPro | validated-pass | RC2 completo con CustomProperties y contrato HeatMap-style es instance-safe. |
+| F01-00B cmp_FL_PageHeaderPro | validated-pass | Instance-safe, composición sin solapamiento, escala Comfortable y español validados. |
+| F01-01 Premium App Shell Foundation | validated-pass | Sidebar + Header integrados; navegación activa; colapsado; host responsive; interfaz española. |
+| F01-02 Runtime state mínimo | validated-pass | Estado local del caso, carga, edición y bootstrap estables en Studio. |
+| F01-03 Adaptador P-101 | validated-pass | Fixture P-101 proyectado a variables/colecciones Power Fx y representado correctamente. |
+| F01-04 Navegación funcional | active | Shell conserva navegación completa; los gates gobiernan el avance validado. |
+| F01-05 WS-01 Caso y contexto | validated-pass | Datos existentes + edición humana + evidencia + gate + `colFL_WS01Output` + transición a WS-02. |
+| F01-06 WS-02 Funciones y fallos | validated-pass | Funciones y fallos revisables + recomendación FM-03 separada de decisión humana + override justificable + `colFL_WS02Output`. |
+| Discovery pre-journey trees | active-discovery | FLH + Taxonomía + ADR como contexto previo; componente árbol PULSE pendiente de localización exacta. |
+| F01-07 WS-03 Efectos y riesgo | planned | Siguiente vertical slice del journey una vez completado el checkpoint de discovery suficiente para no perder la visión global. |
 
-## 2. F01-00 — Resultado actual
+## 2. Resultado F01-06 — WS-02
 
-Completado:
-
-- inspección del protocolo activo de Pulse;
-- inspección del protocolo modular de pantallas;
-- inspección del registro de compatibilidad Source Code;
-- inspección de un shell real utilizado en Pulse;
-- registro de compatibilidad propio del Functional Lab;
-- árbol técnico mínimo de `scr_FunctionalLab`;
-- secuencia de bloques F01;
-- decisión de no depender de componentes premium en Bloque 01.
-
-Pendiente de la herramienta real:
-
-- crear/identificar la Canvas app del Functional Lab;
-- confirmar schema Source Code aceptado;
-- confirmar versiones reales de controles;
-- obtener baseline de App Checker;
-- integrar y validar Bloque 01.
-
-## 3. Condición para generar Bloque 01
-
-Debe existir una Canvas app vacía o baseline destinada al laboratorio.
-
-Nombre recomendado:
+Validación comunicada por el usuario:
 
 ```text
-CMMS 2.0 Functional Lab
+WS-02 TERMINADO
+Pantalla / Shell estable                       PASS
+Funciones revisables                           PASS
+Fallos funcionales total/parcial              PASS
+Modos de fallo candidatos                     PASS
+Recomendación del sistema FM-03               PASS
+Selección humana explícita                    PASS
+Override con motivo                           PASS
+Gate explicable                               PASS
+colFL_WS02Output                              PASS
+Transición hacia Risk / WS-03                 PASS
 ```
 
-El primer bloque será autocontenido y no asumirá que componentes premium de Pulse estén instalados.
+WS-02 consolida el patrón:
 
-## 4. Gate funcional de WS-01
+```text
+validated upstream output
+→ editable functional model
+→ system recommendation
+→ human decision
+→ justified override when applicable
+→ gate
+→ structured output
+```
 
-### Inputs existentes
+## 3. Checkpoint actual — FLH / Taxonomía / ADR + TreePro
 
-- código y nombre de activo;
-- planta/unidad;
-- servicio;
-- frontera;
-- demanda y presión;
-- modos operativos;
-- redundancia;
-- restricciones;
-- fuentes de evidencia.
+Las tres vistas se consideran por ahora contexto previo al journey, no nuevas etapas FL.
 
-### Inputs humanos
+Objetivo:
 
-- correcciones del contexto;
-- confirmación de evidencia;
-- nivel de confianza.
+```text
+P-101 en FLH
+→ P-101 en Taxonomía
+→ P-101 en ADR
+→ FL-01..FL-28
+```
 
-### Cálculos / validaciones
+Auditoría PULSE realizada hasta ahora:
 
-- número de fuentes disponibles;
-- consistencia mínima del contexto;
-- estado del gate de preparación.
+- `power-apps/components` no contiene un componente con nombre `Tree*` o `Hierarchy*`;
+- búsquedas por `tree`, `hierarchy`, `ParentId` y `FLH` no han identificado la fuente del árbol;
+- en `power-apps/screens` del snapshot `main` solo aparecen `Home`, `PunchReview` y `Punches`;
+- por tanto, no se atribuye arquitectura ni limitación de tres niveles a ningún componente hasta localizar la fuente real.
 
-### Decisión humana
+El discovery permanece abierto, pero no debe bloquear indefinidamente WS-03 si la fuente del árbol no está versionada todavía.
 
-- confirmar que el contexto representa el caso que debe analizarse.
+## 4. Baseline vigente
 
-### Gate
+```text
+Idioma visible           Español (es-ES)
+Densidad base            Comfortable
+Caso demostración        P-101
+Fuente canónica          JSON versionado
+Runtime                  Power Fx sustituible
+Persistencia productiva  no decidida
+WS-01 output             colFL_WS01Output
+WS-02 output             colFL_WS02Output
+YAML delivery            remote-first en GitHub
+```
 
-- bloquear el avance cuando falte información crítica;
-- explicar qué falta;
-- distinguir reglas validadas de reglas de demostración.
-
-### Output
-
-Objeto de contexto funcional listo para alimentar funciones y fallos.
-
-## 5. Documentos técnicos F01
-
-- `development/f01-00-power-apps-foundation-audit.md`
-- `development/compatibility.md`
-
-## 6. Regla de continuidad
-
-Una vez iniciado F01:
-
-> No se prepara el siguiente bloque técnico hasta que el anterior quede integrado y validado en Power Apps Studio o exista una corrección explícita en curso.
+No se abre ninguna decisión de backend, SQL, Dataverse, API o integración productiva en este checkpoint.

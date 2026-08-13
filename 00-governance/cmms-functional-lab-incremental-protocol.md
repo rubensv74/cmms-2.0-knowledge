@@ -1,62 +1,101 @@
 # CMMS 2.0 Functional Lab — Protocolo incremental
 
-**Versión:** 1.0  
+**Versión:** 1.2  
 **Estado:** Activo  
-**Derivado de:** Protocolo de Implementación Incremental Asistida por IA v2.0 de Pulse  
-**Complemento:** Protocolo de Construcción Modular de Pantallas Power Apps v1.0 de Pulse
+**Actualización 1.2:** adopción obligatoria del playbook modular vigente, skeleton/placeholders, freeze por capas, bloques S/C/I/FIX y validación cromática aislada.
 
-## 1. Propósito
+## 1. Autoridad Power Apps
 
-Adaptar al CMMS 2.0 Functional Lab el método incremental que se utiliza en Pulse, sin rebajar sus controles y añadiendo una condición propia del carácter conceptual del laboratorio.
+Para cualquier nueva pantalla, componente o evolución mediante YAML, la referencia principal es:
 
-Regla general heredada:
+`functional-engineering-knowledge-base/30-playbooks/power-platform/modular-power-apps-screen-construction.md`
 
-> Analizar → diseñar → dividir → implementar una pieza → guardar → validar → corregir → documentar → continuar.
+Este protocolo adapta ese método al contexto funcional del CMMS 2.0; no lo sustituye.
 
-Regla adicional de CMMS 2.0:
+Power Apps Studio continúa siendo el entorno principal de implementación y validación.
 
-> Validar primero la responsabilidad funcional de la pieza y después su implementación técnica.
+Git/GitHub pueden conservar fuentes, contratos y evidencia, pero no son requisito de construcción ni sustituyen Studio.
 
-## 2. Naturaleza del Functional Lab
+## 2. Regla general
+
+```text
+comprender función
+→ definir arquitectura
+→ construir skeleton completo
+→ crear placeholders contratados
+→ entregar un bloque S/C/I
+→ pegar en Studio
+→ validar
+→ congelar
+→ siguiente bloque
+```
+
+Si un incremento falla:
+
+```text
+BLOCK X ❌
+→ BLOCK X-FIX
+→ validar
+→ BLOCK X ✅
+```
+
+No se utiliza un bloque posterior para reparar silenciosamente uno anterior.
+
+## 3. Naturaleza del Functional Lab
 
 El Functional Lab es un instrumento de análisis funcional ejecutable.
 
 No es:
 
 - el CMMS 2.0 productivo;
-- una decisión de arquitectura para IT;
+- una decisión irreversible de arquitectura para IT;
 - una definición obligatoria de backend;
 - una especificación de integración final;
-- un sustituto de la documentación funcional.
+- un sustituto de documentación funcional.
 
 Sí debe permitir:
 
 - recorrer casos realistas;
-- introducir y modificar datos;
+- introducir/modificar datos donde corresponda;
 - distinguir automatismos de decisiones humanas;
-- mostrar gates y validaciones;
-- descubrir qué workspaces o pantallas son necesarios;
+- mostrar controles de avance y validaciones;
+- descubrir workspaces/pantallas necesarios;
 - registrar decisiones de reunión;
-- alimentar documentación funcional trazable.
+- producir documentación funcional trazable.
 
-## 3. Fuentes de verdad
+## 4. Fuentes de verdad
 
-Para el Functional Lab se adopta este orden:
+Orden:
 
 1. decisión funcional expresamente validada;
-2. documentación funcional consolidada del repositorio;
-3. contratos JSON y schemas vigentes;
-4. código canónico del Functional Lab;
-5. resultados reales en Power Apps Studio y App Checker;
-6. Experience Center y prototipos históricos;
-7. notas de reuniones no consolidadas;
-8. hipótesis.
+2. documentación funcional consolidada;
+3. contratos JSON/schemas vigentes;
+4. estado/freeze registrado de la app;
+5. código canónico del Functional Lab;
+6. resultados reales en Power Apps Studio y App Checker;
+7. conocimiento reutilizable central vigente;
+8. prototipos históricos y Experience Center;
+9. notas no consolidadas;
+10. hipótesis.
 
 Una hipótesis nunca se presenta como requisito aprobado.
 
-## 4. Gate funcional obligatorio
+Para Power Apps deben consultarse además:
 
-Antes de producir un bloque técnico debe existir una ficha funcional con:
+```text
+30-playbooks/power-platform/modular-power-apps-screen-construction.md
+15-standards/power-platform/power-apps-source-code-compatibility-standard.md
+15-standards/power-platform/reusable-power-apps-component-contract.md
+15-standards/ux-ui/power-apps-visual-quality-standard.md
+15-standards/ux-ui/enterprise-design-system-token-governance.md
+80-learning/power-platform/POWER_APPS_UI_LESSONS_LEARNED.md
+```
+
+Antes de cada YAML se consulta también `06-ui-ux/functional-lab/development/compatibility.md`.
+
+## 5. Gate funcional
+
+Antes de un bloque técnico debe estar clara la unidad funcional:
 
 ```text
 FUNCTIONAL UNIT
@@ -69,14 +108,14 @@ Existing information:
 System calculations:
 System recommendation:
 Human decision:
-Gate:
+Control de avance:
 Outputs:
 Audit evidence:
 Open questions:
 Rule status:
 ```
 
-Estados permitidos para una regla o decisión:
+Estados de regla:
 
 ```text
 hypothesis
@@ -87,178 +126,350 @@ approved
 superseded
 ```
 
-No se codificará como automatismo corporativo una regla en estado `hypothesis`, `proposed` o `to_validate` sin identificarla visualmente como simulación.
+No automatizar como regla corporativa algo que siga siendo `hypothesis`, `proposed` o `to_validate` sin identificarlo como simulación.
 
-## 5. Gate de arquitectura
+## 6. Gate de arquitectura — skeleton first
 
-Antes del primer bloque de una pantalla o workspace deben quedar definidos:
+Antes del primer bloque de una pantalla nueva o abierta a reconstrucción deben definirse:
 
-- etapas funcionales que agrupa;
-- árbol objetivo de controles;
-- responsabilidad de cada panel;
-- colecciones y estado local;
-- contrato de datos de entrada;
+- propósito de la pantalla;
+- arquetipo de trabajo;
+- árbol estructural;
+- placeholders;
+- función de cada placeholder;
+- geometría X/Y/Width/Height o contrato responsive;
+- datos esperados;
+- eventos/outputs previstos;
+- dependencias;
+- loading/empty/error;
 - navegación;
-- loading / empty / error;
-- dirty state cuando exista edición;
-- salida que deja al siguiente workspace;
 - elementos fuera de alcance.
 
-Cualquier cambio estructural que invalide bloques posteriores obliga a actualizar la arquitectura antes de continuar.
-
-## 6. Gate técnico
-
-Cada bloque Power Apps debe superar:
-
-1. revisión estática contra repositorio y compatibilidad conocida;
-2. integración en Power Apps Studio;
-3. guardado sin error;
-4. Source Code validation cuando aplique;
-5. App Checker;
-6. interacción mínima definida para el bloque;
-7. confirmación del responsable.
-
-No se avanza sobre un bloque `failed`.
-
-## 7. Unidad mínima de incremento
-
-Un incremento tendrá una responsabilidad principal.
-
-Ejemplos:
-
-- crear shell del Functional Lab;
-- cargar fixture P-101;
-- mostrar contexto del caso;
-- implementar navegación entre workspaces;
-- implementar una decisión humana;
-- calcular una recomendación;
-- implementar un gate;
-- registrar el resultado de una etapa;
-- añadir un estado empty/error;
-- documentar una pantalla validada.
-
-No se mezclarán en un mismo bloque, salvo dependencia inseparable:
-
-- layout;
-- contratos;
-- persistencia;
-- automatización;
-- integración remota;
-- cambios de modelo de datos.
-
-## 8. Contrato de cada incremento
-
-Cada bloque debe indicar:
+La primera implementación será estructural:
 
 ```text
-INCREMENT [N]
-Name:
-Operation:
-Functional unit:
-Target file:
-Target element:
-Parent / anchor:
-Dependencies:
-Scope:
-Out of scope:
-Functional rule status:
-Compatibility constraints:
-Static validation:
-Power Apps validation:
-Expected result:
-Documentation impacted:
+S01 — full screen skeleton
 ```
 
-## 9. Datos de ejemplo
+No se integran componentes reales hasta validar la geometría.
 
-Los casos se mantendrán como fixtures JSON versionados.
+Una vez aprobada:
+
+```text
+STRUCTURE = FROZEN
+```
+
+Los siguientes bloques no pueden modificar esa geometría salvo que lo declaren expresamente y justifiquen reabrirla.
+
+## 7. Placeholders
+
+Cada placeholder debe tener contrato explícito:
+
+```text
+Placeholder:
+Purpose:
+Geometry:
+Future component/content:
+Expected inputs:
+Expected outputs/events:
+Behavior expectations:
+Status:
+```
+
+Estados útiles:
+
+```text
+STRUCTURAL
+PLANNED
+READY_FOR_REPLACEMENT
+REPLACED
+FROZEN
+```
+
+## 8. Tipos de bloque
+
+### S — Structural
+
+Crea estructura, slots, placeholders y geometría. No implementa lógica compleja.
+
+### C — Component
+
+Sustituye un placeholder/slot por un componente real o modifica una pieza visual concreta. No rediseña la pantalla.
+
+### I — Integration
+
+Conecta piezas ya estables. No debe rehacer componentes ni geometría.
+
+### FIX
+
+Repara exclusivamente el incremento que falló.
+
+## 9. Contrato obligatorio antes de cada YAML
+
+```text
+BLOCK [TYPE]-[NN] — [Name]
+Operation:
+Target control/property:
+Parent/anchor:
+Dependencies:
+Scope:
+TOUCHES:
+DO NOT MODIFY:
+Functional rule status:
+Compatibility constraints:
+Validation:
+Expected result:
+Expected construction status:
+```
+
+Para componentes:
+
+```text
+Component validation level before test:
+Component validation level expected after test:
+Instance smoke test:
+Public contract smoke test:
+Visual QA:
+```
+
+## 10. Freeze model
+
+Estados de construcción:
+
+```text
+IN_CONSTRUCTION
+FUNCTIONAL
+FUNCTIONAL_FROZEN
+VISUAL_APPROVED
+FINAL_FROZEN
+```
+
+Capas:
+
+```text
+STRUCTURE       OPEN | FROZEN
+BEHAVIOR        OPEN | FROZEN
+DATA CONTRACT   OPEN | FROZEN
+COLOR           PENDING | APPROVED
+```
+
+Una pieza `FUNCTIONAL_FROZEN` puede conservar `COLOR=PENDING`.
+
+Un problema puramente cromático no reabre automáticamente estructura/comportamiento.
+
+Antes de cada bloque se consulta el Freeze Register de la app activa.
+
+## 11. Gate técnico de CanvasComponent
+
+Todo componente modificado debe recorrer:
+
+```text
+SOURCE_VALID
+→ COMPONENT_DEFINITION_ACCEPTED
+→ INSTANCE_SAFE
+→ PUBLIC_CONTRACT_VALIDATED
+→ VISUAL_QA_VALIDATED
+→ READY_FOR_INTEGRATION
+```
+
+Definiciones:
+
+- `SOURCE_VALID`: revisión estática del schema, controles, propiedades, Power Fx y dependencias.
+- `COMPONENT_DEFINITION_ACCEPTED`: Studio acepta/guarda la definición.
+- `INSTANCE_SAFE`: una instancia puede insertarse en una superficie aislada sin cierre/bloqueo/corrupción.
+- `PUBLIC_CONTRACT_VALIDATED`: inputs/outputs/eventos esenciales funcionan.
+- `VISUAL_QA_VALIDATED`: contenido representativo sin defecto visual bloqueante.
+- `READY_FOR_INTEGRATION`: todos los gates anteriores superados.
+
+`COMPONENT_DEFINITION_ACCEPTED` nunca equivale a `INSTANCE_SAFE`.
+
+## 12. Diagnóstico de componentes — referencia positiva primero
+
+Si un componente falla al instanciarse:
+
+1. registrar `INSTANCE_SAFE=FAIL`;
+2. detener bloques dependientes;
+3. mantener la causa como `UNKNOWN` si no hay evidencia;
+4. comparar primero con un componente PULSE `INSTANCE_SAFE` equivalente;
+5. hacer diff de contrato, cuerpo, Gallery/ThisItem, outputs/events y versiones de controles;
+6. publicar un candidato completo corregido;
+7. ejecutar **un** smoke de instancia;
+8. usar reducción controlada solo si el problema persiste.
+
+Referencias positivas principales:
+
+```text
+PULSE cmp_HeatMapPro
+PULSE cmp_SidebarNav
+PULSE Classic/TextInput@2.3.2
+```
+
+La reducción `root only → ...` es segunda línea de diagnóstico, no la respuesta automática.
+
+## 13. Identidad de componentes
+
+Si un componente existente tiene instancias:
+
+```text
+NO crear copia _1 como actualización
+NO asumir que las instancias se reasocian
+```
+
+Actualizar la definición **in situ** preservando identidad o ejecutar una migración explícita/controlada.
+
+## 14. Color y Theme
+
+Los componentes no deben inventar paletas independientes.
+
+Roles compartidos mínimos:
+
+```text
+Background
+Surface
+SurfaceAlt
+Border
+TextPrimary
+TextSecondary
+Primary
+PrimaryHover
+PrimarySelected
+SelectedBackground
+SelectedBorder
+SelectedAccent
+SelectedText
+Success
+Warning
+Danger
+Chart01…Chart06
+```
+
+Las dudas de render/color se reproducen primero en:
+
+```text
+scr_DesignSystemLab
+```
+
+antes de propagarlas a pantallas funcionales.
+
+Los HEX/fallbacks existentes pueden conservarse por compatibilidad, pero no son una segunda fuente semántica definitiva.
+
+## 15. Tipografía / Visual QA
+
+Baseline actual:
+
+```text
+visible mínimo  11
+supporting      12
+labels          12–13
+body            13–14
+card title      15–17
+section title   16–18
+page title      24–28
+button          12–13
+```
+
+No reducir texto para evitar scroll. Cambiar layout/overflow mediante bloque explícito.
+
+No aplicar reemplazos globales de tamaños o color.
+
+## 16. Grafo de pantallas y Navigate
+
+En una app con navegación cruzada, una referencia a `scr_FL_X` no puede diagnosticarse correctamente si esa identidad aún no existe en Studio.
+
+Se permite crear primero `Blank screen` con los nombres canónicos para completar dependencias.
+
+Eso **no autoriza** a pegar el contenido de todas las pantallas en un único lote.
+
+## 17. Datos de ejemplo
+
+Los casos siguen como fixtures JSON versionados.
 
 Reglas:
 
-- JSON es la fuente canónica del ejemplo;
-- los datos de prueba se separan del código de pantalla;
-- cada fixture declara versión, finalidad y carácter ficticio/ilustrativo;
-- cualquier transformación a Power Fx se considera un adaptador runtime;
-- no se duplica manualmente la lógica del caso en varias pantallas;
-- una modificación funcional del caso debe reflejarse en el fixture y en su documentación asociada.
+- JSON es fuente canónica del ejemplo;
+- datos separados del código de pantalla;
+- versión/finalidad/caracter ficticio documentados;
+- Power Fx es adaptador runtime;
+- no duplicar lógica del caso en múltiples pantallas.
 
-## 10. Modelo de decisión usuario / sistema
+## 18. Modelo usuario / sistema
 
-Toda etapa deberá poder clasificar sus elementos como:
+Cada etapa clasifica sus elementos como:
 
-- `existing_input`: información ya disponible;
-- `user_input`: información introducida o corregida por una persona;
-- `system_calculation`: cálculo determinista;
-- `system_recommendation`: propuesta automática no vinculante;
-- `human_decision`: decisión que requiere responsabilidad humana;
-- `gate`: condición necesaria para avanzar;
-- `output`: resultado consumido por otra etapa.
+```text
+existing_input
+user_input
+system_calculation
+system_recommendation
+human_decision
+gate / control de avance
+output
+```
 
-La UI deberá hacer visible esta diferencia durante las reuniones.
+La UI debe hacer visible la diferencia.
 
-## 11. Documentación viva
+## 19. Condiciones de parada
 
-Cada incremento validado debe actualizar, cuando aplique:
-
-- especificación funcional del módulo;
-- catálogo de reglas;
-- catálogo de decisiones humano/sistema;
-- especificación de pantalla;
-- modelo de datos conceptual;
-- contrato JSON;
-- registro de preguntas abiertas;
-- manual de uso del Functional Lab;
-- lecciones aprendidas técnicas.
-
-## 12. Condiciones de parada
-
-El trabajo se detiene cuando aparece cualquiera de estos casos:
+Detener el bloque cuando aparezca:
 
 - decisión funcional que cambia el proceso;
-- decisión de arquitectura productiva irreversible;
-- contradicción entre dos fuentes de verdad relevantes;
-- error nuevo en Power Apps Studio;
-- necesidad de un contrato remoto no confirmado;
-- cambio de modelo de datos que afecte a varios workspaces;
-- regla que el prototipo está a punto de convertir en automatismo sin validación suficiente.
+- arquitectura productiva irreversible;
+- contradicción relevante;
+- error nuevo bloqueante en Studio;
+- cierre/bloqueo durante smoke de instancia;
+- cambio de contrato/datos que afecte piezas congeladas;
+- necesidad de modificar una pieza `FINAL_FROZEN` no declarada en el bloque;
+- intento de propagar color no validado;
+- regla no aprobada a punto de convertirse en automatismo.
 
-## 13. Política de errores y aprendizaje
+## 20. Documentación viva
 
-Todo error reutilizable debe producir:
+Cada bloque validado actualiza cuando aplique:
 
-1. corrección del bloque;
-2. actualización del registro de compatibilidad;
-3. regla preventiva;
-4. revisión de bloques futuros donde el mismo patrón pueda aparecer.
+- freeze register;
+- especificación funcional;
+- catálogo de reglas;
+- decisiones humano/sistema;
+- especificación de pantalla;
+- modelo de datos;
+- contratos;
+- preguntas abiertas;
+- manual;
+- lecciones aprendidas;
+- compatibilidad Source Code.
 
-Antes de generar nuevos YAML se consultará siempre el registro de compatibilidad y lecciones aprendidas del Functional Lab.
+## 21. Handoff
 
-## 14. Handoff
+El repositorio debe permitir retomar trabajo sin leer conversaciones.
 
-El repositorio debe permitir retomar el trabajo sin leer conversaciones previas.
+Estado mínimo:
 
-Se mantendrá un estado con:
+```text
+último bloque validado
+bloque actual
+siguiente bloque permitido
+piezas congeladas
+color pending/approved
+bloqueadores
+fixtures vigentes
+fuentes canónicas
+component validation levels
+Studio gates pendientes
+```
 
-- último incremento validado;
-- incremento actual;
-- siguiente incremento;
-- bloqueadores;
-- decisiones abiertas;
-- fixtures vigentes;
-- archivos canónicos;
-- validaciones pendientes en Power Apps Studio.
+## 22. Criterio de éxito
 
-## 15. Criterio de éxito
-
-El Functional Lab no se considera exitoso porque tenga muchas pantallas.
-
-Se considera exitoso si permite responder con claridad:
+El Functional Lab es exitoso si permite responder:
 
 - qué debe saber el sistema;
-- qué debe calcular;
-- qué puede recomendar;
-- qué debe decidir una persona;
+- qué calcula;
+- qué recomienda;
+- qué decide una persona;
 - qué impide avanzar;
-- qué dato o decisión queda generado;
-- cómo se justifica posteriormente;
+- qué output queda generado;
+- cómo se justifica;
 - qué requisito funcional se entrega a IT.
+
+Y técnicamente:
+
+> ningún incremento destruye silenciosamente uno aprobado; ningún componente se integra solo por confianza estática; y la capa cromática no obliga a reabrir piezas funcionalmente estables.

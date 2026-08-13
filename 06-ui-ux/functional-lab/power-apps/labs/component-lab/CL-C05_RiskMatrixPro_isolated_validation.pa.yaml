@@ -1,0 +1,290 @@
+# BLOCK CL-C05 — RiskMatrixPro isolated validation harness
+# TYPE: C — Component validation harness
+# ACTION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: CL-S01 STRUCTURE FROZEN + COLOR FOUNDATION APPROVED + cmp_FL_RiskMatrixPro RC4 definition accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, scr_DesignSystemLab, validated components, Functional Lab screens, RiskMatrixPro public contract
+# PURPOSE: validate AMEF 5x5 S×O selection, synchronized default cell, D as separate dimension, NPR calculation and visual QA
+# COLOR: UseHostTheme=false; current safe matrix palette only; no corporate scale/color decision in this block
+# VALIDATION: baseline S4/O3/D3 -> S×O 12 / NPR 36; select S5/O5 -> 25 / 75; set D4 -> NPR 100 without moving matrix cell; reset to 4/3/3; no black surfaces; no clipping
+# EXPECTED STATUS AFTER PASS: cmp_FL_RiskMatrixPro RC4 -> READY_FOR_INTEGRATION
+#
+# PRECONDITION — COMPONENT DEFINITION
+# Update the EXISTING cmp_FL_RiskMatrixPro definition in situ from:
+# power-apps/components/cmp_FL_RiskMatrixPro.pa.yaml
+# Do NOT add a second component identity.
+# Save and confirm Studio accepts the definition before pasting this harness.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children replace ONLY:
+# 1) ph_ComponentUnderTest
+# 2) ph_TestControls
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(700,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - cmpCLRisk:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_RiskMatrixPro
+          Properties:
+            ContextLabel: ="P-101"
+            DetectionLabel: ="Detección"
+            DetectionValue: =Coalesce(varCLRiskD,3)
+            Height: =650
+            MatrixMode: ="PRODUCT"
+            OccurrenceValue: =Coalesce(varCLRiskO,3)
+            OnSelectCell: |-
+              =
+              Set(varCLRiskS,cmpCLRisk.SelectedSeverityOut);
+              Set(varCLRiskO,cmpCLRisk.SelectedOccurrenceOut);
+              Set(varCLRiskLastEvent,"CELL")
+            RiskScore: =0
+            RiskScoreLabel: ="NPR"
+            ScaleNote: ="Fixture P-101 · AMEF S×O 5×5 · D separada · umbrales de demostración"
+            SeverityValue: =Coalesce(varCLRiskS,4)
+            ShowDetection: =true
+            ShowRiskScore: =true
+            Subtitle: ="Modo de fallo · degradación de rodamientos"
+            Title: ="Matriz de riesgo AMEF"
+            UseHostTheme: =false
+            Width: =900
+            X: =Max(0,(Parent.Width-Self.Width)/2)
+            Y: =0
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLRiskTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Risk Matrix · smoke test"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLRiskTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="AMEF 5×5 · S×O en matriz · D separada · NPR calculado"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLRiskLoad:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =42
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              Set(varCLRiskS,4);
+              Set(varCLRiskO,3);
+              Set(varCLRiskD,3);
+              Set(varCLRiskLastEvent,"READY")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Cargar S4 · O3 · D3"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =104
+
+      - btnCLRiskD4:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLRiskD,4);
+              Set(varCLRiskLastEvent,"D4")
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Cambiar solo D a 4"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =154
+
+      - lblCLRiskStepsTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Prueba discriminante"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =214
+
+      - lblCLRiskSteps:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="1 · Carga 4/3/3 → 12 y 36" & Char(10) &
+              "2 · Selecciona S5/O5 → 25 y 75" & Char(10) &
+              "3 · Cambia D a 4 → NPR 100" & Char(10) &
+              "4 · La celda debe seguir en S5/O5" & Char(10) &
+              "5 · Recarga → vuelve a S4/O3/D3"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =244
+
+      - lblCLRiskOutputsTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Outputs"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =360
+
+      - lblCLRiskSelected:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="S / O · " & Text(cmpCLRisk.SelectedSeverityOut) & " / " & Text(cmpCLRisk.SelectedOccurrenceOut)
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =390
+
+      - lblCLRiskSO:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="S × O · " & Text(cmpCLRisk.MatrixScoreOut)
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =424
+
+      - lblCLRiskDetection:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="D · " & Text(Coalesce(varCLRiskD,3))
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =458
+
+      - lblCLRiskNPR:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#1D4ED8")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="NPR · " & Text(cmpCLRisk.MatrixScoreOut*Coalesce(varCLRiskD,3))
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =492
+
+      - lblCLRiskBand:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Banda S×O · " & Coalesce(cmpCLRisk.MatrixBandOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =528
+
+      - lblCLRiskEvent:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Último evento · " & Coalesce(varCLRiskLastEvent,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =562
+
+      - lblCLRiskGate:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Gate · S/O sync → cell event → D separate → NPR → Visual QA"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =610

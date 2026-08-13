@@ -1,0 +1,68 @@
+# BLOCK DS-C01-FIX-01 — Fourth-column token label alignment
+# TYPE: FIX
+# OPERATION: REPLACE FOUR EXISTING LABEL CONTROLS
+# TARGET: ph_TokenRoles
+# DEPENDS ON: DS-S01 STRUCTURE FROZEN + DS-C01 previously validated
+# TOUCHES ONLY:
+#   lblDSBorder
+#   lblDSPrimaryHover
+#   lblDSSelectedAccent
+#   lblDSDanger
+# DO NOT MODIFY:
+#   ph_TokenRoles geometry
+#   any token rectangle/swatch
+#   any token value or color
+#   DS-C02 controls
+#   DS-C03 interaction states
+#   any other placeholder or Functional Lab screen/component
+# PURPOSE: fix runtime-wide alignment discovered while validating DS-C03.
+# ROOT CAUSE CLASSIFICATION: label positioning formula is not robust enough in the observed wide runtime surface.
+# FIX STRATEGY: anchor each fourth-column label to its own swatch X instead of recomputing the 75% column independently.
+# VALIDATION: all four fourth-column labels align immediately to the right of their swatches at the same runtime width; no overlap with third column; geometry unchanged.
+#
+# PASTE INSTRUCTION:
+# Inside ph_TokenRoles.Children, replace ONLY the four controls below by matching control name.
+
+- lblDSBorder:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: ="Border" & Char(10) & "#E2E8F0"
+      Width: =Parent.Width-Self.X-12
+      X: =recDSBorder.X+34
+      Y: =63
+
+- lblDSPrimaryHover:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: ="PrimaryHover" & Char(10) & "#0369A1"
+      Width: =Parent.Width-Self.X-12
+      X: =recDSPrimaryHover.X+34
+      Y: =103
+
+- lblDSSelectedAccent:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: ="SelectedAccent" & Char(10) & "#2563EB"
+      Width: =Parent.Width-Self.X-12
+      X: =recDSSelectedAccent.X+34
+      Y: =143
+
+- lblDSDanger:
+    Control: ModernText@1.0.0
+    Properties:
+      AutoHeight: =true
+      Color: =ColorValue("#0F172A")
+      Size: =11
+      Text: ="Danger" & Char(10) & "#B91C1C"
+      Width: =Parent.Width-Self.X-12
+      X: =recDSDanger.X+34
+      Y: =183

@@ -1,139 +1,158 @@
-# CMMS 2.0 Functional Journey
+# CMMS 2.0 Functional Journey — modelo alineado
 
 ## 1. Propósito
 
-Definir el recorrido funcional independiente de la interfaz. Este documento es la referencia para decidir qué procesos existen, qué responsabilidad tiene cada etapa y cómo se agrupan posteriormente en workspaces de Power Apps.
+Definir el recorrido funcional independiente de la interfaz y de la implementación técnica.
 
-Regla:
+El journey de 28 etapas describe **cómo se aplica y valida una ingeniería AMEF/RCM reutilizable sobre un activo concreto**, cómo se convierte en trabajo ejecutable y cómo los resultados reales regresan a ingeniería.
 
 > Una etapa funcional no equivale necesariamente a una pantalla.
 
-## 2. Modelo de etapa
+## 2. Precondición del journey
+
+Antes de FL-01 deben existir, o poder seleccionarse:
+
+```text
+TechnicalObject
+FmeaDefinition / FmeaRevision
+AssetCriticalityAssessment
+FmeaAssetApplication (propuesta o existente)
+```
+
+El journey no pretende volver a crear desde cero funciones, fallos y modos para cada tag.
+
+## 3. Modelo de etapa
 
 Cada etapa debe describirse mediante:
 
-- `stageId`
+- `stageId`;
 - fase funcional;
 - pregunta de negocio;
-- información disponible;
+- información heredada de biblioteca;
+- información contextual del activo;
 - inputs humanos;
 - cálculos automáticos;
 - recomendación del sistema;
 - decisión humana;
-- gate;
+- control de avance;
 - outputs;
 - actor responsable;
 - evidencia / trazabilidad;
 - estado de validación de reglas.
 
-## 3. Fases y etapas canónicas v1
+## 4. Fases y etapas canónicas
 
-### Fase 1 — Comprender el problema
+### Fase 1 — Comprender la aplicación y el contexto
 
-| ID | Etapa | Propósito |
+| ID | Etapa | Propósito alineado |
 |---|---|---|
-| FL-01 | Definir el activo y sus límites | Establecer el objeto físico y la frontera del análisis. |
-| FL-02 | Describir el contexto operacional | Definir demanda, modos, redundancia y restricciones. |
-| FL-03 | Comprobar la preparación de datos | Confirmar evidencia y nivel de confianza. |
-| FL-04 | Definir funciones con estándar | Expresar qué debe hacer el activo y cómo se mide el cumplimiento. |
-| FL-05 | Identificar fallos funcionales | Definir cómo puede incumplirse total o parcialmente cada función. |
-| FL-06 | Seleccionar modos de fallo relevantes | Seleccionar mecanismos causales plausibles y justificar exclusiones. |
+| FL-01 | Confirmar activo, revisión y límites | Verificar qué objeto se analiza, qué revisión AMEF se aplica y cuál es la frontera física/contextual. |
+| FL-02 | Describir el contexto operacional | Confirmar demanda, modos de operación, servicio, redundancia y restricciones. |
+| FL-03 | Comprobar preparación y criticidad | Confirmar evidencias disponibles y criticidad contextual vigente del activo. |
+| FL-04 | Revisar funciones heredadas | Verificar que las funciones de la revisión AMEF son aplicables al activo; registrar override solo cuando sea necesario. |
+| FL-05 | Revisar fallos funcionales heredados | Confirmar aplicabilidad de los fallos funcionales y excepciones contextuales. |
+| FL-06 | Seleccionar modos y causas aplicables | Confirmar qué modos/causas de biblioteca son relevantes para el activo y justificar exclusiones. |
 
-### Fase 2 — Evaluar el riesgo
+### Fase 2 — Evaluar efectos y riesgo AMEF
 
-| ID | Etapa | Propósito |
+| ID | Etapa | Propósito alineado |
 |---|---|---|
-| FL-07 | Describir efectos del modo de fallo | Separar efecto local, de sistema y operacional. |
-| FL-08 | Clasificar las consecuencias | Determinar la naturaleza principal del impacto. |
-| FL-09 | Valorar severidad, ocurrencia y detección | Aplicar escalas y calcular indicadores de riesgo. |
-| FL-10 | Aplicar reglas de sobreclasificación | Elevar prioridad cuando existan condiciones críticas. |
-| FL-11 | Revisar controles y excepciones | Confirmar si existe información suficiente para pasar a RCM. |
+| FL-07 | Revisar efectos del modo de fallo | Partir del efecto de biblioteca y confirmar/ajustar efecto local, de sistema y operacional para el contexto. |
+| FL-08 | Clasificar consecuencias | Determinar la naturaleza principal del impacto; el sistema puede recomendar y la persona confirma. |
+| FL-09 | Valorar severidad, ocurrencia y detección | Aplicar escalas AMEF configuradas y calcular matriz S×O/NPR sin confundirlos con criticidad del activo. |
+| FL-10 | Aplicar reglas de sobreclasificación | Elevar prioridad cuando existan reglas/condiciones críticas configuradas. |
+| FL-11 | Revisar controles y excepciones | Confirmar si existe información suficiente para ejecutar la lógica RCM. |
 
 ### Fase 3 — Tomar la decisión RCM
 
-| ID | Etapa | Propósito |
+| ID | Etapa | Propósito alineado |
 |---|---|---|
-| FL-12 | Confirmar si el fallo es evidente | Elegir la rama correcta del análisis RCM. |
-| FL-13 | Demostrar degradación detectable | Confirmar si existe un fallo potencial observable. |
-| FL-14 | Evaluar la ventana P–F | Verificar si existe tiempo suficiente para detectar y actuar. |
-| FL-15 | Comparar políticas técnicamente válidas | Descartar alternativas no aplicables o ineficaces. |
-| FL-16 | Emitir la decisión RCM explicable | Consolidar estrategia, condiciones y autoridad. |
+| FL-12 | Responder la primera rama aplicable | Ejecutar la pregunta correspondiente de una `DecisionLogicRevision`, por ejemplo fallo evidente/oculto. |
+| FL-13 | Demostrar degradación detectable | Confirmar si existe un fallo potencial observable y su evidencia. |
+| FL-14 | Evaluar la ventana P–F | Verificar si existe tiempo suficiente para detectar, planificar e intervenir. |
+| FL-15 | Comparar políticas técnicamente válidas | Descartar alternativas no aplicables y comparar las restantes. |
+| FL-16 | Emitir decisión RCM explicable | Consolidar estrategia, fallback, evidencia, respuesta del árbol y autoridad humana. |
 
-### Fase 4 — Convertir la decisión en un plan
+La secuencia exacta de preguntas RCM es configurable mediante `DecisionLogicRevision`; FL-12…FL-16 expresan responsabilidades, no un árbol corporativo cerrado.
 
-| ID | Etapa | Propósito |
+### Fase 4 — Convertir la decisión en trabajo ejecutable
+
+| ID | Etapa | Propósito alineado |
 |---|---|---|
-| FL-17 | Comparar el coste esperado | Comparar alternativas técnicamente válidas desde el punto de vista económico. |
-| FL-18 | Diseñar una tarea ejecutable | Definir qué hacer, cómo, criterio de aceptación y reacción. |
-| FL-19 | Justificar el intervalo de la tarea | Relacionar frecuencia con P–F y ventana de planificación. |
-| FL-20 | Asignar recursos y condiciones de ejecución | Definir disciplina, puesto, herramientas, repuestos, permisos y parada. |
-| FL-21 | Definir alcance y paquete de plan | Determinar objetos técnicos, agrupación y modelo de salida. |
-| FL-22 | Superar el gate del plan | Confirmar que la propuesta está preparada para gobernanza. |
+| FL-17 | Comparar el coste esperado | Comparar alternativas técnicamente válidas desde el punto de vista económico preliminar. |
+| FL-18 | Confirmar tarea ejecutable | Partir de una `ProposedMaintenanceTask`/`TaskProfileVariant` y definir tarea, criterio, reacción y condiciones de ejecución. |
+| FL-19 | Justificar intervalo | Relacionar frecuencia con P–F, criticidad/contexto, evidencia y ventana de planificación. |
+| FL-20 | Asignar recursos y carga | Definir disciplina, cuadrilla, duración, H-H, herramientas, materiales, permisos y estado operativo. |
+| FL-21 | Definir alcance y agrupación | Identificar tags incluidos, equipo principal/soportes y regla candidata de ruta/Job Plan. |
+| FL-22 | Superar control de preparación | Confirmar que la propuesta está preparada para revisión/gobernanza y handoff CMMS. |
 
-### Fase 5 — Gobernar y mejorar
+### Fase 5 — Gobernar, ejecutar y mejorar
 
-| ID | Etapa | Propósito |
+| ID | Etapa | Propósito alineado |
 |---|---|---|
-| FL-23 | Reconstruir la trazabilidad integral | Verificar que puede justificarse la existencia de la tarea. |
-| FL-24 | Ejecutar el control de calidad | Resolver advertencias y errores metodológicos o de datos. |
-| FL-25 | Resolver la revisión multidisciplinar | Conservar discrepancias y registrar la resolución. |
-| FL-26 | Aprobar y congelar una versión | Registrar autoridades y crear una versión inmutable. |
-| FL-27 | Comparar hipótesis con datos reales | Contrastar P–F, coste y fallos con ejecución real. |
-| FL-28 | Abrir la mejora continua | Decidir si mantener, ajustar o reabrir el análisis. |
+| FL-23 | Reconstruir trazabilidad integral | Verificar Biblioteca → Aplicación → Modo → RCM → Tarea → Job Plan/PM/WO. |
+| FL-24 | Ejecutar control de calidad | Resolver advertencias y errores metodológicos o de datos. |
+| FL-25 | Resolver revisión multidisciplinar | Conservar discrepancias y registrar su resolución. |
+| FL-26 | Aprobar y congelar una versión | Registrar autoridades y crear snapshot inmutable de la aplicación/decisiones. |
+| FL-27 | Comparar hipótesis con datos reales | Contrastar fallos, P–F, H-H, coste y resultados de ejecución. |
+| FL-28 | Abrir mejora continua | Decidir si mantener, ajustar aplicación o iniciar revisión de biblioteca. |
 
-## 4. Agrupación inicial en workspaces
+## 5. Cadena de propiedad de los datos
 
-La primera hipótesis de UI agrupa las 28 etapas en nueve workspaces.
+```text
+FmeaRevision
+    ↓ se aplica
+FmeaAssetApplication
+    ↓ se revisa
+AnalysisCase
+    ↓ produce
+MaintenanceTask / PlanScope
+    ↓ se transforma
+JobPlan / PM / WO
+    ↓ devuelve
+ExecutionResult
+    ↓ alimenta
+EffectivenessMeasurement / ChangeRequest
+```
 
-| Workspace | Etapas | Objetivo |
-|---|---|---|
-| WS-01 Caso y contexto | FL-01 a FL-03 | Entender qué se analiza y con qué evidencia. |
-| WS-02 Funciones y fallos | FL-04 a FL-06 | Definir funciones, fallos y modos relevantes. |
-| WS-03 Efectos y riesgo | FL-07 a FL-11 | Describir consecuencias y establecer prioridad. |
-| WS-04 Decisión RCM | FL-12 a FL-16 | Recorrer la lógica y emitir una estrategia defendible. |
-| WS-05 Economía y tarea | FL-17 a FL-19 | Convertir la política en una tarea con intervalo justificable. |
-| WS-06 Recursos y alcance | FL-20 a FL-22 | Preparar un paquete ejecutable y revisable. |
-| WS-07 Trazabilidad y calidad | FL-23 a FL-24 | Comprobar integridad antes de aprobación. |
-| WS-08 Revisión y publicación | FL-25 a FL-26 | Resolver posiciones y congelar una versión. |
-| WS-09 Efectividad y mejora | FL-27 a FL-28 | Contrastar hipótesis y abrir nueva revisión si procede. |
-
-Esta agrupación es una hipótesis de diseño del Functional Lab, no un requisito de la futura aplicación productiva.
-
-## 5. Clasificación de responsabilidad
-
-Cada elemento del journey utilizará una de estas categorías:
+## 6. Responsabilidades
 
 | Tipo | Significado |
 |---|---|
-| `existing_input` | Información que debería estar disponible desde otro proceso, módulo o fuente. |
-| `user_input` | Dato que una persona introduce, corrige o completa. |
-| `system_calculation` | Resultado determinista obtenido aplicando una fórmula o regla definida. |
-| `system_recommendation` | Propuesta automática que debe ser revisada por una persona. |
-| `human_decision` | Decisión que debe tener responsable humano y quedar trazada. |
-| `gate` | Condición que debe cumplirse antes de continuar. |
-| `output` | Resultado consumido por una etapa o módulo posterior. |
+| `existing_input` | Información existente de biblioteca, activo, criticidad, histórico u otra fuente. |
+| `user_input` | Dato contextual que una persona introduce/corrige. |
+| `system_calculation` | Resultado determinista de regla/fórmula. |
+| `system_recommendation` | Propuesta automática revisable. |
+| `human_decision` | Decisión con responsable humano y trazabilidad. |
+| `gate` | Condición de negocio para continuar formalmente. |
+| `output` | Resultado estructurado consumido por etapa/módulo posterior. |
 
-## 6. Principios de avance
+## 7. Principios de avance
 
-1. El usuario puede retroceder sin perder el estado del caso.
-2. Un gate bloqueado debe explicar exactamente qué falta.
-3. Un cálculo automático debe mostrar sus inputs y regla.
-4. Una recomendación debe diferenciarse visualmente de una decisión confirmada.
-5. Un override debe conservar recomendación original, decisión final y motivo.
-6. La etapa siguiente consume outputs estructurados, no textos de pantalla.
-7. El laboratorio debe poder mostrar el journey completo aun cuando una etapa esté en estado `to_validate`.
+1. La biblioteca se hereda; no se duplica por activo salvo snapshot/revisión explícita.
+2. Un override contextual no modifica silenciosamente la revisión AMEF.
+3. Criticidad del activo y riesgo AMEF permanecen separados.
+4. Un gate bloqueado explica qué falta y quién debe actuar.
+5. Un cálculo muestra inputs/regla.
+6. Una recomendación se diferencia de una decisión.
+7. Un override conserva recomendación original, decisión final y motivo.
+8. Una tarea puede cubrir varios modos y un modo varias tareas.
+9. Un procedimiento es opcional.
+10. La agrupación en rutas/planes conserva identidad y resultados por tag.
+11. Los resultados reales pueden provocar un cambio de aplicación o una revisión de biblioteca, pero no sobrescriben una versión aprobada.
 
-## 7. Relación con documentación funcional
+## 8. Lo que sigue pendiente de validación
 
-Cada etapa validada debe poder trazarse, según aplique, a:
+El journey deja configurables:
 
-- requisito funcional;
-- regla de negocio;
-- entidad o atributo conceptual;
-- rol / responsabilidad;
-- especificación de workspace;
-- decisión humano/sistema;
-- integración o dato de entrada externo;
-- pregunta abierta.
-
-El objetivo es que el Functional Lab sea una fuente de descubrimiento y evidencia, no una documentación paralela.
+- escala AMEF corporativa;
+- umbrales de bandas;
+- reglas de criticidad;
+- árbol RCM definitivo;
+- reglas P–F;
+- autoridades finales;
+- evidencias mínimas;
+- reglas de sobreclasificación;
+- criterios de aprobación;
+- KPIs/umbrales de efectividad;
+- integración con sistema CMMS destino.

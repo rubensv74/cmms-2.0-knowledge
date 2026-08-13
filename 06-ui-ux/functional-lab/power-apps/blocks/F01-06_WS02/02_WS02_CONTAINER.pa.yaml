@@ -1,0 +1,674 @@
+# F01-06 — WS-02 FUNCIONES Y FALLOS
+# Target: conFL_Workspace > Children
+# Insert this complete child after conFL_WS01 and before conFL_WorkspacePending.
+
+- conFL_WS02:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =RGBA(0,0,0,0)
+      BorderThickness: =0
+      DropShadow: =DropShadow.None
+      Fill: =Color.Transparent
+      Height: =Parent.Height
+      RadiusBottomLeft: =0
+      RadiusBottomRight: =0
+      RadiusTopLeft: =0
+      RadiusTopRight: =0
+      Visible: =varFL_ActiveKey="Functions"
+      Width: =Parent.Width
+      X: =0
+      Y: =0
+
+    Children:
+      - conFL_WS02_Toolbar:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#E2E8F0")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#FFFFFF")
+            Height: =54
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            Width: =Parent.Width-48
+            X: =24
+            Y: =18
+
+          Children:
+            - lblFL_WS02_Toolbar:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="FL-04 Funciones  ·  FL-05 Fallos funcionales  ·  FL-06 Modos de fallo relevantes"
+                  Width: =Parent.Width-230
+                  Wrap: =false
+                  X: =16
+                  Y: =10
+
+            - lblFL_WS02_ToolbarMeta:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  Size: =9
+                  Text: =varFL_AssetCode & "  ·  Entrada WS-01 " & If(CountRows(colFL_WS01Output)>0,"confirmada","pendiente")
+                  Width: =Parent.Width-230
+                  Wrap: =false
+                  X: =16
+                  Y: =31
+
+            - btnFL_WS02_ToggleSidebar:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorValue("#E2E8F0")
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  Color: =ColorValue("#0F172A")
+                  Fill: =ColorValue("#FFFFFF")
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =34
+                  HoverFill: =ColorValue("#F8FAFC")
+                  OnSelect: =Set(varFL_SidebarCollapsed,!varFL_SidebarCollapsed)
+                  PressedFill: =ColorValue("#EFF6FF")
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Size: =10
+                  Text: =If(varFL_SidebarCollapsed,"Expandir menú","Contraer menú")
+                  Width: =150
+                  X: =Parent.Width-Self.Width-10
+                  Y: =10
+
+      - conFL_WS02_FunctionModel:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#E2E8F0")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#FFFFFF")
+            Height: =300
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =(Parent.Width-60)*0.58
+            X: =24
+            Y: =86
+
+          Children:
+            - lblFL_WS02_FunctionEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="MODELO FUNCIONAL"
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =14
+
+            - lblFL_WS02_FunctionHint:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  Size: =9
+                  Text: ="Revisa qué debe hacer el activo y cómo puede incumplirlo total o parcialmente."
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =35
+
+            - lblFL_WS02_MainFunction:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="Función principal"
+                  Width: =(Parent.Width-54)*0.5
+                  Wrap: =false
+                  X: =18
+                  Y: =66
+
+            - txtFL_WS02_MainFunction:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =ColorValue("#BAE6FD")
+                  BorderThickness: =1
+                  Color: =ColorValue("#0F172A")
+                  Default: =LookUp(colFL_Functions,FunctionType="Principal",FunctionText)
+                  Fill: =ColorValue("#F8FCFF")
+                  Font: =Font.'Segoe UI'
+                  Height: =72
+                  HoverBorderColor: =ColorValue("#0284C7")
+                  Mode: =TextMode.MultiLine
+                  OnChange: |-
+                    =
+                    Patch(
+                        colFL_Functions,
+                        LookUp(colFL_Functions,FunctionType="Principal"),
+                        {FunctionText:Trim(Self.Text)}
+                    );
+                    Set(varFL_CaseDirty,true);
+                    Set(varFL_WS02OutputReady,false)
+                  PaddingBottom: =8
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =8
+                  RadiusBottomLeft: =7
+                  RadiusBottomRight: =7
+                  RadiusTopLeft: =7
+                  RadiusTopRight: =7
+                  Size: =10
+                  Width: =(Parent.Width-54)*0.5
+                  X: =18
+                  Y: =86
+
+            - lblFL_WS02_SecondaryFunction:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="Función secundaria"
+                  Width: =(Parent.Width-54)*0.5
+                  Wrap: =false
+                  X: =18
+                  Y: =170
+
+            - txtFL_WS02_SecondaryFunction:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =ColorValue("#BAE6FD")
+                  BorderThickness: =1
+                  Color: =ColorValue("#0F172A")
+                  Default: =LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText)
+                  Fill: =ColorValue("#F8FCFF")
+                  Font: =Font.'Segoe UI'
+                  Height: =84
+                  HoverBorderColor: =ColorValue("#0284C7")
+                  Mode: =TextMode.MultiLine
+                  OnChange: |-
+                    =
+                    Patch(
+                        colFL_Functions,
+                        LookUp(colFL_Functions,FunctionType="Secundaria"),
+                        {FunctionText:Trim(Self.Text)}
+                    );
+                    Set(varFL_CaseDirty,true);
+                    Set(varFL_WS02OutputReady,false)
+                  PaddingBottom: =8
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =8
+                  RadiusBottomLeft: =7
+                  RadiusBottomRight: =7
+                  RadiusTopLeft: =7
+                  RadiusTopRight: =7
+                  Size: =10
+                  Width: =(Parent.Width-54)*0.5
+                  X: =18
+                  Y: =190
+
+            - lblFL_WS02_FullFailure:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="Fallo funcional total"
+                  Width: =(Parent.Width-54)*0.5
+                  Wrap: =false
+                  X: =Parent.Width*0.51
+                  Y: =66
+
+            - txtFL_WS02_FullFailure:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =ColorValue("#FED7AA")
+                  BorderThickness: =1
+                  Color: =ColorValue("#0F172A")
+                  Default: =LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText)
+                  Fill: =ColorValue("#FFFBF5")
+                  Font: =Font.'Segoe UI'
+                  Height: =72
+                  HoverBorderColor: =ColorValue("#EA580C")
+                  Mode: =TextMode.MultiLine
+                  OnChange: |-
+                    =
+                    Patch(
+                        colFL_FunctionalFailures,
+                        LookUp(colFL_FunctionalFailures,FailureType="Total"),
+                        {FailureText:Trim(Self.Text)}
+                    );
+                    Set(varFL_CaseDirty,true);
+                    Set(varFL_WS02OutputReady,false)
+                  PaddingBottom: =8
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =8
+                  RadiusBottomLeft: =7
+                  RadiusBottomRight: =7
+                  RadiusTopLeft: =7
+                  RadiusTopRight: =7
+                  Size: =10
+                  Width: =(Parent.Width-54)*0.5
+                  X: =Parent.Width*0.51
+                  Y: =86
+
+            - lblFL_WS02_PartialFailure:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="Fallo funcional parcial"
+                  Width: =(Parent.Width-54)*0.5
+                  Wrap: =false
+                  X: =Parent.Width*0.51
+                  Y: =170
+
+            - txtFL_WS02_PartialFailure:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =ColorValue("#FED7AA")
+                  BorderThickness: =1
+                  Color: =ColorValue("#0F172A")
+                  Default: =LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText)
+                  Fill: =ColorValue("#FFFBF5")
+                  Font: =Font.'Segoe UI'
+                  Height: =84
+                  HoverBorderColor: =ColorValue("#EA580C")
+                  Mode: =TextMode.MultiLine
+                  OnChange: |-
+                    =
+                    Patch(
+                        colFL_FunctionalFailures,
+                        LookUp(colFL_FunctionalFailures,FailureType="Parcial"),
+                        {FailureText:Trim(Self.Text)}
+                    );
+                    Set(varFL_CaseDirty,true);
+                    Set(varFL_WS02OutputReady,false)
+                  PaddingBottom: =8
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =8
+                  RadiusBottomLeft: =7
+                  RadiusBottomRight: =7
+                  RadiusTopLeft: =7
+                  RadiusTopRight: =7
+                  Size: =10
+                  Width: =(Parent.Width-54)*0.5
+                  X: =Parent.Width*0.51
+                  Y: =190
+
+      - conFL_WS02_Modes:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#E2E8F0")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#FFFFFF")
+            Height: =300
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width-conFL_WS02_FunctionModel.Width-60
+            X: =conFL_WS02_FunctionModel.X+conFL_WS02_FunctionModel.Width+12
+            Y: =86
+
+          Children:
+            - lblFL_WS02_ModesEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =9
+                  Text: ="MODO DE FALLO A ANALIZAR"
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =14
+
+            - lblFL_WS02_Recommendation:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#334155")
+                  Size: =9
+                  Text: |-
+                    =
+                    "Recomendación del sistema: " &
+                    LookUp(colFL_FailureModes,IsFocus,Code & " · " & Name) &
+                    Char(10) &
+                    "Exclusión documentada: rotura catastrófica del eje, sin evidencia de mecanismo dominante."
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =37
+
+            - galFL_WS02_Modes:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Height: =126
+                  Items: =SortByColumns(colFL_FailureModes,"Order",SortOrder.Ascending)
+                  ShowScrollbar: =false
+                  TemplatePadding: =2
+                  TemplateSize: =30
+                  Width: =Parent.Width-36
+                  X: =18
+                  Y: =86
+
+                Children:
+                  - btnFL_WS02_Mode:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =If(ThisItem.IsFocus,ColorValue("#7DD3FC"),ColorValue("#E2E8F0"))
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =If(ThisItem.Code=varFL_WS02SelectedModeCode,2,1)
+                        Color: =If(ThisItem.Code=varFL_WS02SelectedModeCode,Color.White,ColorValue("#0F172A"))
+                        Fill: =If(ThisItem.Code=varFL_WS02SelectedModeCode,ColorValue("#0284C7"),If(ThisItem.IsFocus,ColorValue("#F0F9FF"),ColorValue("#FFFFFF")))
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =If(ThisItem.IsFocus,FontWeight.Semibold,FontWeight.Normal)
+                        Height: =26
+                        HoverFill: =ColorValue("#E0F2FE")
+                        OnSelect: |-
+                          =
+                          Set(varFL_WS02SelectedModeCode,ThisItem.Code);
+                          Set(varFL_WS02SelectedModeName,ThisItem.Name);
+                          Set(
+                              varFL_WS02ModeReason,
+                              If(
+                                  ThisItem.IsFocus,
+                                  "Se confirma la recomendación del sistema para el caso P-101.",
+                                  ""
+                              )
+                          );
+                          Reset(txtFL_WS02_ModeReason);
+                          Set(varFL_CaseDirty,true);
+                          Set(varFL_WS02OutputReady,false)
+                        PressedFill: =ColorValue("#BAE6FD")
+                        RadiusBottomLeft: =7
+                        RadiusBottomRight: =7
+                        RadiusTopLeft: =7
+                        RadiusTopRight: =7
+                        Size: =9
+                        Text: =If(ThisItem.IsFocus,"★  ","") & ThisItem.Code & " · " & ThisItem.Name
+                        Width: =Parent.TemplateWidth
+                        X: =0
+                        Y: =0
+
+            - lblFL_WS02_ModeReason:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =8
+                  Text: ="Motivo de la decisión"
+                  Width: =Parent.Width-36
+                  Wrap: =false
+                  X: =18
+                  Y: =220
+
+            - txtFL_WS02_ModeReason:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =If(!IsBlank(varFL_WS02SelectedModeCode) && varFL_WS02SelectedModeCode<>LookUp(colFL_FailureModes,IsFocus,Code) && IsBlank(Trim(Coalesce(varFL_WS02ModeReason,""))),ColorValue("#F97316"),ColorValue("#E2E8F0"))
+                  BorderThickness: =1
+                  Color: =ColorValue("#0F172A")
+                  Default: =Coalesce(varFL_WS02ModeReason,"")
+                  Fill: =ColorValue("#FFFFFF")
+                  Font: =Font.'Segoe UI'
+                  Height: =48
+                  HintText: ="Confirma la recomendación o justifica el cambio de modo"
+                  HoverBorderColor: =ColorValue("#0284C7")
+                  Mode: =TextMode.MultiLine
+                  OnChange: |-
+                    =
+                    Set(varFL_WS02ModeReason,Trim(Self.Text));
+                    Set(varFL_CaseDirty,true);
+                    Set(varFL_WS02OutputReady,false)
+                  PaddingBottom: =6
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =6
+                  RadiusBottomLeft: =7
+                  RadiusBottomRight: =7
+                  RadiusTopLeft: =7
+                  RadiusTopRight: =7
+                  Size: =9
+                  Width: =Parent.Width-36
+                  X: =18
+                  Y: =240
+
+      - conFL_WS02_Gate:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: |-
+              =
+              If(
+                  CountRows(colFL_WS01Output)>0 &&
+                  !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))) &&
+                  !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))) &&
+                  !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))) &&
+                  !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))) &&
+                  !IsBlank(varFL_WS02SelectedModeCode) &&
+                  (
+                      varFL_WS02SelectedModeCode=LookUp(colFL_FailureModes,IsFocus,Code) ||
+                      !IsBlank(Trim(Coalesce(varFL_WS02ModeReason,"")))
+                  ),
+                  ColorValue("#BBF7D0"),
+                  ColorValue("#FED7AA")
+              )
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: |-
+              =
+              If(
+                  CountRows(colFL_WS01Output)>0 &&
+                  !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))) &&
+                  !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))) &&
+                  !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))) &&
+                  !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))) &&
+                  !IsBlank(varFL_WS02SelectedModeCode) &&
+                  (
+                      varFL_WS02SelectedModeCode=LookUp(colFL_FailureModes,IsFocus,Code) ||
+                      !IsBlank(Trim(Coalesce(varFL_WS02ModeReason,"")))
+                  ),
+                  ColorValue("#F0FDF4"),
+                  ColorValue("#FFF7ED")
+              )
+            Height: =122
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width-48
+            X: =24
+            Y: =398
+
+          Children:
+            - lblFL_WS02_GateEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =8
+                  Text: ="GATE WS-02 · MODELO FUNCIONAL"
+                  Width: =Parent.Width-260
+                  Wrap: =false
+                  X: =18
+                  Y: =12
+
+            - lblFL_WS02_GateState:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: |-
+                    =
+                    If(
+                        CountRows(colFL_WS01Output)>0 &&
+                        !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))) &&
+                        !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))) &&
+                        !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))) &&
+                        !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))) &&
+                        !IsBlank(varFL_WS02SelectedModeCode) &&
+                        (
+                            varFL_WS02SelectedModeCode=LookUp(colFL_FailureModes,IsFocus,Code) ||
+                            !IsBlank(Trim(Coalesce(varFL_WS02ModeReason,"")))
+                        ),
+                        "Preparado para evaluar efectos y riesgo",
+                        "Requiere completar la definición funcional"
+                    )
+                  Width: =Parent.Width-260
+                  Wrap: =false
+                  X: =18
+                  Y: =35
+
+            - lblFL_WS02_GateReason:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  Size: =9
+                  Text: |-
+                    =
+                    If(
+                        CountRows(colFL_WS01Output)=0,
+                        "WS-01 no está confirmado.",
+                        If(
+                            IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))),
+                            "Falta definir la función principal.",
+                            If(
+                                IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))),
+                                "Falta definir la función secundaria.",
+                                If(
+                                    IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))),
+                                    "Falta definir el fallo funcional total.",
+                                    If(
+                                        IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))),
+                                        "Falta definir el fallo funcional parcial.",
+                                        If(
+                                            IsBlank(varFL_WS02SelectedModeCode),
+                                            "Selecciona explícitamente el modo de fallo que se analizará.",
+                                            If(
+                                                varFL_WS02SelectedModeCode<>LookUp(colFL_FailureModes,IsFocus,Code) &&
+                                                IsBlank(Trim(Coalesce(varFL_WS02ModeReason,""))),
+                                                "Has cambiado la recomendación del sistema. Documenta el motivo.",
+                                                "Funciones, fallos y decisión sobre el modo quedan preparados para WS-03."
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                  Width: =Parent.Width-260
+                  Wrap: =false
+                  X: =18
+                  Y: =65
+
+            - lblFL_WS02_Output:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#475569")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =8
+                  Text: ="OUTPUT → modelo funcional + modo seleccionado"
+                  Width: =Parent.Width-260
+                  Wrap: =false
+                  X: =18
+                  Y: =91
+
+            - btnFL_WS02_Continue:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorValue("#0284C7")
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  Color: =Color.White
+                  DisplayMode: |-
+                    =
+                    If(
+                        CountRows(colFL_WS01Output)>0 &&
+                        !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Principal",FunctionText))) &&
+                        !IsBlank(Trim(LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText))) &&
+                        !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText))) &&
+                        !IsBlank(Trim(LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText))) &&
+                        !IsBlank(varFL_WS02SelectedModeCode) &&
+                        (
+                            varFL_WS02SelectedModeCode=LookUp(colFL_FailureModes,IsFocus,Code) ||
+                            !IsBlank(Trim(Coalesce(varFL_WS02ModeReason,"")))
+                        ),
+                        DisplayMode.Edit,
+                        DisplayMode.Disabled
+                    )
+                  Fill: =ColorValue("#0284C7")
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =38
+                  HoverFill: =ColorValue("#0369A1")
+                  OnSelect: |-
+                    =
+                    ClearCollect(
+                        colFL_WS02Output,
+                        {
+                            CaseId:varFL_CaseId,
+                            AssetCode:varFL_AssetCode,
+                            MainFunction:LookUp(colFL_Functions,FunctionType="Principal",FunctionText),
+                            SecondaryFunction:LookUp(colFL_Functions,FunctionType="Secundaria",FunctionText),
+                            FullFailure:LookUp(colFL_FunctionalFailures,FailureType="Total",FailureText),
+                            PartialFailure:LookUp(colFL_FunctionalFailures,FailureType="Parcial",FailureText),
+                            SystemRecommendedModeCode:LookUp(colFL_FailureModes,IsFocus,Code),
+                            SystemRecommendedModeName:LookUp(colFL_FailureModes,IsFocus,Name),
+                            HumanSelectedModeCode:varFL_WS02SelectedModeCode,
+                            HumanSelectedModeName:varFL_WS02SelectedModeName,
+                            IsOverride:varFL_WS02SelectedModeCode<>LookUp(colFL_FailureModes,IsFocus,Code),
+                            DecisionReason:Coalesce(varFL_WS02ModeReason,""),
+                            ExcludedMode:"Rotura catastrófica del eje — consecuencia secundaria; sin evidencia de mecanismo dominante en el histórico actual.",
+                            StageStatus:"passed",
+                            ConfirmedAt:Now()
+                        }
+                    );
+                    Set(varFL_WS02OutputReady,true);
+                    Set(varFL_CaseDirty,false);
+                    Set(varFL_ActiveKey,"Risk")
+                  PressedFill: =ColorValue("#075985")
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Size: =10
+                  Text: ="Continuar a efectos y riesgo"
+                  Width: =210
+                  X: =Parent.Width-Self.Width-14
+                  Y: =42

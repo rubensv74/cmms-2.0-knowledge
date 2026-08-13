@@ -1,0 +1,5 @@
+# F01-06 — WS-02 — PENDING WORKSPACE VISIBILITY
+# Target: conFL_WorkspacePending > Properties
+# Replace the complete Visible property with this value.
+
+Visible: =varFL_ActiveKey<>"Context" && varFL_ActiveKey<>"Functions"

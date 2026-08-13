@@ -1,0 +1,230 @@
+# BLOCK DS-C02 — Classic + Modern controls
+# TYPE: C — Component/content
+# OPERATION: REPLACE TWO ADJACENT PLACEHOLDER CONTENT BLOCKS
+# TARGETS: ph_ClassicControls + ph_ModernControls
+# PARENT/ANCHOR: conDSLabBody
+# DEPENDS ON: DS-S01 STRUCTURE FROZEN + DS-C01 PASS
+# TOUCHES: ph_ClassicControls and ph_ModernControls only
+# DO NOT MODIFY: ph_TokenRoles, ph_Text, ph_InteractionStates, ph_DataViz, ph_Status, conDSLabBody geometry, header, any Functional Lab screen/component
+# PURPOSE: validate known Classic controls and the Modern text/input rendering path against the DS-C01 candidate roles
+# GEOMETRY: placeholder X/Y/Width/Height contract preserved exactly
+# COLOR STATUS BEFORE: PENDING
+# VALIDATION: Classic button + disabled + Classic TextInput + ModernText + ModernTextInput render correctly; no unexpected black surfaces; no clipping; geometry unchanged
+# EXPECTED STATUS AFTER PASS: DS-C02 VISUAL_APPROVED / COLOR still PENDING until DS-C03 and DS-C04 complete
+#
+# PASTE INSTRUCTION:
+# Inside conDSLabBody.Children, replace ONLY the two adjacent blocks beginning at
+# '- ph_ClassicControls:' and ending immediately before '- ph_InteractionStates:'.
+# Paste the complete two-block snippet below.
+
+- ph_ClassicControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =(Parent.Height-24)*0.37
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =(Parent.Width-36)/4
+      X: =0
+      Y: =ph_TokenRoles.Height+12
+
+    Children:
+      - lblDSClassicTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =15
+            Text: ="Classic controls · DS-C02"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =12
+
+      - lblDSClassicPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Button@2.2.0 · TextInput@2.3.2"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =38
+
+      - btnDSClassicPrimary:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            HoverFill: =ColorValue("#0369A1")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Primario"
+            Width: =(Parent.Width-38)/2
+            X: =14
+            Y: =62
+
+      - btnDSClassicDisabled:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Color: =Color.White
+            DisabledBorderColor: =ColorValue("#CBD5E1")
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =ColorValue("#E2E8F0")
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Disabled"
+            Width: =btnDSClassicPrimary.Width
+            X: =btnDSClassicPrimary.X+btnDSClassicPrimary.Width+10
+            Y: =btnDSClassicPrimary.Y
+
+      - lblDSClassicInput:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            FontWeight: =FontWeight.Semibold
+            Size: =11
+            Text: ="INPUT CLÁSICO"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =108
+
+      - txtDSClassicInput:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Default: ="P-101"
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            Height: =38
+            HintText: ="Buscar activo..."
+            HoverBorderColor: =ColorValue("#0284C7")
+            HoverFill: =ColorValue("#FFFFFF")
+            PaddingLeft: =10
+            Size: =12
+            Width: =Parent.Width-28
+            X: =14
+            Y: =130
+
+- ph_ModernControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =ph_ClassicControls.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =ph_ClassicControls.Width
+      X: =ph_ClassicControls.X+ph_ClassicControls.Width+12
+      Y: =ph_ClassicControls.Y
+
+    Children:
+      - lblDSModernTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =15
+            Text: ="Modern controls · DS-C02"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =12
+
+      - lblDSModernPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="ModernText@1.0.0 · ModernTextInput@1.1.1"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =38
+
+      - lblDSModernInput:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            FontWeight: =FontWeight.Semibold
+            Size: =11
+            Text: ="INPUT MODERNO"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =66
+
+      - txtDSModernInput:
+          Control: ModernTextInput@1.1.1
+          Properties:
+            Appearance: =Appearance.Outline
+            Default: ="P-101"
+            Height: =38
+            Placeholder: ="Buscar activo..."
+            Width: =Parent.Width-28
+            X: =14
+            Y: =88
+
+      - lblDSModernBody:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            Size: =13
+            Text: ="Texto principal sobre Surface"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =136
+
+      - lblDSModernMeta:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Texto secundario · TextSecondary"
+            Width: =Parent.Width-28
+            Wrap: =false
+            X: =14
+            Y: =160

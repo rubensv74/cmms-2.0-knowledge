@@ -1,0 +1,366 @@
+Screens:
+  scr_FL_Settings:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Settings")
+
+    Children:
+      - conFLSettingsRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLSettingsNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Settings"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLSettingsNav.SelectedKey);
+                    Switch(cmpFLSettingsNav.SelectedKey,"Home",Navigate(scr_FL_Home,ScreenTransition.None),"Assets",Navigate(scr_FL_FLH,ScreenTransition.None),"Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),"Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),"Governance",Navigate(scr_FL_Governance,ScreenTransition.None),"Settings",Navigate(scr_FL_Settings,ScreenTransition.None))
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLSettingsMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLSettingsNav.Width
+                  X: =cmpFLSettingsNav.Width
+                  Y: =0
+                Children:
+                  - lblFLSettingsEyebrow:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0284C7")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =9
+                        Text: ="CMMS 2.0 · FUNCTIONAL LAB"
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =20
+                  - lblFLSettingsTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#0F172A")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =23
+                        Text: =LookUp(colFLText,Key="SCREEN_SETTINGS_TITLE",If(varFLLocale="en",EN,ES))
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =46
+                  - lblFLSettingsSubtitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#64748B")
+                        Size: =10
+                        Text: ="Preferencias del laboratorio y simulación de contexto de usuario. No representa todavía la administración productiva."
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =82
+                  - conFLSettingsRole:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E9D5FF")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =250
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =(Parent.Width-60)*0.58
+                        X: =24
+                        Y: =126
+                      Children:
+                        - lblFLSettingsRoleLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#7C3AED")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="ROL FUNCIONAL SIMULADO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLSettingsRoleCurrent:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =17
+                              Text: =varFLCurrentRole
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =46
+                        - lblFLSettingsRoleHint:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =9
+                              Text: ="Permite experimentar cómo cambia la responsabilidad visible. No implementa todavía seguridad ni autorización productiva."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =80
+                        - btnFLSettingsReliability:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =If(varFLCurrentRole="Ingeniería de Fiabilidad",ColorValue("#C4B5FD"),ColorValue("#E2E8F0"))
+                              BorderThickness: =1
+                              Color: =If(varFLCurrentRole="Ingeniería de Fiabilidad",ColorValue("#6D28D9"),ColorValue("#334155"))
+                              Fill: =If(varFLCurrentRole="Ingeniería de Fiabilidad",ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                              Height: =36
+                              OnSelect: =Set(varFLCurrentRole,"Ingeniería de Fiabilidad")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Fiabilidad"
+                              Width: =110
+                              X: =18
+                              Y: =132
+                        - btnFLSettingsMaintenance:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =If(varFLCurrentRole="Mantenimiento / Planificación",ColorValue("#C4B5FD"),ColorValue("#E2E8F0"))
+                              BorderThickness: =1
+                              Color: =If(varFLCurrentRole="Mantenimiento / Planificación",ColorValue("#6D28D9"),ColorValue("#334155"))
+                              Fill: =If(varFLCurrentRole="Mantenimiento / Planificación",ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                              Height: =36
+                              OnSelect: =Set(varFLCurrentRole,"Mantenimiento / Planificación")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Planificación"
+                              Width: =120
+                              X: =138
+                              Y: =132
+                        - btnFLSettingsOperations:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =If(varFLCurrentRole="Operaciones",ColorValue("#C4B5FD"),ColorValue("#E2E8F0"))
+                              BorderThickness: =1
+                              Color: =If(varFLCurrentRole="Operaciones",ColorValue("#6D28D9"),ColorValue("#334155"))
+                              Fill: =If(varFLCurrentRole="Operaciones",ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                              Height: =36
+                              OnSelect: =Set(varFLCurrentRole,"Operaciones")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Operaciones"
+                              Width: =110
+                              X: =268
+                              Y: =132
+                        - btnFLSettingsOwner:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =If(varFLCurrentRole="Asset Owner / Aprobador",ColorValue("#C4B5FD"),ColorValue("#E2E8F0"))
+                              BorderThickness: =1
+                              Color: =If(varFLCurrentRole="Asset Owner / Aprobador",ColorValue("#6D28D9"),ColorValue("#334155"))
+                              Fill: =If(varFLCurrentRole="Asset Owner / Aprobador",ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                              Height: =36
+                              OnSelect: =Set(varFLCurrentRole,"Asset Owner / Aprobador")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Asset Owner"
+                              Width: =110
+                              X: =388
+                              Y: =132
+                        - btnFLSettingsAdmin:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =If(varFLCurrentRole="Administrador",ColorValue("#C4B5FD"),ColorValue("#E2E8F0"))
+                              BorderThickness: =1
+                              Color: =If(varFLCurrentRole="Administrador",ColorValue("#6D28D9"),ColorValue("#334155"))
+                              Fill: =If(varFLCurrentRole="Administrador",ColorValue("#F5F3FF"),ColorValue("#FFFFFF"))
+                              Height: =36
+                              OnSelect: =Set(varFLCurrentRole,"Administrador")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =9
+                              Text: ="Administrador"
+                              Width: =118
+                              X: =18
+                              Y: =180
+                  - conFLSettingsLanguage:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E2E8F0")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#FFFFFF")
+                        Height: =250
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-conFLSettingsRole.Width-60
+                        X: =conFLSettingsRole.X+conFLSettingsRole.Width+12
+                        Y: =126
+                      Children:
+                        - lblFLSettingsLanguageLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="IDIOMA Y ACCESIBILIDAD"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLSettingsLanguageCurrent:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =17
+                              Text: ="Español"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =48
+                        - lblFLSettingsLanguageHint:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =9
+                              Text: ="La arquitectura ya dispone de claves ES/EN. El selector bilingüe se activará cuando toda la interfaz esté migrada al catálogo para evitar una experiencia parcialmente traducida."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =84
+                        - lblFLSettingsDensity:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#334155")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="Escala visual base · Cómoda"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =158
+                        - lblFLSettingsDensityHint:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#64748B")
+                              Size: =8
+                              Text: ="Normal / Cómoda / Grande se implementará desde el shell cuando todos los componentes consuman la misma escala."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =186
+                  - conFLSettingsArchitecture:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =ColorValue("#BAE6FD")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =ColorValue("#F8FCFF")
+                        Height: =226
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        Width: =Parent.Width-48
+                        X: =24
+                        Y: =392
+                      Children:
+                        - lblFLSettingsArchitectureLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0284C7")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="ARQUITECTURA DEL LABORATORIO"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =16
+                        - lblFLSettingsArchitectureTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#0F172A")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =15
+                              Text: ="Power Apps · contratos desacoplados · Azure SQL-ready"
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =46
+                        - lblFLSettingsArchitectureText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#475569")
+                              Size: =10
+                              Text: ="El runtime actual utiliza colecciones de laboratorio. Las pantallas consumen contratos conceptuales para que una futura capa de persistencia pueda sustituir el fixture sin cambiar la semántica del producto."
+                              Width: =Parent.Width-36
+                              Wrap: =true
+                              X: =18
+                              Y: =82
+                        - lblFLSettingsArchitectureRule:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =ColorValue("#7C3AED")
+                              FontWeight: =FontWeight.Semibold
+                              Size: =9
+                              Text: ="Los cálculos y recomendaciones nunca adquieren autoridad humana por defecto."
+                              Width: =Parent.Width-36
+                              X: =18
+                              Y: =160

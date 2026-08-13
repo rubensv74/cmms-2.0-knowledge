@@ -2,12 +2,12 @@
 
 ## 1. Cómo leer este roadmap
 
-Este documento separa dos dimensiones que antes estaban mezcladas:
+Se distinguen:
 
 1. **mapa funcional del producto** — capacidades que CMMS 2.0 debe cubrir;
-2. **roadmap de validación** — orden en el que estamos aprendiendo, probando y consolidando esas capacidades.
+2. **roadmap de validación** — orden de aprendizaje/consolidación dentro del Functional Lab.
 
-Que un dominio se valide antes no significa necesariamente que se implemente antes en producción.
+El orden de validación no decide el orden productivo final.
 
 ---
 
@@ -15,133 +15,241 @@ Que un dominio se valide antes no significa necesariamente que se implemente ant
 
 ## A. Fundamentos de activos
 
-- visión del producto;
 - jerarquía funcional FLH;
-- taxonomía corporativa;
-- modelo de activos;
-- registro de activos físicos;
+- taxonomía;
+- ADR / relaciones;
+- activo 360;
 - contexto operacional;
 - criticidad.
 
-**Madurez conceptual:** media-alta en FLH, taxonomía y activos; requiere consolidación documental.
+**Madurez conceptual:** media-alta.
 
 ## B. Ingeniería de mantenimiento y fiabilidad
 
-- biblioteca de mantenimiento;
-- AMEF / FMEA;
+- biblioteca AMEF reusable;
+- revisiones/versionado;
+- aplicabilidad multi-activo;
+- AMEF contextual;
 - RCM;
-- estrategias y políticas;
-- aplicabilidad;
-- Job Plans / procedimientos;
+- economía;
+- estrategia/tarea;
 - revisión de efectividad.
 
-**Madurez conceptual:** alta en AMEF/RCM respecto del resto del programa; dominio elegido para iniciar Functional Lab.
+**Madurez conceptual:** alta y dominio principal del Functional Lab actual.
 
 ## C. Gestión del trabajo
 
-- forecast;
+- Job Plan / Route;
+- preventive maintenance plan;
 - work candidates;
-- planificación;
-- programación;
+- planificación/programación;
 - work orders;
 - ejecución;
-- inspecciones;
-- cierre técnico.
+- cierre técnico;
+- resultados.
 
-**Madurez conceptual:** pendiente de consolidación.
+**Madurez conceptual:** parcial; se valida el handoff desde estrategia antes de ampliar el dominio.
 
 ## D. Gestión económica y empresarial
 
-- costes de mantenimiento;
-- materiales y servicios;
-- facturación cuando aplique;
+- costes reales;
+- materiales/servicios;
 - reporting;
 - KPIs;
 - integraciones;
-- roles y seguridad.
+- roles/seguridad.
 
-**Madurez conceptual:** temprana / parcial.
+**Madurez conceptual:** temprana/parcial.
 
 ---
 
-# 3. Roadmap de validación funcional
+# 3. Foundation funcional
 
-## Fase FL-0 — Foundation
+## FL-0 — Modelo conceptual y Functional Journey
 
-**Estado:** completada documentalmente el 2026-08-10.
+**Estado:** consolidado.
 
-- auditoría de transición;
-- protocolo incremental adaptado desde Pulse;
-- visión del Functional Lab;
-- Functional Journey de 28 etapas;
-- matriz persona vs sistema;
-- arquitectura del laboratorio;
-- contratos JSON;
+- visión/límites;
+- Functional Journey FL-01…FL-28;
+- persona vs sistema;
 - fixture P-101;
-- paquete documental modular para IT.
+- arquitectura conceptual;
+- contratos/schemas;
+- auditoría D-01…D-14;
+- biblioteca AMEF separada de aplicación/contexto;
+- criticidad separada del riesgo AMEF;
+- tarea/JobPlan/PM/WO/resultado separados.
 
-## Fase FL-1 — Power Apps Foundation + WS-01
+---
 
-**Estado:** siguiente fase.
+# 4. Roadmap de construcción Power Apps
 
-1. auditorar el entorno Power Apps y compatibilidad;
-2. crear shell;
-3. crear runtime state;
-4. implementar adaptador P-101;
-5. implementar navegación;
-6. completar `WS-01 Caso y contexto`;
-7. validar en Power Apps Studio;
-8. actualizar documentación funcional.
+La construcción sigue obligatoriamente:
 
-Gate de salida: WS-01 integrado y validado sin errores abiertos.
+`30-playbooks/power-platform/modular-power-apps-screen-construction.md`
 
-## Fase FL-2 — Funciones y fallos
+```text
+skeleton
+→ placeholders
+→ S/C/I
+→ Studio validation
+→ freeze
+→ siguiente bloque
+```
 
-- `WS-02 Funciones y fallos`;
-- validar responsabilidad sobre funciones, fallos y modos;
-- consolidar requisitos y entidades asociadas.
+## FL-1 — Recovery / Design Foundation
 
-## Fase FL-3 — AMEF y riesgo
+**Estado:** en curso.
 
-- `WS-03 Efectos y riesgo`;
-- validar escalas, cálculos, recomendaciones y gates;
-- separar reglas corporativas de hipótesis de laboratorio.
+Objetivos:
 
-## Fase FL-4 — Decisión RCM
+```text
+resolver grafo de identidades
+crear scr_DesignSystemLab
+validar tokens/color/estados
+revalidar componentes reutilizables actuales en aislamiento
+preservar piezas ya aprobadas
+```
 
-- `WS-04 Decisión RCM`;
-- hacer visible la lógica y el override;
-- validar qué recomienda el sistema y qué acepta una persona.
+Gate:
 
-## Fase FL-5 — Tratamiento y plan
+```text
+DesignSystemLab geometry frozen
+COLOR FOUNDATION APPROVED
+componentes requeridos READY_FOR_INTEGRATION
+sin modificación incidental de foundation congelada
+```
 
-- `WS-05 Economía y tarea`;
-- `WS-06 Recursos y alcance`;
-- validar transición desde decisión RCM a propuesta ejecutable.
+## FL-2 — Foundation funcional revalidada
 
-## Fase FL-6 — Gobernanza
+Revalidar sin reconstruir:
 
-- `WS-07 Trazabilidad y calidad`;
-- `WS-08 Revisión y publicación`;
-- validar roles, discrepancias, approvals y snapshots.
+```text
+Home
+FLH
+Taxonomía
+ADR
+Criticidad
+Asset 360
+Biblioteca AMEF
+Revisión AMEF
+Aplicación multi-activo
+```
 
-## Fase FL-7 — Efectividad
+Gate:
 
-- `WS-09 Efectividad y mejora`;
-- validar el cierre del loop con datos reales simulados;
-- abrir revisión sin sobrescribir la versión anterior.
+```text
+0 errores estructurales bloqueantes
+P-101 estable
+Tree RC3 validado
+Applicability RC2 validado
+criticidad separada de AMEF
+```
 
-## Fase FL-8 — Consolidación AMEF/RCM para IT
+## FL-3 — AnalysisCase foundation
 
-- consolidar requisitos funcionales;
-- consolidar reglas de negocio;
-- consolidar modelo conceptual de datos;
-- consolidar mapa de pantallas;
-- consolidar roles y dependencias;
-- registrar preguntas de arquitectura para IT.
+Construir/consolidar incrementalmente:
 
-## Fase FL-9 — Selección del siguiente dominio
+```text
+Analysis Register
+Case Overview
+Contexto
+Funciones
+Modos de fallo
+```
 
-Solo después de cerrar suficientemente AMEF/RCM se seleccionará el siguiente dominio funcional a llevar al laboratorio.
+Cada pantalla nueva/abierta usa skeleton first y freeze.
 
-La selección se basará en valor de aprendizaje, dependencias y madurez del conocimiento, no en el orden del mapa funcional.
+## FL-4 — AMEF
+
+`scr_FL_AMEF` está `IN_CONSTRUCTION`.
+
+Secuencia:
+
+```text
+S-AMEF-01 skeleton
+→ geometry freeze
+C-AMEF-* placeholders
+→ I-AMEF-* integrations
+→ FUNCTIONAL_FROZEN
+→ Theme pass
+→ FINAL_FROZEN
+```
+
+Fixture protegido:
+
+```text
+S4 / O3 / D3
+S×O12
+NPR36
+```
+
+## FL-5 — RCM y economía
+
+- RCM versionable;
+- sistema/recomendación/decisión humana;
+- economía preliminar;
+- reglas corporativas aún abiertas identificadas como tales.
+
+## FL-6 — Tarea ejecutable y paquete de plan
+
+Validar:
+
+```text
+ProposedMaintenanceTask
+TaskProfileVariant
+MaintenanceTask
+MaintenanceProcedure opcional
+resources / crew / H-H
+operating/shutdown/isolation/permit
+PlanScopeItem
+agrupación manteniendo identidad por tag
+```
+
+## FL-7 — Trazabilidad / revisión / aprobación
+
+- Biblioteca → Aplicación → AnalysisCase → Tarea → Plan;
+- evidencia;
+- revisión/aprobación;
+- snapshot;
+- autoridad humana.
+
+## FL-8 — Handoff / efectividad
+
+- JobPlan/Route;
+- PM;
+- WO;
+- ExecutionResult;
+- coste real;
+- efectividad;
+- cambio de aplicación o nueva revisión de biblioteca.
+
+## FL-9 — Consolidación para IT
+
+- requisitos funcionales;
+- reglas de negocio;
+- modelo conceptual de datos;
+- mapa de pantallas;
+- roles/autoridades;
+- dependencias;
+- preguntas de arquitectura/integración.
+
+## FL-10 — Siguiente dominio
+
+Solo después de cerrar suficientemente el circuito AMEF/RCM → ejecución → efectividad se seleccionará el siguiente dominio del CMMS para llevar al laboratorio.
+
+---
+
+# 5. Regla de avance
+
+No se considera progreso “tener más YAML”.
+
+Se considera progreso:
+
+```text
+bloque validado
++ estado congelado
++ no regresión de bloques anteriores
++ evidencia en Studio
++ documentación actualizada
+```

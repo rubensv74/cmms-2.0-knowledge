@@ -1,0 +1,344 @@
+Screens:
+  scr_FL_CaseOverview:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#0284C7")
+      OnVisible: =Set(varFLNavKey,"Strategy")
+
+    Children:
+      - conFLCaseOverviewRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =App.Width
+          Children:
+            - cmpFLCaseOverviewNav:
+                Control: CanvasComponent
+                ComponentName: cmp_FL_SidebarPro
+                Properties:
+                  ActiveKey: ="Strategy"
+                  AppTitle: ="CMMS 2.0"
+                  AppSubtitle: ="Functional Lab"
+                  CurrentCaseCode: =varFLActiveCaseCode
+                  CurrentCaseName: =varFLActiveAssetName
+                  EnvironmentLabel: ="LAB CONCEPTUAL"
+                  Height: =Parent.Height
+                  IsCollapsed: =varFLSidebarCollapsed
+                  NavItems: =colFLV2NavItems
+                  OnSelectItem: |-
+                    =
+                    Set(varFLNavKey,cmpFLCaseOverviewNav.SelectedKey);
+                    Switch(
+                        cmpFLCaseOverviewNav.SelectedKey,
+                        "Home",Navigate(scr_FL_Home,ScreenTransition.None),
+                        "Assets",Navigate(scr_FL_FLH,ScreenTransition.None),
+                        "Strategy",Navigate(scr_FL_AnalysisRegister,ScreenTransition.None),
+                        "Plans",Navigate(scr_FL_MaintenancePlans,ScreenTransition.None),
+                        "Governance",Navigate(scr_FL_Governance,ScreenTransition.None),
+                        "Settings",Navigate(scr_FL_Settings,ScreenTransition.None)
+                    )
+                  UserRole: =varFLCurrentRole
+                  Width: =If(varFLSidebarCollapsed,76,220)
+                  X: =0
+                  Y: =0
+            - conFLCaseOverviewMain:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#F6F8FB")
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width-cmpFLCaseOverviewNav.Width
+                  X: =cmpFLCaseOverviewNav.Width
+                  Y: =0
+                Children:
+                  - cmpFLCaseOverviewHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_PageHeaderPro
+                      Properties:
+                        Archetype: ="ANALYSIS CASE"
+                        CaseCode: =varFLActiveAssetCode
+                        CaseType: =varFLActiveFmeaCode & " · " & varFLActiveFmeaRevisionCode
+                        Height: =132
+                        JourneyHint: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageLabel)
+                        JourneyPosition: =Text(LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder),"00") & " / 28"
+                        ProgressCurrent: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageOrder)
+                        ProgressTotal: =28
+                        ReviewHint: =varFLActiveApplicationCode
+                        ReviewState: =varFLCaseLifecycleStatus
+                        Subtitle: ="El caso revisa una aplicación concreta. La ingeniería base permanece en biblioteca y la criticidad del activo entra como contexto independiente."
+                        Title: =varFLActiveAssetCode & " · Aplicación AMEF/RCM"
+                        Width: =Parent.Width
+                        WorkspaceCode: ="ESTRATEGIA"
+                        X: =0
+                        Y: =0
+                  - cmpFLCaseOverviewRail:
+                      Control: CanvasComponent
+                      ComponentName: cmp_FL_ProcessRailPro
+                      Properties:
+                        ActiveStageId: =varFLCurrentStageId
+                        CompactMode: =true
+                        Height: =Parent.Height-cmpFLCaseOverviewHeader.Height-24
+                        Items: =colFLStageExecutions
+                        OnSelectStage: |-
+                          =
+                          Set(varFLCurrentStageId,cmpFLCaseOverviewRail.SelectedStageIdOut);
+                          Switch(
+                              cmpFLCaseOverviewRail.SelectedScreenKeyOut,
+                              "Context",Navigate(scr_FL_Context,ScreenTransition.None),
+                              "Functions",Navigate(scr_FL_Functions,ScreenTransition.None),
+                              "FailureModes",Navigate(scr_FL_FailureModes,ScreenTransition.None),
+                              "AMEF",Navigate(scr_FL_AMEF,ScreenTransition.None),
+                              "RCM",Navigate(scr_FL_RCM,ScreenTransition.None),
+                              "Economics",Navigate(scr_FL_Economics,ScreenTransition.None),
+                              "Task",Navigate(scr_FL_Task,ScreenTransition.None),
+                              "PlanPackage",Navigate(scr_FL_PlanPackage,ScreenTransition.None),
+                              "Traceability",Navigate(scr_FL_Traceability,ScreenTransition.None),
+                              "ReviewApproval",Navigate(scr_FL_ReviewApproval,ScreenTransition.None),
+                              "Effectiveness",Navigate(scr_FL_Effectiveness,ScreenTransition.None)
+                          )
+                        ShowPhaseHeaders: =true
+                        Width: =300
+                        X: =24
+                        Y: =cmpFLCaseOverviewHeader.Height+12
+                  - conFLCaseOverviewWork:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        Height: =Parent.Height-cmpFLCaseOverviewHeader.Height-24
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width-cmpFLCaseOverviewRail.Width-60
+                        X: =cmpFLCaseOverviewRail.X+cmpFLCaseOverviewRail.Width+12
+                        Y: =cmpFLCaseOverviewHeader.Height+12
+                      Children:
+                        - cmpFLCaseOverviewLineage:
+                            Control: CanvasComponent
+                            ComponentName: cmp_FL_LineagePanelPro
+                            Properties:
+                              ApplicationCode: =varFLActiveApplicationCode
+                              AssetCode: =varFLActiveAssetCode
+                              CriticalityLabel: =varFLActiveCriticality
+                              ExecutionLabel: ="Plan en preparación"
+                              Height: =126
+                              LibraryCode: =varFLActiveFmeaCode
+                              RevisionCode: =varFLActiveFmeaRevisionCode
+                              Title: ="Qué hereda este caso y qué contexto añade"
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =0
+                        - conFLCaseOverviewContext:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#FED7AA")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =190
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =(Parent.Width-12)*0.48
+                              X: =0
+                              Y: =138
+                            Children:
+                              - lblFLCaseOverviewContextTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#C2410C")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="CONTEXTO DEL ACTIVO"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =16
+                              - lblFLCaseOverviewCriticality:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0F172A")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =13
+                                    Text: ="Criticidad " & varFLActiveCriticality
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =42
+                              - lblFLCaseOverviewContextText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#475569")
+                                    Size: =9
+                                    Text: =LookUp(colFLFmeaApplications,ApplicationCode=varFLActiveApplicationCode,ContextSummary)
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =74
+                              - btnFLCaseOverviewCriticality:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorValue("#EA580C")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#C2410C")
+                                    Fill: =ColorValue("#FFF7ED")
+                                    Height: =34
+                                    OnSelect: =Navigate(scr_FL_AssetCriticality,ScreenTransition.None)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Size: =8
+                                    Text: ="Ver criticidad de planta"
+                                    Width: =170
+                                    X: =18
+                                    Y: =132
+                        - conFLCaseOverviewInheritance:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BAE6FD")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#FFFFFF")
+                              Height: =190
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width-conFLCaseOverviewContext.Width-12
+                              X: =conFLCaseOverviewContext.Width+12
+                              Y: =138
+                            Children:
+                              - lblFLCaseOverviewInheritanceTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#0284C7")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="INGENIERÍA HEREDADA"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =16
+                              - lblFLCaseOverviewInheritanceText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#334155")
+                                    Size: =9
+                                    Text: ="Funciones " & Text(CountRows(Filter(colFLFmeaFunctions,FmeaRevisionId=varFLActiveFmeaRevisionId))) & " · Modos " & Text(CountRows(Filter(colFLFmeaFailureModes,FmeaRevisionId=varFLActiveFmeaRevisionId))) & " · Tareas propuestas " & Text(CountRows(Filter(colFLProposedTasks,FmeaRevisionId=varFLActiveFmeaRevisionId)))
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =46
+                              - lblFLCaseOverviewInheritanceRule:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#64748B")
+                                    Size: =8
+                                    Text: ="Si P-101 necesita una excepción real, el override se guarda en la aplicación. La revisión R01 no se sobrescribe."
+                                    Width: =Parent.Width-36
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =82
+                              - btnFLCaseOverviewRevision:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorValue("#0284C7")
+                                    BorderThickness: =1
+                                    Color: =ColorValue("#0369A1")
+                                    Fill: =ColorValue("#F0F9FF")
+                                    Height: =34
+                                    OnSelect: =Navigate(scr_FL_FmeaRevision,ScreenTransition.None)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Size: =8
+                                    Text: ="Abrir revisión de origen"
+                                    Width: =175
+                                    X: =18
+                                    Y: =132
+                        - conFLCaseOverviewNext:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              BorderColor: =ColorValue("#BBF7D0")
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =ColorValue("#F0FDF4")
+                              Height: =Parent.Height-340
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =340
+                            Children:
+                              - lblFLCaseOverviewNextTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#15803D")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =9
+                                    Text: ="TRABAJO ACTUAL"
+                                    Width: =Parent.Width-36
+                                    X: =18
+                                    Y: =16
+                              - lblFLCaseOverviewNextText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =ColorValue("#14532D")
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =11
+                                    Text: =LookUp(colFLStageExecutions,StageId=varFLCurrentStageId,StageId & " · " & StageLabel)
+                                    Width: =Parent.Width-230
+                                    Wrap: =true
+                                    X: =18
+                                    Y: =44
+                              - btnFLCaseOverviewContinue:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorValue("#15803D")
+                                    BorderThickness: =1
+                                    Color: =Color.White
+                                    Fill: =ColorValue("#15803D")
+                                    Height: =36
+                                    OnSelect: =Navigate(scr_FL_AMEF,ScreenTransition.None)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Size: =9
+                                    Text: ="Continuar trabajo"
+                                    Width: =160
+                                    X: =Parent.Width-178
+                                    Y: =34
