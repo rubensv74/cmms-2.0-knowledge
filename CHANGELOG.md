@@ -2,6 +2,40 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [0.9.2] - 2026-08-14
+
+### Añadido
+
+- Notas de reunión `2026-08-14_revision-modelo-conceptual-amef-rcm.md`.
+- Análisis `ANL-002` con impacto de la reunión sobre el modelo funcional y CMMS 2.0 Functional Lab.
+- Handoff conceptual después de publicación: plan vigente → ejercicio/contexto presupuestario → generación anual explícita de preventivas.
+
+### Actualizado
+
+- Functional Journey a v1.1.
+- Matriz Persona vs Sistema a v1.1.
+- Visión y arquitectura del Functional Lab.
+- Fixture P-101 a v1.1.0.
+- Estado de implementación y estado general del proyecto.
+
+### Decisiones
+
+- La matriz de riesgo debe ser configurable por cliente/proyecto; una 5×5 solo puede ser un perfil de ejemplo.
+- El RCM se representa como árbol lógico de decisión, no como scoring.
+- Factibilidad técnica y efectividad deben formar parte de la explicación de la política RCM.
+- La taxonomía puede sugerir activos equivalentes, pero la aplicabilidad es decisión humana.
+- El modelo debe soportar plan genérico y overrides específicos por activo.
+- Actividades compatibles pueden agruparse por activo/frecuencia, pero el algoritmo exacto de duración/horas-hombre sigue pendiente de validación.
+- Las órdenes preventivas se plantean por ejercicio/año y mediante acción explícita; no se pregeneran para toda la vida útil.
+
+### Pendiente
+
+- Definir contrato mínimo `RiskProfile` antes de WS-03.
+- Definir contrato de árbol RCM antes de WS-04.
+- Definir contratos de aplicabilidad/overrides antes de WS-06.
+- Validar planificación/programación, ejecución, costes y facturación con perfiles adicionales.
+- Crear/identificar la Canvas app `CMMS 2.0 Functional Lab` y cerrar F01-00 en la herramienta real.
+
 ## [0.9.1] - 2026-08-10
 
 ### Añadido
