@@ -1,0 +1,337 @@
+# BLOCK CL-C07-FIX-01 — ApplicabilityMatrixPro RC3 candidate validation harness
+# TYPE: C — Component FIX validation harness
+# ACTION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: cmp_FL_ApplicabilityMatrixPro RC3 candidate accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, previously validated components, Functional Lab screens, ApplicabilityMatrixPro public contract
+# PURPOSE: revalidate CL-C07 after responsive table/card repair
+# VALIDATION: Normal 920 + selection + Stress 760 + selection + Save/Reopen
+# EXPECTED STATUS AFTER PASS: CL-C07-FIX-01 PASS / cmp_FL_ApplicabilityMatrixPro RC3 READY_FOR_INTEGRATION candidate
+#
+# PRECONDITION — COMPONENT DEFINITION
+# Update the EXISTING cmp_FL_ApplicabilityMatrixPro definition in situ from:
+# CL-C07-FIX-01_ApplicabilityMatrixPro_RC3_candidate.pa.yaml
+# Do NOT add a second component identity.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children replace ONLY:
+# 1) ph_ComponentUnderTest
+# 2) ph_TestControls
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(760,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - lblCLApplicabilityTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="cmp_FL_ApplicabilityMatrixPro RC3 · responsive validation"
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =14
+
+      - lblCLApplicabilityHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="CL-C07-FIX-01 · tabla de escritorio y tarjetas compactas con el mismo contrato de selección."
+            Width: =Parent.Width-32
+            Wrap: =true
+            X: =16
+            Y: =44
+
+      - cmpCLApplicability:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_ApplicabilityMatrixPro
+          Properties:
+            Height: =If(Coalesce(varCLApplicabilityWidth,920)<840,500,350)
+            Items: |-
+              =If(
+                  Coalesce(varCLApplicabilityStress,false),
+                  Table(
+                      {AssetCode:"P-101-MAIN-CONDENSATE-PUMP",AssetName:"Bomba principal de condensado servicio crítico tren A",Criticality:"Alta",ApplicabilityStatus:"Aplicable con ajuste local",ProfileCode:"HIGH-CONDENSATE-CRITICAL",IntervalSummary:"Cada 30 días · ventana operativa coordinada",ApplicationCode:"APP-P101-R07-CONDENSATE-SERVICE"},
+                      {AssetCode:"P-102-STANDBY-CONDENSATE-PUMP",AssetName:"Bomba de reserva de condensado con alternancia automática",Criticality:"Media-Alta",ApplicabilityStatus:"Aplicable condicionado",ProfileCode:"STANDBY-ROTATION-PROFILE",IntervalSummary:"Cada 60 días · sujeto a horas de operación",ApplicationCode:"APP-P102-R07-STANDBY-SERVICE"},
+                      {AssetCode:"P-103-AUX-CONDENSATE-PUMP",AssetName:"Bomba auxiliar de condensado para contingencia y arranque",Criticality:"Media",ApplicabilityStatus:"Aplicable",ProfileCode:"AUXILIARY-CONTINGENCY",IntervalSummary:"Trimestral · revisión tras uso de contingencia",ApplicationCode:"APP-P103-R07-AUXILIARY-SERVICE"}
+                  ),
+                  Table(
+                      {AssetCode:"P-101",AssetName:"Bomba principal de condensado",Criticality:"Alta",ApplicabilityStatus:"Aplicable",ProfileCode:"HIGH",IntervalSummary:"Mensual",ApplicationCode:"APP-P101-R01"},
+                      {AssetCode:"P-102",AssetName:"Bomba de reserva de condensado",Criticality:"Media",ApplicabilityStatus:"Aplicable",ProfileCode:"STD",IntervalSummary:"Bimestral",ApplicationCode:"APP-P102-R01"},
+                      {AssetCode:"P-103",AssetName:"Bomba auxiliar de condensado",Criticality:"Media",ApplicabilityStatus:"Condicionada",ProfileCode:"AUX",IntervalSummary:"Trimestral",ApplicationCode:"APP-P103-R01"}
+                  )
+              )
+            OnSelectApplication: |-
+              =
+              Set(varCLApplicabilityEventCount,Coalesce(varCLApplicabilityEventCount,0)+1);
+              Set(varCLApplicabilityEventAsset,cmpCLApplicability.SelectedAssetCodeOut);
+              Set(varCLApplicabilityEventApplication,cmpCLApplicability.SelectedApplicationCodeOut)
+            Title: ="Aplicabilidad de la revisión AMEF"
+            UseHostTheme: =false
+            Width: =Min(Coalesce(varCLApplicabilityWidth,920),Parent.Width-32)
+            X: =(Parent.Width-Self.Width)/2
+            Y: =94
+
+      - lblCLApplicabilityExpectedTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Semántica esperada"
+            Width: =Parent.Width-64
+            X: =16
+            Y: =cmpCLApplicability.Y+cmpCLApplicability.Height+22
+
+      - lblCLApplicabilityExpected:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="Una revisión AMEF reutilizable → varias aplicaciones por activo" & Char(10) &
+              "Wide: tabla de cinco columnas · Compact: tarjeta por aplicación" & Char(10) &
+              "Seleccionar debe exponer AssetCode + ApplicationCode + Record y disparar un evento"
+            Width: =Parent.Width-64
+            Wrap: =true
+            X: =16
+            Y: =lblCLApplicabilityExpectedTitle.Y+30
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLApplicabilityTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Applicability Matrix RC3 · smoke"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLApplicabilityTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Valida tabla 920, tarjetas 760 y contrato público de selección sin pérdida de información."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLApplicabilityNormal:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              Set(varCLApplicabilityStress,false);
+              Set(varCLApplicabilityWidth,920);
+              Set(varCLApplicabilityEventCount,0);
+              Set(varCLApplicabilityEventAsset,"");
+              Set(varCLApplicabilityEventApplication,"")
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Normal · 920 px"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =118
+
+      - btnCLApplicabilityStress:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLApplicabilityStress,true);
+              Set(varCLApplicabilityWidth,760);
+              Set(varCLApplicabilityEventCount,0);
+              Set(varCLApplicabilityEventAsset,"");
+              Set(varCLApplicabilityEventApplication,"")
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Stress · 760 px"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =166
+
+      - lblCLApplicabilityStateTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Estado del harness"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =226
+
+      - lblCLApplicabilityMode:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Modo · " & If(Coalesce(varCLApplicabilityStress,false),"STRESS","NORMAL")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =256
+
+      - lblCLApplicabilityWidth:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Ancho solicitado · " & Text(Coalesce(varCLApplicabilityWidth,920)) & " px"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =288
+
+      - lblCLApplicabilityHeight:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Altura host · " & Text(cmpCLApplicability.Height) & " px"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =320
+
+      - lblCLApplicabilitySelectedAsset:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Selected Asset · " & Coalesce(cmpCLApplicability.SelectedAssetCodeOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =358
+
+      - lblCLApplicabilitySelectedApplication:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Selected App · " & Coalesce(cmpCLApplicability.SelectedApplicationCodeOut,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =398
+
+      - lblCLApplicabilitySelectedRecord:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Selected Record · " & Coalesce(cmpCLApplicability.SelectedRecordOut.AssetCode,"—") & " / " & Coalesce(cmpCLApplicability.SelectedRecordOut.ProfileCode,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =452
+
+      - lblCLApplicabilityEvent:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="OnSelect event · " & Text(Coalesce(varCLApplicabilityEventCount,0)) & Char(10) &
+              Coalesce(varCLApplicabilityEventAsset,"—") & " / " & Coalesce(varCLApplicabilityEventApplication,"—")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =508
+
+      - lblCLApplicabilityChecklist:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: |-
+              ="Gate:" & Char(10) &
+              "1 · Normal 920 tabla legible" & Char(10) &
+              "2 · P-102 → outputs + evento 1" & Char(10) &
+              "3 · Stress 760 → 3 tarjetas completas" & Char(10) &
+              "4 · P-103 stress → outputs + evento" & Char(10) &
+              "5 · sin elipsis/overlap" & Char(10) &
+              "6 · Save/Reopen"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =582
