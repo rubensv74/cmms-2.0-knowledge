@@ -24,7 +24,7 @@ Pulsa `Normal · 920 px`.
 Comprobar:
 
 - cabecera completa: Activo, Criticidad, Aplicabilidad, Perfil, Intervalo;
-- cuatro filas visibles y diferenciables;
+- tres filas visibles y diferenciables;
 - nombres y códigos nominales legibles;
 - sin superficies negras;
 - sin clipping ni colisiones;
