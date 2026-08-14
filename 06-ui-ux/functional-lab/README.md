@@ -10,18 +10,35 @@ Aplicación Canvas Power Apps para validar el modelo funcional de CMMS 2.0 media
 - `../../02-functional/process-model/functional-journey.md`
 - `../../02-functional/process-model/human-system-decisions.md`
 - `../../00-governance/cmms-functional-lab-incremental-protocol.md`
+- `../../05-meetings/01_Analysis/ANL-002_revision-funcional-post-reunion-2026-08-14.md`
 - `architecture.md`
+
+## Revisión funcional 2026-08-14
+
+La foundation se ha revisado con las conclusiones de la reunión del 14 de agosto.
+
+El laboratorio debe respetar desde ahora estos principios:
+
+- riesgo configurable por proyecto/cliente; una matriz 5×5 es solo una configuración de ejemplo;
+- RCM representado como árbol lógico sin scoring acumulado;
+- criterios de factibilidad técnica y efectividad visibles y trazables;
+- plan genérico + candidatos de aplicabilidad + decisión humana + overrides por activo;
+- agrupación de actividades compatible con frecuencia/activo, sin inventar todavía el algoritmo exacto de duración/horas-hombre;
+- publicación con handoff conceptual hacia generación anual explícita de órdenes preventivas;
+- planning/scheduling, ejecución, costes y facturación permanecen `to_validate` y no se simularán como procesos cerrados.
 
 ## Contratos
 
 - `contracts/functional-journey.schema.json`
 - `contracts/case-fixture.schema.json`
 
+Antes de implementar WS-03, WS-04 y WS-06 deberán añadirse contratos mínimos específicos para `RiskProfile`, árbol RCM y aplicabilidad/overrides respectivamente.
+
 ## Casos
 
 - `cases/P101/p101-case.v1.json`
 
-P-101 es el caso inicial y procede del AMEF–RCM Experience Center existente.
+P-101 es el caso inicial y procede del AMEF–RCM Experience Center existente. Desde fixture v1.1, cualquier matriz o valor de configuración utilizado en el caso se declara como ejemplo y no como estándar fijo del producto.
 
 ## Principio de desarrollo
 
@@ -81,6 +98,8 @@ La primera funcionalidad completa será `WS-01 Caso y contexto`:
 
 No se implementará WS-02 hasta validar WS-01 en Power Apps Studio.
 
+La revisión funcional del 2026-08-14 no bloquea WS-01, pero el runtime state no debe introducir supuestos rígidos que impidan después soportar perfiles configurables, aplicabilidad y overrides.
+
 ## Límite
 
 El laboratorio no debe presentarse como:
@@ -89,4 +108,9 @@ El laboratorio no debe presentarse como:
 - diseño final de pantallas;
 - decisión de base de datos;
 - definición de APIs;
-- integración final con el CMMS existente.
+- integración final con el CMMS existente;
+- sistema real de órdenes de trabajo;
+- motor productivo de planificación/programación;
+- sistema de costes o facturación.
+
+Cuando un workspace alcance una frontera todavía abierta, la demo mostrará el output y el siguiente proceso esperado, pero lo etiquetará claramente como pendiente de validación.
