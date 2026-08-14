@@ -1,0 +1,1 @@
+RiskMatrix RC6 validated in Studio with 5×5, 10×10 and 4×6 dimensions. Use `CL-C05-FIX-03_RiskMatrixPro_RC6_dynamic_complete.pa.yaml` as the approved source until canonical file synchronization is complete.
