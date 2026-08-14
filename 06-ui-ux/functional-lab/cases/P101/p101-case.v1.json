@@ -1,8 +1,8 @@
 {
-  "fixtureVersion": "1.0.0",
+  "fixtureVersion": "1.1.0",
   "caseId": "P101-AMEF-RCM-001",
   "name": "P-101 — Bomba centrífuga de agua de refrigeración",
-  "disclaimer": "Caso ilustrativo derivado del AMEF–RCM Experience Center. Los valores son realistas para validación conceptual, pero no constituyen una instrucción de mantenimiento aprobada.",
+  "disclaimer": "Caso ilustrativo derivado del AMEF–RCM Experience Center. Los valores son realistas para validación conceptual, pero no constituyen una instrucción de mantenimiento aprobada. El perfil de riesgo y las reglas mostradas son configuración de demostración y no un estándar fijo del producto.",
   "asset": {
     "assetCode": "P-101",
     "assetName": "Bomba centrífuga de agua de refrigeración",
@@ -45,6 +45,17 @@
     }
   },
   "risk": {
+    "profile": {
+      "profileId": "DEMO-RISK-5X5-01",
+      "status": "to_validate",
+      "scope": "Configuración ilustrativa para P-101; el producto debe admitir perfiles por cliente/proyecto.",
+      "matrix": {
+        "severityLevels": 5,
+        "likelihoodLevels": 5
+      },
+      "severityDefinition": "Escala ilustrativa de cinco niveles. Los rangos económicos/operacionales deben configurarse para el negocio real.",
+      "calculationNote": "La UI debe consumir el perfil configurado y no asumir una matriz 5x5 fija."
+    },
     "consequence": "Operacional",
     "severity": 4,
     "occurrence": 3,
@@ -55,6 +66,7 @@
     "amefException": "Confirmar baseline de vibración después de la próxima alineación."
   },
   "rcm": {
+    "decisionMethod": "Árbol lógico de decisión; no utiliza scoring acumulado.",
     "evident": "Sí",
     "detectable": "Sí",
     "pfEvidence": "Histórico de tendencias y experiencia de equipos equivalentes muestran degradación detectable.",
@@ -62,6 +74,15 @@
     "interventionDays": 14,
     "detectionProbabilityPct": 85,
     "ageRelated": "No demostrada",
+    "technicalFeasibilityCriteria": [
+      "Existe una condición de fallo potencial detectable.",
+      "El intervalo P-F permite detectar y actuar antes de la falla funcional.",
+      "La tarea puede ejecutarse a una frecuencia menor que el intervalo P-F."
+    ],
+    "effectivenessCriteria": [
+      "La política debe reducir el riesgo/consecuencia a un nivel aceptable según el perfil aplicable.",
+      "La decisión debe conservar evidencia y justificación."
+    ],
     "effectivePolicy": "Sí",
     "strategy": "Mantenimiento basado en condición",
     "fallback": "Restauración o sustitución condicionada",
@@ -91,19 +112,38 @@
       "interval": 21,
       "intervalUnit": "días",
       "pfFactor": 0.5,
-      "planningWindowDays": 14
+      "planningWindowDays": 14,
+      "justificationSources": [
+        "Árbol RCM y evidencia P-F",
+        "Manual/recomendaciones del fabricante cuando aplique",
+        "Histórico de mantenimiento",
+        "Experiencia operacional"
+      ]
     }
   },
   "plan": {
     "discipline": "Mecánica",
     "workCenter": "Técnico de mantenimiento predictivo",
     "crew": 1,
+    "laborHours": 1.2,
     "tools": "Analizador de vibraciones, termómetro IR, tablet y puntos marcados.",
     "spares": "Kit de rodamiento disponible bajo condición.",
     "shutdown": "No para medición; sí para intervención correctiva.",
     "permit": "Permiso rutinario y control de partes giratorias.",
     "scope": ["P-101 Bomba", "M-101 Motor", "CPL-101 Acoplamiento"],
     "grouping": "Ruta predictiva del tren P-101",
+    "groupingPolicy": {
+      "principle": "Actividades compatibles sobre el mismo activo y frecuencia pueden agruparse en un mismo paquete/orden.",
+      "durationCalculation": "to_validate",
+      "multiDisciplineLaborCalculation": "to_validate"
+    },
+    "applicabilityPolicy": {
+      "candidateSelection": "El sistema puede sugerir activos equivalentes mediante taxonomía y contexto técnico.",
+      "decisionAuthority": "Especialista humano",
+      "automaticApplication": false,
+      "assetOverridesAllowed": true,
+      "overrideRule": "Una modificación específica de un activo no cambia el plan genérico ni el de otros activos."
+    },
     "exportModel": "Modelo interno neutro con mapeo posterior al CMMS destino."
   },
   "governance": {
@@ -117,7 +157,18 @@
       "reliability": "Aprobado",
       "assetOwner": "Aprobado"
     },
-    "version": "1.0"
+    "version": "1.0",
+    "publicationOutput": "Versión publicada del plan preparada para handoff operacional.",
+    "operationalHandoff": {
+      "status": "conceptual-only",
+      "validatedBoundary": "Plan publicado vigente -> seleccionar ejercicio/contexto presupuestario -> acción explícita para generar órdenes preventivas del año.",
+      "preGenerateLifetimeOrders": false,
+      "generationMode": "annual-explicit-action",
+      "planningScheduling": "to_validate",
+      "executionFeedback": "to_validate",
+      "costAllocation": "to_validate",
+      "contractBillingIntegration": "to_validate"
+    }
   },
   "effectiveness": {
     "actualDetectionDays": 28,
