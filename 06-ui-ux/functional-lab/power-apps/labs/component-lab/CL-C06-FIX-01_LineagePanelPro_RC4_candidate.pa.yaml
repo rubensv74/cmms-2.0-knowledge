@@ -1,0 +1,460 @@
+# CMMS 2.0 FUNCTIONAL LAB — LINEAGE PANEL PRO — RESPONSIVE OVERFLOW FIX RC4 CANDIDATE
+#
+# Base: cmp_FL_LineagePanelPro RC3.
+# Fix scope: CL-C06-FIX-01 only.
+# Preserves component identity and public custom-property contract.
+# Typography is preserved; overflow is resolved through layout, wrapping and host height.
+#
+# Responsive envelope:
+# - Width >= 780 px: four-stage horizontal lineage, recommended host Height = 160
+# - Width < 780 px: 2x2 adaptive lineage, recommended host Height = 246
+#
+# Do not promote to canonical component until Studio validation passes.
+
+ComponentDefinitions:
+  cmp_FL_LineagePanelPro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      LibraryCode:
+        PropertyKind: Input
+        DisplayName: LibraryCode
+        Description: Código de la definición AMEF de origen.
+        DataType: Text
+        Default: ="AMEF-BOMBA-CENTRIFUGA"
+      RevisionCode:
+        PropertyKind: Input
+        DisplayName: RevisionCode
+        Description: Revisión AMEF aplicada.
+        DataType: Text
+        Default: ="R01"
+      AssetCode:
+        PropertyKind: Input
+        DisplayName: AssetCode
+        Description: Código del activo contextual.
+        DataType: Text
+        Default: ="P-101"
+      ApplicationCode:
+        PropertyKind: Input
+        DisplayName: ApplicationCode
+        Description: Código de aplicación de la revisión al activo.
+        DataType: Text
+        Default: ="APP-P101-R01"
+      CriticalityLabel:
+        PropertyKind: Input
+        DisplayName: CriticalityLabel
+        Description: Criticidad contextual del activo.
+        DataType: Text
+        Default: ="Alta"
+      ExecutionLabel:
+        PropertyKind: Input
+        DisplayName: ExecutionLabel
+        Description: Estado resumido del handoff hacia ejecución.
+        DataType: Text
+        Default: ="Plan en preparación"
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Título del componente.
+        DataType: Text
+        Default: ="Origen y trazabilidad"
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Color de acento. Conservado por compatibilidad de contrato; RC4 mantiene paleta interna segura.
+        DataType: Color
+        Default: =ColorValue("#0284C7")
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Fondo del componente. Conservado por compatibilidad de contrato; RC4 mantiene paleta interna segura.
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Color del borde. Conservado por compatibilidad de contrato; RC4 mantiene paleta interna segura.
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Color del texto principal. Conservado por compatibilidad de contrato; RC4 mantiene paleta interna segura.
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Color del texto secundario. Conservado por compatibilidad de contrato; RC4 mantiene paleta interna segura.
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+    Properties:
+      Fill: =Color.Transparent
+      Height: =160
+      Width: =900
+
+    Children:
+      - conFLLineageRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#E2E8F0")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#FFFFFF")
+            Height: =Parent.Height
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width
+          Children:
+            - lblFLLineageTitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =15
+                  Text: =cmp_FL_LineagePanelPro.Title
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =9
+
+            # WIDE MODE
+            - lblFLLineageLibraryEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="BIBLIOTECA / REVISIÓN"
+                  Visible: =Parent.Width>=780
+                  Width: =(Parent.Width-120)*0.26
+                  Wrap: =false
+                  X: =18
+                  Y: =38
+
+            - lblFLLineageLibraryValue:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.LibraryCode & " · " & cmp_FL_LineagePanelPro.RevisionCode
+                  Visible: =Parent.Width>=780
+                  Width: =(Parent.Width-120)*0.26
+                  Wrap: =true
+                  X: =18
+                  Y: =58
+
+            - lblFLLineageArrow1:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: ="→"
+                  Visible: =Parent.Width>=780
+                  Width: =28
+                  X: =18+(Parent.Width-120)*0.26
+                  Y: =57
+
+            - lblFLLineageApplicationEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="APLICACIÓN"
+                  Visible: =Parent.Width>=780
+                  Width: =(Parent.Width-120)*0.20
+                  Wrap: =false
+                  X: =46+(Parent.Width-120)*0.26
+                  Y: =38
+
+            - lblFLLineageApplicationValue:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.ApplicationCode
+                  Visible: =Parent.Width>=780
+                  Width: =(Parent.Width-120)*0.20
+                  Wrap: =true
+                  X: =46+(Parent.Width-120)*0.26
+                  Y: =58
+
+            - lblFLLineageArrow2:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: ="→"
+                  Visible: =Parent.Width>=780
+                  Width: =28
+                  X: =46+(Parent.Width-120)*0.46
+                  Y: =57
+
+            - lblFLLineageAssetEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="ACTIVO / CONTEXTO"
+                  Visible: =Parent.Width>=780
+                  Width: =(Parent.Width-120)*0.27
+                  Wrap: =false
+                  X: =74+(Parent.Width-120)*0.46
+                  Y: =38
+
+            - lblFLLineageAssetValue:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.AssetCode & " · Criticidad " & cmp_FL_LineagePanelPro.CriticalityLabel
+                  Visible: =Parent.Width>=780
+                  Width: =(Parent.Width-120)*0.27
+                  Wrap: =true
+                  X: =74+(Parent.Width-120)*0.46
+                  Y: =58
+
+            - lblFLLineageArrow3:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: ="→"
+                  Visible: =Parent.Width>=780
+                  Width: =28
+                  X: =74+(Parent.Width-120)*0.73
+                  Y: =57
+
+            - lblFLLineageExecutionEyebrow:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="HANDOFF"
+                  Visible: =Parent.Width>=780
+                  Width: =Parent.Width-(102+(Parent.Width-120)*0.73)-18
+                  Wrap: =false
+                  X: =102+(Parent.Width-120)*0.73
+                  Y: =38
+
+            - lblFLLineageExecutionValue:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.ExecutionLabel
+                  Visible: =Parent.Width>=780
+                  Width: =Parent.Width-(102+(Parent.Width-120)*0.73)-18
+                  Wrap: =true
+                  X: =102+(Parent.Width-120)*0.73
+                  Y: =58
+
+            - lblFLLineageHintWide:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  Size: =11
+                  Text: ="La ingeniería se hereda; los ajustes del activo quedan registrados en la aplicación y no modifican silenciosamente la biblioteca."
+                  Visible: =Parent.Width>=780
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =126
+
+            # COMPACT MODE
+            - lblFLLineageLibraryEyebrowCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="BIBLIOTECA / REVISIÓN"
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =false
+                  X: =18
+                  Y: =38
+
+            - lblFLLineageLibraryValueCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.LibraryCode & " · " & cmp_FL_LineagePanelPro.RevisionCode
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =true
+                  X: =18
+                  Y: =58
+
+            - lblFLLineageArrow1Compact:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: ="→"
+                  Visible: =Parent.Width<780
+                  Width: =28
+                  X: =28+(Parent.Width-84)/2
+                  Y: =63
+
+            - lblFLLineageApplicationEyebrowCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="APLICACIÓN"
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =false
+                  X: =66+(Parent.Width-84)/2
+                  Y: =38
+
+            - lblFLLineageApplicationValueCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.ApplicationCode
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =true
+                  X: =66+(Parent.Width-84)/2
+                  Y: =58
+
+            - lblFLLineageArrow2Compact:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: ="↓"
+                  Visible: =Parent.Width<780
+                  Width: =28
+                  X: =(Parent.Width-28)/2
+                  Y: =94
+
+            - lblFLLineageAssetEyebrowCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="ACTIVO / CONTEXTO"
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =false
+                  X: =18
+                  Y: =116
+
+            - lblFLLineageAssetValueCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.AssetCode & " · Criticidad " & cmp_FL_LineagePanelPro.CriticalityLabel
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =true
+                  X: =18
+                  Y: =136
+
+            - lblFLLineageArrow3Compact:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =ColorValue("#0284C7")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =14
+                  Text: ="→"
+                  Visible: =Parent.Width<780
+                  Width: =28
+                  X: =28+(Parent.Width-84)/2
+                  Y: =141
+
+            - lblFLLineageExecutionEyebrowCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="HANDOFF"
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =false
+                  X: =66+(Parent.Width-84)/2
+                  Y: =116
+
+            - lblFLLineageExecutionValueCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#0F172A")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =12
+                  Text: =cmp_FL_LineagePanelPro.ExecutionLabel
+                  Visible: =Parent.Width<780
+                  Width: =(Parent.Width-84)/2
+                  Wrap: =true
+                  X: =66+(Parent.Width-84)/2
+                  Y: =136
+
+            - lblFLLineageHintCompact:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  Size: =11
+                  Text: ="La ingeniería se hereda; los ajustes del activo quedan registrados en la aplicación y no modifican silenciosamente la biblioteca."
+                  Visible: =Parent.Width<780
+                  Width: =Parent.Width-36
+                  Wrap: =true
+                  X: =18
+                  Y: =202
