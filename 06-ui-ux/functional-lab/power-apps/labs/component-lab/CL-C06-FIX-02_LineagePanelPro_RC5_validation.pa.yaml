@@ -1,0 +1,324 @@
+# BLOCK CL-C06-FIX-02 — LineagePanelPro RC5 validation harness
+# TYPE: C — Component FIX validation harness
+# ACTION: REPLACE PLACEHOLDER CONTENT BLOCKS
+# TARGET: scr_ComponentLab / ph_ComponentUnderTest + ph_TestControls
+# DEPENDS ON: cmp_FL_LineagePanelPro RC5 candidate accepted in Studio
+# TOUCHES: ph_ComponentUnderTest content + ph_TestControls content only
+# DO NOT MODIFY: scr_ComponentLab geometry, previously validated components, Functional Lab screens, public custom-property contract
+# PURPOSE: validate responsive flow after RC4 2x2 failure
+# VALIDATION: Normal 900 + Stress 700 + Save/Reopen
+# EXPECTED STATUS AFTER PASS: CL-C06-FIX-02 PASS / cmp_FL_LineagePanelPro RC5 READY_FOR_INTEGRATION
+#
+# PRECONDITION
+# Update the EXISTING cmp_FL_LineagePanelPro definition in situ from:
+# CL-C06-FIX-02_LineagePanelPro_RC5_candidate.pa.yaml
+# Do NOT create a second component identity.
+#
+# PASTE INSTRUCTION
+# Inside conComponentLabBody.Children replace ONLY:
+# 1) ph_ComponentUnderTest
+# 2) ph_TestControls
+
+- ph_ComponentUnderTest:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =Max(700,Parent.Width-324)
+      X: =0
+      Y: =0
+
+    Children:
+      - lblCLLineageTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="cmp_FL_LineagePanelPro RC5 · responsive flow validation"
+            Width: =Parent.Width-32
+            Wrap: =false
+            X: =16
+            Y: =14
+
+      - lblCLLineageHint:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="CL-C06-FIX-02 · escritorio horizontal; host estrecho en secuencia vertical a ancho completo con AutoHeight."
+            Width: =Parent.Width-32
+            Wrap: =true
+            X: =16
+            Y: =44
+
+      - cmpCLLineage:
+          Control: CanvasComponent
+          ComponentName: cmp_FL_LineagePanelPro
+          Properties:
+            ApplicationCode: |-
+              =If(
+                  Coalesce(varCLLineageStress,false),
+                  "APP-P101-R07-CONDENSATE-SERVICE",
+                  "APP-P101-R01"
+              )
+            AssetCode: |-
+              =If(
+                  Coalesce(varCLLineageStress,false),
+                  "P-101-MAIN-CONDENSATE-PUMP",
+                  "P-101"
+              )
+            CriticalityLabel: |-
+              =If(
+                  Coalesce(varCLLineageStress,false),
+                  "Alta · seguridad y producción",
+                  "Alta"
+              )
+            ExecutionLabel: |-
+              =If(
+                  Coalesce(varCLLineageStress,false),
+                  "Job Plan en preparación · pendiente de aprobación operativa",
+                  "Plan en preparación"
+              )
+            Height: =If(Coalesce(varCLLineageWidth,900)<780,400,160)
+            LibraryCode: |-
+              =If(
+                  Coalesce(varCLLineageStress,false),
+                  "AMEF-BOMBA-CENTRIFUGA-API610-SERVICIO-CRITICO",
+                  "AMEF-BOMBA-CENTRIFUGA"
+              )
+            RevisionCode: |-
+              =If(
+                  Coalesce(varCLLineageStress,false),
+                  "R07-APROBADA",
+                  "R01"
+              )
+            Title: ="Origen y trazabilidad"
+            Width: =Min(Coalesce(varCLLineageWidth,900),Parent.Width-32)
+            X: =(Parent.Width-Self.Width)/2
+            Y: =94
+
+      - lblCLLineageExpectedTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Semántica esperada"
+            Width: =Parent.Width-64
+            X: =16
+            Y: =cmpCLLineage.Y+cmpCLLineage.Height+26
+
+      - lblCLLineageExpected:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="Biblioteca / revisión · ingeniería reutilizable" & Char(10) &
+              "Aplicación · vínculo versionado con el contexto" & Char(10) &
+              "Activo / contexto · P-101 y criticidad de planta" & Char(10) &
+              "Handoff · estado resumido hacia planificación/ejecución" & Char(10) &
+              "La criticidad contextual no sustituye el riesgo AMEF"
+            Width: =Parent.Width-64
+            Wrap: =true
+            X: =16
+            Y: =lblCLLineageExpectedTitle.Y+30
+
+      - lblCLLineageStressNote:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Stress 700 debe mostrar cuatro etapas verticales, valores largos íntegros y hint separado. No se permiten elipsis, clipping, overlap ni reducción tipográfica."
+            Width: =Parent.Width-64
+            Wrap: =true
+            X: =16
+            Y: =lblCLLineageExpected.Y+lblCLLineageExpected.Height+22
+
+- ph_TestControls:
+    Control: GroupContainer@1.5.0
+    Variant: ManualLayout
+    Properties:
+      BorderColor: =ColorValue("#CBD5E1")
+      BorderThickness: =1
+      DropShadow: =DropShadow.None
+      Fill: =ColorValue("#FFFFFF")
+      Height: =Parent.Height
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      Width: =300
+      X: =Parent.Width-Self.Width
+      Y: =0
+
+    Children:
+      - lblCLLineageTestTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =16
+            Text: ="Lineage Panel RC5 · smoke"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =14
+
+      - lblCLLineageTestPurpose:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =12
+            Text: ="Valida escritorio horizontal y flujo vertical compacto sin pérdida de trazabilidad."
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =44
+
+      - btnCLLineageNormal:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#0284C7")
+            BorderThickness: =1
+            Color: =Color.White
+            Fill: =ColorValue("#0284C7")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#0369A1")
+            OnSelect: |-
+              =
+              Set(varCLLineageStress,false);
+              Set(varCLLineageWidth,900)
+            PressedFill: =ColorValue("#075985")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Normal · 900 px"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =118
+
+      - btnCLLineageStress:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorValue("#CBD5E1")
+            BorderThickness: =1
+            Color: =ColorValue("#0F172A")
+            Fill: =ColorValue("#FFFFFF")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =40
+            HoverFill: =ColorValue("#F8FAFC")
+            OnSelect: |-
+              =
+              Set(varCLLineageStress,true);
+              Set(varCLLineageWidth,700)
+            PressedFill: =ColorValue("#F1F5F9")
+            RadiusBottomLeft: =9
+            RadiusBottomRight: =9
+            RadiusTopLeft: =9
+            RadiusTopRight: =9
+            Size: =12
+            Text: ="Stress · 700 px"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =166
+
+      - lblCLLineageStateTitle:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#0F172A")
+            FontWeight: =FontWeight.Semibold
+            Size: =13
+            Text: ="Estado del harness"
+            Width: =Parent.Width-28
+            X: =14
+            Y: =230
+
+      - lblCLLineageMode:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Modo · " & If(Coalesce(varCLLineageStress,false),"STRESS","NORMAL")
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =260
+
+      - lblCLLineageWidth:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Ancho solicitado · " & Text(Coalesce(varCLLineageWidth,900)) & " px"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =294
+
+      - lblCLLineageHeight:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: ="Altura host · " & Text(If(Coalesce(varCLLineageWidth,900)<780,400,160)) & " px"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =328
+
+      - lblCLLineageChecklist:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#475569")
+            Size: =12
+            Text: |-
+              ="Comprueba:" & Char(10) &
+              "1 · normal: 4 columnas" & Char(10) &
+              "2 · stress: 4 etapas verticales" & Char(10) &
+              "3 · valores íntegros, sin elipsis" & Char(10) &
+              "4 · sin overlap ni clipping" & Char(10) &
+              "5 · hint inferior completo" & Char(10) &
+              "6 · tipografía sin reducción" & Char(10) &
+              "7 · sin superficies negras"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =372
+
+      - lblCLLineageGate:
+          Control: ModernText@1.0.0
+          Properties:
+            AutoHeight: =true
+            Color: =ColorValue("#64748B")
+            Size: =11
+            Text: ="Gate · RC5 definition → Normal 900 → Stress 700 → Visual QA → Save/Reopen"
+            Width: =Parent.Width-28
+            Wrap: =true
+            X: =14
+            Y: =566
