@@ -1,0 +1,311 @@
+# CMMS 2.0 FUNCTIONAL LAB — APPLICABILITY MATRIX PRO — RESPONSIVE CARDS RC3 CANDIDATE
+# Base: RC2.
+# Fix scope: CL-C07-FIX-01 only.
+# Preserves component identity and public custom-property contract.
+# Typography is preserved; compact mode converts each gallery row into a full-width card.
+#
+# Responsive envelope:
+# - Width >= 840 px: five-column desktop table, recommended host Height = 350
+# - Width < 840 px: full-width responsive cards, recommended host Height = 500
+#
+# Do not promote to canonical component until Studio validation passes.
+
+ComponentDefinitions:
+  cmp_FL_ApplicabilityMatrixPro:
+    DefinitionType: CanvasComponent
+
+    CustomProperties:
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Título del componente.
+        DataType: Text
+        Default: ="Aplicabilidad de la revisión"
+
+      Items:
+        PropertyKind: Input
+        DisplayName: Items
+        Description: Tabla de activos y perfil de aplicación.
+        DataType: Table
+        Default: =Table({AssetCode:"P-101",AssetName:"Bomba centrífuga de agua de refrigeración",Criticality:"Alta",ApplicabilityStatus:"Aplicable",ProfileCode:"HIGH",IntervalSummary:"Mensual",ApplicationCode:"APP-P101-R01"})
+
+      UseHostTheme:
+        PropertyKind: Input
+        DisplayName: UseHostTheme
+        Description: Usa colores del host. Desactivado por defecto por compatibilidad Studio.
+        DataType: Boolean
+        Default: =false
+
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Color de acento.
+        DataType: Color
+        Default: =ColorValue("#0284C7")
+
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Fondo.
+        DataType: Color
+        Default: =ColorValue("#FFFFFF")
+
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Borde.
+        DataType: Color
+        Default: =ColorValue("#E2E8F0")
+
+      TextColor:
+        PropertyKind: Input
+        DisplayName: TextColor
+        Description: Texto principal.
+        DataType: Color
+        Default: =ColorValue("#0F172A")
+
+      MutedTextColor:
+        PropertyKind: Input
+        DisplayName: MutedTextColor
+        Description: Texto secundario.
+        DataType: Color
+        Default: =ColorValue("#64748B")
+
+      OnSelectApplication:
+        PropertyKind: Event
+        DisplayName: OnSelectApplication
+        Description: Se ejecuta al seleccionar un activo/aplicación.
+        ReturnType: None
+        Default: =false
+
+      SelectedAssetCodeOut:
+        PropertyKind: Output
+        DisplayName: SelectedAssetCodeOut
+        Description: Código del activo seleccionado.
+        DataType: Text
+
+      SelectedApplicationCodeOut:
+        PropertyKind: Output
+        DisplayName: SelectedApplicationCodeOut
+        Description: Código de la aplicación seleccionada.
+        DataType: Text
+
+      SelectedRecordOut:
+        PropertyKind: Output
+        DisplayName: SelectedRecordOut
+        Description: Registro seleccionado.
+        DataType: Record
+
+    Properties:
+      Fill: =Color.Transparent
+      Height: =350
+      SelectedApplicationCodeOut: =Coalesce(galFLApplicability.Selected.ApplicationCode,"")
+      SelectedAssetCodeOut: =Coalesce(galFLApplicability.Selected.AssetCode,"")
+      SelectedRecordOut: =galFLApplicability.Selected
+      Width: =920
+
+    Children:
+      - conFLApplicabilityRoot:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.BorderColor,ColorValue("#E2E8F0"))
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.SurfaceColor,ColorValue("#FFFFFF"))
+            Height: =Parent.Height
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =Parent.Width
+
+          Children:
+            - lblFLApplicabilityTitle:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
+                  FontWeight: =FontWeight.Semibold
+                  Size: =16
+                  Text: =cmp_FL_ApplicabilityMatrixPro.Title
+                  Width: =Parent.Width-32
+                  Wrap: =true
+                  X: =16
+                  Y: =14
+
+            - lblFLApplicabilityHint:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.MutedTextColor,ColorValue("#64748B"))
+                  Size: =12
+                  Text: ="La misma revisión AMEF puede aplicarse a varios activos. El perfil y el intervalo pueden variar sin duplicar la ingeniería base."
+                  Width: =Parent.Width-32
+                  Wrap: =true
+                  X: =16
+                  Y: =42
+
+            - lblFLApplicabilityHAsset:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="ACTIVO"
+                  Visible: =Parent.Width>=840
+                  Width: =300
+                  X: =16
+                  Y: =84
+
+            - lblFLApplicabilityHCrit:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="CRITICIDAD"
+                  Visible: =Parent.Width>=840
+                  Width: =100
+                  X: =350
+                  Y: =84
+
+            - lblFLApplicabilityHStatus:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="APLICABILIDAD"
+                  Visible: =Parent.Width>=840
+                  Width: =120
+                  X: =465
+                  Y: =84
+
+            - lblFLApplicabilityHProfile:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="PERFIL"
+                  Visible: =Parent.Width>=840
+                  Width: =85
+                  X: =600
+                  Y: =84
+
+            - lblFLApplicabilityHInterval:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =ColorValue("#64748B")
+                  FontWeight: =FontWeight.Semibold
+                  Size: =11
+                  Text: ="INTERVALO"
+                  Visible: =Parent.Width>=840
+                  Width: =110
+                  X: =700
+                  Y: =84
+
+            - galFLApplicability:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  BorderColor: =Color.Transparent
+                  Height: =If(Parent.Width<840,Parent.Height-90,Parent.Height-118)
+                  Items: =cmp_FL_ApplicabilityMatrixPro.Items
+                  OnSelect: =cmp_FL_ApplicabilityMatrixPro.OnSelectApplication()
+                  ShowScrollbar: =false
+                  TemplatePadding: =0
+                  TemplateSize: =If(Parent.Width<840,128,60)
+                  Width: =Parent.Width-24
+                  X: =12
+                  Y: =If(Parent.Width<840,82,110)
+
+                Children:
+                  - btnFLApplicabilityRow:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =If(ThisItem.IsSelected,ColorValue("#0284C7"),ColorValue("#E2E8F0"))
+                        BorderThickness: =1
+                        Color: =Color.Transparent
+                        Fill: =If(ThisItem.IsSelected,ColorValue("#F0F9FF"),ColorValue("#FFFFFF"))
+                        Height: =Parent.TemplateHeight-4
+                        HoverFill: =ColorValue("#F8FAFC")
+                        OnSelect: =Select(Parent)
+                        PressedFill: =ColorValue("#E0F2FE")
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Text: =""
+                        Width: =Parent.TemplateWidth
+                        X: =0
+                        Y: =2
+
+                  - lblFLApplicabilityAsset:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
+                        FontWeight: =FontWeight.Semibold
+                        Size: =12
+                        Text: =ThisItem.AssetCode & " · " & ThisItem.AssetName
+                        Width: =If(Parent.TemplateWidth<840,Parent.TemplateWidth-24,320)
+                        Wrap: =Parent.TemplateWidth<840
+                        X: =12
+                        Y: =If(Parent.TemplateWidth<840,10,13)
+
+                  - lblFLApplicabilityCriticality:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
+                        Size: =12
+                        Text: =If(Parent.TemplateWidth<840,"Criticidad · " & ThisItem.Criticality,ThisItem.Criticality)
+                        Width: =If(Parent.TemplateWidth<840,(Parent.TemplateWidth-36)/2,100)
+                        Wrap: =true
+                        X: =If(Parent.TemplateWidth<840,12,338)
+                        Y: =If(Parent.TemplateWidth<840,52,13)
+
+                  - lblFLApplicabilityStatus:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#15803D")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =12
+                        Text: =If(Parent.TemplateWidth<840,"Aplicabilidad · " & ThisItem.ApplicabilityStatus,ThisItem.ApplicabilityStatus)
+                        Width: =If(Parent.TemplateWidth<840,(Parent.TemplateWidth-36)/2,120)
+                        Wrap: =true
+                        X: =If(Parent.TemplateWidth<840,24+(Parent.TemplateWidth-36)/2,453)
+                        Y: =If(Parent.TemplateWidth<840,52,13)
+
+                  - lblFLApplicabilityProfile:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#7C3AED")
+                        FontWeight: =FontWeight.Semibold
+                        Size: =12
+                        Text: =If(Parent.TemplateWidth<840,"Perfil · " & ThisItem.ProfileCode,ThisItem.ProfileCode)
+                        Width: =If(Parent.TemplateWidth<840,(Parent.TemplateWidth-36)/2,80)
+                        Wrap: =true
+                        X: =If(Parent.TemplateWidth<840,12,588)
+                        Y: =If(Parent.TemplateWidth<840,88,13)
+
+                  - lblFLApplicabilityInterval:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =If(cmp_FL_ApplicabilityMatrixPro.UseHostTheme,cmp_FL_ApplicabilityMatrixPro.TextColor,ColorValue("#0F172A"))
+                        Size: =12
+                        Text: =If(Parent.TemplateWidth<840,"Intervalo · " & ThisItem.IntervalSummary,ThisItem.IntervalSummary)
+                        Width: =If(Parent.TemplateWidth<840,(Parent.TemplateWidth-36)/2,Parent.TemplateWidth-690)
+                        Wrap: =true
+                        X: =If(Parent.TemplateWidth<840,24+(Parent.TemplateWidth-36)/2,688)
+                        Y: =If(Parent.TemplateWidth<840,88,13)
