@@ -2,6 +2,39 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [0.9.3] - 2026-08-21
+
+### Añadido
+
+- Notas de reunión `2026-08-21_revision-cmms-gestion-ordenes-trabajo.md`.
+- `ANL-003` con revisión de impacto sobre modelo funcional y Functional Lab.
+- `work-management-discovery.md` como discovery v0.1 del dominio Gestión del Trabajo.
+- `work-management-extension.md` con revisión específica de la futura extensión de la demo.
+
+### Actualizado
+
+- `implementation-status.md` para incorporar F00-11 y los gates WM-G01 a WM-G04.
+- `PROJECT_STATUS.md` con el nuevo estado del discovery.
+- `ROADMAP.md` incorporando una fase específica de discovery de Gestión del Trabajo.
+- `MASTER_INDEX.md` con las nuevas fuentes de verdad.
+
+### Decisiones
+
+- El flujo de órdenes descrito en la reunión se registra como **AS-IS de referencia**, no como diseño objetivo aprobado.
+- Gestión del Trabajo se reconoce como siguiente dominio natural de discovery después de AMEF + RCM.
+- La estructura organizativa del workflow debe ser configurable; Supervisor no puede ser un paso obligatorio.
+- El Functional Lab puede mostrar el handoff hacia Work Management, pero no debe simular todavía reglas de planning/scheduling como validadas.
+- P-101 no se amplía con órdenes de trabajo ficticias hasta superar los gates de discovery.
+- El ejemplo de bomba con lubricación por neblina se conserva como caso pedagógico futuro para overrides de WS-06.
+
+### Pendiente
+
+- WM-G01: revisar la demo real de Los Barrios.
+- WM-G02: revisar hojas/check sheets reales.
+- WM-G03: validar reglas de work candidates, agrupación, ventanas, reprogramación, capacidad, turnos y asignación.
+- WM-G04: revisar costes, contratos y facturación con Eduardo y/o Contratos/Subcontratos.
+- Continuar F01 cuando exista la Canvas app baseline real.
+
 ## [0.9.2] - 2026-08-14
 
 ### Añadido
@@ -113,7 +146,7 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 
 ### Actualizado
 
-- Esquema local P04.5, trazabilidad, estado y guía del prototipo.
+- Esquema local P04.5, trazabilidad, estado y guía del prototipo 04.
 
 ## [0.6.0] - 2026-07-30
 
@@ -126,7 +159,7 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 
 ### Actualizado
 
-- Esquema local P04.4, trazabilidad, estado y guía del prototipo.
+- Esquema local P04.4, trazabilidad, estado y guía del prototipo 04.
 
 ## [0.5.0] - 2026-07-30
 
@@ -139,7 +172,7 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 
 ### Actualizado
 
-- Esquema local P04.3, trazabilidad, estado y guía del prototipo.
+- Esquema local P04.3, trazabilidad, estado y guía del prototipo 04.
 
 ## [0.4.0] - 2026-07-30
 
