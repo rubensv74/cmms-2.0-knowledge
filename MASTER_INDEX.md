@@ -12,11 +12,14 @@
 
 ## Modelo funcional
 
-- [Functional Journey](02-functional/process-model/functional-journey.md)
+- [Functional Journey AMEF + RCM](02-functional/process-model/functional-journey.md)
 - [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
+- [Gestión del Trabajo — Discovery funcional preliminar](02-functional/process-model/work-management-discovery.md)
 
 ## Reuniones y análisis
 
+- [Reunión 2026-08-21 — Gestión de órdenes de trabajo](05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)
+- [ANL-003 — Impacto funcional de la reunión 2026-08-21](05-meetings/01_Analysis/ANL-003_revision-funcional-post-reunion-2026-08-21.md)
 - [Reunión 2026-08-14 — Revisión Modelo Conceptual AMEF + RCM](05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md)
 - [ANL-002 — Impacto funcional de la reunión 2026-08-14](05-meetings/01_Analysis/ANL-002_revision-funcional-post-reunion-2026-08-14.md)
 - `05-meetings/2026/`
@@ -36,6 +39,7 @@
 - [README](06-ui-ux/functional-lab/README.md)
 - [Arquitectura](06-ui-ux/functional-lab/architecture.md)
 - [Estado de implementación](06-ui-ux/functional-lab/implementation-status.md)
+- [Extensión futura de Gestión del Trabajo](06-ui-ux/functional-lab/work-management-extension.md)
 - [Schema del journey](06-ui-ux/functional-lab/contracts/functional-journey.schema.json)
 - [Schema de casos](06-ui-ux/functional-lab/contracts/case-fixture.schema.json)
 - [Caso P-101 v1](06-ui-ux/functional-lab/cases/P101/p101-case.v1.json)
