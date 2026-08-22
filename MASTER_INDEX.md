@@ -3,15 +3,23 @@
 ## Gobierno
 
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
-- [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
-- [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
+- [Decisión 2026-08-22 — CMMS 2.0 como producto funcional](00-governance/decisions/2026-08-22-product-interface-scope.md)
 - [Baseline consolidada Premium Power Apps v1](00-governance/consolidated-baseline-premium-powerapps-v1.md)
+- [Protocolo incremental histórico del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
+- [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
 
-## Visión
+## Visión y mapa de producto
 
-- [CMMS 2.0 Functional Lab — Visión](01-vision/cmms-functional-lab-vision.md)
+- [CMMS 2.0 — Product Map v1](01-vision/cmms-2.0-product-map-v1.md)
+- [CMMS 2.0 Functional Lab — Visión histórica](01-vision/cmms-functional-lab-vision.md)
 
 ## Modelo funcional
+
+### Master Data
+
+- [Equipment Taxonomy Library Foundation v1](02-functional/master-data/equipment-taxonomy-library-foundation-v1.md)
+
+### Ingeniería de mantenimiento
 
 - [Functional Journey AMEF + RCM](02-functional/process-model/functional-journey.md)
 - [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
@@ -28,6 +36,10 @@
 - `05-meetings/02-Specifications/`
 - `05-meetings/decisions/`
 
+## UI/UX — Producto activo
+
+- [Product Screen Catalog v1 — pantallas + arquetipos SaaS](06-ui-ux/product-screen-catalog-v1.md)
+
 ## UI/UX y prototipos históricos
 
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
@@ -35,13 +47,15 @@
 - [03 - Registro de activos físicos](06-ui-ux/html-prototypes/03_registro_activos_fisicos_revision_14.html)
 - [AMEF–RCM Experience Center](06-ui-ux/html-prototypes/amef-rcm-experience-center/README.md)
 
-## CMMS 2.0 Functional Lab
+## Functional Lab — conocimiento histórico reutilizable
+
+Estos documentos conservan decisiones, contratos y aprendizaje útil, pero ya no constituyen el mapa de navegación que se construirá en Power Apps.
 
 - [README](06-ui-ux/functional-lab/README.md)
 - [Arquitectura](06-ui-ux/functional-lab/architecture.md)
 - [Estrategia de diseño SaaS Premium](06-ui-ux/functional-lab/design-system.md)
-- [Estado de implementación](06-ui-ux/functional-lab/implementation-status.md)
-- [Plan de implementación Premium Power Apps v1](06-ui-ux/functional-lab/development/premium-powerapps-implementation-plan-v1.md)
+- [Estado de implementación histórico](06-ui-ux/functional-lab/implementation-status.md)
+- [Plan de implementación histórico](06-ui-ux/functional-lab/development/premium-powerapps-implementation-plan-v1.md)
 - [Contrato Mock Data Provider v1](06-ui-ux/functional-lab/development/mock-data-provider-contract-v1.md)
 - [Especificación Premium Shell v1](06-ui-ux/functional-lab/development/premium-shell-specification-v1.md)
 - [P1 — Power Apps Baseline Gate](06-ui-ux/functional-lab/development/p1-power-apps-baseline-gate.md)
