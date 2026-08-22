@@ -27,19 +27,33 @@ La primera versión del Provider será local y sintética.
 
 ### P0 — Freeze de baseline
 
+**Estado:** completed — 2026-08-22.
+
 **Objetivo:** evitar que el desarrollo arranque sobre decisiones contradictorias.
 
-Entregables:
+Entregables completados:
 
 - baseline consolidada;
 - decisiones `confirmed`, `to_validate` y `future architecture` separadas;
 - mapa actual de workspaces;
 - lista de gates funcionales;
-- reglas de no-hardcode.
+- reglas de no-hardcode;
+- estrategia de sustitución del Data Provider;
+- contrato inicial de Mock Data Provider;
+- shell premium candidato;
+- DDL core candidato deliberadamente limitado a dominios maduros.
 
-**Estado:** iniciado con `00-governance/consolidated-baseline-premium-powerapps-v1.md`.
+Documentos principales:
+
+- `00-governance/consolidated-baseline-premium-powerapps-v1.md`;
+- `06-ui-ux/functional-lab/development/mock-data-provider-contract-v1.md`;
+- `06-ui-ux/functional-lab/development/premium-shell-specification-v1.md`;
+- `07-it-handoff/data-provider-transition-strategy.md`;
+- `07-it-handoff/sql/cmms-core-ddl-candidate-v0.1.sql`.
 
 ### P1 — Canvas App real y baseline técnica
+
+**Estado:** ready / blocked only by real Canvas App.
 
 **Objetivo:** eliminar la incertidumbre que actualmente bloquea F01-01.
 
@@ -52,7 +66,12 @@ Acciones:
 5. inventariar componentes reutilizables instalados;
 6. obtener App Checker baseline;
 7. documentar convenciones de nombres;
-8. capturar baseline visual.
+8. capturar baseline visual;
+9. conservar un specimen Source Code mínimo validado.
+
+Documento operativo:
+
+- `06-ui-ux/functional-lab/development/p1-power-apps-baseline-gate.md`.
 
 **Gate:** no generar bloques complejos antes de validar el dialecto real de la app.
 
@@ -70,6 +89,10 @@ Incluir:
 - overlay/modal layer;
 - loading/empty/error surfaces;
 - tokens de spacing, radius, typography y semantic states.
+
+Especificación candidata:
+
+- `06-ui-ux/functional-lab/development/premium-shell-specification-v1.md`.
 
 No incluir todavía lógica AMEF/RCM.
 
@@ -104,6 +127,10 @@ colData_*
 colState_*
 colView_*
 ```
+
+Contrato:
+
+- `06-ui-ux/functional-lab/development/mock-data-provider-contract-v1.md`.
 
 **Regla:** ningún workspace crea su propio universo de datos mediante `ClearCollect` dispersos.
 
@@ -269,6 +296,8 @@ Usar resultados reales simulados para demostrar cierre de loop y nueva revisión
 
 **Objetivo:** preparar la transición sin conectar todavía la app.
 
+Existe ya un DDL core candidato inicial, limitado a entidades estructuralmente maduras. P15 no se considera adelantado por ello: deberá completar y validar el modelo cuando los contratos funcionales restantes estén maduros.
+
 Entregables:
 
 - modelo conceptual actualizado;
@@ -316,8 +345,8 @@ La app debe llegar a esta fase sin depender de SQL directo en la capa de present
 La prioridad inmediata es:
 
 ```text
-P0 Baseline
-→ P1 Canvas real
+P0 Baseline                 COMPLETED
+→ P1 Canvas real            NEXT GATE
 → P2 Premium Shell
 → P3 Mock Provider
 → P4 Runtime State
