@@ -1,0 +1,126 @@
+// ============================================================
+// SHELL-C01 — CONTROL PROPERTIES
+// Copy each property expression into the named Power Apps control.
+// ============================================================
+
+// scr_Home.Fill
+gblTheme.Canvas
+
+// conAppRoot.Width
+Parent.Width
+
+// conAppRoot.Height
+Parent.Height
+
+// conAppRoot.Fill
+gblTheme.Canvas
+
+// conSidebar.Width
+If(
+    gblSidebarCollapsed,
+    gblLayout.SidebarCollapsed,
+    gblLayout.SidebarExpanded
+)
+
+// conSidebar.Height
+Parent.Height
+
+// conSidebar.Fill
+gblTheme.Sidebar
+
+// conBrand.Height
+72
+
+// conBrand.PaddingLeft
+If(gblSidebarCollapsed, 16, 20)
+
+// shpBrandMark.Width
+34
+
+// shpBrandMark.Height
+34
+
+// shpBrandMark.Fill
+gblTheme.Primary
+
+// lblBrand.Text
+"CMMS 2.0"
+
+// lblBrand.Visible
+!gblSidebarCollapsed
+
+// lblBrand.Color
+Color.White
+
+// lblBrand.Size
+17
+
+// lblBrand.FontWeight
+FontWeight.Semibold
+
+// icoSidebarToggle.OnSelect
+Set(
+    gblSidebarCollapsed,
+    !gblSidebarCollapsed
+)
+
+// btnNavHome.Text
+If(
+    gblSidebarCollapsed,
+    "⌂",
+    "  Home"
+)
+
+// btnNavHome.Height
+44
+
+// btnNavHome.Fill
+If(
+    gblSelectedNavKey = "home",
+    gblTheme.SidebarSelected,
+    Color.Transparent
+)
+
+// btnNavHome.Color
+Color.White
+
+// btnNavHome.OnSelect
+Set(gblSelectedNavKey, "home")
+
+// conMain.Height
+Parent.Height
+
+// conMain.Fill
+gblTheme.Canvas
+
+// conTopBar.Height
+gblLayout.TopBarHeight
+
+// conTopBar.Fill
+gblTheme.Surface
+
+// conPageArea.Fill
+gblTheme.Canvas
+
+// conPageArea.PaddingLeft
+If(
+    App.Width < 900,
+    gblLayout.PagePaddingCompact,
+    gblLayout.PagePaddingDesktop
+)
+
+// conPageArea.PaddingRight
+If(
+    App.Width < 900,
+    gblLayout.PagePaddingCompact,
+    gblLayout.PagePaddingDesktop
+)
+
+// conContentHost.Fill
+gblTheme.Surface
+
+// conContentHost.BorderColor
+gblTheme.Border
+
+// conContentHost.BorderThickness
+1
