@@ -5,6 +5,7 @@
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
 - [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
 - [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
+- [Baseline consolidada Premium Power Apps v1](00-governance/consolidated-baseline-premium-powerapps-v1.md)
 
 ## Visión
 
@@ -38,7 +39,9 @@
 
 - [README](06-ui-ux/functional-lab/README.md)
 - [Arquitectura](06-ui-ux/functional-lab/architecture.md)
+- [Estrategia de diseño SaaS Premium](06-ui-ux/functional-lab/design-system.md)
 - [Estado de implementación](06-ui-ux/functional-lab/implementation-status.md)
+- [Plan de implementación Premium Power Apps v1](06-ui-ux/functional-lab/development/premium-powerapps-implementation-plan-v1.md)
 - [Extensión futura de Gestión del Trabajo](06-ui-ux/functional-lab/work-management-extension.md)
 - [Schema del journey](06-ui-ux/functional-lab/contracts/functional-journey.schema.json)
 - [Schema de casos](06-ui-ux/functional-lab/contracts/case-fixture.schema.json)
@@ -47,6 +50,7 @@
 ## Handoff funcional para IT
 
 - [Paquete documental modular](07-it-handoff/functional-document-set.md)
+- [Estrategia de transición del Data Provider](07-it-handoff/data-provider-transition-strategy.md)
 
 ## Recursos
 
