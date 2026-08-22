@@ -3,17 +3,15 @@
 **Última revisión:** 2026-08-22  
 **Rama activa:** `baseline/premium-powerapps-v1`
 
-## 1. Alcance de este roadmap
+## 1. Alcance
 
-El roadmap activo guía la construcción de la **interfaz funcional futura de CMMS 2.0** hasta publicación del plan de mantenimiento.
+Este roadmap guía la construcción de la **interfaz funcional futura de CMMS 2.0** hasta publicación del plan de mantenimiento.
 
-Los datos sintéticos son un proveedor temporal y no reducen el alcance funcional de la aplicación.
+Los datos sintéticos son un provider temporal. No reducen el alcance funcional de las pantallas ni justifican una arquitectura de demo.
 
-El antiguo recorrido `Functional Lab WS-01…WS-09` permanece como conocimiento histórico y fuente funcional para AMEF/RCM, pero ya no es la secuencia de construcción del producto.
+El antiguo `Functional Lab WS-01…WS-09` permanece como conocimiento histórico reutilizable para AMEF/RCM, no como secuencia de construcción.
 
 ## 2. Frontera de producto v1
-
-Incluido:
 
 ```text
 Corporate Libraries
@@ -31,17 +29,20 @@ Corporate Libraries
 → Published Maintenance Plan
 ```
 
-Fuera de esta primera gran versión:
+Fuera de v1 hasta completar discovery:
 
 - Work Candidates;
 - Work Orders;
 - Planning/Scheduling;
-- ejecución;
-- field feedback;
-- actual cost allocation;
-- contratos/facturación.
+- Field Execution;
+- Actual Cost;
+- Inventory/Storerooms;
+- Contracts/Billing;
+- advanced condition/predictive capabilities.
 
-Estos dominios siguen discovery separado.
+La cobertura conceptual completa se controla en:
+
+- `01-vision/cmms-2.0-capability-coverage-v1.md`.
 
 ---
 
@@ -56,27 +57,21 @@ Entregables:
 - decisión producto vs Functional Lab;
 - Product Map v1;
 - Screen Catalog v1;
-- estrategia Data Provider;
 - separación Corporate/Project;
 - FLH vs Taxonomy vs ADR;
-- Risk Profile como configuración canónica;
-- Equipment Visual Library 3D como parte del producto.
-
-Fuentes:
-
-- `00-governance/decisions/2026-08-22-product-interface-scope.md`
-- `01-vision/cmms-2.0-product-map-v1.md`
-- `06-ui-ux/product-screen-catalog-v1.md`
+- Risk Profile configurable;
+- Equipment Visual Library 3D;
+- estrategia Data Provider.
 
 ## P1 — Master Data & Taxonomy Foundation
 
-**Estado:** in progress.
+**Estado:** in progress in parallel.
 
-### P1.1 Equipment Taxonomy research baseline
+### P1.1 Research baseline
 
 **Estado:** completed v1.
 
-Fuentes contrastadas:
+Fuentes base:
 
 - ISO 14224;
 - IEC 81346;
@@ -93,8 +88,6 @@ Resultado:
 
 ### P1.2 Family studies
 
-Construir por familias, no rellenar una lista masiva sin evidencia.
-
 Orden inicial:
 
 1. Rotating Equipment;
@@ -106,7 +99,7 @@ Orden inicial:
 7. Utility / Packages;
 8. remaining domains.
 
-Para cada familia:
+Patrón:
 
 ```text
 source review
@@ -119,99 +112,131 @@ source review
 → review
 ```
 
-### Gate P1
-
-Antes de congelar la primera versión corporativa de taxonomía deben estar validadas al menos las familias necesarias para los proyectos piloto.
+P1 no bloquea Foundation + Project Setup.
 
 ## P2 — Screen Contracts Foundation
 
-**Estado:** next.
+**Estado:** in progress.
 
-Objetivo: definir contratos funcionales antes de implementar pantallas complejas.
+### P2.1 P01 Foundation + Project Setup
 
-Prioridad:
+**Estado:** completed at contract level.
 
-1. Premium App Shell / Navigation;
-2. Project Profile;
-3. Maintenance Configuration;
-4. Risk Profile / Matrix Configuration;
-5. Equipment Taxonomy Library;
-6. Project Taxonomy Builder;
-7. FLH Builder;
-8. ADR Builder;
-9. Asset Register;
-10. Asset 360.
+Documentos:
 
-Cada contrato debe incluir:
+- `06-ui-ux/product-development/p01-foundation-project-setup-plan-v1.md`;
+- `06-ui-ux/product-development/p01-synthetic-provider-contract-v1.md`;
+- `06-ui-ux/screen-contracts/p01-shell-project-setup-screen-contracts-v1.md`.
 
-- primary task;
-- SaaS archetype;
-- personas/roles;
-- inputs;
-- outputs;
-- actions;
-- states;
-- validations;
-- governance;
-- data contract;
-- synthetic dataset requirements;
-- future persistence mapping.
+Contratos cerrados para iniciar implementación:
 
-## P3 — Power Apps Technical Baseline
-
-Crear/identificar Canvas App real:
-
-```text
-CMMS 2.0
-```
-
-Validar:
-
-- Source Code schema/dialect;
-- responsive strategy;
-- resolution;
-- Modern/Classic controls actually available;
-- reusable components installed;
-- theme/tokens;
-- App Checker baseline;
-- visual baseline.
-
-Gate: no construir superficies densas hasta validar el shell real en Studio.
-
-## P4 — Premium App Shell + Navigation
-
-Construir la foundation visual definitiva:
-
-- grouped sidebar;
-- Corporate/Project context;
-- global search shell;
-- page header;
-- command bars;
-- content host;
-- contextual inspector/drawer;
-- overlays/modals;
-- Needs Attention entry point;
-- loading/empty/error states;
-- accessibility/focus states;
-- dirty guard;
-- responsive behavior acordado.
-
-## P5 — Project Setup
-
-Implementar:
-
+- Premium Shell / Navigation;
+- Portfolio minimum;
+- Project Home minimum;
 - Project Profile;
 - Maintenance Configuration;
 - Risk Profile / Matrix Configuration;
 - Project Teams & Roles.
 
-### Gate Risk Profile
+### P2.2 Siguiente paquete de contratos
 
-Debe poder demostrar con datos sintéticos que el mismo componente puede renderizar perfiles diferentes sin cambiar fórmulas de pantalla.
+Después de validar P01 en Studio:
 
-## P6 — Corporate Libraries Foundation
+1. Equipment Taxonomy Library;
+2. Technical Fields Library;
+3. Equipment Visual Library;
+4. Project Taxonomy Builder;
+5. FLH Builder;
+6. ADR Builder;
+7. Asset Register;
+8. Asset 360.
 
-Implementar primero las bibliotecas necesarias para alimentar los siguientes módulos:
+## P3 — Power Apps Technical Baseline
+
+**Estado:** next runtime gate.
+
+Crear/identificar Canvas App:
+
+```text
+CMMS 2.0
+```
+
+Registrar:
+
+- Source Code schema/dialect;
+- responsive strategy;
+- resolution;
+- Modern/Classic controls disponibles;
+- reusable components instalados;
+- theme/tokens;
+- App Checker baseline;
+- visual baseline.
+
+**Gate:** no construir superficies densas antes de confirmar el comportamiento real de Studio.
+
+## P4 — P01 Premium Shell + Navigation
+
+Construir:
+
+- grouped sidebar;
+- Corporate/Project context selector;
+- global search shell;
+- Needs Attention entry point;
+- page header;
+- command bar;
+- content host;
+- contextual drawer/inspector host;
+- overlay/modal host;
+- loading/empty/error;
+- dirty guard;
+- focus/accessibility baseline;
+- responsive behavior acordado.
+
+## P5 — P01 Synthetic Provider
+
+Implementar centralmente:
+
+```text
+Projects
+Maintenance Configuration
+Risk Profiles / Dimensions / Levels / Bands / Rules
+Project Roles / Assignments
+Runtime State
+View Models
+```
+
+Acceptance clave:
+
+> dos proyectos con Risk Profiles estructuralmente distintos deben renderizarse con las mismas superficies y contratos.
+
+## P6 — P01 Project Setup
+
+Implementar:
+
+- `SCR-010 Project Profile`;
+- `SCR-011 Maintenance Configuration`;
+- `SCR-012 Risk Profile / Matrix Configuration`;
+- `SCR-013 Project Teams & Roles`;
+- minimal `SCR-001 Portfolio` y `SCR-002 Project Home` para navegación/contexto.
+
+### Gate P01
+
+```text
+[ ] shell final-quality
+[ ] project switching
+[ ] isolated state per project
+[ ] configurable Risk Profiles
+[ ] role coverage / Needs Attention
+[ ] no master data hardcoded in controls
+[ ] dirty guard
+[ ] App Checker accepted
+[ ] Visual QA in Studio
+[ ] contracts documented for provider swap
+```
+
+## P7 — Corporate Libraries Foundation
+
+Orden:
 
 1. Equipment Taxonomy Library;
 2. Technical Fields Library;
@@ -221,29 +246,27 @@ Implementar primero las bibliotecas necesarias para alimentar los siguientes mó
 6. Job Plan Library;
 7. RCM Model Library.
 
-No todas necesitan la misma profundidad en el primer incremento; cada una se construye por contrato.
+## P8 — Project Structure & Asset Master
 
-## P7 — Project Structure & Asset Master
+### P8.1 FLH Builder
 
-### P7.1 FLH Builder
+Jerarquía funcional/localización configurable.
 
-Crear/validar jerarquía funcional/localización.
+### P8.2 Project Taxonomy Builder
 
-### P7.2 Project Taxonomy Builder
+Selección/exclusión/extensión de Corporate Taxonomy.
 
-Seleccionar corporate classes, excluir ramas y gestionar project-specific extensions.
+### P8.3 ADR Builder
 
-### P7.3 ADR Builder
+Registro físico maestro y composición parent/child.
 
-Crear activos físicos y parent/child composition.
+### P8.4 Asset Register
 
-### P7.4 Asset Register
+Exploración/edición de activos.
 
-Exploración/edición masiva.
+### P8.5 Asset 360
 
-### P7.5 Asset 360
-
-Vista integral de un activo.
+Vista integral del activo.
 
 Gate:
 
@@ -256,25 +279,22 @@ Asset
 → visual/document context
 ```
 
-debe ser consistente antes de iniciar ingeniería de mantenimiento a escala.
+debe ser coherente antes de AMEF a escala.
 
-## P8 — Criticality
+## P9 — Criticality
 
-Implementar Criticality Assessment consumiendo configuración, no reglas hardcodeadas.
+Criticality Assessment consumiendo configuración.
 
-Debe separar:
+Separar:
 
-- configured criteria;
+- criteria/configuration;
 - system calculation;
-- human review/override when allowed;
-- traceability;
-- resulting asset criticality.
+- human review/override cuando se permita;
+- traceability.
 
-## P9 — AMEF / FMEA
+## P10 — AMEF / FMEA
 
-Implementar análisis estructurado sobre activos/clases/funciones.
-
-Debe soportar:
+Soportar:
 
 - functions;
 - functional failures;
@@ -282,62 +302,44 @@ Debe soportar:
 - causes/mechanisms;
 - effects;
 - existing controls;
-- configured risk profile;
+- configured Risk Profile;
 - evidence;
-- reusable failure knowledge;
+- reusable Failure Knowledge;
 - human decisions;
-- readiness toward RCM.
+- readiness hacia RCM.
 
-No convertir knowledge-library suggestions en AMEF aprobado automáticamente.
+## P11 — RCM
 
-## P10 — RCM
+Árbol lógico explicable y versionado.
 
-Implementar RCM como árbol lógico explicable.
+No scoring acumulado salvo metodología explícita/configurable.
 
-Gate previo:
+## P12 — Maintenance Task Engineering
 
-- RCM Model contract versioned;
-- questions/branches defined;
-- technical feasibility/effectiveness criteria;
-- trace model.
-
-No scoring RCM acumulado salvo metodología explícita y configurable.
-
-## P11 — Maintenance Task Engineering
-
-Implementar:
-
-- Maintenance Task Definition;
+- task definition;
 - frequency justification;
 - acceptance criteria;
 - reaction on failure;
 - resources/skills/tools/materials;
-- evidence/technical basis.
+- technical basis/evidence.
 
-## P12 — Applicability & Overrides
-
-Implementar:
+## P13 — Applicability & Overrides
 
 - base strategy/plan;
-- candidate assets from taxonomy/technical equivalence;
+- candidate assets;
 - human applicability decision;
 - asset-specific override;
 - no mutation of base definition;
-- traceability and impact.
+- traceability/impact.
 
-## P13 — Job Plans & Strategies
+## P14 — Job Plans & Strategies
 
-Implementar:
-
-- Job Plans;
+- reusable Job Plans;
 - sequences/resources/conditions;
-- reusable templates;
 - Maintenance Strategies;
 - relationships to tasks/assets/classes.
 
-Las reglas de agrupación todavía no validadas deben permanecer configurables/explicitly pending, no enterradas en UI formulas.
-
-## P14 — Maintenance Plan
+## P15 — Maintenance Plan
 
 Consolidar:
 
@@ -351,9 +353,7 @@ Consolidar:
 - resources;
 - completeness/readiness.
 
-## P15 — Governance, Review & Publication
-
-Implementar:
+## P16 — Governance, Review & Publication
 
 - Reviews & Approvals;
 - blockers/warnings;
@@ -363,25 +363,25 @@ Implementar:
 - immutable published version;
 - Library Promotion Requests.
 
-Output final v1:
+Output:
 
 ```text
 Published Maintenance Plan Version
 ```
 
-## P16 — SQL Readiness & Provider Swap
+## P17 — SQL Readiness & Provider Swap
 
-Solo cuando los contratos de una superficie estén estabilizados:
+Solo con contratos estabilizados:
 
 ```text
 synthetic collection
-↔ contract
+↔ logical contract
 ↔ relational model / API contract
 ```
 
 Orden recomendado:
 
-1. master/reference data reads;
+1. master/reference reads;
 2. project configuration;
 3. asset master;
 4. engineering reads;
@@ -389,41 +389,37 @@ Orden recomendado:
 6. decisions/traceability;
 7. publication/version transactions.
 
-Aplicar idempotencia, concurrency control y backend protection según riesgo.
-
 ---
 
-# 4. Parallel Discovery — Work Management
+# 4. Parallel Discovery — EAM Coverage
 
-No bloquea la construcción de la primera versión hasta plan publicado.
+Las reuniones amplían cobertura conceptual sin bloquear el desarrollo actual.
 
-Debe continuar en paralelo:
+## Work Management
 
-### WM-G01
+- work candidates;
+- WO lifecycle;
+- task/procedure/checksheet separation;
+- planning;
+- scheduling;
+- capacity/assignment;
+- execution feedback.
 
-Observar proceso real y excepciones.
+## Economics / Materials / Enterprise
 
-### WM-G02
+- actual cost;
+- inventory/spares/storerooms;
+- contracts/subcontracts;
+- billing/integration;
+- mobile/offline;
+- condition/predictive;
+- reliability performance.
 
-Separar task / procedure / checksheet / WO / execution feedback.
-
-### WM-G03
-
-Validar planning/scheduling/capacity/assignment.
-
-### WM-G04
-
-Validar costs/contracts/billing con roles responsables.
-
-Solo después se añadirá un segundo Product Map posterior a `Published Maintenance Plan`.
+Cuando una capacidad pase a `CONCEPTUAL_COVERED`, se incorporará al Product Map futuro mediante el mismo proceso de contratos.
 
 ---
 
 # 5. Regla de continuidad
-
-No se construye una pantalla solo porque aparezca en el mapa.
-
-Secuencia:
 
 ```text
 functional decision
@@ -436,4 +432,4 @@ functional decision
 → documentation
 ```
 
-Y no se diseña como regla definitiva ningún comportamiento que continúe marcado como `to_validate`.
+No se implementa como regla definitiva ningún comportamiento en `DISCOVERY` o `to_validate`.
