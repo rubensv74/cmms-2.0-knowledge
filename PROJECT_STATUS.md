@@ -5,263 +5,305 @@
 
 ## Estado general
 
-CMMS 2.0 continúa en fase **Functional Lab**, pero ya existe una baseline suficientemente consolidada para iniciar construcción real en Power Apps.
+CMMS 2.0 ha superado la etapa en la que el `Functional Lab` servía como principal modelo de construcción.
 
-El núcleo AMEF + RCM mantiene la revisión funcional **v1.1**. La Gestión del Trabajo permanece en discovery y no se convierte todavía en modelo objetivo.
+La aplicación que se construirá en Power Apps es la **interfaz funcional futura de CMMS 2.0**, usando datos sintéticos únicamente como proveedor temporal hasta incorporar SQL + Power Automate y, cuando se justifique, una capa API/backend.
 
-La estrategia de implementación queda fijada así:
+El alcance de la primera gran versión termina en:
 
 ```text
-Premium Power Apps UI
-→ Functional State
+Published Maintenance Plan
+```
+
+Work Management, scheduling, work orders, ejecución, costes reales y facturación permanecen fuera de este primer scope de construcción hasta completar discovery.
+
+## Decisión principal del 2026-08-22
+
+Se confirma:
+
+1. construir la aplicación completa hasta publicación del plan, no una demo basada en un caso;
+2. `ADR` es el registro físico maestro de activos;
+3. `FLH`, `Equipment Taxonomy` y `ADR` son tres estructuras diferentes y relacionadas;
+4. existirán bibliotecas corporativas + extensiones project-specific + promoción gobernada;
+5. Risk Profile / Matrix Configuration es una función explícita de Project Setup;
+6. Equipment Taxonomy tendrá una biblioteca visual 3D gobernada;
+7. los datos sintéticos implementan temporalmente contratos de producto y no determinan la arquitectura de la UI.
+
+Documento de decisión:
+
+- `00-governance/decisions/2026-08-22-product-interface-scope.md`
+
+## Fuentes rectoras nuevas
+
+### Product Map
+
+- `01-vision/cmms-2.0-product-map-v1.md`
+
+Define módulos, alcance, relación Corporate/Project y recorrido completo hasta publicación.
+
+### Screen Catalog
+
+- `06-ui-ux/product-screen-catalog-v1.md`
+
+Define las pantallas canónicas, tarea dominante, arquetipo SaaS y patrones secundarios.
+
+### Equipment Taxonomy Foundation
+
+- `02-functional/master-data/equipment-taxonomy-library-foundation-v1.md`
+
+Consolida el estudio inicial de ISO 14224, IEC 81346, CFIHOS, ETIM, ECLASS, MIMOSA CCOM e ISO 55000 y define el modelo de biblioteca corporativa.
+
+## Mapa funcional activo
+
+```text
+HOME / PORTFOLIO
+        ↓
+PROJECT SETUP
+        ↓
+CORPORATE LIBRARIES
+        ↓
+FLH + PROJECT TAXONOMY + ADR
+        ↓
+ASSET REGISTER / ASSET 360
+        ↓
+CRITICALITY
+        ↓
+AMEF / FMEA
+        ↓
+RCM
+        ↓
+TASKS / JOB PLANS / STRATEGIES
+        ↓
+APPLICABILITY + ASSET OVERRIDES
+        ↓
+MAINTENANCE PLAN
+        ↓
+REVIEW / APPROVAL / VERSION
+        ↓
+PUBLISHED MAINTENANCE PLAN
+```
+
+## Pantallas canónicas
+
+El catálogo v1 contiene 33 superficies agrupadas en:
+
+- Home / Portfolio;
+- Project Setup;
+- Corporate Libraries;
+- Assets;
+- Maintenance Engineering;
+- Maintenance Planning;
+- Governance;
+- Administration.
+
+Las pantallas históricas WS-01…WS-09 siguen siendo conocimiento útil para AMEF/RCM, pero ya no representan la navegación ni el roadmap de construcción de la app.
+
+## Tres árboles / estructuras maestras
+
+### FLH
+
+Estructura funcional/localización del proyecto.
+
+### Equipment Taxonomy
+
+Clasificación del tipo de equipo.
+
+### ADR
+
+Registro de activos físicos y composición parent/child.
+
+Un activo ADR se enlaza con:
+
+- Functional Location;
+- Taxonomy Class;
+- technical data;
+- manufacturer/model;
+- documents;
+- criticality;
+- maintenance engineering;
+- maintenance plan.
+
+## Risk Profile
+
+Cada proyecto debe poder seleccionar o derivar un perfil versionado.
+
+Debe soportar:
+
+- dimensiones configurables;
+- niveles por dimensión;
+- rangos/labels;
+- matriz/bandas;
+- thresholds;
+- colores semánticos;
+- reglas de override/sobreclasificación;
+- versionado y aprobación;
+- impact analysis.
+
+No existe una matriz 5×5 fija como regla del producto.
+
+## Equipment Taxonomy Library
+
+### Resultado del primer estudio
+
+No se adopta una única norma como taxonomía completa.
+
+Se utilizarán de forma complementaria:
+
+- ISO 14224 para reliability/maintenance data y vocabulario de fallos/equipos cuando aplique;
+- IEC 81346 para principios de estructuración/clasificación e identificación;
+- CFIHOS para patrones de RDL, propiedades, mappings, sinónimos y governance;
+- ETIM/ECLASS como referencias de clasificación semántica y propiedades técnicas;
+- MIMOSA CCOM como referencia de `Equipment Class → Product Model → Serialized Asset` e interoperabilidad O&M;
+- estándares específicos de equipo (API/ISO/IEC/etc.) cuando aporten subtipos o atributos útiles.
+
+### Modelo corporativo
+
+Cada clase podrá relacionarse con:
+
+- technical field profile;
+- failure knowledge;
+- maintenance knowledge;
+- synonyms;
+- external mappings;
+- standards/documents;
+- 3D equipment visuals;
+- version/governance.
+
+## Equipment Visual Library
+
+Las imágenes 3D se convierten en contenido corporativo gobernado vinculado a Taxonomy Class.
+
+Uso principal:
+
+- Equipment Taxonomy Library;
+- Project Taxonomy Builder;
+- ADR Builder;
+- Asset Register thumbnail;
+- Asset 360 hero/fallback.
+
+En AMEF/RCM se utilizarán solo como contexto secundario.
+
+## Datos y arquitectura técnica
+
+La regla vigente continúa siendo:
+
+```text
+Premium UI
+→ Functional State / View Model
 → Data Contract
-→ Data Provider
+→ Provider
 ```
 
 Proveedor inicial:
 
 ```text
-Mock Collections
+Synthetic Power Apps Collections
 ```
 
-Evolución prevista:
+Evolución:
 
 ```text
-Mock Collections
+Mock Provider
 → SQL + Power Automate
-→ API / backend modular cuando exista una necesidad real
+→ API / backend when justified
 ```
 
-La UI no debe depender del origen físico de los datos.
+No se permiten datos maestros embebidos accidentalmente en controles.
 
-## Cambio principal del 2026-08-22
+## Estado de trabajo
 
-Se ha creado la rama:
+### Completado / consolidado
 
-```text
-baseline/premium-powerapps-v1
-```
+- reuniones y aprendizaje AMEF/RCM anteriores;
+- Functional Journey AMEF/RCM como fuente funcional;
+- discovery inicial Work Management;
+- baseline antiacoplamiento de proveedor;
+- visión premium;
+- decisión de construir producto funcional completo;
+- Product Map v1;
+- Screen Catalog v1;
+- Equipment Taxonomy Library research foundation v1;
+- matriz de riesgo identificada como configuración canónica de proyecto;
+- biblioteca visual 3D incorporada al modelo.
 
-Su objetivo es servir como punto estable para desarrollar el prototipo premium sin seguir mezclando decisiones consolidadas, hipótesis y arquitectura futura.
+### Siguiente bloque de diseño
 
-### P0 — Consolidated Baseline
+Antes de construir pantallas complejas en Power Apps se deben cerrar los contratos de las superficies fundacionales:
 
-**Estado:** completed.
+1. Premium App Shell / navegación;
+2. Project Profile + Maintenance Configuration;
+3. Risk Profile;
+4. Equipment Taxonomy Library;
+5. Project Taxonomy Builder;
+6. FLH Builder;
+7. ADR Builder;
+8. Asset Register / Asset 360.
 
-Se han incorporado:
+En paralelo debe continuar la investigación de la taxonomía por familias, empezando por `Rotating Equipment`.
 
-- `00-governance/consolidated-baseline-premium-powerapps-v1.md`;
-- `06-ui-ux/functional-lab/development/premium-powerapps-implementation-plan-v1.md`;
-- `07-it-handoff/data-provider-transition-strategy.md`.
+## Próximo gate Power Apps
 
-### Preparación repositorio hasta el siguiente gate real
+Crear/identificar la Canvas App real destinada a CMMS 2.0 y validar:
 
-Se han añadido además:
-
-- `06-ui-ux/functional-lab/development/mock-data-provider-contract-v1.md`;
-- `06-ui-ux/functional-lab/development/premium-shell-specification-v1.md`;
-- `06-ui-ux/functional-lab/development/p1-power-apps-baseline-gate.md`;
-- `07-it-handoff/sql/cmms-core-ddl-candidate-v0.1.sql`.
-
-Con esto están preparados desde repositorio:
-
-- contrato inicial de colecciones;
-- contrato mínimo de WS-01;
-- estrategia de IDs estables;
-- separación `colCfg_*`, `colData_*`, `colState_*`, `colView_*`;
-- operaciones funcionales del proveedor mock;
-- shell premium candidato;
-- estados visuales y de gate;
-- procedimiento exacto para cerrar P1 en Power Apps Studio;
-- primer DDL candidato conservador para la parte estructuralmente madura.
-
-## Decisiones congeladas para desarrollo
-
-1. **Power Apps será un laboratorio funcional ejecutable**, no la definición de la arquitectura productiva.
-2. **Premium desde Foundation**: no habrá una UI provisional que deba rediseñarse después.
-3. **Datos sintéticos en colecciones**, pero únicamente detrás de un proveedor/adaptador central.
-4. **No se permiten datos fuente hardcodeados dentro de controles o pantallas.**
-5. **JSON sigue siendo fixture documental canónico**, pero Power Apps no está obligado a leer JSON en cada demo.
-6. **Datos fuente, estado mutable y vistas derivadas se separan.**
-7. **La UI consume contratos lógicos**, no SQL, Flow o JSON directamente.
-8. **DDL contract-first e incremental.**
-9. **Riesgo configurable** por proyecto/cliente.
-10. **RCM explicable y sin scoring inventado.**
-11. **Recomendación del sistema separada de decisión humana.**
-12. **Plan base separado de overrides por activo.**
-13. **Routing organizativo configurable** donde dependa del proyecto.
-14. **No convertir discovery en comportamiento canónico.**
-
-## DDL candidato
-
-El primer DDL se ha limitado deliberadamente a:
-
-```text
-AnalysisCase
-AssetContext snapshot
-OperatingMode
-EvidenceSource
-AssetFunction
-FunctionalFailure
-FailureMode
-FailureEffect
-DecisionTrace
-GateResult
-V_CaseContext
-```
-
-No se han creado todavía tablas físicas para:
-
-- matriz/perfil de riesgo detallado;
-- árbol RCM;
-- plan físico definitivo;
-- aplicabilidad/overrides definitivos;
-- work orders;
-- planning/scheduling;
-- costes;
-- contratos;
-- facturación.
-
-Motivo: esas áreas todavía tienen gates funcionales o discovery pendiente. Crear tablas ahora produciría falsa sensación de cierre.
-
-## Completado
-
-### Foundation Functional Lab — F00
-
-- auditoría de transición;
-- protocolo incremental;
-- visión y límites;
-- Functional Journey AMEF + RCM de 28 etapas / 9 workspaces;
-- matriz persona vs sistema;
-- contratos JSON base;
-- fixture P-101 v1.1;
-- arquitectura conceptual;
-- paquete documental para IT;
-- revisión funcional 2026-08-14;
-- revisión funcional 2026-08-21;
-- discovery inicial de Gestión del Trabajo.
-
-### Premium consolidation — P0
-
-- baseline consolidada;
-- estrategia del proveedor temporal;
-- plan de implementación;
-- contrato del mock provider;
-- shell premium candidato;
-- gate P1 documentado;
-- DDL core candidato v0.1.
-
-## En curso / siguiente gate real
-
-### P1 — Canvas App real y baseline técnica
-
-**Estado:** ready / blocked only by real Canvas App.
-
-Debe existir o identificarse:
-
-```text
-CMMS 2.0 Functional Lab
-```
-
-Y registrar desde Power Apps Studio:
-
-- schema Source Code aceptado;
-- resolución/layout real;
-- versiones reales de controles;
-- componentes premium disponibles;
-- theme baseline;
+- Source Code dialect;
+- layout/resolution;
+- componentes disponibles;
+- theme/tokens;
 - App Checker baseline;
-- specimen mínimo de Source Code;
-- comportamiento visual de contenedores.
+- responsive behavior;
+- premium shell.
 
-Documento operativo:
+La app ya no debe denominarse ni organizarse conceptualmente como `Functional Lab`.
 
-- `06-ui-ux/functional-lab/development/p1-power-apps-baseline-gate.md`.
-
-No existe más trabajo de repositorio que justifique retrasar este gate.
-
-## Después de P1
-
-Orden inmediato:
+Nombre recomendado:
 
 ```text
-P1 Canvas baseline
-→ P2 Premium App Shell
-→ P3 Mock Data Provider
-→ P4 Runtime State
-→ P5 Navigation + Demo Mode
-→ P6 WS-01 vertical slice
+CMMS 2.0
 ```
 
-WS-01 deberá demostrar:
+## Discovery que permanece abierto
 
-```text
-mock data
-→ functional state
-→ premium UI
-→ human edit
-→ gate
-→ structured output
-```
+### Work Management
 
-No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
+Continúan pendientes:
 
-## Gates funcionales posteriores
+- flujo objetivo de WO;
+- check sheets;
+- planning/scheduling;
+- capacidad/turnos;
+- asignación;
+- execution feedback.
 
-- antes de WS-03: contrato mínimo `RiskProfile`;
-- antes de WS-04: contrato de árbol RCM sin scoring;
-- antes de WS-06: `BasePlan`, `CandidateAssets`, `ApplicabilityDecision`, `AssetPlanOverride` y reglas de agrupación;
-- antes de cerrar WS-08: output de publicación preparado para handoff operacional.
+### Costes / contratos
 
-## Discovery de Gestión del Trabajo
+Pendiente incorporar conocimiento de perfiles responsables antes de modelar:
 
-El flujo observado sigue siendo AS-IS de referencia:
-
-```text
-Plan / calendario preventivo
-→ inspecciones próximas
-→ Maintenance Planner
-→ validación o reprogramación por Maintenance Responsible
-→ Supervisor opcional según proyecto
-→ Technician / Executor
-→ ejecución
-```
-
-Estado: `to_validate`.
-
-Antes de diseñar workspaces canónicos deben superarse:
-
-- WM-G01 — demo y observación del proceso real;
-- WM-G02 — revisión de check sheets reales;
-- WM-G03 — planning/scheduling;
-- WM-G04 — costes y contratos.
-
-El Functional Lab puede mostrar el handoff después de publicación, pero no debe presentar todavía una WO simulada como modelo aprobado.
+- actual maintenance cost;
+- contract/subcontract allocation;
+- billing/integration.
 
 ## Riesgos principales
 
-- convertir colecciones en una base de datos informal;
-- hardcodear datos dentro de pantallas;
-- construir nueve workspaces antes de validar WS-01;
-- esconder reglas funcionales en Power Fx;
-- cerrar DDL de dominios inmaduros;
-- convertir el AS-IS de Los Barrios en TO-BE;
-- hardcodear Supervisor como paso obligatorio;
-- inventar reglas de vencimiento, agrupación o scheduling;
-- avanzar a costes/facturación sin perfiles responsables;
-- confundir el Functional Lab con la arquitectura productiva futura.
+- volver a diseñar el producto alrededor de un único caso de demo;
+- confundir FLH, Taxonomy y ADR;
+- copiar una norma industrial como taxonomía completa sin adaptar a necesidad funcional;
+- crear demasiadas subclases por fabricante/modelo/tamaño;
+- duplicar clases por disciplina;
+- hardcodear Risk Matrix;
+- permitir que un proyecto cambie silenciosamente Corporate Library;
+- usar imágenes 3D como decoración en vez de como sistema visual de clase;
+- ocultar reglas de negocio en Power Fx;
+- cerrar SQL antes de estabilizar contratos;
+- diseñar Work Management antes de completar discovery.
 
 ## Fuentes de verdad principales
 
-- `00-governance/consolidated-baseline-premium-powerapps-v1.md`
+- `00-governance/decisions/2026-08-22-product-interface-scope.md`
+- `01-vision/cmms-2.0-product-map-v1.md`
+- `02-functional/master-data/equipment-taxonomy-library-foundation-v1.md`
+- `06-ui-ux/product-screen-catalog-v1.md`
 - `02-functional/process-model/functional-journey.md`
 - `02-functional/process-model/human-system-decisions.md`
 - `02-functional/process-model/work-management-discovery.md`
-- `06-ui-ux/functional-lab/architecture.md`
-- `06-ui-ux/functional-lab/design-system.md`
-- `06-ui-ux/functional-lab/development/premium-powerapps-implementation-plan-v1.md`
-- `06-ui-ux/functional-lab/development/mock-data-provider-contract-v1.md`
-- `06-ui-ux/functional-lab/development/premium-shell-specification-v1.md`
-- `06-ui-ux/functional-lab/development/p1-power-apps-baseline-gate.md`
 - `07-it-handoff/data-provider-transition-strategy.md`
 - `ROADMAP.md`
