@@ -1,309 +1,208 @@
 # Estado del proyecto
 
 **Última actualización:** 2026-08-22  
-**Rama de consolidación activa:** `baseline/premium-powerapps-v1`
+**Rama activa:** `baseline/premium-powerapps-v1`
 
 ## Estado general
 
-CMMS 2.0 ha superado la etapa en la que el `Functional Lab` servía como principal modelo de construcción.
+CMMS 2.0 se construirá como la **interfaz funcional futura del producto**, usando datos sintéticos únicamente como provider temporal.
 
-La aplicación que se construirá en Power Apps es la **interfaz funcional futura de CMMS 2.0**, usando datos sintéticos únicamente como proveedor temporal hasta incorporar SQL + Power Automate y, cuando se justifique, una capa API/backend.
-
-El alcance de la primera gran versión termina en:
+El alcance activo v1 termina en:
 
 ```text
 Published Maintenance Plan
 ```
 
-Work Management, scheduling, work orders, ejecución, costes reales y facturación permanecen fuera de este primer scope de construcción hasta completar discovery.
+Las reuniones continuarán ampliando la cobertura conceptual de Work Management, ejecución, materiales, costes y capacidades EAM posteriores, pero esas áreas no bloquean el desarrollo de lo ya maduro.
 
-## Decisión principal del 2026-08-22
-
-Se confirma:
-
-1. construir la aplicación completa hasta publicación del plan, no una demo basada en un caso;
-2. `ADR` es el registro físico maestro de activos;
-3. `FLH`, `Equipment Taxonomy` y `ADR` son tres estructuras diferentes y relacionadas;
-4. existirán bibliotecas corporativas + extensiones project-specific + promoción gobernada;
-5. Risk Profile / Matrix Configuration es una función explícita de Project Setup;
-6. Equipment Taxonomy tendrá una biblioteca visual 3D gobernada;
-7. los datos sintéticos implementan temporalmente contratos de producto y no determinan la arquitectura de la UI.
-
-Documento de decisión:
-
-- `00-governance/decisions/2026-08-22-product-interface-scope.md`
-
-## Fuentes rectoras nuevas
-
-### Product Map
+## Fuentes rectoras
 
 - `01-vision/cmms-2.0-product-map-v1.md`
-
-Define módulos, alcance, relación Corporate/Project y recorrido completo hasta publicación.
-
-### Screen Catalog
-
+- `01-vision/cmms-2.0-capability-coverage-v1.md`
 - `06-ui-ux/product-screen-catalog-v1.md`
-
-Define las pantallas canónicas, tarea dominante, arquetipo SaaS y patrones secundarios.
-
-### Equipment Taxonomy Foundation
-
 - `02-functional/master-data/equipment-taxonomy-library-foundation-v1.md`
+- `ROADMAP.md`
 
-Consolida el estudio inicial de ISO 14224, IEC 81346, CFIHOS, ETIM, ECLASS, MIMOSA CCOM e ISO 55000 y define el modelo de biblioteca corporativa.
+El antiguo Functional Lab es conocimiento histórico reutilizable, no el mapa de navegación de la app.
 
-## Mapa funcional activo
+## Cobertura conceptual
 
-```text
-HOME / PORTFOLIO
-        ↓
-PROJECT SETUP
-        ↓
-CORPORATE LIBRARIES
-        ↓
-FLH + PROJECT TAXONOMY + ADR
-        ↓
-ASSET REGISTER / ASSET 360
-        ↓
-CRITICALITY
-        ↓
-AMEF / FMEA
-        ↓
-RCM
-        ↓
-TASKS / JOB PLANS / STRATEGIES
-        ↓
-APPLICABILITY + ASSET OVERRIDES
-        ↓
-MAINTENANCE PLAN
-        ↓
-REVIEW / APPROVAL / VERSION
-        ↓
-PUBLISHED MAINTENANCE PLAN
-```
+### Fuerte / desarrollable ahora
 
-## Pantallas canónicas
-
-El catálogo v1 contiene 33 superficies agrupadas en:
-
-- Home / Portfolio;
 - Project Setup;
-- Corporate Libraries;
-- Assets;
-- Maintenance Engineering;
-- Maintenance Planning;
-- Governance;
-- Administration.
+- Corporate/Project governance;
+- FLH;
+- Equipment Taxonomy;
+- Technical Fields;
+- ADR;
+- Asset Register / Asset 360;
+- Risk Profile / Matrix;
+- Criticality;
+- AMEF / FMEA;
+- RCM;
+- Maintenance Tasks;
+- Job Plans;
+- Maintenance Strategies;
+- Applicability / Asset Overrides;
+- Maintenance Plan;
+- Review / Approval / Versioning / Publication;
+- Audit & Traceability;
+- Corporate promotion workflow.
 
-Las pantallas históricas WS-01…WS-09 siguen siendo conocimiento útil para AMEF/RCM, pero ya no representan la navegación ni el roadmap de construcción de la app.
+### Discovery / futuro
 
-## Tres árboles / estructuras maestras
+- Work Candidates / backlog;
+- Work Orders;
+- planning/scheduling;
+- execution/check sheets/mobile;
+- actual cost;
+- inventory/storerooms;
+- contracts/billing;
+- advanced condition/predictive;
+- reliability performance analytics.
 
-### FLH
+Detalle:
 
-Estructura funcional/localización del proyecto.
+- `01-vision/cmms-2.0-capability-coverage-v1.md`.
 
-### Equipment Taxonomy
+## Decisiones congeladas
 
-Clasificación del tipo de equipo.
+1. La app no se construye alrededor de un caso de demo.
+2. Los datos sintéticos implementan contratos de producto.
+3. `ADR` es el registro físico maestro.
+4. `FLH`, `Taxonomy` y `ADR` son estructuras distintas y relacionadas.
+5. Corporate Libraries y Project Configuration están separados.
+6. Project-specific definitions pueden promoverse mediante governance.
+7. Risk Profile es configurable/versionable y no existe una 5×5 fija.
+8. Equipment Visual Library 3D forma parte del modelo corporativo.
+9. AMEF/RCM separan recomendación del sistema y autoridad humana.
+10. Plan base y asset overrides permanecen separados.
+11. Published versions son inmutables.
+12. UI → contract → provider; SQL/Flow/API no se incrustan en la presentación.
 
-### ADR
+## Incremento activo — P01 Foundation + Project Setup
 
-Registro de activos físicos y composición parent/child.
+**Estado:** contracts ready; Power Apps runtime gate next.
 
-Un activo ADR se enlaza con:
+### Documentos creados
 
-- Functional Location;
-- Taxonomy Class;
-- technical data;
-- manufacturer/model;
-- documents;
-- criticality;
-- maintenance engineering;
-- maintenance plan.
+- `06-ui-ux/product-development/p01-foundation-project-setup-plan-v1.md`;
+- `06-ui-ux/product-development/p01-synthetic-provider-contract-v1.md`;
+- `06-ui-ux/screen-contracts/p01-shell-project-setup-screen-contracts-v1.md`.
 
-## Risk Profile
-
-Cada proyecto debe poder seleccionar o derivar un perfil versionado.
-
-Debe soportar:
-
-- dimensiones configurables;
-- niveles por dimensión;
-- rangos/labels;
-- matriz/bandas;
-- thresholds;
-- colores semánticos;
-- reglas de override/sobreclasificación;
-- versionado y aprobación;
-- impact analysis.
-
-No existe una matriz 5×5 fija como regla del producto.
-
-## Equipment Taxonomy Library
-
-### Resultado del primer estudio
-
-No se adopta una única norma como taxonomía completa.
-
-Se utilizarán de forma complementaria:
-
-- ISO 14224 para reliability/maintenance data y vocabulario de fallos/equipos cuando aplique;
-- IEC 81346 para principios de estructuración/clasificación e identificación;
-- CFIHOS para patrones de RDL, propiedades, mappings, sinónimos y governance;
-- ETIM/ECLASS como referencias de clasificación semántica y propiedades técnicas;
-- MIMOSA CCOM como referencia de `Equipment Class → Product Model → Serialized Asset` e interoperabilidad O&M;
-- estándares específicos de equipo (API/ISO/IEC/etc.) cuando aporten subtipos o atributos útiles.
-
-### Modelo corporativo
-
-Cada clase podrá relacionarse con:
-
-- technical field profile;
-- failure knowledge;
-- maintenance knowledge;
-- synonyms;
-- external mappings;
-- standards/documents;
-- 3D equipment visuals;
-- version/governance.
-
-## Equipment Visual Library
-
-Las imágenes 3D se convierten en contenido corporativo gobernado vinculado a Taxonomy Class.
-
-Uso principal:
-
-- Equipment Taxonomy Library;
-- Project Taxonomy Builder;
-- ADR Builder;
-- Asset Register thumbnail;
-- Asset 360 hero/fallback.
-
-En AMEF/RCM se utilizarán solo como contexto secundario.
-
-## Datos y arquitectura técnica
-
-La regla vigente continúa siendo:
+### Alcance P01
 
 ```text
-Premium UI
-→ Functional State / View Model
-→ Data Contract
-→ Provider
+Premium Shell
+├── grouped sidebar
+├── Corporate / Project context
+├── global search shell
+├── Needs Attention entry
+├── page/command/content hosts
+├── inspector/drawer host
+├── overlay/modal host
+├── dirty guard
+└── loading/empty/error/focus states
+
+Project Setup
+├── SCR-010 Project Profile
+├── SCR-011 Maintenance Configuration
+├── SCR-012 Risk Profile / Matrix Configuration
+└── SCR-013 Project Teams & Roles
+
+Entry
+├── SCR-001 Portfolio minimum
+└── SCR-002 Project Home minimum
 ```
 
-Proveedor inicial:
+## Synthetic Provider P01
 
-```text
-Synthetic Power Apps Collections
-```
+Se utilizarán al menos dos proyectos para demostrar aislamiento y variabilidad real.
 
-Evolución:
+### Project A
 
-```text
-Mock Provider
-→ SQL + Power Automate
-→ API / backend when justified
-```
+- setup completo;
+- Risk Profile 5×5 activo;
+- roles requeridos cubiertos.
 
-No se permiten datos maestros embebidos accidentalmente en controles.
+### Project B
 
-## Estado de trabajo
+- configuración parcialmente heredada;
+- Risk Profile alternativo estructuralmente distinto;
+- rol requerido pendiente;
+- Needs Attention visible.
 
-### Completado / consolidado
+Acceptance principal:
 
-- reuniones y aprendizaje AMEF/RCM anteriores;
-- Functional Journey AMEF/RCM como fuente funcional;
-- discovery inicial Work Management;
-- baseline antiacoplamiento de proveedor;
-- visión premium;
-- decisión de construir producto funcional completo;
-- Product Map v1;
-- Screen Catalog v1;
-- Equipment Taxonomy Library research foundation v1;
-- matriz de riesgo identificada como configuración canónica de proyecto;
-- biblioteca visual 3D incorporada al modelo.
+> cambiar entre ambos proyectos debe reconstruir Project Setup y Risk Matrix desde contratos/provider sin cambiar las fórmulas base de la pantalla.
 
-### Siguiente bloque de diseño
+## Siguiente gate real — Power Apps Studio
 
-Antes de construir pantallas complejas en Power Apps se deben cerrar los contratos de las superficies fundacionales:
-
-1. Premium App Shell / navegación;
-2. Project Profile + Maintenance Configuration;
-3. Risk Profile;
-4. Equipment Taxonomy Library;
-5. Project Taxonomy Builder;
-6. FLH Builder;
-7. ADR Builder;
-8. Asset Register / Asset 360.
-
-En paralelo debe continuar la investigación de la taxonomía por familias, empezando por `Rotating Equipment`.
-
-## Próximo gate Power Apps
-
-Crear/identificar la Canvas App real destinada a CMMS 2.0 y validar:
-
-- Source Code dialect;
-- layout/resolution;
-- componentes disponibles;
-- theme/tokens;
-- App Checker baseline;
-- responsive behavior;
-- premium shell.
-
-La app ya no debe denominarse ni organizarse conceptualmente como `Functional Lab`.
-
-Nombre recomendado:
+Crear o identificar la Canvas App:
 
 ```text
 CMMS 2.0
 ```
 
-## Discovery que permanece abierto
+Registrar antes de construir superficies densas:
 
-### Work Management
+- Source Code dialect;
+- layout/resolution;
+- responsive behavior;
+- Modern/Classic controls disponibles;
+- componentes premium instalados;
+- theme/tokens;
+- App Checker baseline;
+- visual baseline.
 
-Continúan pendientes:
+Después:
 
-- flujo objetivo de WO;
-- check sheets;
-- planning/scheduling;
-- capacidad/turnos;
-- asignación;
-- execution feedback.
+```text
+Canvas baseline
+→ Premium Shell
+→ Navigation
+→ Synthetic Provider
+→ Project Profile
+→ Maintenance Configuration
+→ Risk Profile
+→ Teams & Roles
+→ P01 hardening
+```
 
-### Costes / contratos
+## Trabajo paralelo
 
-Pendiente incorporar conocimiento de perfiles responsables antes de modelar:
+### Equipment Taxonomy
 
-- actual maintenance cost;
-- contract/subcontract allocation;
-- billing/integration.
+Continuar estudios por familia empezando por `Rotating Equipment`.
+
+Cada familia:
+
+```text
+sources
+→ class tree
+→ technical fields
+→ failure knowledge
+→ maintenance knowledge
+→ external mappings
+→ 3D visual requirements
+```
+
+### EAM discovery
+
+Las reuniones seguirán moviendo capacidades desde `DISCOVERY` hacia `CONCEPTUAL_COVERED` sin interrumpir el scope activo.
 
 ## Riesgos principales
 
-- volver a diseñar el producto alrededor de un único caso de demo;
-- confundir FLH, Taxonomy y ADR;
-- copiar una norma industrial como taxonomía completa sin adaptar a necesidad funcional;
-- crear demasiadas subclases por fabricante/modelo/tamaño;
-- duplicar clases por disciplina;
-- hardcodear Risk Matrix;
-- permitir que un proyecto cambie silenciosamente Corporate Library;
-- usar imágenes 3D como decoración en vez de como sistema visual de clase;
-- ocultar reglas de negocio en Power Fx;
+- volver a diseñar una demo en vez del producto;
+- hardcodear datos sintéticos en controles;
+- convertir Risk Matrix en un componente 5×5 fijo;
+- mezclar FLH, Taxonomy y ADR;
+- copiar una norma como taxonomía completa;
+- permitir que Project modifique Corporate silenciosamente;
+- diseñar Work Management antes de entenderlo;
 - cerrar SQL antes de estabilizar contratos;
-- diseñar Work Management antes de completar discovery.
+- esconder reglas funcionales en Power Fx.
 
-## Fuentes de verdad principales
+## Próximo resultado visible esperado
 
-- `00-governance/decisions/2026-08-22-product-interface-scope.md`
-- `01-vision/cmms-2.0-product-map-v1.md`
-- `02-functional/master-data/equipment-taxonomy-library-foundation-v1.md`
-- `06-ui-ux/product-screen-catalog-v1.md`
-- `02-functional/process-model/functional-journey.md`
-- `02-functional/process-model/human-system-decisions.md`
-- `02-functional/process-model/work-management-discovery.md`
-- `07-it-handoff/data-provider-transition-strategy.md`
-- `ROADMAP.md`
+Una Canvas App `CMMS 2.0` con shell premium definitivo y Project Setup funcional sobre provider sintético, preparada para incorporar Corporate Libraries y Asset Foundation sin rehacer navegación ni arquitectura de datos.
