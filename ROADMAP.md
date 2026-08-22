@@ -1,272 +1,439 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-08-21
+**Última revisión:** 2026-08-22  
+**Rama activa:** `baseline/premium-powerapps-v1`
 
-## 1. Cómo leer este roadmap
+## 1. Alcance de este roadmap
 
-Este documento separa:
+El roadmap activo guía la construcción de la **interfaz funcional futura de CMMS 2.0** hasta publicación del plan de mantenimiento.
 
-1. **mapa funcional del producto** — capacidades que CMMS 2.0 debe cubrir;
-2. **roadmap de validación** — orden en el que aprendemos, probamos y consolidamos esas capacidades.
+Los datos sintéticos son un proveedor temporal y no reducen el alcance funcional de la aplicación.
 
-Que un dominio se estudie antes no significa necesariamente que se implemente antes en producción.
+El antiguo recorrido `Functional Lab WS-01…WS-09` permanece como conocimiento histórico y fuente funcional para AMEF/RCM, pero ya no es la secuencia de construcción del producto.
 
----
+## 2. Frontera de producto v1
 
-# 2. Mapa funcional del producto
+Incluido:
 
-## A. Fundamentos de activos
+```text
+Corporate Libraries
+→ Project Setup
+→ FLH / Project Taxonomy / ADR
+→ Asset Register / Asset 360
+→ Criticality
+→ AMEF / FMEA
+→ RCM
+→ Maintenance Tasks
+→ Job Plans / Strategies
+→ Applicability / Overrides
+→ Maintenance Plan
+→ Review / Approval / Version
+→ Published Maintenance Plan
+```
 
-- visión del producto;
-- jerarquía funcional FLH;
-- taxonomía corporativa;
-- modelo de activos;
-- registro de activos físicos;
-- contexto operacional;
-- criticidad configurable por proyecto/cliente.
+Fuera de esta primera gran versión:
 
-**Madurez conceptual:** media-alta en FLH, taxonomía y activos.
-
-## B. Ingeniería de mantenimiento y fiabilidad
-
-- biblioteca de mantenimiento;
-- AMEF / FMEA;
-- perfiles y matrices de riesgo configurables;
-- RCM como árbol lógico de decisión;
-- criterios de factibilidad técnica y efectividad;
-- estrategias y políticas;
-- definición de tareas y frecuencias;
-- recursos y condiciones de ejecución;
-- agrupación de tareas;
-- aplicabilidad a activos equivalentes;
-- plan genérico y overrides por activo;
-- Job Plans / procedimientos;
-- revisión, publicación y versionado;
-- revisión de efectividad.
-
-**Madurez conceptual:** alta en AMEF/RCM respecto del resto del programa. Procedimientos/checklists y reglas exactas de agrupación siguen pendientes.
-
-## C. Gestión del trabajo
-
-- handoff desde plan publicado;
-- generación anual de preventivas;
-- calendario preventivo;
-- work candidates;
-- planificación;
-- validación/reprogramación;
-- programación;
-- routing organizativo;
-- asignación de ejecutores;
-- work orders;
+- Work Candidates;
+- Work Orders;
+- Planning/Scheduling;
 - ejecución;
-- feedback de campo;
-- inspecciones;
-- cierre técnico.
+- field feedback;
+- actual cost allocation;
+- contratos/facturación.
 
-**Madurez conceptual:** discovery inicial.
-
-La reunión 2026-08-21 aporta un primer AS-IS de referencia:
-
-```text
-Plan / calendario
-→ inspecciones próximas
-→ Planner
-→ propuesta WO
-→ Maintenance Responsible
-→ Supervisor opcional
-→ Technician / Executor
-→ ejecución
-```
-
-Este flujo permanece `to_validate` y debe contrastarse con la demo y check sheets de Los Barrios antes de convertirse en modelo objetivo.
-
-Documento de referencia:
-
-- `02-functional/process-model/work-management-discovery.md`
-
-## D. Gestión económica y empresarial
-
-- centros de coste y contexto presupuestario;
-- costes reales de mantenimiento;
-- materiales y servicios;
-- partidas de contrato/subcontrato;
-- facturación cuando aplique;
-- reporting;
-- KPIs;
-- integraciones corporativas;
-- roles y seguridad.
-
-**Madurez conceptual:** temprana / parcial.
-
-La relación WO → coste → contrato/subcontrato → facturación sigue abierta y requiere incorporar a Eduardo y/o perfiles de Contratos/Subcontratos.
+Estos dominios siguen discovery separado.
 
 ---
 
-# 3. Roadmap de validación funcional
+# 3. Roadmap de construcción
 
-## Fase FL-0 — Foundation
+## P0 — Product Baseline Consolidation
 
-**Estado:** completada documentalmente y revisada con reuniones de 2026-08-14 y 2026-08-21.
+**Estado:** completed.
 
-- auditoría de transición;
-- protocolo incremental;
-- visión del Functional Lab;
-- Functional Journey de 28 etapas;
-- matriz persona vs sistema;
-- arquitectura del laboratorio;
-- contratos JSON;
-- fixture P-101;
-- paquete documental para IT;
-- revisión riesgo/RCM/aplicabilidad;
-- apertura del discovery de Gestión del Trabajo.
+Entregables:
 
-## Fase FL-1 — Power Apps Foundation + WS-01
+- decisión producto vs Functional Lab;
+- Product Map v1;
+- Screen Catalog v1;
+- estrategia Data Provider;
+- separación Corporate/Project;
+- FLH vs Taxonomy vs ADR;
+- Risk Profile como configuración canónica;
+- Equipment Visual Library 3D como parte del producto.
 
-**Estado:** siguiente fase técnica.
+Fuentes:
 
-1. cerrar auditoría en Power Apps real;
-2. crear shell;
-3. crear runtime state compatible con configuración y decisiones trazadas;
-4. implementar adaptador P-101 v1.1;
-5. implementar navegación;
-6. completar `WS-01 Caso y contexto`;
-7. validar en Power Apps Studio;
-8. actualizar documentación funcional.
+- `00-governance/decisions/2026-08-22-product-interface-scope.md`
+- `01-vision/cmms-2.0-product-map-v1.md`
+- `06-ui-ux/product-screen-catalog-v1.md`
 
-Gate de salida: WS-01 integrado y validado sin errores abiertos.
+## P1 — Master Data & Taxonomy Foundation
 
-## Fase FL-2 — Funciones y fallos
+**Estado:** in progress.
 
-- `WS-02 Funciones y fallos`;
-- validar responsabilidad sobre funciones, fallos y modos;
-- consolidar requisitos y entidades asociadas.
+### P1.1 Equipment Taxonomy research baseline
 
-## Fase FL-3 — AMEF y riesgo configurable
+**Estado:** completed v1.
 
-Gate previo: contrato mínimo `RiskProfile`.
+Fuentes contrastadas:
 
-- `WS-03 Efectos y riesgo`;
-- validar escalas, rangos, cálculos, recomendaciones y gates;
-- demostrar que la matriz procede de configuración.
+- ISO 14224;
+- IEC 81346;
+- CFIHOS;
+- ETIM;
+- ECLASS;
+- MIMOSA CCOM;
+- ISO 55000;
+- estándares específicos por familia cuando proceda.
 
-## Fase FL-4 — Decisión RCM
+Resultado:
 
-Gate previo: contrato mínimo de árbol RCM.
+- `02-functional/master-data/equipment-taxonomy-library-foundation-v1.md`.
 
-- `WS-04 Decisión RCM`;
-- representar preguntas, respuestas, evidencia y ramas sin scoring;
-- hacer visibles factibilidad técnica y efectividad;
-- separar recomendación del sistema y autoridad humana.
+### P1.2 Family studies
 
-## Fase FL-5 — Tratamiento y plan
+Construir por familias, no rellenar una lista masiva sin evidencia.
 
-- `WS-05 Economía y tarea`;
-- `WS-06 Recursos y alcance`;
-- validar tareas, frecuencias, recursos y condiciones;
-- validar agrupación;
-- validar candidatos de aplicabilidad y overrides por activo.
+Orden inicial:
 
-Gate previo a WS-06:
+1. Rotating Equipment;
+2. Static / Pressure Equipment;
+3. Heat Transfer Equipment;
+4. Piping / Valves / specialty mechanical;
+5. Electrical;
+6. Instrumentation & Control;
+7. Utility / Packages;
+8. remaining domains.
 
-- `BasePlan`;
-- `CandidateAssets`;
-- `ApplicabilityDecision`;
-- `AssetPlanOverride`.
-
-Caso pedagógico reservado: bomba con lubricación convencional frente a lubricación por neblina.
-
-## Fase FL-6 — Gobernanza y handoff
-
-- `WS-07 Trazabilidad y calidad`;
-- `WS-08 Revisión y publicación`;
-- validar approvals y snapshots;
-- producir `PublishedPlanVersion`;
-- mostrar handoff conceptual hacia preparación anual y Gestión del Trabajo.
-
-La demo podrá mostrar:
+Para cada familia:
 
 ```text
-PublishedPlanVersion
-→ Annual Preventive Preparation
-→ Work Management (discovery / to_validate)
+source review
+→ class tree candidate
+→ technical field profile
+→ failure knowledge links
+→ maintenance knowledge links
+→ external mappings
+→ 3D visual requirements
+→ review
 ```
 
-No se implementarán todavía reglas operativas de planning/scheduling.
+### Gate P1
 
-## Fase FL-7 — Efectividad
+Antes de congelar la primera versión corporativa de taxonomía deben estar validadas al menos las familias necesarias para los proyectos piloto.
 
-- `WS-09 Efectividad y mejora`;
-- cerrar el loop con datos reales simulados;
-- abrir revisión sin sobrescribir versiones anteriores.
+## P2 — Screen Contracts Foundation
 
-## Fase FL-8 — Consolidación AMEF/RCM para IT
+**Estado:** next.
 
-- requisitos funcionales;
-- reglas de negocio;
-- modelo conceptual de datos;
-- mapa de pantallas;
-- roles y dependencias;
-- preguntas de arquitectura;
-- contrato de salida hacia Gestión del Trabajo.
+Objetivo: definir contratos funcionales antes de implementar pantallas complejas.
 
-## Fase FL-9 — Discovery de Gestión del Trabajo
+Prioridad:
 
-**Estado:** iniciado documentalmente el 2026-08-21; todavía no es una fase de implementación Power Apps.
+1. Premium App Shell / Navigation;
+2. Project Profile;
+3. Maintenance Configuration;
+4. Risk Profile / Matrix Configuration;
+5. Equipment Taxonomy Library;
+6. Project Taxonomy Builder;
+7. FLH Builder;
+8. ADR Builder;
+9. Asset Register;
+10. Asset 360.
 
-### WM-G01 — observar AS-IS
+Cada contrato debe incluir:
 
-- demo de la aplicación actual de Los Barrios;
-- actores;
-- estados;
-- decisiones;
-- excepciones.
+- primary task;
+- SaaS archetype;
+- personas/roles;
+- inputs;
+- outputs;
+- actions;
+- states;
+- validations;
+- governance;
+- data contract;
+- synthetic dataset requirements;
+- future persistence mapping.
 
-### WM-G02 — revisar contenido operativo
+## P3 — Power Apps Technical Baseline
 
-- hojas/check sheets reales;
-- tarea vs procedimiento;
-- procedimiento vs WO;
-- feedback de ejecución.
-
-### WM-G03 — validar planning/scheduling
-
-- horizonte temporal;
-- work candidates;
-- agrupación;
-- ventanas;
-- reprogramación;
-- capacidad;
-- turnos;
-- asignación;
-- rutas organizativas configurables.
-
-### Gate de salida FL-9
-
-Solo cuando exista evidencia suficiente se decidirá:
-
-- journey canónico de Gestión del Trabajo;
-- nuevos workspaces del Functional Lab;
-- contratos funcionales;
-- fixture/caso de demostración.
-
-## Fase FL-10 — Gestión económica
-
-No iniciar diseño detallado hasta incorporar conocimiento de Eduardo y/o Contratos/Subcontratos.
-
-Objetivo posterior:
+Crear/identificar Canvas App real:
 
 ```text
-WO ejecutada
-→ coste real
-→ centro de coste / presupuesto
-→ contrato / subcontrato
-→ integración corporativa / facturación
+CMMS 2.0
 ```
+
+Validar:
+
+- Source Code schema/dialect;
+- responsive strategy;
+- resolution;
+- Modern/Classic controls actually available;
+- reusable components installed;
+- theme/tokens;
+- App Checker baseline;
+- visual baseline.
+
+Gate: no construir superficies densas hasta validar el shell real en Studio.
+
+## P4 — Premium App Shell + Navigation
+
+Construir la foundation visual definitiva:
+
+- grouped sidebar;
+- Corporate/Project context;
+- global search shell;
+- page header;
+- command bars;
+- content host;
+- contextual inspector/drawer;
+- overlays/modals;
+- Needs Attention entry point;
+- loading/empty/error states;
+- accessibility/focus states;
+- dirty guard;
+- responsive behavior acordado.
+
+## P5 — Project Setup
+
+Implementar:
+
+- Project Profile;
+- Maintenance Configuration;
+- Risk Profile / Matrix Configuration;
+- Project Teams & Roles.
+
+### Gate Risk Profile
+
+Debe poder demostrar con datos sintéticos que el mismo componente puede renderizar perfiles diferentes sin cambiar fórmulas de pantalla.
+
+## P6 — Corporate Libraries Foundation
+
+Implementar primero las bibliotecas necesarias para alimentar los siguientes módulos:
+
+1. Equipment Taxonomy Library;
+2. Technical Fields Library;
+3. Equipment Visual Library;
+4. Failure Knowledge Library;
+5. Maintenance Task Library;
+6. Job Plan Library;
+7. RCM Model Library.
+
+No todas necesitan la misma profundidad en el primer incremento; cada una se construye por contrato.
+
+## P7 — Project Structure & Asset Master
+
+### P7.1 FLH Builder
+
+Crear/validar jerarquía funcional/localización.
+
+### P7.2 Project Taxonomy Builder
+
+Seleccionar corporate classes, excluir ramas y gestionar project-specific extensions.
+
+### P7.3 ADR Builder
+
+Crear activos físicos y parent/child composition.
+
+### P7.4 Asset Register
+
+Exploración/edición masiva.
+
+### P7.5 Asset 360
+
+Vista integral de un activo.
+
+Gate:
+
+```text
+Asset
+→ Functional Location
+→ Taxonomy Class
+→ physical parent/children
+→ technical data
+→ visual/document context
+```
+
+debe ser consistente antes de iniciar ingeniería de mantenimiento a escala.
+
+## P8 — Criticality
+
+Implementar Criticality Assessment consumiendo configuración, no reglas hardcodeadas.
+
+Debe separar:
+
+- configured criteria;
+- system calculation;
+- human review/override when allowed;
+- traceability;
+- resulting asset criticality.
+
+## P9 — AMEF / FMEA
+
+Implementar análisis estructurado sobre activos/clases/funciones.
+
+Debe soportar:
+
+- functions;
+- functional failures;
+- failure modes;
+- causes/mechanisms;
+- effects;
+- existing controls;
+- configured risk profile;
+- evidence;
+- reusable failure knowledge;
+- human decisions;
+- readiness toward RCM.
+
+No convertir knowledge-library suggestions en AMEF aprobado automáticamente.
+
+## P10 — RCM
+
+Implementar RCM como árbol lógico explicable.
+
+Gate previo:
+
+- RCM Model contract versioned;
+- questions/branches defined;
+- technical feasibility/effectiveness criteria;
+- trace model.
+
+No scoring RCM acumulado salvo metodología explícita y configurable.
+
+## P11 — Maintenance Task Engineering
+
+Implementar:
+
+- Maintenance Task Definition;
+- frequency justification;
+- acceptance criteria;
+- reaction on failure;
+- resources/skills/tools/materials;
+- evidence/technical basis.
+
+## P12 — Applicability & Overrides
+
+Implementar:
+
+- base strategy/plan;
+- candidate assets from taxonomy/technical equivalence;
+- human applicability decision;
+- asset-specific override;
+- no mutation of base definition;
+- traceability and impact.
+
+## P13 — Job Plans & Strategies
+
+Implementar:
+
+- Job Plans;
+- sequences/resources/conditions;
+- reusable templates;
+- Maintenance Strategies;
+- relationships to tasks/assets/classes.
+
+Las reglas de agrupación todavía no validadas deben permanecer configurables/explicitly pending, no enterradas en UI formulas.
+
+## P14 — Maintenance Plan
+
+Consolidar:
+
+- strategies;
+- tasks;
+- Job Plans;
+- frequencies;
+- assets/scope;
+- applicability;
+- overrides;
+- resources;
+- completeness/readiness.
+
+## P15 — Governance, Review & Publication
+
+Implementar:
+
+- Reviews & Approvals;
+- blockers/warnings;
+- Audit & Traceability;
+- version comparison;
+- publication status;
+- immutable published version;
+- Library Promotion Requests.
+
+Output final v1:
+
+```text
+Published Maintenance Plan Version
+```
+
+## P16 — SQL Readiness & Provider Swap
+
+Solo cuando los contratos de una superficie estén estabilizados:
+
+```text
+synthetic collection
+↔ contract
+↔ relational model / API contract
+```
+
+Orden recomendado:
+
+1. master/reference data reads;
+2. project configuration;
+3. asset master;
+4. engineering reads;
+5. controlled writes;
+6. decisions/traceability;
+7. publication/version transactions.
+
+Aplicar idempotencia, concurrency control y backend protection según riesgo.
 
 ---
 
-# 4. Regla de continuidad
+# 4. Parallel Discovery — Work Management
 
-El siguiente dominio no se construirá porque “parezca lógico”.
+No bloquea la construcción de la primera versión hasta plan publicado.
 
-Primero se observa, después se modela, después se valida y solo entonces se convierte en experiencia ejecutable del Functional Lab.
+Debe continuar en paralelo:
+
+### WM-G01
+
+Observar proceso real y excepciones.
+
+### WM-G02
+
+Separar task / procedure / checksheet / WO / execution feedback.
+
+### WM-G03
+
+Validar planning/scheduling/capacity/assignment.
+
+### WM-G04
+
+Validar costs/contracts/billing con roles responsables.
+
+Solo después se añadirá un segundo Product Map posterior a `Published Maintenance Plan`.
+
+---
+
+# 5. Regla de continuidad
+
+No se construye una pantalla solo porque aparezca en el mapa.
+
+Secuencia:
+
+```text
+functional decision
+→ screen contract
+→ data contract
+→ synthetic provider
+→ Power Apps implementation
+→ Studio validation
+→ Visual QA
+→ documentation
+```
+
+Y no se diseña como regla definitiva ningún comportamiento que continúe marcado como `to_validate`.
