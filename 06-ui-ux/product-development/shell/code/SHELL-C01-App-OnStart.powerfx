@@ -1,0 +1,35 @@
+Set(gblTheme,
+    {
+        Canvas: ColorValue("#F6F8FB"),
+        Sidebar: ColorValue("#0B1628"),
+        SidebarHover: ColorValue("#14243A"),
+        SidebarSelected: ColorValue("#173A63"),
+        Surface: Color.White,
+        Border: ColorValue("#E4EAF1"),
+        TextPrimary: ColorValue("#172033"),
+        TextSecondary: ColorValue("#5C667A"),
+        TextMuted: ColorValue("#8993A5"),
+        Primary: ColorValue("#1769E0"),
+        PrimaryHover: ColorValue("#1359BF"),
+        Success: ColorValue("#198754"),
+        Warning: ColorValue("#B86B00"),
+        Danger: ColorValue("#C9363E"),
+        Info: ColorValue("#2563EB")
+    }
+);
+
+Set(gblLayout,
+    {
+        SidebarExpanded: 248,
+        SidebarCollapsed: 72,
+        TopBarHeight: 64,
+        PagePaddingDesktop: 24,
+        PagePaddingCompact: 16,
+        RadiusCard: 12,
+        GapMajor: 16
+    }
+);
+
+Set(gblSidebarCollapsed, false);
+Set(gblSelectedNavKey, "home");
+Set(gblShellReady, true);
