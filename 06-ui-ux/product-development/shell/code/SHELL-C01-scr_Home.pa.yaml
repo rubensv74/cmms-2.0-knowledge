@@ -1,0 +1,371 @@
+Screens:
+  scr_Home:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+    Children:
+      - conAppRoot:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - conSidebar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Sidebar
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =72
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =If(gblSidebarCollapsed, gblLayout.SidebarCollapsed, gblLayout.SidebarExpanded)
+                Children:
+                  - conBrand:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Height: =72
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =10
+                        LayoutMinHeight: =72
+                        LayoutMinWidth: =16
+                        PaddingBottom: =16
+                        PaddingLeft: =If(gblSidebarCollapsed, 16, 20)
+                        PaddingRight: =12
+                        PaddingTop: =16
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - shpBrandMark:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderStyle: =BorderStyle.None
+                              Fill: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =34
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Width: =34
+                        - lblBrand:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =Color.White
+                              FillPortions: =1
+                              FontWeight: =FontWeight.Semibold
+                              LayoutMinHeight: =24
+                              LayoutMinWidth: =80
+                              Size: =17
+                              Text: ="CMMS 2.0"
+                              Visible: =!gblSidebarCollapsed
+                        - btnSidebarToggle:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =34
+                              LayoutMinHeight: =34
+                              LayoutMinWidth: =34
+                              OnSelect: =Set(gblSidebarCollapsed, !gblSidebarCollapsed)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Text: =If(gblSidebarCollapsed, ">", "<")
+                              Width: =34
+                  - conSidebarBody:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =8
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =16
+                        PaddingLeft: =12
+                        PaddingRight: =12
+                        PaddingTop: =12
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - btnNavHome:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "home", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =44
+                              LayoutMinHeight: =44
+                              LayoutMinWidth: =44
+                              OnSelect: =Set(gblSelectedNavKey, "home")
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Text: =If(gblSidebarCollapsed, "⌂", "Home")
+                              Width: =Parent.Width
+            - conMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =320
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - conTopBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =0
+                        Height: =gblLayout.TopBarHeight
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =64
+                        LayoutMinWidth: =16
+                        PaddingBottom: =10
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =10
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - conTopContext:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =40
+                              LayoutMinWidth: =180
+                            Children:
+                              - lblTopContextCaption:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextMuted
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =80
+                                    Size: =9
+                                    Text: ="PROJECT"
+                              - lblTopContextValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextPrimary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =20
+                                    LayoutMinWidth: =140
+                                    Size: =12
+                                    Text: ="No project selected"
+                        - btnGlobalSearch:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =88
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: ="Search"
+                              Width: =88
+                        - btnNeedsAttention:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Warning
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =132
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: ="Needs attention"
+                              Width: =132
+                        - btnUserBadge:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =44
+                              RadiusBottomLeft: =18
+                              RadiusBottomRight: =18
+                              RadiusTopLeft: =18
+                              RadiusTopRight: =18
+                              Text: ="RS"
+                              Width: =44
+                  - conPageArea:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Canvas
+                        FillPortions: =1
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =16
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =24
+                        PaddingLeft: =If(App.Width < 900, gblLayout.PagePaddingCompact, gblLayout.PagePaddingDesktop)
+                        PaddingRight: =If(App.Width < 900, gblLayout.PagePaddingCompact, gblLayout.PagePaddingDesktop)
+                        PaddingTop: =22
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - conPageHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =92
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =92
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Width: =Parent.Width
+                            Children:
+                              - lblPageEyebrow:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.Primary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =80
+                                    Size: =10
+                                    Text: ="OVERVIEW"
+                              - lblPageTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextPrimary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =160
+                                    Size: =28
+                                    Text: ="CMMS 2.0"
+                              - lblPageSubtitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextSecondary
+                                    LayoutMinHeight: =20
+                                    LayoutMinWidth: =240
+                                    Size: =12
+                                    Text: ="Configure maintenance engineering from asset structure to published maintenance plan."
+                        - conContentHost:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =gblTheme.Surface
+                              FillPortions: =1
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =8
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =220
+                              LayoutMinWidth: =16
+                              PaddingBottom: =24
+                              PaddingLeft: =24
+                              PaddingRight: =24
+                              PaddingTop: =24
+                              RadiusBottomLeft: =12
+                              RadiusBottomRight: =12
+                              RadiusTopLeft: =12
+                              RadiusTopRight: =12
+                              Width: =Parent.Width
+                            Children:
+                              - lblShellReadyTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextPrimary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =26
+                                    LayoutMinWidth: =160
+                                    Size: =18
+                                    Text: ="Premium shell ready"
+                              - lblShellReadySubtitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextSecondary
+                                    LayoutMinHeight: =20
+                                    LayoutMinWidth: =260
+                                    Size: =11
+                                    Text: ="Navigation and project context will be connected in the next increment."
