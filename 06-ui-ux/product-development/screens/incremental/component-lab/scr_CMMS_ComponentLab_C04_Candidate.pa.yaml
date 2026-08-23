@@ -1,0 +1,283 @@
+Screens:
+  scr_CMMS_ComponentLab_C04:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#1769E0")
+    Children:
+      - conCMMSC04_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =12
+            LayoutMinHeight: =600
+            LayoutMinWidth: =1000
+            PaddingBottom: =14
+            PaddingLeft: =14
+            PaddingRight: =14
+            PaddingTop: =14
+            Width: =App.Width
+          Children:
+            - conCMMSC04_ExpandedSlot:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#0B1628")
+                  FillPortions: =0
+                  Height: =Parent.Height-28
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =560
+                  LayoutMinWidth: =248
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Width: =248
+                Children:
+                  - cmpCMMSC04_Expanded:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_SidebarPro_RC0
+                      Properties:
+                        ActiveKey: ="project_setup"
+                        AppTitle: ="CMMS 2.0"
+                        AppVersion: ="RC0"
+                        EnvironmentLabel: ="LAB"
+                        Height: =Parent.Height
+                        IsCollapsed: =false
+                        NavItems: |-
+                          =Table(
+                              {Order:10, Key:"home", Label:"Home", ShortLabel:"H", IsVisible:true, IsEnabled:true, Tooltip:"Home"},
+                              {Order:20, Key:"project_setup", Label:"Project Setup", ShortLabel:"PS", IsVisible:true, IsEnabled:true, Tooltip:"Project Setup"},
+                              {Order:30, Key:"assets", Label:"Assets", ShortLabel:"AS", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:40, Key:"libraries", Label:"Libraries", ShortLabel:"LI", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:50, Key:"maintenance_engineering", Label:"Maintenance Engineering", ShortLabel:"ME", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:60, Key:"plans", Label:"Plans", ShortLabel:"PL", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:70, Key:"governance", Label:"Governance", ShortLabel:"GO", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:80, Key:"administration", Label:"Administration", ShortLabel:"AD", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"}
+                          )
+                        OnSelectItem: =false
+                        OnToggleCollapse: =false
+                        ProjectCode: ="P-001"
+                        ProjectName: ="SYNTHETIC DEMO PROJECT A"
+                        ShowProjectContext: =true
+                        Width: =248
+            - conCMMSC04_CollapsedSlot:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =ColorValue("#0B1628")
+                  FillPortions: =0
+                  Height: =Parent.Height-28
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =560
+                  LayoutMinWidth: =72
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Width: =72
+                Children:
+                  - cmpCMMSC04_Collapsed:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_SidebarPro_RC0
+                      Properties:
+                        ActiveKey: ="home"
+                        AppTitle: ="CMMS 2.0"
+                        AppVersion: ="RC0"
+                        EnvironmentLabel: ="LAB"
+                        Height: =Parent.Height
+                        IsCollapsed: =true
+                        NavItems: |-
+                          =Table(
+                              {Order:10, Key:"home", Label:"Home", ShortLabel:"H", IsVisible:true, IsEnabled:true, Tooltip:"Home"},
+                              {Order:20, Key:"project_setup", Label:"Project Setup", ShortLabel:"PS", IsVisible:true, IsEnabled:true, Tooltip:"Project Setup"},
+                              {Order:30, Key:"assets", Label:"Assets", ShortLabel:"AS", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:40, Key:"libraries", Label:"Libraries", ShortLabel:"LI", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:50, Key:"maintenance_engineering", Label:"Maintenance Engineering", ShortLabel:"ME", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:60, Key:"plans", Label:"Plans", ShortLabel:"PL", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:70, Key:"governance", Label:"Governance", ShortLabel:"GO", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"},
+                              {Order:80, Key:"administration", Label:"Administration", ShortLabel:"AD", IsVisible:true, IsEnabled:false, Tooltip:"Not yet implemented"}
+                          )
+                        OnSelectItem: =false
+                        OnToggleCollapse: =false
+                        ProjectCode: =""
+                        ProjectName: =""
+                        ShowProjectContext: =true
+                        Width: =72
+            - conCMMSC04_Workspace:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  FillPortions: =1
+                  Height: =Parent.Height-28
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  LayoutMinHeight: =560
+                  LayoutMinWidth: =620
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                Children:
+                  - lblCMMSC04_Boundary:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =ColorValue("#F4D6A0")
+                        BorderThickness: =1
+                        Color: =ColorValue("#8A5200")
+                        Fill: =ColorValue("#FFF8E8")
+                        FillPortions: =0
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =36
+                        PaddingLeft: =12
+                        Size: =8
+                        Text: ="C04 SIDEBAR LAB · CONTROLLED NAVIGATION CONTRACT · NO PRODUCTION NAVIGATION"
+                        Width: =Parent.Width
+                        Wrap: =false
+                  - lblCMMSC04_Eyebrow:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Color: =ColorValue("#1769E0")
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =20
+                        Size: =8
+                        Text: ="DESIGN SYSTEM"
+                        Width: =Parent.Width
+                  - lblCMMSC04_Title:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Color: =ColorValue("#172033")
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =40
+                        Size: =22
+                        Text: ="Sidebar"
+                        Width: =Parent.Width
+                  - lblCMMSC04_Subtitle:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Color: =ColorValue("#5C667A")
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Font: =Font.'Segoe UI'
+                        Height: =46
+                        Size: =10
+                        Text: ="Validate expanded and collapsed navigation, accepted project context, active state and disabled future capabilities before adopting the component in scr_Home."
+                        Width: =Parent.Width
+                        Wrap: =true
+                  - conCMMSC04_Acceptance:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E4EAF1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.White
+                        FillPortions: =0
+                        Height: =260
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =8
+                        LayoutMinHeight: =260
+                        LayoutMinWidth: =480
+                        PaddingBottom: =18
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =18
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =Parent.Width
+                      Children:
+                        - lblCMMSC04_AcceptanceTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#172033")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Size: =15
+                              Text: ="Acceptance checks"
+                              Width: =Parent.Width
+                        - lblCMMSC04_AcceptanceText:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#5C667A")
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Font: =Font.'Segoe UI'
+                              Height: =190
+                              Size: =10
+                              Text: ="1. Expanded width is 248 px and collapsed width is 72 px.\n2. Project Setup is active in the expanded specimen; Home is active in the collapsed specimen.\n3. Disabled future capabilities remain visible but cannot be selected.\n4. The expanded footer shows the accepted synthetic project.\n5. The collapsed footer never fabricates project context.\n6. Toggle and navigation events are intentionally disconnected in this lab."
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =Parent.Width
+                              Wrap: =true
+                  - conCMMSC04_Note:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E4EAF1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.White
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =160
+                        LayoutMinWidth: =480
+                        PaddingBottom: =18
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =18
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =Parent.Width
+                      Children:
+                        - lblCMMSC04_NoteTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#172033")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Size: =15
+                              Text: ="RC0 boundary"
+                              Width: =Parent.Width
+                        - lblCMMSC04_NoteText:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#5C667A")
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Font: =Font.'Segoe UI'
+                              Height: =100
+                              Size: =10
+                              Text: ="The sidebar exposes selection intent only. It does not know screen names, call Navigate(), load data, change project context or decide whether a product capability is available. Those decisions remain in the host."
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =Parent.Width
+                              Wrap: =true
