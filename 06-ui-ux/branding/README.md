@@ -43,6 +43,49 @@ Familia recomendada: **Montserrat**. Esta librería no distribuye archivos de fu
 | Surface | `#F1F5F9` | fondos suaves |
 | Slate | `#64748B` | texto secundario |
 
+## Iconografía de dominio
+
+La evolución de Asset Experience exige revisar la iconografía existente antes de crear nuevas familias.
+
+Clasificación objetivo:
+
+- navegación;
+- entidades / Equipment Types;
+- atributos técnicos;
+- ingeniería / documentos;
+- mantenimiento / inspección;
+- estado / provenance.
+
+La decisión de incorporación sigue:
+
+`REUSE_CMMS → ADAPT_VERIFIED_BASE → EXTEND_SHARED → CREATE_SHARED → LOCAL_ONLY`.
+
+Los iconos funcionales no deben reutilizar el tratamiento de gradiente/brillo del isotipo de marca.
+
+## Ilustraciones técnicas 3D
+
+CMMS **no mantiene una biblioteca 3D independiente**.
+
+Fuente gobernada para ilustraciones técnicas de tipo de equipo:
+
+```text
+Repository: rubensv74/app_preserv
+Collection: AssetPlan Industrial Technical 3D
+Path: assets/equipment-illustrations/3d/runtime-hero-tight/r01/
+```
+
+CMMS puede consumir estas ilustraciones mediante un mapping gobernado `EquipmentType → IllustrationKey`, conservando provenance/version y sin crear una segunda fuente de verdad.
+
+Semántica obligatoria:
+
+```text
+Type Illustration != Model Image != Asset Photo
+```
+
+La ilustración de tipo es un recurso de reconocimiento visual, no un modelo CAD/BIM ni evidencia fotográfica del activo concreto.
+
+Documento de gobierno: `../CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`.
+
 ## Regla de gobierno
 
 No modificar colores, proporciones, gradiente, grosor del hexágono ni geometría del isotipo dentro de una pantalla. Cualquier evolución debe crear una nueva versión de esta librería.
