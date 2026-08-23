@@ -1,0 +1,884 @@
+Screens:
+  scr_MaintenanceConfiguration_S01:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+      OnVisible: |-
+        =Set(varMCSidebarCollapsed,false);
+        Set(varMCNavKey,"project_setup");
+        Set(varMCProjectCode,"P-001");
+        Set(varMCProjectName,"SYNTHETIC DEMO PROJECT A");
+        Set(varMCProjectId,"PRJ-001");
+        Set(varMCDirty,false);
+        Set(varMCStatus,"DRAFT SAVED");
+        Set(varMCSavedInheritance,"Corporate Default");
+        Set(varMCSavedTaxonomy,"Allowed");
+        Set(varMCSavedAssetOverrides,"Allowed");
+        Set(varMCSavedAMEFBeforeRCM,"Required");
+        Set(varMCSavedPublishApproval,"Required");
+        Set(varMCSavedPromotionRequests,"Enabled");
+        Set(varMCSavedReviewRole,"Maintenance Engineering Lead");
+        Set(varMCSavedVersionPolicy,"New version for active changes")
+    Children:
+      - conMC_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =gblTheme.Canvas
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - cmpMC_Sidebar:
+                Control: CanvasComponent
+                ComponentName: cmp_CMMS_SidebarPro_RC0
+                Properties:
+                  ActiveKey: =varMCNavKey
+                  AppTitle: ="CMMS 2.0"
+                  AppVersion: ="P01"
+                  EnvironmentLabel: ="SYNTHETIC"
+                  Height: =Parent.Height
+                  IsCollapsed: =varMCSidebarCollapsed
+                  NavItems: |-
+                    =Table(
+                        {Order:10,Key:"home",Label:"Home",ShortLabel:"H",IsVisible:true,IsEnabled:true,Tooltip:"Home"},
+                        {Order:20,Key:"project_setup",Label:"Project Setup",ShortLabel:"PS",IsVisible:true,IsEnabled:true,Tooltip:"Project Setup"},
+                        {Order:30,Key:"assets",Label:"Assets",ShortLabel:"AS",IsVisible:true,IsEnabled:false,Tooltip:"Future product area"},
+                        {Order:40,Key:"libraries",Label:"Libraries",ShortLabel:"LI",IsVisible:true,IsEnabled:false,Tooltip:"Future product area"},
+                        {Order:50,Key:"maintenance_engineering",Label:"Maintenance Engineering",ShortLabel:"ME",IsVisible:true,IsEnabled:false,Tooltip:"Future product area"},
+                        {Order:60,Key:"plans",Label:"Plans",ShortLabel:"PL",IsVisible:true,IsEnabled:false,Tooltip:"Future product area"},
+                        {Order:70,Key:"governance",Label:"Governance",ShortLabel:"GO",IsVisible:true,IsEnabled:false,Tooltip:"Future product area"},
+                        {Order:80,Key:"administration",Label:"Administration",ShortLabel:"AD",IsVisible:true,IsEnabled:false,Tooltip:"Future product area"}
+                    )
+                  OnSelectItem: =Set(varMCNavKey,cmpMC_Sidebar.SelectedKey)
+                  OnToggleCollapse: =Set(varMCSidebarCollapsed,!varMCSidebarCollapsed)
+                  ProjectCode: =varMCProjectCode
+                  ProjectName: =varMCProjectName
+                  ShowProjectContext: =true
+                  Width: =If(varMCSidebarCollapsed,72,248)
+            - conMC_Main:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =640
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - conMC_TopBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =0
+                        Height: =64
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =64
+                        LayoutMinWidth: =320
+                        PaddingBottom: =8
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =8
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpMC_ProjectContext:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              EmptyText: ="No project selected"
+                              Height: =44
+                              IsEnabled: =false
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="CONTEXT_ONLY"
+                              Projects: |-
+                                =Table(
+                                    {ProjectCode:"P-001",ProjectName:"SYNTHETIC DEMO PROJECT A",ProjectId:"PRJ-001",DisplayProject:"P-001 · SYNTHETIC DEMO PROJECT A"}
+                                )
+                              SelectedProjectCode: =varMCProjectCode
+                              SelectedProjectId: =varMCProjectId
+                              SelectedProjectName: =varMCProjectName
+                              Width: =390
+                        - conMC_TopSpacer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Height: =44
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =40
+                        - btnMC_User:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =gblTheme.Primary
+                              DisplayMode: =DisplayMode.Disabled
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =44
+                              RadiusBottomLeft: =18
+                              RadiusBottomRight: =18
+                              RadiusTopLeft: =18
+                              RadiusTopRight: =18
+                              Text: ="RS"
+                              Width: =44
+                  - conMC_Page:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Canvas
+                        FillPortions: =1
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =520
+                        LayoutMinWidth: =640
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =24
+                        PaddingLeft: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingRight: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingTop: =18
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpMC_Header:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                            Properties:
+                              AccentColor: =gblTheme.Primary
+                              EyebrowText: ="PROJECT SETUP"
+                              Height: =108
+                              PrimaryTextColor: =gblTheme.TextPrimary
+                              SecondaryTextColor: =gblTheme.TextSecondary
+                              ShowStatus: =true
+                              StatusText: =If(varMCDirty,"UNSAVED CHANGES",varMCStatus)
+                              StatusTone: =If(varMCDirty,"WARNING","INFO")
+                              Subtitle: ="Define project maintenance behavior while preserving the source and governance of every setting."
+                              SurfaceColor: =Color.Transparent
+                              Title: ="Maintenance Configuration"
+                              Width: =Parent.Width
+                        - conMC_CommandBar:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =gblTheme.Surface
+                              FillPortions: =0
+                              Height: =56
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =56
+                              LayoutMinWidth: =320
+                              PaddingBottom: =8
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =8
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                            Children:
+                              - lblMC_CommandStatus:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =gblTheme.TextSecondary
+                                    FillPortions: =1
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =24
+                                    LayoutMinWidth: =160
+                                    Size: =10
+                                    Text: =If(varMCDirty,"Local configuration changes have not been saved.","Draft settings are synchronized with the current local candidate.")
+                              - btnMC_Reset:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Subtle
+                                    BasePaletteColor: =gblTheme.Primary
+                                    DisplayMode: =If(varMCDirty,DisplayMode.Edit,DisplayMode.Disabled)
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =90
+                                    OnSelect: |-
+                                      =Reset(ddMC_Inheritance);
+                                      Reset(ddMC_Taxonomy);
+                                      Reset(ddMC_AssetOverrides);
+                                      Reset(ddMC_AMEFBeforeRCM);
+                                      Reset(ddMC_PublishApproval);
+                                      Reset(ddMC_PromotionRequests);
+                                      Reset(ddMC_ReviewRole);
+                                      Reset(ddMC_VersionPolicy);
+                                      Set(varMCDirty,false)
+                                    Text: ="Reset"
+                                    Width: =90
+                              - btnMC_Save:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Primary
+                                    BasePaletteColor: =gblTheme.Primary
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =110
+                                    OnSelect: |-
+                                      =Set(varMCSavedInheritance,ddMC_Inheritance.Selected.Value);
+                                      Set(varMCSavedTaxonomy,ddMC_Taxonomy.Selected.Value);
+                                      Set(varMCSavedAssetOverrides,ddMC_AssetOverrides.Selected.Value);
+                                      Set(varMCSavedAMEFBeforeRCM,ddMC_AMEFBeforeRCM.Selected.Value);
+                                      Set(varMCSavedPublishApproval,ddMC_PublishApproval.Selected.Value);
+                                      Set(varMCSavedPromotionRequests,ddMC_PromotionRequests.Selected.Value);
+                                      Set(varMCSavedReviewRole,ddMC_ReviewRole.Selected.Value);
+                                      Set(varMCSavedVersionPolicy,ddMC_VersionPolicy.Selected.Value);
+                                      Set(varMCDirty,false);
+                                      Set(varMCStatus,"DRAFT SAVED")
+                                    Text: ="Save draft"
+                                    Width: =110
+                        - conMC_Workspace:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =660
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =14
+                              LayoutMinHeight: =660
+                              LayoutMinWidth: =640
+                            Children:
+                              - conMC_ConfigCard:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =gblTheme.Surface
+                                    FillPortions: =2
+                                    Height: =Parent.Height
+                                    LayoutMinHeight: =660
+                                    LayoutMinWidth: =650
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                  Children:
+                                    - lblMC_Title:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Size: =15
+                                          Text: ="Project maintenance settings"
+                                          Width: =360
+                                          X: =22
+                                          Y: =18
+                                    - lblMC_Intro:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =36
+                                          Size: =9
+                                          Text: ="Each setting keeps an explicit source so project overrides never silently replace corporate defaults."
+                                          Width: =650
+                                          X: =22
+                                          Y: =48
+                                    - lblMC_General:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =10
+                                          Text: ="GENERAL"
+                                          Width: =180
+                                          X: =22
+                                          Y: =96
+                                    - lblMC_Inheritance:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="INHERITANCE POLICY"
+                                          Width: =190
+                                          X: =22
+                                          Y: =126
+                                    - ddMC_Inheritance:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedInheritance})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Corporate Default"},{Value:"Project Override"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =300
+                                          X: =22
+                                          Y: =150
+                                        Children:
+                                          - fldMC_Inheritance:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_InheritanceSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(ddMC_Inheritance.Selected.Value="Corporate Default",ColorValue("#2563EB"),ColorValue("#B86B00"))
+                                          Fill: =If(ddMC_Inheritance.Selected.Value="Corporate Default",ColorValue("#EEF5FF"),ColorValue("#FFF8E8"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: =Upper(ddMC_Inheritance.Selected.Value)
+                                          Width: =180
+                                          X: =340
+                                          Y: =150
+                                    - lblMC_Engineering:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =10
+                                          Text: ="ENGINEERING"
+                                          Width: =180
+                                          X: =22
+                                          Y: =204
+                                    - lblMC_Taxonomy:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="PROJECT-SPECIFIC TAXONOMY CLASSES"
+                                          Width: =260
+                                          X: =22
+                                          Y: =234
+                                    - ddMC_Taxonomy:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedTaxonomy})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Allowed"},{Value:"Not allowed"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =220
+                                          X: =22
+                                          Y: =258
+                                        Children:
+                                          - fldMC_Taxonomy:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_TaxonomySource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(ddMC_Taxonomy.Selected.Value="Allowed",ColorValue("#2563EB"),ColorValue("#B86B00"))
+                                          Fill: =If(ddMC_Taxonomy.Selected.Value="Allowed",ColorValue("#EEF5FF"),ColorValue("#FFF8E8"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: =If(ddMC_Taxonomy.Selected.Value="Allowed","CORPORATE DEFAULT","PROJECT OVERRIDE")
+                                          Width: =180
+                                          X: =258
+                                          Y: =258
+                                    - lblMC_AssetOverrides:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="ASSET OVERRIDES"
+                                          Width: =190
+                                          X: =460
+                                          Y: =234
+                                    - ddMC_AssetOverrides:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedAssetOverrides})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Allowed"},{Value:"Not allowed"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =220
+                                          X: =460
+                                          Y: =258
+                                        Children:
+                                          - fldMC_AssetOverrides:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_AssetOverridesSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(ddMC_AssetOverrides.Selected.Value="Allowed",ColorValue("#2563EB"),ColorValue("#B86B00"))
+                                          Fill: =If(ddMC_AssetOverrides.Selected.Value="Allowed",ColorValue("#EEF5FF"),ColorValue("#FFF8E8"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: =If(ddMC_AssetOverrides.Selected.Value="Allowed","CORPORATE DEFAULT","PROJECT OVERRIDE")
+                                          Width: =180
+                                          X: =696
+                                          Y: =258
+                                    - lblMC_AMEF:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="AMEF BEFORE RCM"
+                                          Width: =190
+                                          X: =22
+                                          Y: =314
+                                    - ddMC_AMEFBeforeRCM:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedAMEFBeforeRCM})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Required"},{Value:"Optional"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =220
+                                          X: =22
+                                          Y: =338
+                                        Children:
+                                          - fldMC_AMEFBeforeRCM:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_AMEFSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(ddMC_AMEFBeforeRCM.Selected.Value="Required",ColorValue("#2563EB"),ColorValue("#B86B00"))
+                                          Fill: =If(ddMC_AMEFBeforeRCM.Selected.Value="Required",ColorValue("#EEF5FF"),ColorValue("#FFF8E8"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: =If(ddMC_AMEFBeforeRCM.Selected.Value="Required","CORPORATE DEFAULT","PROJECT OVERRIDE")
+                                          Width: =180
+                                          X: =258
+                                          Y: =338
+                                    - lblMC_PublishApproval:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="PLAN PUBLICATION APPROVAL"
+                                          Width: =220
+                                          X: =460
+                                          Y: =314
+                                    - ddMC_PublishApproval:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedPublishApproval})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Required"},{Value:"Optional"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =220
+                                          X: =460
+                                          Y: =338
+                                        Children:
+                                          - fldMC_PublishApproval:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_PublishApprovalSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(ddMC_PublishApproval.Selected.Value="Required",ColorValue("#2563EB"),ColorValue("#B86B00"))
+                                          Fill: =If(ddMC_PublishApproval.Selected.Value="Required",ColorValue("#EEF5FF"),ColorValue("#FFF8E8"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: =If(ddMC_PublishApproval.Selected.Value="Required","CORPORATE DEFAULT","PROJECT OVERRIDE")
+                                          Width: =180
+                                          X: =696
+                                          Y: =338
+                                    - lblMC_Governance:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =10
+                                          Text: ="GOVERNANCE"
+                                          Width: =180
+                                          X: =22
+                                          Y: =400
+                                    - lblMC_Promotion:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="PROMOTION REQUESTS"
+                                          Width: =190
+                                          X: =22
+                                          Y: =430
+                                    - ddMC_PromotionRequests:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedPromotionRequests})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Enabled"},{Value:"Disabled"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =220
+                                          X: =22
+                                          Y: =454
+                                        Children:
+                                          - fldMC_PromotionRequests:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_PromotionSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(ddMC_PromotionRequests.Selected.Value="Enabled",ColorValue("#2563EB"),ColorValue("#B86B00"))
+                                          Fill: =If(ddMC_PromotionRequests.Selected.Value="Enabled",ColorValue("#EEF5FF"),ColorValue("#FFF8E8"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: =If(ddMC_PromotionRequests.Selected.Value="Enabled","CORPORATE DEFAULT","PROJECT OVERRIDE")
+                                          Width: =180
+                                          X: =258
+                                          Y: =454
+                                    - lblMC_ReviewRole:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="REQUIRED REVIEW ROLE"
+                                          Width: =220
+                                          X: =460
+                                          Y: =430
+                                    - ddMC_ReviewRole:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedReviewRole})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"Maintenance Engineering Lead"},{Value:"Project CMMS Lead"},{Value:"Asset Owner"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =300
+                                          X: =460
+                                          Y: =454
+                                        Children:
+                                          - fldMC_ReviewRole:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_ReviewRoleSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =ColorValue("#198754")
+                                          Fill: =ColorValue("#EAF7F1")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: ="PROJECT SPECIFIC"
+                                          Width: =160
+                                          X: =776
+                                          Y: =454
+                                    - lblMC_VersionPolicy:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="VERSION POLICY"
+                                          Width: =190
+                                          X: =22
+                                          Y: =512
+                                    - ddMC_VersionPolicy:
+                                        Control: DropDown@0.0.45
+                                        Properties:
+                                          Appearance: ='DropdownCanvas.Appearance'.FilledLighter
+                                          BorderColor: =gblTheme.Border
+                                          DefaultSelectedItems: =Table({Value:varMCSavedVersionPolicy})
+                                          Fill: =Color.White
+                                          Items: =Table({Value:"New version for active changes"},{Value:"Direct edit while draft"})
+                                          OnChange: =Set(varMCDirty,true)
+                                          Width: =330
+                                          X: =22
+                                          Y: =536
+                                        Children:
+                                          - fldMC_VersionPolicy:
+                                              Control: DropDownDataField@1.5.0
+                                              Variant: textualColumn
+                                              IsLocked: true
+                                              Properties:
+                                                FieldDisplayName: ="Value"
+                                                FieldName: ="Value"
+                                                FieldType: ="s"
+                                                Order: =1
+                                    - lblMC_VersionSource:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =ColorValue("#2563EB")
+                                          Fill: =ColorValue("#EEF5FF")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: ="CORPORATE DEFAULT"
+                                          Width: =180
+                                          X: =368
+                                          Y: =536
+                              - conMC_Inspector:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =gblTheme.Surface
+                                    FillPortions: =1
+                                    Height: =Parent.Height
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =12
+                                    LayoutMinHeight: =660
+                                    LayoutMinWidth: =320
+                                    PaddingBottom: =18
+                                    PaddingLeft: =18
+                                    PaddingRight: =18
+                                    PaddingTop: =18
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                  Children:
+                                    - lblMC_InspectorEyebrow:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.Primary
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =20
+                                          LayoutMinHeight: =20
+                                          LayoutMinWidth: =120
+                                          Size: =9
+                                          Text: ="CONFIGURATION"
+                                    - lblMC_InspectorTitle:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.TextPrimary
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          LayoutMinHeight: =28
+                                          LayoutMinWidth: =160
+                                          Size: =16
+                                          Text: ="Project behavior"
+                                    - lblMC_InspectorStatus:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =If(varMCDirty,gblTheme.Warning,gblTheme.Success)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          LayoutMinHeight: =24
+                                          LayoutMinWidth: =120
+                                          Size: =10
+                                          Text: =If(varMCDirty,"UNSAVED CHANGES","DRAFT SAVED")
+                                    - lblMC_InspectorExplain:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =gblTheme.TextSecondary
+                                          Height: =64
+                                          LayoutMinHeight: =64
+                                          LayoutMinWidth: =200
+                                          Size: =9
+                                          Text: ="Corporate defaults remain traceable. Any changed governed setting is represented as a project override rather than silently replacing the source."
+                                    - lblMC_LegendTitle:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.TextPrimary
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          LayoutMinHeight: =24
+                                          LayoutMinWidth: =160
+                                          Size: =11
+                                          Text: ="Source legend"
+                                    - lblMC_LegendCorporate:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =ColorValue("#2563EB")
+                                          Fill: =ColorValue("#EEF5FF")
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          LayoutMinHeight: =30
+                                          LayoutMinWidth: =180
+                                          PaddingLeft: =10
+                                          PaddingTop: =7
+                                          Size: =8
+                                          Text: ="CORPORATE DEFAULT"
+                                    - lblMC_LegendOverride:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =ColorValue("#B86B00")
+                                          Fill: =ColorValue("#FFF8E8")
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          LayoutMinHeight: =30
+                                          LayoutMinWidth: =180
+                                          PaddingLeft: =10
+                                          PaddingTop: =7
+                                          Size: =8
+                                          Text: ="PROJECT OVERRIDE"
+                                    - lblMC_LegendSpecific:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =ColorValue("#198754")
+                                          Fill: =ColorValue("#EAF7F1")
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          LayoutMinHeight: =30
+                                          LayoutMinWidth: =180
+                                          PaddingLeft: =10
+                                          PaddingTop: =7
+                                          Size: =8
+                                          Text: ="PROJECT SPECIFIC"
+                                    - cmpMC_State:
+                                        Control: CanvasComponent
+                                        ComponentName: cmp_CMMS_StatePanelPro_RC0
+                                        Properties:
+                                          ActionBusyText: ="Working…"
+                                          ActionText: =""
+                                          Height: =240
+                                          IsActionBusy: =false
+                                          Message: =If(varMCDirty,"Save or reset the local configuration candidate before continuing.","The maintenance configuration candidate is structurally ready for Risk Profile and Teams and Roles.")
+                                          OnAction: =false
+                                          ShowAction: =false
+                                          State: =If(varMCDirty,"UNAVAILABLE","READY")
+                                          Title: =If(varMCDirty,"Local changes pending","Configuration candidate ready")
+                                          Width: =Parent.Width
