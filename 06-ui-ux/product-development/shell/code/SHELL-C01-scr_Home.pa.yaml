@@ -68,10 +68,6 @@ Screens:
                               Fill: =gblTheme.Primary
                               FillPortions: =0
                               Height: =34
-                              RadiusBottomLeft: =9
-                              RadiusBottomRight: =9
-                              RadiusTopLeft: =9
-                              RadiusTopRight: =9
                               Width: =34
                         - lblBrand:
                             Control: ModernText@1.0.0
