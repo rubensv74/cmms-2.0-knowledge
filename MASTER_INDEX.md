@@ -40,6 +40,7 @@
 ## UI/UX — Producto activo
 
 - [Product Screen Catalog v1 — pantallas + arquetipos SaaS](06-ui-ux/product-screen-catalog-v1.md)
+- [CMMS 2.0 — Screen Build Master](06-ui-ux/product-development/CMMS_SCREEN_BUILD_MASTER.md)
 - [P01 — Foundation + Project Setup Plan v1](06-ui-ux/product-development/p01-foundation-project-setup-plan-v1.md)
 - [P01 — Synthetic Provider Contract v1](06-ui-ux/product-development/p01-synthetic-provider-contract-v1.md)
 - [P01 — Shell + Project Setup Screen Contracts v1](06-ui-ux/screen-contracts/p01-shell-project-setup-screen-contracts-v1.md)
