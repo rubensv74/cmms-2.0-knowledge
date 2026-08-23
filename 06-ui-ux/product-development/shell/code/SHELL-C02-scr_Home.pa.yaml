@@ -1,0 +1,1034 @@
+Screens:
+  scr_Home:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+    Children:
+      - conAppRoot:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - conSidebar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Sidebar
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =72
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =If(gblSidebarCollapsed, gblLayout.SidebarCollapsed, gblLayout.SidebarExpanded)
+                Children:
+                  - conBrand:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Height: =72
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =10
+                        LayoutJustifyContent: =If(gblSidebarCollapsed, LayoutJustifyContent.Center, LayoutJustifyContent.Start)
+                        LayoutMinHeight: =72
+                        LayoutMinWidth: =16
+                        PaddingBottom: =16
+                        PaddingLeft: =If(gblSidebarCollapsed, 8, 20)
+                        PaddingRight: =If(gblSidebarCollapsed, 8, 12)
+                        PaddingTop: =16
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - shpBrandMark:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderStyle: =BorderStyle.None
+                              Fill: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =34
+                              Visible: =!gblSidebarCollapsed
+                              Width: =34
+                        - lblBrand:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =Color.White
+                              FillPortions: =1
+                              FontWeight: =FontWeight.Semibold
+                              LayoutMinHeight: =24
+                              LayoutMinWidth: =80
+                              Size: =17
+                              Text: ="CMMS 2.0"
+                              Visible: =!gblSidebarCollapsed
+                        - btnSidebarToggle:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =34
+                              LayoutMinHeight: =34
+                              LayoutMinWidth: =34
+                              OnSelect: =Set(gblSidebarCollapsed, !gblSidebarCollapsed)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Text: =If(gblSidebarCollapsed, ">", "<")
+                              Width: =34
+                  - conSidebarBody:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =20
+                        PaddingLeft: =If(gblSidebarCollapsed, 8, 12)
+                        PaddingRight: =If(gblSidebarCollapsed, 8, 12)
+                        PaddingTop: =8
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - lblNavGroup1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="HOME"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavCMMS20:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "home", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "home")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "H", "Home")
+                              Width: =Parent.Width
+                        - lblNavGroup2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="PROJECT SETUP"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavProjectProfile:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "project_profile", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "project_profile")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "PP", "Project Profile")
+                              Width: =Parent.Width
+                        - btnNavMaintenanceConfiguration:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "maintenance_config", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "maintenance_config")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "MC", "Maintenance Configuration")
+                              Width: =Parent.Width
+                        - btnNavRiskProfileMatrixConfiguration:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "risk_profile", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "risk_profile")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "RP", "Risk Profile")
+                              Width: =Parent.Width
+                        - btnNavProjectTeamsRoles:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "teams_roles", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "teams_roles")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "TR", "Teams & Roles")
+                              Width: =Parent.Width
+                        - lblNavGroup3:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="ASSETS"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavFLHBuilder:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "flh_builder", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "flh_builder")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "FL", "FLH Builder")
+                              Width: =Parent.Width
+                        - btnNavProjectTaxonomyBuilder:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "project_taxonomy", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "project_taxonomy")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "PT", "Project Taxonomy")
+                              Width: =Parent.Width
+                        - btnNavADRBuilder:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "adr_builder", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "adr_builder")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "AD", "ADR Builder")
+                              Width: =Parent.Width
+                        - btnNavAssetRegister:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "asset_register", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "asset_register")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "AR", "Asset Register")
+                              Width: =Parent.Width
+                        - btnNavCriticalityAssessment:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "criticality", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "criticality")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "CR", "Criticality")
+                              Width: =Parent.Width
+                        - lblNavGroup4:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="LIBRARIES"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavEquipmentTaxonomyLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "equipment_taxonomy", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "equipment_taxonomy")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "ET", "Equipment Taxonomy")
+                              Width: =Parent.Width
+                        - btnNavTechnicalFieldsLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "technical_fields", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "technical_fields")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "TF", "Technical Fields")
+                              Width: =Parent.Width
+                        - btnNavFailureKnowledgeLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "failure_knowledge", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "failure_knowledge")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "FK", "Failure Knowledge")
+                              Width: =Parent.Width
+                        - btnNavMaintenanceTaskLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "maintenance_tasks", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "maintenance_tasks")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "MT", "Maintenance Tasks")
+                              Width: =Parent.Width
+                        - btnNavJobPlanLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "job_plan_library", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "job_plan_library")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "JP", "Job Plans")
+                              Width: =Parent.Width
+                        - btnNavRCMModelLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "rcm_models", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "rcm_models")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "RM", "RCM Models")
+                              Width: =Parent.Width
+                        - btnNavEquipmentVisualLibrary:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "equipment_visuals", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "equipment_visuals")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "EV", "Equipment Visuals")
+                              Width: =Parent.Width
+                        - lblNavGroup5:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="MAINTENANCE ENGINEERING"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavAMEFFMEA:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "amef", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "amef")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "AF", "AMEF / FMEA")
+                              Width: =Parent.Width
+                        - btnNavRCMAnalysis:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "rcm", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "rcm")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "RC", "RCM Analysis")
+                              Width: =Parent.Width
+                        - btnNavMaintenanceTaskDefinition:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "task_definition", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "task_definition")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "TD", "Task Definition")
+                              Width: =Parent.Width
+                        - btnNavApplicabilityAssetOverrides:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "applicability", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "applicability")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "AO", "Applicability & Overrides")
+                              Width: =Parent.Width
+                        - lblNavGroup6:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="PLANS"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavProjectJobPlans:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "project_job_plans", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "project_job_plans")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "PJ", "Job Plans")
+                              Width: =Parent.Width
+                        - btnNavMaintenanceStrategies:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "strategies", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "strategies")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "ST", "Strategies")
+                              Width: =Parent.Width
+                        - btnNavMaintenancePlan:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "maintenance_plan", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "maintenance_plan")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "MP", "Maintenance Plan")
+                              Width: =Parent.Width
+                        - btnNavPlanReviewPublication:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "review_publication", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "review_publication")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "PB", "Review & Publication")
+                              Width: =Parent.Width
+                        - lblNavGroup7:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="GOVERNANCE"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavReviewsApprovals:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "reviews_approvals", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "reviews_approvals")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "RA", "Reviews & Approvals")
+                              Width: =Parent.Width
+                        - btnNavVersions:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "versions", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "versions")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "VE", "Versions")
+                              Width: =Parent.Width
+                        - btnNavAuditTraceability:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "audit_trace", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "audit_trace")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "AT", "Audit & Traceability")
+                              Width: =Parent.Width
+                        - lblNavGroup8:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8EA0B8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              LayoutMinWidth: =40
+                              Size: =9
+                              Text: ="ADMINISTRATION"
+                              Visible: =!gblSidebarCollapsed
+                              Width: =Parent.Width
+                        - btnNavUsersRoles:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "users_roles", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "users_roles")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "UR", "Users & Roles")
+                              Width: =Parent.Width
+                        - btnNavGlobalConfiguration:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =If(gblSelectedNavKey = "global_config", gblTheme.Primary, gblTheme.Sidebar)
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =40
+                              OnSelect: =Set(gblSelectedNavKey, "global_config")
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: =If(gblSidebarCollapsed, "GC", "Global Configuration")
+                              Width: =Parent.Width
+            - conMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =320
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - conTopBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =0
+                        Height: =gblLayout.TopBarHeight
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =64
+                        LayoutMinWidth: =16
+                        PaddingBottom: =10
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =10
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - conTopContext:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =40
+                              LayoutMinWidth: =180
+                            Children:
+                              - lblTopContextCaption:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextMuted
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =80
+                                    Size: =9
+                                    Text: ="PROJECT"
+                              - lblTopContextValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextPrimary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =20
+                                    LayoutMinWidth: =140
+                                    Size: =12
+                                    Text: ="No project selected"
+                        - btnGlobalSearch:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =88
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: ="Search"
+                              Width: =88
+                        - btnNeedsAttention:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Warning
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =132
+                              RadiusBottomLeft: =9
+                              RadiusBottomRight: =9
+                              RadiusTopLeft: =9
+                              RadiusTopRight: =9
+                              Text: ="Needs attention"
+                              Width: =132
+                        - btnUserBadge:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =gblTheme.Primary
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =44
+                              RadiusBottomLeft: =18
+                              RadiusBottomRight: =18
+                              RadiusTopLeft: =18
+                              RadiusTopRight: =18
+                              Text: ="RS"
+                              Width: =44
+                  - conPageArea:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Canvas
+                        FillPortions: =1
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =16
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =24
+                        PaddingLeft: =If(App.Width < 900, gblLayout.PagePaddingCompact, gblLayout.PagePaddingDesktop)
+                        PaddingRight: =If(App.Width < 900, gblLayout.PagePaddingCompact, gblLayout.PagePaddingDesktop)
+                        PaddingTop: =22
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - conPageHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =112
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =112
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Width: =Parent.Width
+                            Children:
+                              - lblPageEyebrow:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Color: =gblTheme.Primary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =80
+                                    Size: =10
+                                    Text: |-
+                                      =
+                                      Switch(
+                                                                              gblSelectedNavKey,
+                                                                              "home", "HOME",
+                                                                              "project_profile", "PROJECT SETUP",
+                                                                              "maintenance_config", "PROJECT SETUP",
+                                                                              "risk_profile", "PROJECT SETUP",
+                                                                              "teams_roles", "PROJECT SETUP",
+                                                                              "flh_builder", "ASSETS",
+                                                                              "project_taxonomy", "ASSETS",
+                                                                              "adr_builder", "ASSETS",
+                                                                              "asset_register", "ASSETS",
+                                                                              "criticality", "ASSETS",
+                                                                              "equipment_taxonomy", "LIBRARIES",
+                                                                              "technical_fields", "LIBRARIES",
+                                                                              "failure_knowledge", "LIBRARIES",
+                                                                              "maintenance_tasks", "LIBRARIES",
+                                                                              "job_plan_library", "LIBRARIES",
+                                                                              "rcm_models", "LIBRARIES",
+                                                                              "equipment_visuals", "LIBRARIES",
+                                                                              "amef", "MAINTENANCE ENGINEERING",
+                                                                              "rcm", "MAINTENANCE ENGINEERING",
+                                                                              "task_definition", "MAINTENANCE ENGINEERING",
+                                                                              "applicability", "MAINTENANCE ENGINEERING",
+                                                                              "project_job_plans", "PLANS",
+                                                                              "strategies", "PLANS",
+                                                                              "maintenance_plan", "PLANS",
+                                                                              "review_publication", "PLANS",
+                                                                              "reviews_approvals", "GOVERNANCE",
+                                                                              "versions", "GOVERNANCE",
+                                                                              "audit_trace", "GOVERNANCE",
+                                                                              "users_roles", "ADMINISTRATION",
+                                                                              "global_config", "ADMINISTRATION",
+                                                                              "OVERVIEW"
+                                                                          )
+                                    Width: =Parent.Width
+                              - lblPageTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextPrimary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =160
+                                    Size: =28
+                                    Text: |-
+                                      =
+                                      Switch(
+                                                                              gblSelectedNavKey,
+                                                                              "home", "CMMS 2.0",
+                                                                              "project_profile", "Project Profile",
+                                                                              "maintenance_config", "Maintenance Configuration",
+                                                                              "risk_profile", "Risk Profile / Matrix Configuration",
+                                                                              "teams_roles", "Project Teams & Roles",
+                                                                              "flh_builder", "FLH Builder",
+                                                                              "project_taxonomy", "Project Taxonomy Builder",
+                                                                              "adr_builder", "ADR Builder",
+                                                                              "asset_register", "Asset Register",
+                                                                              "criticality", "Criticality Assessment",
+                                                                              "equipment_taxonomy", "Equipment Taxonomy Library",
+                                                                              "technical_fields", "Technical Fields Library",
+                                                                              "failure_knowledge", "Failure Knowledge Library",
+                                                                              "maintenance_tasks", "Maintenance Task Library",
+                                                                              "job_plan_library", "Job Plan Library",
+                                                                              "rcm_models", "RCM Model Library",
+                                                                              "equipment_visuals", "Equipment Visual Library",
+                                                                              "amef", "AMEF / FMEA",
+                                                                              "rcm", "RCM Analysis",
+                                                                              "task_definition", "Maintenance Task Definition",
+                                                                              "applicability", "Applicability & Asset Overrides",
+                                                                              "project_job_plans", "Project Job Plans",
+                                                                              "strategies", "Maintenance Strategies",
+                                                                              "maintenance_plan", "Maintenance Plan",
+                                                                              "review_publication", "Plan Review & Publication",
+                                                                              "reviews_approvals", "Reviews & Approvals",
+                                                                              "versions", "Versions",
+                                                                              "audit_trace", "Audit & Traceability",
+                                                                              "users_roles", "Users & Roles",
+                                                                              "global_config", "Global Configuration",
+                                                                              "CMMS 2.0"
+                                                                          )
+                                    Width: =Parent.Width
+                              - lblPageSubtitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextSecondary
+                                    LayoutMinHeight: =26
+                                    LayoutMinWidth: =240
+                                    Size: =12
+                                    Text: |-
+                                      =
+                                      Switch(
+                                                                              gblSelectedNavKey,
+                                                                              "home", "CMMS 2.0 overview and product entry point.",
+                                                                              "project_profile", "Define the identity and base scope of the CMMS project.",
+                                                                              "maintenance_config", "Configure project-specific maintenance behavior and defaults.",
+                                                                              "risk_profile", "Configure and version the project risk model consumed by Criticality and AMEF.",
+                                                                              "teams_roles", "Define project responsibilities, authorities and required CMMS roles.",
+                                                                              "flh_builder", "Build and maintain the project functional location hierarchy.",
+                                                                              "project_taxonomy", "Select corporate equipment classes and manage project-specific extensions.",
+                                                                              "adr_builder", "Build the physical master asset register and parent-child decomposition.",
+                                                                              "asset_register", "Explore and maintain the physical asset master at project level.",
+                                                                              "criticality", "Assess asset criticality using the project configuration and traceable decisions.",
+                                                                              "equipment_taxonomy", "Govern corporate equipment classes, properties and external mappings.",
+                                                                              "technical_fields", "Govern reusable technical data fields, units and class applicability.",
+                                                                              "failure_knowledge", "Govern reusable failure modes, causes, mechanisms and effects.",
+                                                                              "maintenance_tasks", "Govern reusable maintenance task definitions and technical basis.",
+                                                                              "job_plan_library", "Govern reusable job plan templates, steps, resources and conditions.",
+                                                                              "rcm_models", "Govern versioned RCM decision models and their questions and branches.",
+                                                                              "equipment_visuals", "Govern 3D equipment visuals, thumbnails and taxonomy fallbacks.",
+                                                                              "amef", "Analyze functions, functional failures, failure modes, effects and configured risk.",
+                                                                              "rcm", "Apply explainable RCM logic and record the maintenance strategy decision.",
+                                                                              "task_definition", "Define executable tasks, frequencies, acceptance criteria and resources.",
+                                                                              "applicability", "Apply base maintenance definitions to assets without mutating the generic source.",
+                                                                              "project_job_plans", "Assemble project job plans from approved maintenance engineering.",
+                                                                              "strategies", "Consolidate task strategies and their scope across project assets.",
+                                                                              "maintenance_plan", "Consolidate assets, strategies, tasks, frequencies and readiness into the project plan.",
+                                                                              "review_publication", "Review completeness, resolve blockers and publish an immutable maintenance plan version.",
+                                                                              "reviews_approvals", "Manage formal reviews, decisions, authorities and approval gates.",
+                                                                              "versions", "Compare and govern configuration, engineering and published versions.",
+                                                                              "audit_trace", "Trace evidence, system calculations, human decisions and change history.",
+                                                                              "users_roles", "Administer CMMS access, roles and delegated authorities.",
+                                                                              "global_config", "Administer platform-wide configuration and governed reference settings.",
+                                                                              "CMMS 2.0 overview and product entry point."
+                                                                          )
+                                    Width: =Parent.Width
+                        - conContentHost:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =gblTheme.Surface
+                              FillPortions: =1
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =8
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =220
+                              LayoutMinWidth: =16
+                              PaddingBottom: =24
+                              PaddingLeft: =24
+                              PaddingRight: =24
+                              PaddingTop: =24
+                              RadiusBottomLeft: =12
+                              RadiusBottomRight: =12
+                              RadiusTopLeft: =12
+                              RadiusTopRight: =12
+                              Width: =Parent.Width
+                            Children:
+                              - lblShellReadyTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextPrimary
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =28
+                                    LayoutMinWidth: =260
+                                    Size: =18
+                                    Text: =If(gblSelectedNavKey = "home", "Premium shell ready", "Module mapped · screen not implemented yet")
+                                    Width: =Min(720, Parent.Width - 80)
+                              - lblShellReadySubtitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Color: =gblTheme.TextSecondary
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =320
+                                    Size: =11
+                                    Text: =If(gblSelectedNavKey = "home", "Grouped navigation is active. Project context and functional screens will be connected in the following increments.", "This destination is part of the approved CMMS 2.0 product map. Its functional screen will be enabled only when its own implementation increment passes Studio validation.")
+                                    Width: =Min(720, Parent.Width - 80)
