@@ -5,6 +5,8 @@
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
 - [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
 - [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
+- [Catálogo de encargos para IA](00-governance/ai/README.md)
+- [Guía rápida de encargos IA](00-governance/ai/CMMS_AI_WORK_CATALOG_QUICK_REFERENCE.md)
 
 ## Visión
 
@@ -27,8 +29,11 @@
 - `05-meetings/02-Specifications/`
 - `05-meetings/decisions/`
 
-## UI/UX y prototipos históricos
+## UI/UX y estándar premium
 
+- [CMMS Premium Screen Standard V1](06-ui-ux/CMMS_PREMIUM_SCREEN_STANDARD_V1.md)
+- [CMMS Page Header Hierarchy V1](06-ui-ux/CMMS_PAGE_HEADER_HIERARCHY_V1.md)
+- [CMMS Component Catalog V1](06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md)
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
 - [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
 - [03 - Registro de activos físicos](06-ui-ux/html-prototypes/03_registro_activos_fisicos_revision_14.html)
@@ -38,6 +43,7 @@
 
 - [README](06-ui-ux/functional-lab/README.md)
 - [Arquitectura](06-ui-ux/functional-lab/architecture.md)
+- [Estrategia SaaS Premium](06-ui-ux/functional-lab/design-system.md)
 - [Estado de implementación](06-ui-ux/functional-lab/implementation-status.md)
 - [Extensión futura de Gestión del Trabajo](06-ui-ux/functional-lab/work-management-extension.md)
 - [Schema del journey](06-ui-ux/functional-lab/contracts/functional-journey.schema.json)
