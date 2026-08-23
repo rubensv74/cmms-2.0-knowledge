@@ -1,0 +1,184 @@
+ComponentDefinitions:
+  cmp_CMMS_PageHeaderPro_RC0:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      EyebrowText:
+        PropertyKind: Input
+        DisplayName: EyebrowText
+        Description: Small uppercase page context shown above the title.
+        DataType: Text
+        Default: ="HOME"
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Main page title.
+        DataType: Text
+        Default: ="CMMS 2.0"
+      Subtitle:
+        PropertyKind: Input
+        DisplayName: Subtitle
+        Description: Short explanation of the primary user task.
+        DataType: Text
+        Default: ="Select a project and continue the maintenance configuration journey."
+      ShowStatus:
+        PropertyKind: Input
+        DisplayName: ShowStatus
+        Description: Shows an optional status pill.
+        DataType: Boolean
+        Default: =false
+      StatusText:
+        PropertyKind: Input
+        DisplayName: StatusText
+        Description: Text rendered inside the optional status pill.
+        DataType: Text
+        Default: ="READY"
+      StatusTone:
+        PropertyKind: Input
+        DisplayName: StatusTone
+        Description: NEUTRAL, INFO, SUCCESS, WARNING or DANGER.
+        DataType: Text
+        Default: ="NEUTRAL"
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Header background color.
+        DataType: Color
+        Default: =Color.Transparent
+      PrimaryTextColor:
+        PropertyKind: Input
+        DisplayName: PrimaryTextColor
+        Description: Main title color.
+        DataType: Color
+        Default: =ColorValue("#172033")
+      SecondaryTextColor:
+        PropertyKind: Input
+        DisplayName: SecondaryTextColor
+        Description: Subtitle color.
+        DataType: Color
+        Default: =ColorValue("#5C667A")
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Eyebrow and informational accent color.
+        DataType: Color
+        Default: =ColorValue("#1769E0")
+    Properties:
+      Fill: =Color.Transparent
+      Height: =108
+      Width: =1120
+    Children:
+      - conCMMSPageHeader_Root:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =cmp_CMMS_PageHeaderPro_RC0.SurfaceColor
+            Height: =Parent.Height
+            Width: =Parent.Width
+          Children:
+            - lblCMMSPageHeader_Eyebrow:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =cmp_CMMS_PageHeaderPro_RC0.AccentColor
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =18
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =8
+                  Text: =Upper(cmp_CMMS_PageHeaderPro_RC0.EyebrowText)
+                  Width: =Parent.Width
+                  Wrap: =false
+                  X: =0
+                  Y: =0
+            - lblCMMSPageHeader_Title:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =cmp_CMMS_PageHeaderPro_RC0.PrimaryTextColor
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =38
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =22
+                  Text: =cmp_CMMS_PageHeaderPro_RC0.Title
+                  Width: =If(cmp_CMMS_PageHeaderPro_RC0.ShowStatus,Max(220,Parent.Width-190),Parent.Width)
+                  Wrap: =false
+                  X: =0
+                  Y: =23
+            - btnCMMSPageHeader_Status:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: |-
+                    =Switch(
+                        Upper(cmp_CMMS_PageHeaderPro_RC0.StatusTone),
+                        "SUCCESS", ColorValue("#BFE3D1"),
+                        "WARNING", ColorValue("#F4D6A0"),
+                        "DANGER", ColorValue("#F2C4C4"),
+                        "INFO", ColorValue("#BFD5F8"),
+                        ColorValue("#D9E3EF")
+                    )
+                  BorderThickness: =1
+                  Color: |-
+                    =Switch(
+                        Upper(cmp_CMMS_PageHeaderPro_RC0.StatusTone),
+                        "SUCCESS", ColorValue("#198754"),
+                        "WARNING", ColorValue("#B86B00"),
+                        "DANGER", ColorValue("#C9363E"),
+                        "INFO", ColorValue("#1769E0"),
+                        ColorValue("#5C667A")
+                    )
+                  DisabledBorderColor: =Self.BorderColor
+                  DisabledColor: =Self.Color
+                  DisabledFill: |-
+                    =Switch(
+                        Upper(cmp_CMMS_PageHeaderPro_RC0.StatusTone),
+                        "SUCCESS", RGBA(25,135,84,0.07),
+                        "WARNING", RGBA(184,107,0,0.08),
+                        "DANGER", RGBA(201,54,62,0.07),
+                        "INFO", RGBA(23,105,224,0.07),
+                        ColorValue("#F6F8FB")
+                    )
+                  DisplayMode: =DisplayMode.Disabled
+                  Fill: =Self.DisabledFill
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  RadiusBottomLeft: =13
+                  RadiusBottomRight: =13
+                  RadiusTopLeft: =13
+                  RadiusTopRight: =13
+                  Size: =8
+                  Text: =cmp_CMMS_PageHeaderPro_RC0.StatusText
+                  Visible: =cmp_CMMS_PageHeaderPro_RC0.ShowStatus
+                  Width: =150
+                  X: =Parent.Width-Self.Width
+                  Y: =29
+            - lblCMMSPageHeader_Subtitle:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =cmp_CMMS_PageHeaderPro_RC0.SecondaryTextColor
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  Height: =28
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =10
+                  Text: =cmp_CMMS_PageHeaderPro_RC0.Subtitle
+                  Width: =Parent.Width
+                  Wrap: =true
+                  X: =0
+                  Y: =66
