@@ -204,7 +204,12 @@ Screens:
                               ShowStatus: =!IsBlank(varHomeProjectCode)
                               StatusText: ="PROJECT READY"
                               StatusTone: ="SUCCESS"
-                              Subtitle: =If(IsBlank(varHomeProjectCode),"Select a project to establish the working context for CMMS 2.0.","Working context accepted: " & varHomeProjectCode & " · " & varHomeProjectName)
+                              Subtitle: |-
+                                =If(
+                                    IsBlank(varHomeProjectCode),
+                                    "Select a project to establish the working context for CMMS 2.0.",
+                                    "Working context accepted: " & varHomeProjectCode & " · " & varHomeProjectName
+                                )
                               SurfaceColor: =Color.Transparent
                               Title: ="CMMS 2.0"
                               Width: =Parent.Width
