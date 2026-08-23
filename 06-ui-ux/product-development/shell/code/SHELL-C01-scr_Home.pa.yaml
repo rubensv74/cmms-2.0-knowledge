@@ -281,10 +281,11 @@ Screens:
                               DropShadow: =DropShadow.None
                               Fill: =Color.Transparent
                               FillPortions: =0
-                              Height: =92
+                              Height: =108
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =4
-                              LayoutMinHeight: =92
+                              LayoutMinHeight: =108
                               LayoutMinWidth: =16
                               RadiusBottomLeft: =0
                               RadiusBottomRight: =0
@@ -302,6 +303,7 @@ Screens:
                                     LayoutMinWidth: =80
                                     Size: =10
                                     Text: ="OVERVIEW"
+                                    Width: =Parent.Width
                               - lblPageTitle:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -312,6 +314,7 @@ Screens:
                                     LayoutMinWidth: =160
                                     Size: =28
                                     Text: ="CMMS 2.0"
+                                    Width: =Parent.Width
                               - lblPageSubtitle:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -321,6 +324,7 @@ Screens:
                                     LayoutMinWidth: =240
                                     Size: =12
                                     Text: ="Configure maintenance engineering from asset structure to published maintenance plan."
+                                    Width: =Parent.Width
                         - conContentHost:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
