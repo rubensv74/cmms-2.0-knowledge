@@ -1,0 +1,205 @@
+ComponentDefinitions:
+  cmp_CMMS_StatePanelPro_RC0:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      State:
+        PropertyKind: Input
+        DisplayName: State
+        Description: READY, LOADING, EMPTY, ERROR, UNAVAILABLE or NO_CONTEXT.
+        DataType: Text
+        Default: ="UNAVAILABLE"
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: State title.
+        DataType: Text
+        Default: ="Capability not available"
+      Message:
+        PropertyKind: Input
+        DisplayName: Message
+        Description: Supporting explanation.
+        DataType: Text
+        Default: ="The visual surface exists, but no governed data contract is connected yet."
+      ActionText:
+        PropertyKind: Input
+        DisplayName: ActionText
+        Description: Optional host action label.
+        DataType: Text
+        Default: ="Retry"
+      ShowAction:
+        PropertyKind: Input
+        DisplayName: ShowAction
+        Description: Shows the optional action.
+        DataType: Boolean
+        Default: =false
+      IsActionBusy:
+        PropertyKind: Input
+        DisplayName: IsActionBusy
+        Description: Disables the action while the host operation is running.
+        DataType: Boolean
+        Default: =false
+      ActionBusyText:
+        PropertyKind: Input
+        DisplayName: ActionBusyText
+        Description: Label shown while the host action is busy.
+        DataType: Text
+        Default: ="Working..."
+      OnAction:
+        PropertyKind: Event
+        DisplayName: OnAction
+        Description: Requests an optional host action. The component never performs backend work itself.
+        ReturnType: None
+        Default: |+
+          =
+    Properties:
+      Fill: =Color.Transparent
+      Height: =230
+      Width: =420
+    Children:
+      - conCMMSState_Root:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =ColorValue("#E4EAF1")
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =Color.White
+            Height: =Parent.Height
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            Width: =Parent.Width
+          Children:
+            - btnCMMSState_IconBg:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderThickness: =0
+                  Color: =Color.Transparent
+                  DisabledBorderColor: =RGBA(0,0,0,0)
+                  DisabledColor: =Color.Transparent
+                  DisabledFill: |-
+                    =Switch(
+                        Upper(cmp_CMMS_StatePanelPro_RC0.State),
+                        "ERROR", RGBA(201,54,62,0.10),
+                        "LOADING", RGBA(23,105,224,0.10),
+                        "NO_CONTEXT", RGBA(23,105,224,0.10),
+                        "EMPTY", RGBA(92,102,122,0.08),
+                        "READY", RGBA(25,135,84,0.10),
+                        RGBA(184,107,0,0.10)
+                    )
+                  DisplayMode: =DisplayMode.Disabled
+                  Fill: =Self.DisabledFill
+                  Height: =52
+                  RadiusBottomLeft: =15
+                  RadiusBottomRight: =15
+                  RadiusTopLeft: =15
+                  RadiusTopRight: =15
+                  Text: =""
+                  Width: =52
+                  X: =(Parent.Width-Self.Width)/2
+                  Y: =25
+            - lblCMMSState_Icon:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: |-
+                    =Switch(
+                        Upper(cmp_CMMS_StatePanelPro_RC0.State),
+                        "ERROR", ColorValue("#C9363E"),
+                        "LOADING", ColorValue("#1769E0"),
+                        "NO_CONTEXT", ColorValue("#1769E0"),
+                        "EMPTY", ColorValue("#5C667A"),
+                        "READY", ColorValue("#198754"),
+                        ColorValue("#B86B00")
+                    )
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =18
+                  Text: |-
+                    =Switch(
+                        Upper(cmp_CMMS_StatePanelPro_RC0.State),
+                        "ERROR", "!",
+                        "LOADING", "...",
+                        "NO_CONTEXT", "P",
+                        "EMPTY", "○",
+                        "READY", "✓",
+                        "—"
+                    )
+                  Width: =40
+                  X: =(Parent.Width-Self.Width)/2
+                  Y: =35
+            - lblCMMSState_Title:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =ColorValue("#172033")
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =28
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =14
+                  Text: =cmp_CMMS_StatePanelPro_RC0.Title
+                  Width: =Parent.Width-48
+                  X: =24
+                  Y: =89
+            - lblCMMSState_Message:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =ColorValue("#5C667A")
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  Height: =52
+                  PaddingBottom: =0
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =0
+                  Size: =9
+                  Text: =cmp_CMMS_StatePanelPro_RC0.Message
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =Parent.Width-72
+                  X: =36
+                  Y: =124
+            - btnCMMSState_Action:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =If(cmp_CMMS_StatePanelPro_RC0.IsActionBusy,ColorValue("#E4EAF1"),ColorValue("#1769E0"))
+                  BorderThickness: =1
+                  Color: =If(cmp_CMMS_StatePanelPro_RC0.IsActionBusy,ColorValue("#8993A5"),Color.White)
+                  DisabledBorderColor: =ColorValue("#E4EAF1")
+                  DisabledColor: =ColorValue("#8993A5")
+                  DisabledFill: =ColorValue("#F6F8FB")
+                  DisplayMode: =If(cmp_CMMS_StatePanelPro_RC0.IsActionBusy,DisplayMode.Disabled,DisplayMode.Edit)
+                  Fill: =ColorValue("#1769E0")
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =34
+                  HoverFill: =ColorValue("#1359BF")
+                  OnSelect: =cmp_CMMS_StatePanelPro_RC0.OnAction()
+                  PressedFill: =ColorValue("#104B9F")
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Size: =9
+                  Text: =If(cmp_CMMS_StatePanelPro_RC0.IsActionBusy,cmp_CMMS_StatePanelPro_RC0.ActionBusyText,cmp_CMMS_StatePanelPro_RC0.ActionText)
+                  Tooltip: =Self.Text
+                  Visible: =cmp_CMMS_StatePanelPro_RC0.ShowAction
+                  Width: =128
+                  X: =(Parent.Width-Self.Width)/2
+                  Y: =184
