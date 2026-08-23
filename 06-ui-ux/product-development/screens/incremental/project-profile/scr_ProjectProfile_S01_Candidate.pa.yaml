@@ -1,0 +1,659 @@
+Screens:
+  scr_ProjectProfile_S01:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+      OnVisible: |-
+        =Set(varPPSidebarCollapsed,false);
+        Set(varPPNavKey,"project_setup");
+        Set(varPPProjectCode,"P-001");
+        Set(varPPProjectName,"SYNTHETIC DEMO PROJECT A");
+        Set(varPPProjectId,"PRJ-001");
+        Set(varPPDirty,false);
+        Set(varPPStatus,"DRAFT")
+    Children:
+      - conPP_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =gblTheme.Canvas
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - cmpPP_Sidebar:
+                Control: CanvasComponent
+                ComponentName: cmp_CMMS_SidebarPro_RC0
+                Properties:
+                  ActiveKey: =varPPNavKey
+                  AppTitle: ="CMMS 2.0"
+                  AppVersion: ="P01"
+                  EnvironmentLabel: ="SYNTHETIC"
+                  Height: =Parent.Height
+                  IsCollapsed: =varPPSidebarCollapsed
+                  NavItems: |-
+                    =Table(
+                        {Order:10, Key:"home", Label:"Home", ShortLabel:"H", IsVisible:true, IsEnabled:true, Tooltip:"Home"},
+                        {Order:20, Key:"project_setup", Label:"Project Setup", ShortLabel:"PS", IsVisible:true, IsEnabled:true, Tooltip:"Project Setup"},
+                        {Order:30, Key:"assets", Label:"Assets", ShortLabel:"AS", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:40, Key:"libraries", Label:"Libraries", ShortLabel:"LI", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:50, Key:"maintenance_engineering", Label:"Maintenance Engineering", ShortLabel:"ME", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:60, Key:"plans", Label:"Plans", ShortLabel:"PL", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:70, Key:"governance", Label:"Governance", ShortLabel:"GO", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:80, Key:"administration", Label:"Administration", ShortLabel:"AD", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"}
+                    )
+                  OnSelectItem: =Set(varPPNavKey,cmpPP_Sidebar.SelectedKey)
+                  OnToggleCollapse: =Set(varPPSidebarCollapsed,!varPPSidebarCollapsed)
+                  ProjectCode: =varPPProjectCode
+                  ProjectName: =varPPProjectName
+                  ShowProjectContext: =true
+                  Width: =If(varPPSidebarCollapsed,72,248)
+            - conPP_Main:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =640
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - conPP_TopBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =0
+                        Height: =64
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =64
+                        LayoutMinWidth: =320
+                        PaddingBottom: =8
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =8
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpPP_ProjectContext:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              EmptyText: ="No project selected"
+                              Height: =44
+                              IsEnabled: =false
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="CONTEXT_ONLY"
+                              Projects: |-
+                                =Table(
+                                    {ProjectCode:"P-001", ProjectName:"SYNTHETIC DEMO PROJECT A", ProjectId:"PRJ-001", DisplayProject:"P-001 · SYNTHETIC DEMO PROJECT A"}
+                                )
+                              SelectedProjectCode: =varPPProjectCode
+                              SelectedProjectId: =varPPProjectId
+                              SelectedProjectName: =varPPProjectName
+                              Width: =390
+                        - conPP_TopSpacer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Height: =44
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =40
+                        - btnPP_User:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =gblTheme.Primary
+                              DisplayMode: =DisplayMode.Disabled
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =44
+                              RadiusBottomLeft: =18
+                              RadiusBottomRight: =18
+                              RadiusTopLeft: =18
+                              RadiusTopRight: =18
+                              Text: ="RS"
+                              Width: =44
+                  - conPP_Page:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Canvas
+                        FillPortions: =1
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =480
+                        LayoutMinWidth: =640
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =24
+                        PaddingLeft: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingRight: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingTop: =18
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpPP_Header:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                            Properties:
+                              AccentColor: =gblTheme.Primary
+                              EyebrowText: ="PROJECT SETUP"
+                              Height: =108
+                              PrimaryTextColor: =gblTheme.TextPrimary
+                              SecondaryTextColor: =gblTheme.TextSecondary
+                              ShowStatus: =true
+                              StatusText: =If(varPPDirty,"UNSAVED CHANGES",varPPStatus)
+                              StatusTone: =If(varPPDirty,"WARNING","INFO")
+                              Subtitle: ="Create and maintain the identity and base maintenance scope of the project."
+                              SurfaceColor: =Color.Transparent
+                              Title: ="Project Profile"
+                              Width: =Parent.Width
+                        - conPP_CommandBar:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =gblTheme.Surface
+                              FillPortions: =0
+                              Height: =56
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =56
+                              LayoutMinWidth: =320
+                              PaddingBottom: =8
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =8
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                            Children:
+                              - lblPP_CommandStatus:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =gblTheme.TextSecondary
+                                    FillPortions: =1
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =24
+                                    LayoutMinWidth: =160
+                                    Size: =10
+                                    Text: =If(varPPDirty,"Local changes have not been saved.","Draft is synchronized with the current local candidate.")
+                              - btnPP_Reset:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Subtle
+                                    BasePaletteColor: =gblTheme.Primary
+                                    DisplayMode: =If(varPPDirty,DisplayMode.Edit,DisplayMode.Disabled)
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =90
+                                    OnSelect: |-
+                                      =Reset(txtPP_ProjectCode);
+                                      Reset(txtPP_ProjectName);
+                                      Reset(txtPP_Description);
+                                      Reset(txtPP_BusinessUnit);
+                                      Reset(txtPP_Site);
+                                      Reset(txtPP_Country);
+                                      Reset(txtPP_TimeZone);
+                                      Reset(txtPP_Language);
+                                      Reset(txtPP_Scope);
+                                      Set(varPPDirty,false)
+                                    Text: ="Reset"
+                                    Width: =90
+                              - btnPP_Save:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Primary
+                                    BasePaletteColor: =gblTheme.Primary
+                                    DisplayMode: =If(IsBlank(Trim(txtPP_ProjectCode.Text)) || IsBlank(Trim(txtPP_ProjectName.Text)),DisplayMode.Disabled,DisplayMode.Edit)
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =110
+                                    OnSelect: |-
+                                      =Set(varPPDirty,false);
+                                      Set(varPPStatus,"DRAFT SAVED")
+                                    Text: ="Save draft"
+                                    Width: =110
+                        - conPP_Workspace:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =560
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =14
+                              LayoutMinHeight: =560
+                              LayoutMinWidth: =640
+                            Children:
+                              - conPP_FormCard:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =gblTheme.Surface
+                                    FillPortions: =2
+                                    Height: =Parent.Height
+                                    LayoutMinHeight: =560
+                                    LayoutMinWidth: =520
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                  Children:
+                                    - lblPP_FormTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Size: =15
+                                          Text: ="Project identity"
+                                          Width: =300
+                                          X: =22
+                                          Y: =18
+                                    - lblPP_ProjectCode:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="PROJECT CODE *"
+                                          Width: =180
+                                          X: =22
+                                          Y: =62
+                                    - txtPP_ProjectCode:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="P-001"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =250
+                                          X: =22
+                                          Y: =86
+                                    - lblPP_ProjectName:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="PROJECT NAME *"
+                                          Width: =180
+                                          X: =292
+                                          Y: =62
+                                    - txtPP_ProjectName:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Synthetic Demo Project A"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =360
+                                          X: =292
+                                          Y: =86
+                                    - lblPP_Description:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="DESCRIPTION"
+                                          Width: =180
+                                          X: =22
+                                          Y: =144
+                                    - txtPP_Description:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Maintenance engineering configuration candidate for CMMS 2.0."
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =64
+                                          HoverBorderColor: =gblTheme.Primary
+                                          Mode: =TextMode.MultiLine
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          PaddingTop: =8
+                                          Size: =10
+                                          Width: =630
+                                          X: =22
+                                          Y: =168
+                                    - lblPP_BusinessUnit:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="BUSINESS UNIT"
+                                          Width: =180
+                                          X: =22
+                                          Y: =250
+                                    - txtPP_BusinessUnit:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Construction / O&M"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =300
+                                          X: =22
+                                          Y: =274
+                                    - lblPP_Site:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="SITE / PLANT"
+                                          Width: =180
+                                          X: =342
+                                          Y: =250
+                                    - txtPP_Site:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Demo Plant"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =310
+                                          X: =342
+                                          Y: =274
+                                    - lblPP_Country:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="COUNTRY / REGION"
+                                          Width: =180
+                                          X: =22
+                                          Y: =332
+                                    - txtPP_Country:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Spain"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =200
+                                          X: =22
+                                          Y: =356
+                                    - lblPP_TimeZone:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="TIME ZONE"
+                                          Width: =150
+                                          X: =242
+                                          Y: =332
+                                    - txtPP_TimeZone:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Europe/Madrid"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =190
+                                          X: =242
+                                          Y: =356
+                                    - lblPP_Language:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="DEFAULT LANGUAGE"
+                                          Width: =180
+                                          X: =452
+                                          Y: =332
+                                    - txtPP_Language:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="English"
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =200
+                                          X: =452
+                                          Y: =356
+                                    - lblPP_Scope:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="MAINTENANCE SCOPE"
+                                          Width: =200
+                                          X: =22
+                                          Y: =414
+                                    - txtPP_Scope:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: ="Project maintenance configuration through publication of the maintenance plan."
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =86
+                                          HoverBorderColor: =gblTheme.Primary
+                                          Mode: =TextMode.MultiLine
+                                          OnChange: =Set(varPPDirty,true)
+                                          PaddingLeft: =10
+                                          PaddingTop: =8
+                                          Size: =10
+                                          Width: =630
+                                          X: =22
+                                          Y: =438
+                              - conPP_Inspector:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =gblTheme.Surface
+                                    FillPortions: =1
+                                    Height: =Parent.Height
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =10
+                                    LayoutMinHeight: =560
+                                    LayoutMinWidth: =280
+                                    PaddingBottom: =18
+                                    PaddingLeft: =18
+                                    PaddingRight: =18
+                                    PaddingTop: =18
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                  Children:
+                                    - lblPP_InspectorEyebrow:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.Primary
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =20
+                                          LayoutMinHeight: =20
+                                          LayoutMinWidth: =160
+                                          Size: =9
+                                          Text: ="READINESS"
+                                    - lblPP_InspectorTitle:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.TextPrimary
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          LayoutMinHeight: =30
+                                          LayoutMinWidth: =180
+                                          Size: =16
+                                          Text: ="Project setup status"
+                                    - lblPP_Required:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.TextSecondary
+                                          Height: =44
+                                          LayoutMinHeight: =44
+                                          LayoutMinWidth: =180
+                                          Size: =10
+                                          Text: =If(IsBlank(Trim(txtPP_ProjectCode.Text)) || IsBlank(Trim(txtPP_ProjectName.Text)),"Required identity fields are incomplete.","Required identity fields are complete.")
+                                    - lblPP_ProfileState:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =If(varPPDirty,gblTheme.Warning,gblTheme.Success)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =26
+                                          LayoutMinHeight: =26
+                                          LayoutMinWidth: =180
+                                          Size: =10
+                                          Text: =If(varPPDirty,"UNSAVED CHANGES",varPPStatus)
+                                    - lblPP_Next:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =gblTheme.TextSecondary
+                                          Height: =72
+                                          LayoutMinHeight: =72
+                                          LayoutMinWidth: =180
+                                          Size: =10
+                                          Text: ="Next setup surfaces - Maintenance Configuration, Risk Profile and Teams & Roles."
+                                    - cmpPP_State:
+                                        Control: CanvasComponent
+                                        ComponentName: cmp_CMMS_StatePanelPro_RC0
+                                        Properties:
+                                          ActionBusyText: ="Working"
+                                          ActionText: =""
+                                          Height: =220
+                                          IsActionBusy: =false
+                                          Message: =If(varPPDirty,"Save or reset the local candidate before continuing.","The Project Profile candidate is structurally ready for the next configuration surface.")
+                                          OnAction: =false
+                                          ShowAction: =false
+                                          State: =If(varPPDirty,"UNAVAILABLE","READY")
+                                          Title: =If(varPPDirty,"Local changes pending","Profile candidate ready")
+                                          Width: =Parent.Width
