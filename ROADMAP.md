@@ -1,6 +1,6 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-08-21
+**Última revisión:** 2026-08-24
 
 ## 1. Cómo leer este roadmap
 
@@ -23,9 +23,18 @@ Que un dominio se estudie antes no significa necesariamente que se implemente an
 - modelo de activos;
 - registro de activos físicos;
 - contexto operacional;
-- criticidad configurable por proyecto/cliente.
+- criticidad configurable por proyecto/cliente;
+- Asset Technical Profile;
+- Technical Fields dinámicos por Equipment Type;
+- contexto de ingeniería y provenance;
+- contexto visual `Type Illustration / Model Image / Asset Photo`;
+- reutilización de la colección técnica 3D gobernada por AssetPlan, sin crear una segunda biblioteca CMMS.
 
-**Madurez conceptual:** media-alta en FLH, taxonomía y activos.
+**Madurez conceptual:** media-alta en FLH, taxonomía y activos. Asset Experience entra en revisión estructurada desde 2026-08-24.
+
+Documento canónico del rediseño:
+
+- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
 
 ## B. Ingeniería de mantenimiento y fiabilidad
 
@@ -265,7 +274,71 @@ WO ejecutada
 
 ---
 
-# 4. Regla de continuidad
+# 4. Track transversal AE — Asset Experience Redefinition
+
+**Estado:** `ACCEPTED / PLANNED / PRE-IMPLEMENTATION` desde 2026-08-24.
+
+Este track no sustituye las fases FL. Revisa la foundation de activos y el sistema visual que utilizarán superficies presentes y futuras.
+
+Secuencia gobernada:
+
+```text
+AE-0 Baseline y auditoría
+→ AE-1 Contrato de Asset Experience
+→ AE-2 Sistema visual: iconografía + jerarquía + semántica
+→ AE-3 Componentes premium compartidos
+→ AE-4 Rediseño de pantallas
+→ AE-5 Consumo de ilustraciones 3D AssetPlan
+→ AE-6 Implementación incremental Power Apps
+→ AE-7 Convergencia y rollout
+```
+
+### AE-0 — Baseline y auditoría
+
+Auditar Assets actual, componentes, iconografía, datos, fuentes y deuda. Primer incremento ejecutable del track.
+
+### AE-1 — Contrato
+
+Cerrar identidad, Technical Profile, Engineering Context, Visual Context, Maintenance Context y provenance antes de fijar UI productiva.
+
+### AE-2 — Sistema visual
+
+Revisar iconografía, jerarquía y semántica sin crear un lenguaje paralelo a CMMS.
+
+### AE-3 — Componentes premium
+
+Crear/adaptar únicamente gaps reusables y mantener lifecycle `TO_VALIDATE → CMMS_RC → VALIDATED_CMMS`.
+
+### AE-4 — Pantallas
+
+Rediseñar, según contrato y componentes:
+
+- Assets List / Explorer;
+- Asset Detail / Asset Technical Profile;
+- Asset Create/Edit;
+- Equipment Type Library;
+- Model Template Detail cuando se confirme la necesidad funcional;
+- Visual Mapping/Library solo como consumer/mapping, nunca como segunda biblioteca 3D.
+
+### AE-5 — Reuso 3D
+
+Consumir la colección `AssetPlan Industrial Technical 3D` de `rubensv74/app_preserv` mediante mapping gobernado. CMMS no crea otra fuente de verdad.
+
+### AE-6 — Implementación
+
+Construir incrementalmente y validar en herramienta real antes de promoción visual.
+
+### AE-7 — Convergencia
+
+Retirar duplicaciones visuales/legacy únicamente después de validar la nueva foundation.
+
+Documento canónico con gates y entregables:
+
+- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
+
+---
+
+# 5. Regla de continuidad
 
 El siguiente dominio no se construirá porque “parezca lógico”.
 
