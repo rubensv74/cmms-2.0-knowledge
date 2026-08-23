@@ -1,0 +1,180 @@
+ComponentDefinitions:
+  cmp_CMMS_ProjectContextPro_RC0:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      Projects:
+        PropertyKind: Input
+        DisplayName: Projects
+        Description: Normalized project table with ProjectCode, ProjectName, ProjectId and DisplayProject.
+        DataType: Table
+        Default: |-
+          =Table(
+              {ProjectCode:"P-001", ProjectName:"SYNTHETIC DEMO PROJECT A", ProjectId:"P-001", DisplayProject:"P-001 · SYNTHETIC DEMO PROJECT A"},
+              {ProjectCode:"P-002", ProjectName:"SYNTHETIC DEMO PROJECT B", ProjectId:"P-002", DisplayProject:"P-002 · SYNTHETIC DEMO PROJECT B"}
+          )
+      SelectedProjectCode:
+        PropertyKind: Input
+        DisplayName: SelectedProjectCode
+        Description: Project code currently accepted by the host screen.
+        DataType: Text
+        Default: =""
+      SelectedProjectName:
+        PropertyKind: Input
+        DisplayName: SelectedProjectName
+        Description: Project name currently accepted by the host screen.
+        DataType: Text
+        Default: =""
+      SelectedProjectId:
+        PropertyKind: Input
+        DisplayName: SelectedProjectId
+        Description: Project identifier currently accepted by the host screen.
+        DataType: Text
+        Default: =""
+      Mode:
+        PropertyKind: Input
+        DisplayName: Mode
+        Description: SELECTOR or CONTEXT_ONLY.
+        DataType: Text
+        Default: ="SELECTOR"
+      Label:
+        PropertyKind: Input
+        DisplayName: Label
+        Description: Small context label.
+        DataType: Text
+        Default: ="Project"
+      EmptyText:
+        PropertyKind: Input
+        DisplayName: EmptyText
+        Description: Text shown when no project is selected in CONTEXT_ONLY mode.
+        DataType: Text
+        Default: ="No project selected"
+      IsLoading:
+        PropertyKind: Input
+        DisplayName: IsLoading
+        Description: Disables selection while the host is loading or accepting a project change.
+        DataType: Boolean
+        Default: =false
+      IsEnabled:
+        PropertyKind: Input
+        DisplayName: IsEnabled
+        Description: Enables or disables selection.
+        DataType: Boolean
+        Default: =true
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Context surface color.
+        DataType: Color
+        Default: =Color.White
+      BorderColor:
+        PropertyKind: Input
+        DisplayName: BorderColor
+        Description: Context border color.
+        DataType: Color
+        Default: =ColorValue("#E4EAF1")
+      PrimaryTextColor:
+        PropertyKind: Input
+        DisplayName: PrimaryTextColor
+        Description: Selected project text color.
+        DataType: Color
+        Default: =ColorValue("#172033")
+      SecondaryTextColor:
+        PropertyKind: Input
+        DisplayName: SecondaryTextColor
+        Description: Caption text color.
+        DataType: Color
+        Default: =ColorValue("#5C667A")
+      PendingProjectCode:
+        PropertyKind: Output
+        DisplayName: PendingProjectCode
+        Description: Project code selected by the user before the host accepts the change.
+        DataType: Text
+      PendingProjectName:
+        PropertyKind: Output
+        DisplayName: PendingProjectName
+        Description: Project name selected by the user before the host accepts the change.
+        DataType: Text
+      PendingProjectId:
+        PropertyKind: Output
+        DisplayName: PendingProjectId
+        Description: Project identifier selected by the user before the host accepts the change.
+        DataType: Text
+      OnProjectChange:
+        PropertyKind: Event
+        DisplayName: OnProjectChange
+        Description: Raised when the project selection changes. The component does not navigate or persist.
+        ReturnType: None
+        Default: |+
+          =
+    Properties:
+      PendingProjectCode: =Coalesce(Text(ddCMMSProjectContext_Project.Selected.ProjectCode), "")
+      PendingProjectName: =Coalesce(Text(ddCMMSProjectContext_Project.Selected.ProjectName), "")
+      PendingProjectId: =Coalesce(Text(ddCMMSProjectContext_Project.Selected.ProjectId), "")
+      Fill: =Color.Transparent
+      Height: =48
+      Width: =360
+    Children:
+      - conCMMSProjectContext_Root:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            Fill: =Color.Transparent
+            Height: =Parent.Height
+            Width: =Parent.Width
+          Children:
+            - lblCMMSProjectContext_Caption:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =cmp_CMMS_ProjectContextPro_RC0.SecondaryTextColor
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =48
+                  PaddingLeft: =0
+                  Size: =8
+                  Text: =Upper(cmp_CMMS_ProjectContextPro_RC0.Label)
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =64
+                  Wrap: =false
+                  X: =0
+                  Y: =0
+            - ddCMMSProjectContext_Project:
+                Control: ModernDropdown@1.0.2
+                Properties:
+                  AccessibleLabel: ="Select project"
+                  Appearance: =Appearance.Outline
+                  Default: =LookUp(cmp_CMMS_ProjectContextPro_RC0.Projects, ProjectCode = cmp_CMMS_ProjectContextPro_RC0.SelectedProjectCode)
+                  DisplayMode: =If(cmp_CMMS_ProjectContextPro_RC0.IsEnabled && !cmp_CMMS_ProjectContextPro_RC0.IsLoading, DisplayMode.Edit, DisplayMode.Disabled)
+                  Height: =40
+                  ItemDisplayText: =ThisItem.DisplayProject
+                  Items: =cmp_CMMS_ProjectContextPro_RC0.Projects
+                  OnChange: =cmp_CMMS_ProjectContextPro_RC0.OnProjectChange()
+                  Required: =false
+                  Visible: =Upper(cmp_CMMS_ProjectContextPro_RC0.Mode) <> "CONTEXT_ONLY"
+                  Width: =Parent.Width-72
+                  X: =72
+                  Y: =4
+            - lblCMMSProjectContext_Value:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =cmp_CMMS_ProjectContextPro_RC0.BorderColor
+                  BorderThickness: =1
+                  Color: =cmp_CMMS_ProjectContextPro_RC0.PrimaryTextColor
+                  Fill: =cmp_CMMS_ProjectContextPro_RC0.SurfaceColor
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =40
+                  PaddingLeft: =12
+                  Size: =10
+                  Text: =If(IsBlank(cmp_CMMS_ProjectContextPro_RC0.SelectedProjectCode), cmp_CMMS_ProjectContextPro_RC0.EmptyText, Trim(cmp_CMMS_ProjectContextPro_RC0.SelectedProjectCode & If(!IsBlank(cmp_CMMS_ProjectContextPro_RC0.SelectedProjectName), " · " & cmp_CMMS_ProjectContextPro_RC0.SelectedProjectName, "")))
+                  Tooltip: =If(IsBlank(cmp_CMMS_ProjectContextPro_RC0.SelectedProjectCode), cmp_CMMS_ProjectContextPro_RC0.EmptyText, Trim(cmp_CMMS_ProjectContextPro_RC0.SelectedProjectCode & If(!IsBlank(cmp_CMMS_ProjectContextPro_RC0.SelectedProjectName), " · " & cmp_CMMS_ProjectContextPro_RC0.SelectedProjectName, "")))
+                  VerticalAlign: =VerticalAlign.Middle
+                  Visible: =Upper(cmp_CMMS_ProjectContextPro_RC0.Mode) = "CONTEXT_ONLY"
+                  Width: =Parent.Width-72
+                  Wrap: =false
+                  X: =72
+                  Y: =4
