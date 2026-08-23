@@ -1,0 +1,393 @@
+ComponentDefinitions:
+  cmp_CMMS_SidebarPro_RC0:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      ActiveKey:
+        PropertyKind: Input
+        DisplayName: ActiveKey
+        Description: Navigation key currently accepted by the host.
+        DataType: Text
+        Default: ="home"
+      AppTitle:
+        PropertyKind: Input
+        DisplayName: AppTitle
+        Description: Product name rendered in the brand area.
+        DataType: Text
+        Default: ="CMMS 2.0"
+      AppVersion:
+        PropertyKind: Input
+        DisplayName: AppVersion
+        Description: Optional application version label.
+        DataType: Text
+        Default: ="RC0"
+      EnvironmentLabel:
+        PropertyKind: Input
+        DisplayName: EnvironmentLabel
+        Description: Optional environment label.
+        DataType: Text
+        Default: =""
+      IsCollapsed:
+        PropertyKind: Input
+        DisplayName: IsCollapsed
+        Description: 72 px collapsed / 248 px expanded.
+        DataType: Boolean
+        Default: =false
+      NavItems:
+        PropertyKind: Input
+        DisplayName: NavItems
+        Description: Normalized navigation table with Order, Key, Label, ShortLabel, IsVisible, IsEnabled and Tooltip.
+        DataType: Table
+        Default: |-
+          =Table(
+              {Order:10, Key:"home", Label:"Home", ShortLabel:"H", IsVisible:true, IsEnabled:true, Tooltip:"Home"},
+              {Order:20, Key:"project_setup", Label:"Project Setup", ShortLabel:"PS", IsVisible:true, IsEnabled:true, Tooltip:"Project Setup"},
+              {Order:30, Key:"assets", Label:"Assets", ShortLabel:"AS", IsVisible:true, IsEnabled:true, Tooltip:"Assets"},
+              {Order:40, Key:"libraries", Label:"Libraries", ShortLabel:"LI", IsVisible:true, IsEnabled:true, Tooltip:"Libraries"},
+              {Order:50, Key:"maintenance_engineering", Label:"Maintenance Engineering", ShortLabel:"ME", IsVisible:true, IsEnabled:true, Tooltip:"Maintenance Engineering"},
+              {Order:60, Key:"plans", Label:"Plans", ShortLabel:"PL", IsVisible:true, IsEnabled:true, Tooltip:"Plans"},
+              {Order:70, Key:"governance", Label:"Governance", ShortLabel:"GO", IsVisible:true, IsEnabled:true, Tooltip:"Governance"},
+              {Order:80, Key:"administration", Label:"Administration", ShortLabel:"AD", IsVisible:true, IsEnabled:true, Tooltip:"Administration"}
+          )
+      ProjectCode:
+        PropertyKind: Input
+        DisplayName: ProjectCode
+        Description: Accepted project code supplied by the host.
+        DataType: Text
+        Default: =""
+      ProjectName:
+        PropertyKind: Input
+        DisplayName: ProjectName
+        Description: Accepted project name supplied by the host.
+        DataType: Text
+        Default: =""
+      ShowProjectContext:
+        PropertyKind: Input
+        DisplayName: ShowProjectContext
+        Description: Shows the footer project context.
+        DataType: Boolean
+        Default: =true
+      SelectedKey:
+        PropertyKind: Output
+        DisplayName: SelectedKey
+        Description: Key of the currently selected navigation row.
+        DataType: Text
+      OnSelectItem:
+        PropertyKind: Event
+        DisplayName: OnSelectItem
+        Description: Raised when an enabled navigation item is selected. Host decides navigation.
+        ReturnType: None
+        Default: |+
+          =
+      OnToggleCollapse:
+        PropertyKind: Event
+        DisplayName: OnToggleCollapse
+        Description: Raised when the collapse toggle is selected. Host owns collapsed state.
+        ReturnType: None
+        Default: |+
+          =
+      SurfaceColor:
+        PropertyKind: Input
+        DisplayName: SurfaceColor
+        Description: Main sidebar surface color.
+        DataType: Color
+        Default: =ColorValue("#0B1628")
+      SurfaceAltColor:
+        PropertyKind: Input
+        DisplayName: SurfaceAltColor
+        Description: Footer surface color.
+        DataType: Color
+        Default: =ColorValue("#081321")
+      AccentColor:
+        PropertyKind: Input
+        DisplayName: AccentColor
+        Description: Active navigation accent.
+        DataType: Color
+        Default: =ColorValue("#1769E0")
+      PrimaryTextColor:
+        PropertyKind: Input
+        DisplayName: PrimaryTextColor
+        Description: Primary text color.
+        DataType: Color
+        Default: =Color.White
+      SecondaryTextColor:
+        PropertyKind: Input
+        DisplayName: SecondaryTextColor
+        Description: Secondary text color.
+        DataType: Color
+        Default: =ColorValue("#8EA0B8")
+    Properties:
+      Fill: =cmp_CMMS_SidebarPro_RC0.SurfaceColor
+      Height: =App.Height
+      SelectedKey: =Coalesce(Text(galCMMSNav.Selected.Key), "")
+      Width: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, 72, 248)
+    Children:
+      - conCMMSNav_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            DropShadow: =DropShadow.None
+            Fill: =cmp_CMMS_SidebarPro_RC0.SurfaceColor
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - conCMMSNav_Brand:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =72
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =10
+                  LayoutMinHeight: =72
+                  LayoutMinWidth: =16
+                  PaddingLeft: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, 10, 16)
+                  PaddingRight: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, 10, 12)
+                Children:
+                  - recCMMSNav_BrandMark:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderStyle: =BorderStyle.None
+                        Fill: =cmp_CMMS_SidebarPro_RC0.AccentColor
+                        FillPortions: =0
+                        Height: =30
+                        Width: =30
+                  - lblCMMSNav_Brand:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Color: =cmp_CMMS_SidebarPro_RC0.PrimaryTextColor
+                        Fill: =Color.Transparent
+                        FillPortions: =1
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =36
+                        Size: =14
+                        Text: =cmp_CMMS_SidebarPro_RC0.AppTitle
+                        Visible: =!cmp_CMMS_SidebarPro_RC0.IsCollapsed
+                        Wrap: =false
+                  - icoCMMSNav_Toggle:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Color: =cmp_CMMS_SidebarPro_RC0.SecondaryTextColor
+                        FillPortions: =0
+                        FocusedBorderThickness: =2
+                        Height: =24
+                        HoverColor: =cmp_CMMS_SidebarPro_RC0.PrimaryTextColor
+                        HoverFill: =Color.Transparent
+                        Icon: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, Icon.ChevronRight, Icon.ChevronLeft)
+                        OnSelect: =cmp_CMMS_SidebarPro_RC0.OnToggleCollapse()
+                        PressedColor: =cmp_CMMS_SidebarPro_RC0.AccentColor
+                        PressedFill: =Color.Transparent
+                        Tooltip: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, "Expand navigation", "Collapse navigation")
+                        Width: =24
+            - recCMMSNav_DividerTop:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderStyle: =BorderStyle.None
+                  Fill: =RGBA(255,255,255,0.08)
+                  FillPortions: =0
+                  Height: =1
+                  LayoutMinHeight: =1
+                  LayoutMinWidth: =16
+                  Width: =Parent.Width
+            - conCMMSNav_Menu:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  FillPortions: =1
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =120
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =10
+                Children:
+                  - galCMMSNav:
+                      Control: Gallery@2.15.0
+                      Variant: Vertical
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        FillPortions: =1
+                        Items: =SortByColumns(Filter(cmp_CMMS_SidebarPro_RC0.NavItems, IsVisible), "Order", SortOrder.Ascending)
+                        LayoutMinHeight: =160
+                        LayoutMinWidth: =48
+                        OnSelect: =If(ThisItem.IsEnabled, cmp_CMMS_SidebarPro_RC0.OnSelectItem())
+                        ShowScrollbar: =false
+                        TemplateFill: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro_RC0.ActiveKey), RGBA(23,105,224,0.22), Color.Transparent)
+                        TemplatePadding: =2
+                        TemplateSize: =46
+                        Width: =Parent.Width
+                      Children:
+                        - recCMMSNav_Active:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderStyle: =BorderStyle.None
+                              Fill: =cmp_CMMS_SidebarPro_RC0.AccentColor
+                              Height: =Parent.TemplateHeight-8
+                              Visible: =Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro_RC0.ActiveKey)
+                              Width: =3
+                              X: =0
+                              Y: =4
+                        - btnCMMSNav_Mark:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderThickness: =0
+                              Color: =If(ThisItem.IsEnabled, cmp_CMMS_SidebarPro_RC0.PrimaryTextColor, ColorValue("#5F6F82"))
+                              DisabledBorderColor: =RGBA(0,0,0,0)
+                              DisabledColor: =If(ThisItem.IsEnabled, cmp_CMMS_SidebarPro_RC0.PrimaryTextColor, ColorValue("#5F6F82"))
+                              DisabledFill: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro_RC0.ActiveKey), cmp_CMMS_SidebarPro_RC0.AccentColor, RGBA(255,255,255,0.06))
+                              DisplayMode: =DisplayMode.Disabled
+                              Fill: =Self.DisabledFill
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =8
+                              Text: =ThisItem.ShortLabel
+                              Width: =30
+                              X: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, (Parent.TemplateWidth-Self.Width)/2, 10)
+                              Y: =8
+                        - lblCMMSNav_Item:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =If(ThisItem.IsEnabled, cmp_CMMS_SidebarPro_RC0.PrimaryTextColor, ColorValue("#66778A"))
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro_RC0.ActiveKey), FontWeight.Semibold, FontWeight.Normal)
+                              Height: =Parent.TemplateHeight
+                              OnSelect: =Select(Parent)
+                              Size: =10
+                              Text: =ThisItem.Label
+                              Visible: =!cmp_CMMS_SidebarPro_RC0.IsCollapsed
+                              Width: =Parent.TemplateWidth-58
+                              Wrap: =false
+                              X: =48
+                              Y: =0
+                        - btnCMMSNav_HitArea:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0,0,0,0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =Color.Transparent
+                              DisabledBorderColor: =RGBA(0,0,0,0)
+                              DisabledFill: =Color.Transparent
+                              DisplayMode: =If(ThisItem.IsEnabled, DisplayMode.Edit, DisplayMode.Disabled)
+                              Fill: =Color.Transparent
+                              Height: =Parent.TemplateHeight
+                              HoverBorderColor: =RGBA(0,0,0,0)
+                              HoverFill: =RGBA(255,255,255,0.04)
+                              OnSelect: =Select(Parent)
+                              PressedFill: =RGBA(23,105,224,0.12)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Text: =""
+                              Tooltip: =ThisItem.Tooltip
+                              Width: =Parent.TemplateWidth
+                              X: =0
+                              Y: =0
+            - conCMMSNav_Footer:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  DropShadow: =DropShadow.None
+                  Fill: =cmp_CMMS_SidebarPro_RC0.SurfaceAltColor
+                  FillPortions: =0
+                  Height: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, 72, 112)
+                  LayoutAlignItems: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, LayoutAlignItems.Center, LayoutAlignItems.Start)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =2
+                  LayoutMinHeight: =72
+                  LayoutMinWidth: =16
+                  PaddingBottom: =10
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =10
+                  Visible: =cmp_CMMS_SidebarPro_RC0.ShowProjectContext
+                Children:
+                  - lblCMMSNav_ProjectCaption:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =cmp_CMMS_SidebarPro_RC0.SecondaryTextColor
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =20
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =8
+                        Text: ="CURRENT PROJECT"
+                        Visible: =!cmp_CMMS_SidebarPro_RC0.IsCollapsed
+                  - lblCMMSNav_ProjectCode:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, Align.Center, Align.Left)
+                        AutoHeight: =true
+                        Color: =cmp_CMMS_SidebarPro_RC0.PrimaryTextColor
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, 9, 11)
+                        Text: =If(IsBlank(cmp_CMMS_SidebarPro_RC0.ProjectCode), If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, "—", "No project selected"), If(cmp_CMMS_SidebarPro_RC0.IsCollapsed, Left(cmp_CMMS_SidebarPro_RC0.ProjectCode, 3), cmp_CMMS_SidebarPro_RC0.ProjectCode))
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                  - lblCMMSNav_ProjectName:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =cmp_CMMS_SidebarPro_RC0.SecondaryTextColor
+                        Font: =Font.'Segoe UI'
+                        Height: =20
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =9
+                        Text: =If(IsBlank(cmp_CMMS_SidebarPro_RC0.ProjectName), "Select project", cmp_CMMS_SidebarPro_RC0.ProjectName)
+                        Visible: =!cmp_CMMS_SidebarPro_RC0.IsCollapsed
+                        Width: =Parent.Width-20
+                        Wrap: =false
+                  - lblCMMSNav_Meta:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =ColorValue("#66778A")
+                        Font: =Font.'Segoe UI'
+                        Height: =18
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =8
+                        Text: =Trim(cmp_CMMS_SidebarPro_RC0.EnvironmentLabel & If(!IsBlank(cmp_CMMS_SidebarPro_RC0.EnvironmentLabel) && !IsBlank(cmp_CMMS_SidebarPro_RC0.AppVersion), " · ", "") & cmp_CMMS_SidebarPro_RC0.AppVersion)
+                        Visible: =!cmp_CMMS_SidebarPro_RC0.IsCollapsed
+                        Width: =Parent.Width-20
+                        Wrap: =false
