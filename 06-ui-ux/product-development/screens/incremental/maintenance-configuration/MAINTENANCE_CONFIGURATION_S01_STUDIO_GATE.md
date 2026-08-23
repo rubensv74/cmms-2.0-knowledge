@@ -1,7 +1,7 @@
 # CMMS 2.0 — Maintenance Configuration S01 Studio Gate
 
 **Fecha:** 2026-08-23  
-**Estado:** `S01 CANDIDATE / PENDING POWER APPS STUDIO GATE`  
+**Estado:** `S01-MC = PASS / STUDIO VALIDATED`  
 **Método:** `CREATE_NEW_SCREEN`
 
 ## Objetivo
@@ -22,7 +22,27 @@ La pantalla demuestra tres procedencias que no deben confundirse:
 
 S01 trabaja solo con estado local sintético. No conecta SQL, Power Automate ni API.
 
-## Gate Studio
+## Resultado Studio — 2026-08-23
+
+Validado en Power Apps Studio con evidencia visual aportada durante el gate.
+
+Comprobaciones confirmadas:
+
+- Source Code aceptado y pantalla renderizada sin errores visibles;
+- Shared UI Foundation estable;
+- contexto `P-001 · SYNTHETIC DEMO PROJECT A` visible;
+- `Project Setup` activo en sidebar;
+- header `Maintenance Configuration`;
+- cambio de `PROJECT-SPECIFIC TAXONOMY CLASSES` a `Not allowed` genera `UNSAVED CHANGES`;
+- el setting modificado muestra procedencia `PROJECT OVERRIDE`;
+- el inspector cambia a `Local changes pending`;
+- la leyenda diferencia explícitamente `CORPORATE DEFAULT`, `PROJECT OVERRIDE` y `PROJECT SPECIFIC` sin depender solo del color;
+- `REQUIRED REVIEW ROLE` conserva procedencia `PROJECT SPECIFIC`;
+- composición desktop sin overlap/clipping relevante.
+
+Los comportamientos locales `Save draft` y `Reset` siguen el patrón ya validado en `Project Profile S01`; permanecen como hardening funcional menor, no como bloqueo para avanzar a SCR-012.
+
+## Gate Studio original
 
 1. Crear una pantalla nueva desde Source Code usando el YAML candidato.
 2. Confirmar ausencia de errores de Source Code Schema y Power Fx.
@@ -43,11 +63,11 @@ S01 trabaja solo con estado local sintético. No conecta SQL, Power Automate ni 
 13. Confirmar ausencia de clipping/overlap a ancho desktop normal.
 14. Capturar una imagen baseline y otra con un override sin guardar.
 
-## PASS esperado
+## PASS
 
 `S01-MC = PASS / STUDIO VALIDATED`
 
-Tras PASS queda autorizado `SCR-012 — Risk Profile / Matrix Configuration S01`.
+Queda autorizado `SCR-012 — Risk Profile / Matrix Configuration S01`.
 
 ## Límite
 
