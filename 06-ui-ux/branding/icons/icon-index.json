@@ -1,0 +1,35 @@
+{
+  "style": {
+    "grid": 24,
+    "strokeWidth": 1.8,
+    "linecap": "round",
+    "linejoin": "round",
+    "defaultColor": "currentColor"
+  },
+  "icons": [
+    "alerts",
+    "analytics",
+    "asset",
+    "buildings",
+    "calendar",
+    "checklist",
+    "costs",
+    "dashboard",
+    "documents",
+    "energy",
+    "filters",
+    "fluids",
+    "inventory",
+    "maintenance",
+    "purchases",
+    "reports",
+    "safety",
+    "search",
+    "settings",
+    "tools",
+    "users",
+    "vehicles",
+    "warehouse",
+    "work-order"
+  ]
+}

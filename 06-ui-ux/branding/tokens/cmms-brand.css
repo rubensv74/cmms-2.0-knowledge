@@ -1,0 +1,23 @@
+/* CMMS Brand Tokens — v1.0 */
+:root {
+  --cmms-navy: #001B2A;
+  --cmms-navy-text: #0D1B2A;
+  --cmms-blue-dark: #1E3A8A;
+  --cmms-blue: #2563EB;
+  --cmms-blue-light: #38BDF8;
+  --cmms-green: #10B981;
+  --cmms-surface: #F1F5F9;
+  --cmms-slate: #64748B;
+  --cmms-white: #FFFFFF;
+  --cmms-isotype-gradient: linear-gradient(135deg, #38BDF8 0%, #2563EB 38%, #1E3A8A 100%);
+  --cmms-font-family: Montserrat, Arial, sans-serif;
+  --cmms-radius-sm: 8px;
+  --cmms-radius-md: 12px;
+  --cmms-radius-lg: 16px;
+  --cmms-radius-xl: 24px;
+  --cmms-shadow-card: 0 6px 20px rgba(13, 27, 42, 0.08);
+  --cmms-shadow-floating: 0 12px 32px rgba(13, 27, 42, 0.14);
+}
+
+.cmms-brand-gradient { background: var(--cmms-isotype-gradient); }
+.cmms-brand-wordmark { color: var(--cmms-navy-text); font-family: var(--cmms-font-family); font-weight: 700; }

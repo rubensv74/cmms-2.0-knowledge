@@ -1,0 +1,23 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "brand": {
+    "name": "CMMS",
+    "tagline": "Gestiona. Mantiene. Optimiza.",
+    "colors": {
+      "navy": {"value": "#001B2A","role": "Primary dark / navigation / high-contrast surfaces"},
+      "navyText": {"value": "#0D1B2A","role": "Primary text and logo wordmark"},
+      "blueDark": {"value": "#1E3A8A","role": "Deep brand blue"},
+      "blue": {"value": "#2563EB","role": "Primary interactive / links / selected state"},
+      "blueLight": {"value": "#38BDF8","role": "Hexagon gradient highlight only"},
+      "green": {"value": "#10B981","role": "Positive / optimization / success accent"},
+      "surface": {"value": "#F1F5F9","role": "Soft surface / canvas background"},
+      "slate": {"value": "#64748B","role": "Secondary text / icon neutral"},
+      "white": {"value": "#FFFFFF","role": "Cards / inverse text"}
+    },
+    "gradient": {"isotype": {"value": "linear-gradient(135deg, #38BDF8 0%, #2563EB 38%, #1E3A8A 100%)","usage": "Exclusive to CMMS hexagon/isotype and rare brand hero accents"}},
+    "typography": {"family": {"value": "Montserrat, Arial, sans-serif"},"weights": {"regular": 400,"medium": 500,"semibold": 600,"bold": 700}},
+    "radius": {"sm": "8px","md": "12px","lg": "16px","xl": "24px"},
+    "shadow": {"card": "0 6px 20px rgba(13, 27, 42, 0.08)","floating": "0 12px 32px rgba(13, 27, 42, 0.14)"},
+    "iconography": {"grid": "24px","strokeWidth": "1.8","linecap": "round","linejoin": "round"}
+  }
+}

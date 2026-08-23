@@ -1,0 +1,19 @@
+// CMMS Brand Tokens — Power Apps named formulas / App.Formulas
+CMMS_Color_Navy = ColorValue("#001B2A");
+CMMS_Color_NavyText = ColorValue("#0D1B2A");
+CMMS_Color_BlueDark = ColorValue("#1E3A8A");
+CMMS_Color_Blue = ColorValue("#2563EB");
+CMMS_Color_BlueLight = ColorValue("#38BDF8");
+CMMS_Color_Green = ColorValue("#10B981");
+CMMS_Color_Surface = ColorValue("#F1F5F9");
+CMMS_Color_Slate = ColorValue("#64748B");
+CMMS_Color_White = Color.White;
+
+// Montserrat is the CMMS brand font, but do not assume it exists as a native Canvas font.
+CMMS_Font_PowerApps = Font.'Segoe UI';
+CMMS_Radius_S = 8;
+CMMS_Radius_M = 12;
+CMMS_Radius_L = 16;
+
+// Regla: el degradado del isotipo NO se replica como degradado decorativo en controles.
+// En Canvas Apps usar el SVG oficial incluido en /logos para conservarlo.

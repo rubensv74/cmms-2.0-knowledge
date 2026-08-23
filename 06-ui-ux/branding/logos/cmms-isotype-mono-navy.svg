@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="CMMS isotipo">
+
+
+<g transform="translate(20 20)">
+  <path d="M100 4 184 52 184 148 100 196 16 148 16 52Z" fill="none" stroke="#0D1B2A" stroke-width="16" stroke-linejoin="round" />
+  
+  <path d="M72 57v32l28 17 28-17V57a42 42 0 0 1 14 31c0 18-11 34-27 40v31l-15 9-15-9v-31c-16-6-27-22-27-40a42 42 0 0 1 14-31Z" fill="#0D1B2A"/>
+  <path d="M87 59v25l13 8 13-8V59" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.0"/>
+</g>
+</svg>
