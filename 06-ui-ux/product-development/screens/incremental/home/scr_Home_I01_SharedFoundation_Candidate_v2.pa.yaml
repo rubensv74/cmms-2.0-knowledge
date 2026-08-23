@@ -1,0 +1,276 @@
+Screens:
+  scr_Home_I01:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+      OnVisible: |-
+        =Set(varHomeSidebarCollapsed,false);
+        Set(varHomeNavKey,"home");
+        Set(varHomeProjectCode,"");
+        Set(varHomeProjectName,"");
+        Set(varHomeProjectId,"")
+    Children:
+      - conHomeI01_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =gblTheme.Canvas
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - cmpHomeI01_Sidebar:
+                Control: CanvasComponent
+                ComponentName: cmp_CMMS_SidebarPro_RC0
+                Properties:
+                  ActiveKey: =varHomeNavKey
+                  AppTitle: ="CMMS 2.0"
+                  AppVersion: ="I01 · RC0"
+                  EnvironmentLabel: ="SYNTHETIC"
+                  Height: =Parent.Height
+                  IsCollapsed: =varHomeSidebarCollapsed
+                  NavItems: |-
+                    =Table(
+                        {Order:10, Key:"home", Label:"Home", ShortLabel:"H", IsVisible:true, IsEnabled:true, Tooltip:"Home"},
+                        {Order:20, Key:"project_setup", Label:"Project Setup", ShortLabel:"PS", IsVisible:true, IsEnabled:false, Tooltip:"Scheduled next"},
+                        {Order:30, Key:"assets", Label:"Assets", ShortLabel:"AS", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:40, Key:"libraries", Label:"Libraries", ShortLabel:"LI", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:50, Key:"maintenance_engineering", Label:"Maintenance Engineering", ShortLabel:"ME", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:60, Key:"plans", Label:"Plans", ShortLabel:"PL", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:70, Key:"governance", Label:"Governance", ShortLabel:"GO", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:80, Key:"administration", Label:"Administration", ShortLabel:"AD", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"}
+                    )
+                  OnSelectItem: =Set(varHomeNavKey,cmpHomeI01_Sidebar.SelectedKey)
+                  OnToggleCollapse: =Set(varHomeSidebarCollapsed,!varHomeSidebarCollapsed)
+                  ProjectCode: =varHomeProjectCode
+                  ProjectName: =varHomeProjectName
+                  ShowProjectContext: =true
+                  Width: =If(varHomeSidebarCollapsed,72,248)
+            - conHomeI01_Main:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =320
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - conHomeI01_TopBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =0
+                        Height: =64
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =64
+                        LayoutMinWidth: =320
+                        PaddingBottom: =8
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =8
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpHomeI01_ProjectContext:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              EmptyText: ="No project selected"
+                              Height: =44
+                              IsEnabled: =true
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="SELECTOR"
+                              OnProjectChange: |-
+                                =Set(varHomeProjectCode,cmpHomeI01_ProjectContext.PendingProjectCode);
+                                Set(varHomeProjectName,cmpHomeI01_ProjectContext.PendingProjectName);
+                                Set(varHomeProjectId,cmpHomeI01_ProjectContext.PendingProjectId)
+                              Projects: |-
+                                =Table(
+                                    {ProjectCode:"", ProjectName:"Select project", ProjectId:"", DisplayProject:"Select project"},
+                                    {ProjectCode:"P-001", ProjectName:"SYNTHETIC DEMO PROJECT A", ProjectId:"PRJ-001", DisplayProject:"P-001 · SYNTHETIC DEMO PROJECT A"},
+                                    {ProjectCode:"P-002", ProjectName:"SYNTHETIC DEMO PROJECT B", ProjectId:"PRJ-002", DisplayProject:"P-002 · SYNTHETIC DEMO PROJECT B"}
+                                )
+                              SelectedProjectCode: =varHomeProjectCode
+                              SelectedProjectId: =varHomeProjectId
+                              SelectedProjectName: =varHomeProjectName
+                              Width: =390
+                        - conHomeI01_TopSpacer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Height: =44
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =40
+                        - btnHomeI01_Search:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Primary
+                              DisplayMode: =DisplayMode.Disabled
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =88
+                              Text: ="Search"
+                              Width: =88
+                        - btnHomeI01_Attention:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              BasePaletteColor: =gblTheme.Warning
+                              DisplayMode: =DisplayMode.Disabled
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =132
+                              Text: ="Needs attention"
+                              Width: =132
+                        - btnHomeI01_User:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =gblTheme.Primary
+                              DisplayMode: =DisplayMode.Disabled
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =44
+                              RadiusBottomLeft: =18
+                              RadiusBottomRight: =18
+                              RadiusTopLeft: =18
+                              RadiusTopRight: =18
+                              Text: ="RS"
+                              Width: =44
+                  - conHomeI01_Page:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Canvas
+                        FillPortions: =1
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =320
+                        LayoutMinWidth: =320
+                        PaddingBottom: =24
+                        PaddingLeft: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingRight: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingTop: =18
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpHomeI01_Header:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                            Properties:
+                              AccentColor: =gblTheme.Primary
+                              EyebrowText: ="HOME"
+                              Height: =108
+                              PrimaryTextColor: =gblTheme.TextPrimary
+                              SecondaryTextColor: =gblTheme.TextSecondary
+                              ShowStatus: =!IsBlank(varHomeProjectCode)
+                              StatusText: ="PROJECT READY"
+                              StatusTone: ="SUCCESS"
+                              Subtitle: |-
+                                =If(
+                                    IsBlank(varHomeProjectCode),
+                                    "Select a project to establish the working context for CMMS 2.0.",
+                                    "Working context accepted - " & varHomeProjectCode & " · " & varHomeProjectName
+                                )
+                              SurfaceColor: =Color.Transparent
+                              Title: ="CMMS 2.0"
+                              Width: =Parent.Width
+                        - lblHomeI01_Boundary:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              AutoHeight: =true
+                              Color: =ColorValue("#8A5A00")
+                              Fill: =ColorValue("#FFF8E8")
+                              FontWeight: =FontWeight.Semibold
+                              Height: =38
+                              LayoutMinHeight: =38
+                              LayoutMinWidth: =240
+                              PaddingBottom: =10
+                              PaddingLeft: =14
+                              PaddingRight: =14
+                              PaddingTop: =10
+                              Size: =9
+                              Text: ="I01 · SHARED FOUNDATION INTEGRATION · CONTROLLED SYNTHETIC PROJECTS · NO PRODUCTION DATA"
+                              Width: =Parent.Width
+                        - conHomeI01_StateHost:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =0
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =280
+                              LayoutMinWidth: =320
+                              PaddingBottom: =20
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =20
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Width: =Parent.Width
+                            Children:
+                              - cmpHomeI01_State:
+                                  Control: CanvasComponent
+                                  ComponentName: cmp_CMMS_StatePanelPro_RC0
+                                  Properties:
+                                    ActionBusyText: ="Working…"
+                                    ActionText: ="Select project above"
+                                    Height: =240
+                                    IsActionBusy: =false
+                                    Message: |-
+                                      =If(
+                                          IsBlank(varHomeProjectCode),
+                                          "Use the project selector in the top bar. The screen must not infer or fabricate project context.",
+                                          "The shared Project Context, Sidebar, Page Header and State Panel are coordinated by the screen host for " & varHomeProjectCode & "."
+                                      )
+                                    OnAction: =false
+                                    ShowAction: =false
+                                    State: =If(IsBlank(varHomeProjectCode),"NO_CONTEXT","READY")
+                                    Title: =If(IsBlank(varHomeProjectCode),"No project selected","Project context ready")
+                                    Width: =Parent.Width
