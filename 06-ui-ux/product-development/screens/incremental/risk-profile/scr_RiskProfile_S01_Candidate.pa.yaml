@@ -1,0 +1,755 @@
+Screens:
+  scr_RiskProfile_S01:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+      OnVisible: |-
+        =Set(varRPSidebarCollapsed,false);
+        Set(varRPNavKey,"project_setup");
+        Set(varRPProjectCode,"P-001");
+        Set(varRPProjectName,"SYNTHETIC DEMO PROJECT A");
+        Set(varRPProjectId,"PRJ-001");
+        Set(varRPProfileKey,"RP5");
+        Set(varRPSize,5);
+        Set(varRPNameSaved,"Project Risk Profile A");
+        Set(varRPAxisXSaved,"Likelihood");
+        Set(varRPAxisYSaved,"Consequence");
+        Set(varRPDirty,false);
+        Set(varRPStatus,"DRAFT SAVED")
+    Children:
+      - conRP_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =gblTheme.Canvas
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - cmpRP_Sidebar:
+                Control: CanvasComponent
+                ComponentName: cmp_CMMS_SidebarPro_RC0
+                Properties:
+                  ActiveKey: =varRPNavKey
+                  AppTitle: ="CMMS 2.0"
+                  AppVersion: ="P01"
+                  EnvironmentLabel: ="SYNTHETIC"
+                  Height: =Parent.Height
+                  IsCollapsed: =varRPSidebarCollapsed
+                  NavItems: |-
+                    =Table(
+                        {Order:10, Key:"home", Label:"Home", ShortLabel:"H", IsVisible:true, IsEnabled:true, Tooltip:"Home"},
+                        {Order:20, Key:"project_setup", Label:"Project Setup", ShortLabel:"PS", IsVisible:true, IsEnabled:true, Tooltip:"Project Setup"},
+                        {Order:30, Key:"assets", Label:"Assets", ShortLabel:"AS", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:40, Key:"libraries", Label:"Libraries", ShortLabel:"LI", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:50, Key:"maintenance_engineering", Label:"Maintenance Engineering", ShortLabel:"ME", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:60, Key:"plans", Label:"Plans", ShortLabel:"PL", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:70, Key:"governance", Label:"Governance", ShortLabel:"GO", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"},
+                        {Order:80, Key:"administration", Label:"Administration", ShortLabel:"AD", IsVisible:true, IsEnabled:false, Tooltip:"Future product area"}
+                    )
+                  OnSelectItem: =Set(varRPNavKey,cmpRP_Sidebar.SelectedKey)
+                  OnToggleCollapse: =Set(varRPSidebarCollapsed,!varRPSidebarCollapsed)
+                  ProjectCode: =varRPProjectCode
+                  ProjectName: =varRPProjectName
+                  ShowProjectContext: =true
+                  Width: =If(varRPSidebarCollapsed,72,248)
+            - conRP_Main:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =720
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - conRP_TopBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =0
+                        Height: =64
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =64
+                        LayoutMinWidth: =320
+                        PaddingBottom: =8
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =8
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpRP_ProjectContext:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              EmptyText: ="No project selected"
+                              Height: =44
+                              IsEnabled: =false
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="CONTEXT_ONLY"
+                              Projects: |-
+                                =Table(
+                                    {ProjectCode:"P-001", ProjectName:"SYNTHETIC DEMO PROJECT A", ProjectId:"PRJ-001", DisplayProject:"P-001 · SYNTHETIC DEMO PROJECT A"}
+                                )
+                              SelectedProjectCode: =varRPProjectCode
+                              SelectedProjectId: =varRPProjectId
+                              SelectedProjectName: =varRPProjectName
+                              Width: =390
+                        - conRP_TopSpacer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Height: =44
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =40
+                        - btnRP_User:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Subtle
+                              BasePaletteColor: =gblTheme.Primary
+                              DisplayMode: =DisplayMode.Disabled
+                              FillPortions: =0
+                              Height: =36
+                              LayoutMinHeight: =36
+                              LayoutMinWidth: =44
+                              RadiusBottomLeft: =18
+                              RadiusBottomRight: =18
+                              RadiusTopLeft: =18
+                              RadiusTopRight: =18
+                              Text: ="RS"
+                              Width: =44
+                  - conRP_Page:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Canvas
+                        FillPortions: =1
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =560
+                        LayoutMinWidth: =720
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =24
+                        PaddingLeft: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingRight: =If(App.Width < 900,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                        PaddingTop: =18
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpRP_Header:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                            Properties:
+                              AccentColor: =gblTheme.Primary
+                              EyebrowText: ="PROJECT SETUP"
+                              Height: =108
+                              PrimaryTextColor: =gblTheme.TextPrimary
+                              SecondaryTextColor: =gblTheme.TextSecondary
+                              ShowStatus: =true
+                              StatusText: =If(varRPDirty,"UNSAVED CHANGES",varRPStatus)
+                              StatusTone: =If(varRPDirty,"WARNING","INFO")
+                              Subtitle: ="Configure and version the risk model consumed by Criticality and AMEF without hardcoding a fixed matrix."
+                              SurfaceColor: =Color.Transparent
+                              Title: ="Risk Profile / Matrix Configuration"
+                              Width: =Parent.Width
+                        - conRP_CommandBar:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =gblTheme.Surface
+                              FillPortions: =0
+                              Height: =56
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =56
+                              LayoutMinWidth: =320
+                              PaddingBottom: =8
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =8
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                            Children:
+                              - lblRP_CommandStatus:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =gblTheme.TextSecondary
+                                    FillPortions: =1
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =24
+                                    LayoutMinWidth: =180
+                                    Size: =10
+                                    Text: =If(varRPDirty,"Local risk-profile changes have not been saved.","Draft is synchronized with the current local candidate.")
+                              - btnRP_Reset:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Subtle
+                                    BasePaletteColor: =gblTheme.Primary
+                                    DisplayMode: =If(varRPDirty,DisplayMode.Edit,DisplayMode.Disabled)
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =90
+                                    OnSelect: |-
+                                      =Reset(txtRP_ProfileName);
+                                      Reset(txtRP_AxisX);
+                                      Reset(txtRP_AxisY);
+                                      Set(varRPDirty,false)
+                                    Text: ="Reset"
+                                    Width: =90
+                              - btnRP_Save:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Primary
+                                    BasePaletteColor: =gblTheme.Primary
+                                    DisplayMode: =If(IsBlank(Trim(txtRP_ProfileName.Text)) || IsBlank(Trim(txtRP_AxisX.Text)) || IsBlank(Trim(txtRP_AxisY.Text)),DisplayMode.Disabled,DisplayMode.Edit)
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =36
+                                    LayoutMinWidth: =110
+                                    OnSelect: |-
+                                      =Set(varRPNameSaved,txtRP_ProfileName.Text);
+                                      Set(varRPAxisXSaved,txtRP_AxisX.Text);
+                                      Set(varRPAxisYSaved,txtRP_AxisY.Text);
+                                      Set(varRPDirty,false);
+                                      Set(varRPStatus,"DRAFT SAVED")
+                                    Text: ="Save draft"
+                                    Width: =110
+                        - conRP_Workspace:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =610
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =14
+                              LayoutMinHeight: =610
+                              LayoutMinWidth: =720
+                            Children:
+                              - conRP_ConfigCard:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =gblTheme.Surface
+                                    FillPortions: =1
+                                    Height: =Parent.Height
+                                    LayoutMinHeight: =610
+                                    LayoutMinWidth: =430
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                  Children:
+                                    - lblRP_ConfigTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextPrimary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Size: =15
+                                          Text: ="Profile configuration"
+                                          Width: =300
+                                          X: =22
+                                          Y: =18
+                                    - lblRP_ProfileChoice:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="SYNTHETIC PROFILE FIXTURE"
+                                          Width: =240
+                                          X: =22
+                                          Y: =60
+                                    - btnRP_Profile5:
+                                        Control: ModernButton@1.0.0
+                                        Properties:
+                                          Appearance: =If(varRPProfileKey="RP5",'ButtonCanvas.Appearance'.Primary,'ButtonCanvas.Appearance'.Subtle)
+                                          BasePaletteColor: =gblTheme.Primary
+                                          DisplayMode: =If(varRPDirty,DisplayMode.Disabled,DisplayMode.Edit)
+                                          Height: =38
+                                          OnSelect: |-
+                                            =Set(varRPProfileKey,"RP5");
+                                            Set(varRPSize,5);
+                                            Set(varRPNameSaved,"Project Risk Profile A");
+                                            Set(varRPAxisXSaved,"Likelihood");
+                                            Set(varRPAxisYSaved,"Consequence");
+                                            Reset(txtRP_ProfileName);
+                                            Reset(txtRP_AxisX);
+                                            Reset(txtRP_AxisY);
+                                            Set(varRPDirty,false);
+                                            Set(varRPStatus,"DRAFT SAVED")
+                                          Text: ="Profile A · 5 × 5"
+                                          Width: =180
+                                          X: =22
+                                          Y: =86
+                                    - btnRP_Profile4:
+                                        Control: ModernButton@1.0.0
+                                        Properties:
+                                          Appearance: =If(varRPProfileKey="RP4",'ButtonCanvas.Appearance'.Primary,'ButtonCanvas.Appearance'.Subtle)
+                                          BasePaletteColor: =gblTheme.Primary
+                                          DisplayMode: =If(varRPDirty,DisplayMode.Disabled,DisplayMode.Edit)
+                                          Height: =38
+                                          OnSelect: |-
+                                            =Set(varRPProfileKey,"RP4");
+                                            Set(varRPSize,4);
+                                            Set(varRPNameSaved,"Client Risk Profile B");
+                                            Set(varRPAxisXSaved,"Probability");
+                                            Set(varRPAxisYSaved,"Impact");
+                                            Reset(txtRP_ProfileName);
+                                            Reset(txtRP_AxisX);
+                                            Reset(txtRP_AxisY);
+                                            Set(varRPDirty,false);
+                                            Set(varRPStatus,"DRAFT SAVED")
+                                          Text: ="Profile B · 4 × 4"
+                                          Width: =180
+                                          X: =212
+                                          Y: =86
+                                    - lblRP_ProfileName:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="PROFILE NAME *"
+                                          Width: =180
+                                          X: =22
+                                          Y: =146
+                                    - txtRP_ProfileName:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: =varRPNameSaved
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varRPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =370
+                                          X: =22
+                                          Y: =170
+                                    - lblRP_Dimensions:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =10
+                                          Text: ="DIMENSIONS"
+                                          Width: =180
+                                          X: =22
+                                          Y: =232
+                                    - lblRP_AxisX:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="X AXIS"
+                                          Width: =120
+                                          X: =22
+                                          Y: =266
+                                    - txtRP_AxisX:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: =varRPAxisXSaved
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varRPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =175
+                                          X: =22
+                                          Y: =290
+                                    - lblRP_AxisY:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="Y AXIS"
+                                          Width: =120
+                                          X: =217
+                                          Y: =266
+                                    - txtRP_AxisY:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Default: =varRPAxisYSaved
+                                          Fill: =Color.White
+                                          Font: =Font.'Segoe UI'
+                                          Height: =40
+                                          HoverBorderColor: =gblTheme.Primary
+                                          OnChange: =Set(varRPDirty,true)
+                                          PaddingLeft: =10
+                                          Size: =10
+                                          Width: =175
+                                          X: =217
+                                          Y: =290
+                                    - lblRP_LevelCount:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          Height: =22
+                                          Size: =9
+                                          Text: ="LEVELS PER DISPLAY DIMENSION"
+                                          Width: =240
+                                          X: =22
+                                          Y: =350
+                                    - lblRP_LevelValue:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =gblTheme.Border
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =1
+                                          Color: =gblTheme.TextPrimary
+                                          Fill: =ColorValue("#F8FAFC")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =40
+                                          Size: =10
+                                          Text: =Text(varRPSize) & " × " & Text(varRPSize)
+                                          Width: =175
+                                          X: =22
+                                          Y: =374
+                                    - lblRP_RuleTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =10
+                                          Text: ="BAND RULE FIXTURE"
+                                          Width: =180
+                                          X: =22
+                                          Y: =438
+                                    - lblRP_RuleText:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          Height: =82
+                                          Size: =9
+                                          Text: =If(varRPProfileKey="RP5","5×5 fixture uses product-based thresholds. LOW ≤4, MODERATE ≤9, HIGH ≤15, otherwise CRITICAL.","4×4 fixture uses additive thresholds. LOW ≤4, MODERATE ≤6, HIGH ≤7, otherwise CRITICAL.")
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =370
+                                          X: =22
+                                          Y: =466
+                                    - lblRP_Source:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =If(varRPProfileKey="RP5",ColorValue("#1769E0"),ColorValue("#198754"))
+                                          Fill: =If(varRPProfileKey="RP5",ColorValue("#EAF2FF"),ColorValue("#EAF7EF"))
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Size: =8
+                                          Text: =If(varRPProfileKey="RP5","PROJECT PROFILE","CLIENT-DERIVED PROFILE")
+                                          Width: =190
+                                          X: =22
+                                          Y: =558
+                              - conRP_PreviewCard:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =gblTheme.Surface
+                                    FillPortions: =2
+                                    Height: =Parent.Height
+                                    LayoutMinHeight: =610
+                                    LayoutMinWidth: =560
+                                    RadiusBottomLeft: =12
+                                    RadiusBottomRight: =12
+                                    RadiusTopLeft: =12
+                                    RadiusTopRight: =12
+                                  Children:
+                                    - lblRP_PreviewEyebrow:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =8
+                                          Text: ="MATRIX PREVIEW"
+                                          Width: =180
+                                          X: =22
+                                          Y: =18
+                                    - lblRP_PreviewTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextPrimary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =16
+                                          Text: =varRPNameSaved
+                                          Width: =440
+                                          X: =22
+                                          Y: =42
+                                    - lblRP_PreviewMeta:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          Height: =26
+                                          Size: =9
+                                          Text: =varRPAxisYSaved & " × " & varRPAxisXSaved & " · " & Text(varRPSize) & " levels per display dimension"
+                                          Width: =500
+                                          X: =22
+                                          Y: =74
+                                    - galRP_Matrix:
+                                        Control: Gallery@2.15.0
+                                        Variant: Vertical
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Height: =350
+                                          Items: |-
+                                            =With(
+                                                {n:varRPSize},
+                                                AddColumns(
+                                                    Sequence(n*n),
+                                                    ColIndex,Mod(Value-1,n)+1,
+                                                    RowIndex,n-RoundDown((Value-1)/n,0),
+                                                    Band,
+                                                    If(
+                                                        varRPProfileKey="RP5",
+                                                        If(
+                                                            (Mod(Value-1,n)+1)*(n-RoundDown((Value-1)/n,0))<=4,"LOW",
+                                                            (Mod(Value-1,n)+1)*(n-RoundDown((Value-1)/n,0))<=9,"MODERATE",
+                                                            (Mod(Value-1,n)+1)*(n-RoundDown((Value-1)/n,0))<=15,"HIGH",
+                                                            "CRITICAL"
+                                                        ),
+                                                        If(
+                                                            (Mod(Value-1,n)+1)+(n-RoundDown((Value-1)/n,0))<=4,"LOW",
+                                                            (Mod(Value-1,n)+1)+(n-RoundDown((Value-1)/n,0))<=6,"MODERATE",
+                                                            (Mod(Value-1,n)+1)+(n-RoundDown((Value-1)/n,0))<=7,"HIGH",
+                                                            "CRITICAL"
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                          ShowScrollbar: =false
+                                          TemplatePadding: =4
+                                          TemplateSize: =64
+                                          Width: =430
+                                          WrapCount: =varRPSize
+                                          X: =22
+                                          Y: =112
+                                        Children:
+                                          - lblRP_Cell:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =Switch(ThisItem.Band,"LOW",ColorValue("#A8D8B8"),"MODERATE",ColorValue("#E9C76B"),"HIGH",ColorValue("#E5A277"),ColorValue("#E49AA1"))
+                                                BorderStyle: =BorderStyle.Solid
+                                                BorderThickness: =1
+                                                Color: =Switch(ThisItem.Band,"LOW",ColorValue("#166534"),"MODERATE",ColorValue("#8A5A00"),"HIGH",ColorValue("#9A4B16"),ColorValue("#9F1D28"))
+                                                Fill: =Switch(ThisItem.Band,"LOW",ColorValue("#EAF7EF"),"MODERATE",ColorValue("#FFF7DC"),"HIGH",ColorValue("#FDEBDD"),ColorValue("#FCE7E9"))
+                                                Font: =Font.'Segoe UI'
+                                                FontWeight: =FontWeight.Semibold
+                                                Height: =56
+                                                Size: =8
+                                                Text: =ThisItem.Band & Char(10) & Text(ThisItem.RowIndex) & " × " & Text(ThisItem.ColIndex)
+                                                Width: =Parent.TemplateWidth-8
+                                                X: =4
+                                                Y: =4
+                                    - lblRP_LegendTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =8
+                                          Text: ="RISK BANDS"
+                                          Width: =120
+                                          X: =470
+                                          Y: =112
+                                    - lblRP_Low:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =ColorValue("#A8D8B8")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#166534")
+                                          Fill: =ColorValue("#EAF7EF")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: ="LOW"
+                                          Width: =120
+                                          X: =470
+                                          Y: =142
+                                    - lblRP_Moderate:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =ColorValue("#E9C76B")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#8A5A00")
+                                          Fill: =ColorValue("#FFF7DC")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: ="MODERATE"
+                                          Width: =120
+                                          X: =470
+                                          Y: =180
+                                    - lblRP_High:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =ColorValue("#E5A277")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#9A4B16")
+                                          Fill: =ColorValue("#FDEBDD")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: ="HIGH"
+                                          Width: =120
+                                          X: =470
+                                          Y: =218
+                                    - lblRP_Critical:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =ColorValue("#E49AA1")
+                                          BorderThickness: =1
+                                          Color: =ColorValue("#9F1D28")
+                                          Fill: =ColorValue("#FCE7E9")
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =8
+                                          Text: ="CRITICAL"
+                                          Width: =120
+                                          X: =470
+                                          Y: =256
+                                    - lblRP_ConsumersTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.Primary
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =8
+                                          Text: ="CONSUMERS"
+                                          Width: =120
+                                          X: =470
+                                          Y: =318
+                                    - lblRP_Consumers:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0,0,0,0)
+                                          Color: =gblTheme.TextSecondary
+                                          Font: =Font.'Segoe UI'
+                                          Height: =70
+                                          Size: =9
+                                          Text: ="Criticality Assessment" & Char(10) & "AMEF / FMEA" & Char(10) & "Future governed consumers"
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =180
+                                          X: =470
+                                          Y: =344
+                                    - cmpRP_State:
+                                        Control: CanvasComponent
+                                        ComponentName: cmp_CMMS_StatePanelPro_RC0
+                                        Properties:
+                                          ActionBusyText: ="Working…"
+                                          ActionText: =""
+                                          Height: =132
+                                          IsActionBusy: =false
+                                          Message: =If(varRPDirty,"Save or reset the local Risk Profile candidate before switching fixture.","The same screen host renders the active " & Text(varRPSize) & " × " & Text(varRPSize) & " profile without changing screen formulas.")
+                                          OnAction: =false
+                                          ShowAction: =false
+                                          State: =If(varRPDirty,"UNAVAILABLE","READY")
+                                          Title: =If(varRPDirty,"Local changes pending","Risk profile candidate ready")
+                                          Width: =Parent.Width-44
+                                          X: =22
+                                          Y: =458
