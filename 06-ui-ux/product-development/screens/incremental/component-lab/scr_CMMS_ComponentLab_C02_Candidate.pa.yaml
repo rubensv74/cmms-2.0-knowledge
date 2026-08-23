@@ -1,0 +1,322 @@
+Screens:
+  scr_CMMS_ComponentLab_C02:
+    Properties:
+      Fill: =ColorValue("#F6F8FB")
+      LoadingSpinnerColor: =ColorValue("#1769E0")
+    Children:
+      - conCMMSLabC02_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =ColorValue("#F6F8FB")
+            Height: =App.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            PaddingBottom: =18
+            PaddingLeft: =18
+            PaddingRight: =18
+            PaddingTop: =18
+            Width: =App.Width
+          Children:
+            - lblCMMSLabC02_Boundary:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =ColorValue("#F4D6A0")
+                  BorderThickness: =1
+                  Color: =ColorValue("#8A5600")
+                  Fill: =ColorValue("#FFF8E7")
+                  FillPortions: =0
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =42
+                  PaddingLeft: =14
+                  Size: =8
+                  Text: ="C02 PROJECT CONTEXT LAB · CONTROLLED SYNTHETIC VALUES · NO PRODUCTION PROJECT DATA"
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =Parent.Width
+            - cmpCMMSLabC02_Header:
+                Control: CanvasComponent
+                ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                Properties:
+                  AccentColor: =ColorValue("#1769E0")
+                  EyebrowText: ="DESIGN SYSTEM"
+                  Height: =108
+                  PrimaryTextColor: =ColorValue("#172033")
+                  SecondaryTextColor: =ColorValue("#5C667A")
+                  ShowStatus: =true
+                  StatusText: ="RC0 · CANDIDATE"
+                  StatusTone: ="WARNING"
+                  Subtitle: ="Validate project selection, context-only rendering and explicit no-project state before integrating project data."
+                  SurfaceColor: =Color.Transparent
+                  Title: ="Project Context"
+                  Width: =Parent.Width
+            - conCMMSLabC02_Row:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutMinHeight: =260
+                  LayoutMinWidth: =900
+                  Width: =Parent.Width
+                Children:
+                  - conCMMSLabC02_SelectorCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E4EAF1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.White
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        LayoutMinHeight: =260
+                        LayoutMinWidth: =300
+                        PaddingBottom: =18
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =18
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                      Children:
+                        - lblCMMSLabC02_SelectorCaption:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#1769E0")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              Size: =8
+                              Text: ="SELECTOR MODE"
+                              Width: =Parent.Width
+                        - lblCMMSLabC02_SelectorTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#172033")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Size: =15
+                              Text: ="Project selection"
+                              Width: =Parent.Width
+                        - lblCMMSLabC02_SelectorHelp:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#5C667A")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              Height: =40
+                              Size: =9
+                              Text: ="Choose between controlled synthetic projects. The event is intentionally not connected to host state in this lab."
+                              Width: =Parent.Width
+                              Wrap: =true
+                        - cmpCMMSLabC02_Selector:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              BorderColor: =ColorValue("#E4EAF1")
+                              EmptyText: ="No project selected"
+                              Height: =48
+                              IsEnabled: =true
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="SELECTOR"
+                              OnProjectChange: =false
+                              PrimaryTextColor: =ColorValue("#172033")
+                              Projects: |-
+                                =Table(
+                                    {ProjectCode:"P-001", ProjectName:"SYNTHETIC DEMO PROJECT A", ProjectId:"P-001", DisplayProject:"P-001 · SYNTHETIC DEMO PROJECT A"},
+                                    {ProjectCode:"P-002", ProjectName:"SYNTHETIC DEMO PROJECT B", ProjectId:"P-002", DisplayProject:"P-002 · SYNTHETIC DEMO PROJECT B"},
+                                    {ProjectCode:"P-003", ProjectName:"SYNTHETIC PROJECT WITH A LONG NAME FOR WIDTH VALIDATION", ProjectId:"P-003", DisplayProject:"P-003 · SYNTHETIC PROJECT WITH A LONG NAME FOR WIDTH VALIDATION"}
+                                )
+                              SecondaryTextColor: =ColorValue("#5C667A")
+                              SelectedProjectCode: ="P-001"
+                              SelectedProjectId: ="P-001"
+                              SelectedProjectName: ="SYNTHETIC DEMO PROJECT A"
+                              SurfaceColor: =Color.White
+                              Width: =Parent.Width
+                  - conCMMSLabC02_ContextCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E4EAF1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.White
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        LayoutMinHeight: =260
+                        LayoutMinWidth: =300
+                        PaddingBottom: =18
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =18
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                      Children:
+                        - lblCMMSLabC02_ContextCaption:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#1769E0")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              Size: =8
+                              Text: ="CONTEXT_ONLY MODE"
+                              Width: =Parent.Width
+                        - lblCMMSLabC02_ContextTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#172033")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Size: =15
+                              Text: ="Accepted project context"
+                              Width: =Parent.Width
+                        - lblCMMSLabC02_ContextHelp:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#5C667A")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              Height: =40
+                              Size: =9
+                              Text: ="Read-only representation for screens where project switching is not allowed from the current surface."
+                              Width: =Parent.Width
+                              Wrap: =true
+                        - cmpCMMSLabC02_ContextOnly:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              BorderColor: =ColorValue("#E4EAF1")
+                              EmptyText: ="No project selected"
+                              Height: =48
+                              IsEnabled: =false
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="CONTEXT_ONLY"
+                              OnProjectChange: =false
+                              PrimaryTextColor: =ColorValue("#172033")
+                              Projects: =Table()
+                              SecondaryTextColor: =ColorValue("#5C667A")
+                              SelectedProjectCode: ="P-002"
+                              SelectedProjectId: ="P-002"
+                              SelectedProjectName: ="SYNTHETIC DEMO PROJECT B"
+                              SurfaceColor: =Color.White
+                              Width: =Parent.Width
+                  - conCMMSLabC02_EmptyCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#E4EAF1")
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.White
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        LayoutMinHeight: =260
+                        LayoutMinWidth: =300
+                        PaddingBottom: =18
+                        PaddingLeft: =18
+                        PaddingRight: =18
+                        PaddingTop: =18
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                      Children:
+                        - lblCMMSLabC02_EmptyCaption:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#B86B00")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              Size: =8
+                              Text: ="NO CONTEXT"
+                              Width: =Parent.Width
+                        - lblCMMSLabC02_EmptyTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#172033")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Size: =15
+                              Text: ="Explicit empty state"
+                              Width: =Parent.Width
+                        - lblCMMSLabC02_EmptyHelp:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0,0,0,0)
+                              Color: =ColorValue("#5C667A")
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              Height: =40
+                              Size: =9
+                              Text: ="The component must never infer or fabricate a project when the host has no accepted project context."
+                              Width: =Parent.Width
+                              Wrap: =true
+                        - cmpCMMSLabC02_NoContext:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              BorderColor: =ColorValue("#E4EAF1")
+                              EmptyText: ="No project selected"
+                              Height: =48
+                              IsEnabled: =false
+                              IsLoading: =false
+                              Label: ="Project"
+                              Mode: ="CONTEXT_ONLY"
+                              OnProjectChange: =false
+                              PrimaryTextColor: =ColorValue("#172033")
+                              Projects: =Table()
+                              SecondaryTextColor: =ColorValue("#5C667A")
+                              SelectedProjectCode: =""
+                              SelectedProjectId: =""
+                              SelectedProjectName: =""
+                              SurfaceColor: =Color.White
+                              Width: =Parent.Width
