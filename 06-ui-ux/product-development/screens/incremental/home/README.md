@@ -1,7 +1,7 @@
 # CMMS 2.0 — scr_Home / S01 Studio Gate
 
 **Fecha:** 2026-08-23  
-**Estado:** `S01 CANDIDATE / PENDING POWER APPS STUDIO GATE`  
+**Estado:** `S01 PASS / STUDIO VALIDATED`  
 **Método:** `CREATE_NEW_SCREEN`
 
 ## Declaración
@@ -105,26 +105,35 @@ S01 depende únicamente de `gblTheme`, `gblLayout`, `gblSidebarCollapsed` y `gbl
 - backend;
 - métricas inventadas.
 
-## Gate Studio
+## Resultado Studio — 2026-08-23
 
-1. Si ya existe `scr_Home`, renombrarla temporalmente a `scr_Home_Reference`.
-2. Crear una nueva pantalla desde **Source Code**.
-3. Pegar el YAML completo de `scr_Home_S01_Candidate.pa.yaml`.
-4. Confirmar que no aparecen errores de Source Code Schema ni Power Fx.
-5. Confirmar que el sidebar se expande y colapsa.
-6. Confirmar que no existe overlap/clipping a ancho desktop normal.
-7. Confirmar que el header y las cards son legibles.
-8. Capturar una imagen completa de Studio.
+`S01 PASS / STUDIO VALIDATED`
+
+Validado mediante captura completa de Power Apps Studio:
+
+1. Source Code importado sin errores de schema ni Power Fx visibles;
+2. shell completo renderizado;
+3. sidebar expandido estable;
+4. top bar sin solapes;
+5. jerarquía `L0 Context → L1 Page Identity → L2 Summary` legible;
+6. banner de límite `S01 · STRUCTURAL CANDIDATE · NO PRODUCTION DATA CONNECTED` visible;
+7. cards `Project Context` y `Next Capability` sin clipping;
+8. módulos futuros visibles solo como orientación y deshabilitados;
+9. ausencia de métricas, datos o acciones productivas ficticias;
+10. composición desktop sin overlap accidental.
+
+Evidencia formal:
+
+`06-ui-ux/product-development/screens/incremental/home/S01_VALIDATION_EVIDENCE_2026-08-23.md`
 
 ## Secuencia
 
 ```text
 S01 STRUCTURAL CANDIDATE
-→ Studio Gate
-→ S01 PASS
+→ S01 PASS / STUDIO VALIDATED
 → C01 Shared Component extraction / validation
 → C02 Home content primitives
 → I01 Project Context integration
 ```
 
-No declarar `VISUAL_APPROVED` ni sustituir navegación productiva hasta superar los gates correspondientes.
+S01 no se declara todavía `VISUAL_APPROVED`. El siguiente bloque debe centrarse en extraer y validar primitives reutilizables sin alterar la geometría ya validada.
