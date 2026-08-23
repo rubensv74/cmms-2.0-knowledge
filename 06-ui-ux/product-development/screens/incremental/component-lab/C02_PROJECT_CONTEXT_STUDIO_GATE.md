@@ -1,7 +1,7 @@
 # CMMS 2.0 — C02 Project Context Studio Gate
 
 **Fecha:** 2026-08-23  
-**Estado:** `C02 CANDIDATE / PENDING POWER APPS STUDIO GATE`  
+**Estado:** `C02-PC = PASS / STUDIO VALIDATED`  
 **Método:** `CREATE_SHARED_COMPONENT`
 
 ## Objetivo
@@ -55,25 +55,21 @@ El componente no cambia el proyecto aceptado por sí mismo. El host conserva la 
 
 `06-ui-ux/product-development/screens/incremental/component-lab/scr_CMMS_ComponentLab_C02_Candidate.pa.yaml`
 
-## Gate Studio
+## Studio validation result
 
-1. Importar/crear `cmp_CMMS_ProjectContextPro_RC0` desde Source Code.
-2. Confirmar ausencia de errores de Source Code Schema y Power Fx.
-3. Crear una pantalla temporal nueva desde Source Code.
-4. Pegar `scr_CMMS_ComponentLab_C02_Candidate.pa.yaml`.
-5. Confirmar las tres variantes:
-   - `SELECTOR MODE` con proyectos sintéticos explícitos;
-   - `CONTEXT_ONLY MODE` con proyecto aceptado;
-   - `NO CONTEXT` mostrando exactamente `No project selected`.
-6. En el selector, abrir el dropdown y comprobar que los tres proyectos sintéticos se muestran correctamente, incluido el nombre largo.
-7. Cambiar selección una vez y confirmar que no aparece error de runtime aunque el evento esté deliberadamente desconectado del host.
-8. Confirmar que ninguna variante inventa un proyecto cuando los inputs aceptados están vacíos.
-9. Capturar una imagen completa del lab.
+Validado en Power Apps Studio el 2026-08-23:
 
-## Resultado esperado
+1. Source Code import sin errores de schema ni Power Fx visibles;
+2. `SELECTOR MODE` renderiza proyectos sintéticos controlados;
+3. `CONTEXT_ONLY MODE` presenta el contexto aceptado como solo lectura;
+4. `NO CONTEXT` muestra explícitamente `No project selected`;
+5. no se infiere ni fabrica un proyecto cuando no existe contexto aceptado;
+6. las tres variantes conviven sin overlap/clipping a ancho desktop.
+
+## Resultado
 
 `C02-PC = PASS / STUDIO VALIDATED`
 
-Tras PASS queda autorizado `C03 — State Panel`.
+Queda autorizado `C03 — State Panel`.
 
 No integrar todavía el componente en `scr_Home S01`; la sustitución de primitives locales se hará después de validar la primera foundation compartida.
