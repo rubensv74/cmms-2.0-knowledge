@@ -1,0 +1,337 @@
+Screens:
+  scr_Assets:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+      OnVisible: |-
+        =Set(gblSelectedNavKey,"assets");
+        Set(gblAssetsDataMode,"SYNTHETIC_FIXTURE");
+        Set(gblAssetsTargetAssetId,"");
+        Set(gblAssetsTargetAssetCode,"");
+        UpdateContext({varAssetsState:"INITIAL",varAssetsSearch:"",varAssetsFilterType:"ALL",varAssetsFilterLocation:"ALL",varAssetsFilterLifecycle:"ALL",varAssetsFilterCriticality:"ALL",varAssetsSortAsc:true,varAssetsSelectedId:""});
+        ClearCollect(colAssets_FilterTypes,{Key:"ALL",DisplayLabel:"All types"},{Key:"PUMP",DisplayLabel:"Pumps"},{Key:"MOTOR",DisplayLabel:"Motors"},{Key:"COMPRESSOR",DisplayLabel:"Compressors"},{Key:"VESSEL",DisplayLabel:"Vessels"},{Key:"INSTRUMENT",DisplayLabel:"Instruments"});
+        ClearCollect(colAssets_FilterLocations,{Key:"ALL",DisplayLabel:"All locations"},{Key:"UNIT_A",DisplayLabel:"Unit A"},{Key:"UNIT_B",DisplayLabel:"Unit B"},{Key:"UTILITY",DisplayLabel:"Utilities"});
+        ClearCollect(colAssets_FilterLifecycle,{Key:"ALL",DisplayLabel:"All states"},{Key:"IN_OPERATION",DisplayLabel:"In operation"},{Key:"COMMISSIONED",DisplayLabel:"Commissioned"},{Key:"OUT_OF_SERVICE",DisplayLabel:"Out of service"});
+        ClearCollect(colAssets_FilterCriticality,{Key:"ALL",DisplayLabel:"All criticalities"},{Key:"A",DisplayLabel:"Criticality A"},{Key:"B",DisplayLabel:"Criticality B"},{Key:"C",DisplayLabel:"Criticality C"});
+        ClearCollect(
+            colAssetsReadModel,
+            {AssetId:"AST-001",AssetCode:"P-101",Description:"Cooling water pump A",EquipmentTypeCode:"PUMP",EquipmentTypeLabel:"Centrifugal pump",LocationCode:"UNIT_A",LocationLabel:"Unit A / Cooling Water",CriticalityCode:"A",CriticalityLabel:"A",LifecycleStatusCode:"IN_OPERATION",LifecycleStatusLabel:"In operation",ManufacturerName:"Flowserve",ModelName:"XYZ-200"},
+            {AssetId:"AST-002",AssetCode:"P-102",Description:"Cooling water pump B",EquipmentTypeCode:"PUMP",EquipmentTypeLabel:"Centrifugal pump",LocationCode:"UNIT_A",LocationLabel:"Unit A / Cooling Water",CriticalityCode:"A",CriticalityLabel:"A",LifecycleStatusCode:"IN_OPERATION",LifecycleStatusLabel:"In operation",ManufacturerName:Blank(),ModelName:Blank()},
+            {AssetId:"AST-003",AssetCode:"M-101",Description:"Cooling water pump motor",EquipmentTypeCode:"MOTOR",EquipmentTypeLabel:"Electric motor",LocationCode:"UNIT_A",LocationLabel:"Unit A / Cooling Water",CriticalityCode:"A",CriticalityLabel:"A",LifecycleStatusCode:"IN_OPERATION",LifecycleStatusLabel:"In operation",ManufacturerName:"Siemens",ModelName:"1LE1"},
+            {AssetId:"AST-004",AssetCode:"C-201",Description:"Instrument air compressor",EquipmentTypeCode:"COMPRESSOR",EquipmentTypeLabel:"Centrifugal compressor",LocationCode:"UTILITY",LocationLabel:"Utilities / Compressor House",CriticalityCode:"A",CriticalityLabel:"A",LifecycleStatusCode:"IN_OPERATION",LifecycleStatusLabel:"In operation",ManufacturerName:"Atlas Copco",ModelName:Blank()},
+            {AssetId:"AST-005",AssetCode:"V-301",Description:"Process separator vessel",EquipmentTypeCode:"VESSEL",EquipmentTypeLabel:"Horizontal vessel",LocationCode:"UNIT_B",LocationLabel:"Unit B / Separation",CriticalityCode:"B",CriticalityLabel:"B",LifecycleStatusCode:"COMMISSIONED",LifecycleStatusLabel:"Commissioned",ManufacturerName:Blank(),ModelName:Blank()},
+            {AssetId:"AST-006",AssetCode:"PT-201",Description:"Compressor discharge pressure transmitter",EquipmentTypeCode:"INSTRUMENT",EquipmentTypeLabel:"Pressure transmitter",LocationCode:"UTILITY",LocationLabel:"Utilities / Compressor House",CriticalityCode:"C",CriticalityLabel:"C",LifecycleStatusCode:"OUT_OF_SERVICE",LifecycleStatusLabel:"Out of service",ManufacturerName:"Rosemount",ModelName:"3051"}
+        );
+        UpdateContext({varAssetsState:If(CountRows(colAssetsReadModel)=0,"EMPTY","READY")})
+    Children:
+      - conAssets_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =gblTheme.Canvas
+            Height: =App.Height
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutMinHeight: =480
+            LayoutMinWidth: =720
+            Width: =App.Width
+          Children:
+            - conAssets_SidebarSlot:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =gblTheme.Sidebar
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  Width: =If(gblSidebarCollapsed,gblLayout.SidebarCollapsed,gblLayout.SidebarExpanded)
+                Children:
+                  - cmpAssets_Sidebar:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_SidebarPro_RC0
+                      Properties:
+                        Fill: =gblTheme.Sidebar
+                        Height: =Parent.Height
+                        Width: =Parent.Width
+            - conAssets_Content:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =gblLayout.GapMajor
+                  LayoutMinWidth: =600
+                  PaddingBottom: =If(App.Width<1100,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                  PaddingLeft: =If(App.Width<1100,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                  PaddingRight: =If(App.Width<1100,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                  PaddingTop: =If(App.Width<1100,gblLayout.PagePaddingCompact,gblLayout.PagePaddingDesktop)
+                Children:
+                  - cmpAssets_ProjectContext:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                      Properties:
+                        Fill: =Color.Transparent
+                        Height: =gblLayout.TopBarHeight
+                        Width: =Parent.Width
+                  - cmpAssets_PageHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                      Properties:
+                        Fill: =Color.Transparent
+                        Height: =104
+                        Subtitle: ="Explore and manage maintainable assets"
+                        Title: ="Assets"
+                        Width: =Parent.Width
+                  - conAssets_Workspace:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        LayoutMinHeight: =300
+                        PaddingBottom: =16
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =gblLayout.RadiusCard
+                        RadiusBottomRight: =gblLayout.RadiusCard
+                        RadiusTopLeft: =gblLayout.RadiusCard
+                        RadiusTopRight: =gblLayout.RadiusCard
+                      Children:
+                        - conAssets_Search:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =44
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                            Children:
+                              - txtAssets_Search:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    Color: =gblTheme.TextPrimary
+                                    Default: =varAssetsSearch
+                                    Fill: =Color.White
+                                    FillPortions: =1
+                                    Height: =44
+                                    HintText: ="Search asset code or description"
+                                    OnChange: =UpdateContext({varAssetsSearch:Self.Text,varAssetsSelectedId:""})
+                                    PaddingLeft: =12
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                              - btnAssets_Sort:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    Color: =gblTheme.TextPrimary
+                                    Fill: =Color.White
+                                    Height: =44
+                                    OnSelect: =UpdateContext({varAssetsSortAsc:!varAssetsSortAsc,varAssetsSelectedId:""})
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Text: =If(varAssetsSortAsc,"Asset code ↑","Asset code ↓")
+                                    Width: =120
+                        - conAssets_Filters:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =44
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                            Children:
+                              - drpAssets_Type:
+                                  Control: DropDown@0.0.45
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    DefaultSelectedItems: =Filter(colAssets_FilterTypes,Key=varAssetsFilterType)
+                                    FillPortions: =1
+                                    Items: =colAssets_FilterTypes
+                                    OnChange: =UpdateContext({varAssetsFilterType:Text(Self.Selected.Key),varAssetsSelectedId:""})
+                                  Children:
+                                    - TypeLabel:
+                                        Control: DropDownDataField@1.5.0
+                                        Variant: textualColumn
+                                        IsLocked: true
+                                        Properties: {FieldDisplayName: ="DisplayLabel",FieldName: ="DisplayLabel",FieldType: ="s",Order: =1}
+                              - drpAssets_Location:
+                                  Control: DropDown@0.0.45
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    DefaultSelectedItems: =Filter(colAssets_FilterLocations,Key=varAssetsFilterLocation)
+                                    FillPortions: =1
+                                    Items: =colAssets_FilterLocations
+                                    OnChange: =UpdateContext({varAssetsFilterLocation:Text(Self.Selected.Key),varAssetsSelectedId:""})
+                                  Children:
+                                    - LocationLabel:
+                                        Control: DropDownDataField@1.5.0
+                                        Variant: textualColumn
+                                        IsLocked: true
+                                        Properties: {FieldDisplayName: ="DisplayLabel",FieldName: ="DisplayLabel",FieldType: ="s",Order: =1}
+                              - drpAssets_Lifecycle:
+                                  Control: DropDown@0.0.45
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    DefaultSelectedItems: =Filter(colAssets_FilterLifecycle,Key=varAssetsFilterLifecycle)
+                                    FillPortions: =1
+                                    Items: =colAssets_FilterLifecycle
+                                    OnChange: =UpdateContext({varAssetsFilterLifecycle:Text(Self.Selected.Key),varAssetsSelectedId:""})
+                                  Children:
+                                    - LifecycleLabel:
+                                        Control: DropDownDataField@1.5.0
+                                        Variant: textualColumn
+                                        IsLocked: true
+                                        Properties: {FieldDisplayName: ="DisplayLabel",FieldName: ="DisplayLabel",FieldType: ="s",Order: =1}
+                              - drpAssets_Criticality:
+                                  Control: DropDown@0.0.45
+                                  Properties:
+                                    BorderColor: =gblTheme.Border
+                                    DefaultSelectedItems: =Filter(colAssets_FilterCriticality,Key=varAssetsFilterCriticality)
+                                    FillPortions: =1
+                                    Items: =colAssets_FilterCriticality
+                                    OnChange: =UpdateContext({varAssetsFilterCriticality:Text(Self.Selected.Key),varAssetsSelectedId:""})
+                                  Children:
+                                    - CriticalityLabel:
+                                        Control: DropDownDataField@1.5.0
+                                        Variant: textualColumn
+                                        IsLocked: true
+                                        Properties: {FieldDisplayName: ="DisplayLabel",FieldName: ="DisplayLabel",FieldType: ="s",Order: =1}
+                              - btnAssets_Reset:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =RGBA(0,0,0,0)
+                                    Color: =gblTheme.TextSecondary
+                                    Fill: =Color.Transparent
+                                    OnSelect: |-
+                                      =UpdateContext({varAssetsSearch:"",varAssetsFilterType:"ALL",varAssetsFilterLocation:"ALL",varAssetsFilterLifecycle:"ALL",varAssetsFilterCriticality:"ALL",varAssetsSelectedId:""});
+                                      Reset(txtAssets_Search);
+                                      Reset(drpAssets_Type);
+                                      Reset(drpAssets_Location);
+                                      Reset(drpAssets_Lifecycle);
+                                      Reset(drpAssets_Criticality)
+                                    Text: ="Reset"
+                                    Width: =72
+                        - lblAssets_Meta:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =gblTheme.TextMuted
+                              Height: =28
+                              Size: =8
+                              Text: =CountRows(galAssets_Rows.AllItems) & " assets • synthetic read model"
+                        - conAssets_Header:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              Fill: =ColorValue("#F8FAFC")
+                              FillPortions: =0
+                              Height: =38
+                              LayoutDirection: =LayoutDirection.Horizontal
+                            Children:
+                              - lblAssets_HCode:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Asset",FillPortions: =10,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold}
+                              - lblAssets_HDescription:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Description",FillPortions: =22,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold}
+                              - lblAssets_HType:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Equipment type",FillPortions: =16,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold}
+                              - lblAssets_HLocation:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Location",FillPortions: =18,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold}
+                              - lblAssets_HCriticality:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Crit.",FillPortions: =8,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold}
+                              - lblAssets_HStatus:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Lifecycle",FillPortions: =12,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold}
+                              - lblAssets_HAction:
+                                  Control: Label@2.5.1
+                                  Properties: {Text: ="Action",FillPortions: =8,Color: =gblTheme.TextSecondary,FontWeight: =FontWeight.Semibold,Align: =Align.Center}
+                        - galAssets_Rows:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =gblTheme.Border
+                              BorderThickness: =1
+                              FillPortions: =1
+                              Items: |-
+                                =With({q:Lower(Trim(varAssetsSearch))},SortByColumns(Filter(colAssetsReadModel,(IsBlank(q) || q in Lower(AssetCode & " " & Description)) && (varAssetsFilterType="ALL" || EquipmentTypeCode=varAssetsFilterType) && (varAssetsFilterLocation="ALL" || LocationCode=varAssetsFilterLocation) && (varAssetsFilterLifecycle="ALL" || LifecycleStatusCode=varAssetsFilterLifecycle) && (varAssetsFilterCriticality="ALL" || CriticalityCode=varAssetsFilterCriticality)),"AssetCode",If(varAssetsSortAsc,SortOrder.Ascending,SortOrder.Descending)))
+                              ShowScrollbar: =true
+                              TemplatePadding: =0
+                              TemplateSize: =52
+                              Visible: =varAssetsState="READY"
+                            Children:
+                              - conAssets_Row:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =If(ThisItem.AssetId=varAssetsSelectedId,ColorFade(gblTheme.Primary,0.94),Color.White)
+                                    Height: =51
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    Width: =Parent.Width
+                                  Children:
+                                    - lblAssets_RCode:
+                                        Control: Label@2.5.1
+                                        Properties: {Text: =ThisItem.AssetCode,FillPortions: =10,Color: =gblTheme.TextPrimary,FontWeight: =FontWeight.Semibold}
+                                    - lblAssets_RDescription:
+                                        Control: Label@2.5.1
+                                        Properties: {Text: =ThisItem.Description,FillPortions: =22,Color: =gblTheme.TextPrimary}
+                                    - lblAssets_RType:
+                                        Control: Label@2.5.1
+                                        Properties: {Text: =ThisItem.EquipmentTypeLabel,FillPortions: =16,Color: =gblTheme.TextSecondary}
+                                    - lblAssets_RLocation:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =gblTheme.TextSecondary
+                                          FillPortions: =18
+                                          Text: =Coalesce(ThisItem.LocationLabel,"—")
+                                    - lblAssets_RCriticality:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Text: =Coalesce(ThisItem.CriticalityLabel,"—")
+                                          FillPortions: =8
+                                          Color: =gblTheme.TextSecondary
+                                          FontWeight: =FontWeight.Semibold
+                                    - lblAssets_RStatus:
+                                        Control: Label@2.5.1
+                                        Properties: {Text: =ThisItem.LifecycleStatusLabel,FillPortions: =12,Color: =gblTheme.TextSecondary}
+                                    - btnAssets_Select:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =If(ThisItem.AssetId=varAssetsSelectedId,gblTheme.Primary,gblTheme.Border)
+                                          Color: =If(ThisItem.AssetId=varAssetsSelectedId,Color.White,gblTheme.Primary)
+                                          Fill: =If(ThisItem.AssetId=varAssetsSelectedId,gblTheme.Primary,Color.White)
+                                          FillPortions: =8
+                                          OnSelect: |-
+                                            =UpdateContext({varAssetsSelectedId:ThisItem.AssetId});
+                                            Set(gblAssetsTargetAssetId,ThisItem.AssetId);
+                                            Set(gblAssetsTargetAssetCode,ThisItem.AssetCode)
+                                          Text: =If(ThisItem.AssetId=varAssetsSelectedId,"Selected","Select")
+                        - cmpAssets_StatePanel:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_StatePanelPro_RC0
+                            Properties:
+                              Height: =Parent.Height
+                              Message: =Switch(varAssetsState,"ERROR","Assets could not be loaded.","UNAVAILABLE_SOURCE","The Assets source is unavailable.","EMPTY","No assets are available in the current scope.","Loading assets...")
+                              ShowAction: =false
+                              State: =If(varAssetsState="UNAVAILABLE_SOURCE","UNAVAILABLE",varAssetsState)
+                              Title: =Switch(varAssetsState,"ERROR","Assets unavailable","UNAVAILABLE_SOURCE","Source unavailable","EMPTY","No assets found","LOADING","Loading assets","Assets")
+                              Visible: =varAssetsState<>"READY"
+                              Width: =Parent.Width

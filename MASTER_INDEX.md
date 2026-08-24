@@ -48,6 +48,7 @@
 - [AE-G5 — AssetPlan 3D Power Apps Runtime Gate](06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md)
 - [AE6 — Component Adaptation Baseline](06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md)
 - [AE-G6 — Asset Detail S01 Studio Gate](06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md)
+- [ASSETS Capability Studio Gate](06-ui-ux/gates/ASSETS_CAPABILITY_STUDIO_GATE_2026-08-24.md)
 - [CMMS Branding Library V1](06-ui-ux/branding/README.md)
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
 - [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
@@ -66,8 +67,15 @@
 - [Caso P-101 v1](06-ui-ux/functional-lab/cases/P101/p101-case.v1.json)
 - [P-101 Asset Detail fixture](06-ui-ux/functional-lab/cases/P101/p101-asset-detail.v1.json)
 - [AE6-S01 — Asset Detail Pre-Studio Implementation](06-ui-ux/functional-lab/development/AE6_ASSET_DETAIL_S01_PRESTUDIO_IMPLEMENTATION.md)
-- [ASSETS Incremental Build Plan](06-ui-ux/functional-lab/development/ASSETS_I01_INCREMENTAL_PLAN.md)
-- [ASSETS I01-01 Shell](06-ui-ux/functional-lab/development/ASSETS_I01_01_SHELL.md)
+- [ASSETS Incremental Build Plan — historical trace](06-ui-ux/functional-lab/development/ASSETS_I01_INCREMENTAL_PLAN.md)
+- [ASSETS I01-01 Shell — historical trace](06-ui-ux/functional-lab/development/ASSETS_I01_01_SHELL.md)
+- [ASSETS Capability Procedure Preflight](06-ui-ux/functional-lab/development/ASSETS_CAPABILITY_PREFLIGHT_2026-08-24.md)
+- [ASSETS Capability Build Report](06-ui-ux/functional-lab/development/ASSETS_CAPABILITY_BUILD_2026-08-24.md)
+
+## Power Apps Source / PaYaml
+
+- [ASSETS cumulative candidate — scr_Assets](08-resources/power-apps/screens/assets/scr_Assets.pa.yaml)
+- [ASSETS Source Delivery README](08-resources/power-apps/screens/assets/README.md)
 
 ## Power Fx reusable
 
