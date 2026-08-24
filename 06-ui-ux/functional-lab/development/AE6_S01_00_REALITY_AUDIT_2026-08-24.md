@@ -3,7 +3,7 @@
 **Fecha:** 2026-08-24  
 **Incremento:** `AE6-S01-00`  
 **Fuente de evidencia:** Power Apps Studio real — capturas aportadas durante el gate  
-**Estado:** `PARTIAL_PASS / APP_REALITY_CONFIRMED / LOCALE_PENDING`
+**Estado:** `PASS / S01-00_REALITY_PASS`
 
 ## 1. Objetivo
 
@@ -95,6 +95,70 @@ Regla de interpretación:
 - AE6-S01 no debe asumir como propia esta deuda baseline;
 - durante AE-G6 se comparará el App Checker posterior contra este punto de partida y se revisarán específicamente los hallazgos nuevos atribuibles a `scr_AssetDetail_S01` y sus componentes.
 
+### Power Fx authoring syntax / locale behavior
+
+La captura de `App.OnStart` confirma la sintaxis real usada por esta app:
+
+```text
+Function arguments / record fields: comma
+Instruction separator: semicolon
+Decimal separator in literals observed: period-compatible numeric syntax
+```
+
+Ejemplos reales observados:
+
+```powerfx
+Set(gblTheme, { Canvas: ColorValue("#F6F8FB"), ... });
+Set(gblLayout, { SidebarExpanded: 248, SidebarCollapsed: 72, ... });
+Set(gblSidebarCollapsed, false);
+Set(gblSelectedNavKey, "home");
+Set(gblShellReady, true);
+```
+
+Para los incrementos AE6 se usará este mismo estilo de Power Fx. No convertir las fórmulas a la variante local que usa `;` como separador de argumentos o `;;` como encadenado.
+
+### Foundation global ya existente
+
+`App.OnStart` confirma globals físicos que deben reutilizarse:
+
+```text
+gblTheme
+  Canvas
+  Sidebar
+  SidebarHover
+  SidebarSelected
+  Surface
+  Border
+  TextPrimary
+  TextSecondary
+  TextMuted
+  Primary
+  PrimaryHover
+  Success
+  Warning
+  Danger
+  Info
+
+gblLayout
+  SidebarExpanded = 248
+  SidebarCollapsed = 72
+  TopBarHeight = 64
+  PagePaddingDesktop = 24
+  PagePaddingCompact = 16
+  RadiusCard = 12
+  GapMajor = 16
+
+gblSidebarCollapsed
+gblSelectedNavKey
+gblShellReady
+```
+
+Regla:
+
+- `scr_AssetDetail_S01` reutiliza esta foundation;
+- no crear `gblAE6Theme`, `gblAssetLayout` o equivalentes paralelos salvo gap contractual real;
+- los nuevos componentes Asset Experience deben consumir tokens existentes donde encajen y proponer extensiones gobernadas solo cuando falte un token real.
+
 ## 3. Impacto sobre el plan AE6-S01
 
 El bloque S01-02 puede reutilizar directamente la foundation física instalada:
@@ -111,7 +175,7 @@ Por tanto, la primera implementación no debe importar/copiar los componentes As
 
 La composición de `scr_AssetDetail_S01` deberá construirse sobre containers responsive y no sobre una maqueta 1366x768 hard-coded.
 
-## 4. Checks todavía pendientes para cerrar S01-00
+## 4. Checks S01-00
 
 ### P1 — App Checker baseline
 
@@ -126,21 +190,24 @@ Performance   = 3
 
 Los demás grupos no muestran contador visible en el resumen capturado.
 
-### P2 — Authoring locale
+### P2 — Authoring locale / syntax
 
-Pendiente confirmar el locale real usado por la app para fórmulas.
+**PASS / CONFIRMED FROM REAL APP.ONSTART**.
 
-No inferirlo únicamente por el idioma de Studio o por una fórmula aislada.
+```text
+arguments = comma
+instructions = semicolon
+```
 
 ### P3 — Source-code reality
 
-Layout responsive ya confirmado.
+Layout responsive confirmado.
 
-Pendiente únicamente confirmar la disponibilidad real del mecanismo Source Code/YAML que vaya a usarse si se decide editar source en incrementos posteriores.
+La disponibilidad de edición Source Code/YAML queda `OPTIONAL / NOT REQUIRED_FOR_S01-01`.
 
-Esto no bloquea S01-01, que puede empezar con Power Fx pegado directamente en Studio después de cerrar authoring locale.
+No bloquea el siguiente incremento porque S01-01 se ejecutará mediante Power Fx pegado directamente en Studio.
 
-## 5. Gate actual
+## 5. Gate final
 
 ```text
 CANVAS APP EXISTS              = PASS
@@ -150,20 +217,26 @@ RESPONSIVE LAYOUT              = PASS
 LOCK ASPECT RATIO              = OFF / CONFIRMED
 LOCK ORIENTATION               = OFF / CONFIRMED
 APP CHECKER BASELINE           = PASS / CAPTURED
-AUTHORING LOCALE               = PENDING
+AUTHORING SYNTAX                = PASS / CONFIRMED
+GLOBAL FOUNDATION              = PASS / INVENTORIED
 SOURCE-CODE MECHANISM          = OPTIONAL / PENDING
 
-S01-00_REALITY_PASS            = NOT YET CLOSED
+S01-00_REALITY_PASS            = PASS
 ```
 
-## 6. Siguiente acción manual
+## 6. Siguiente acción
 
-Confirmar **authoring locale / fórmula real** sin modificar lógica funcional:
+Crear una nueva screen responsive gobernada:
 
-1. cerrar `App checker`;
-2. seleccionar `App` en Tree view;
-3. seleccionar la propiedad `OnStart` en el selector de propiedades de la barra de fórmulas;
-4. capturar la fórmula existente completa o suficiente para observar separadores y estilo de Power Fx;
-5. no editar ni ejecutar nada todavía.
+```text
+scr_AssetDetail_S01
+```
 
-Una vez confirmada la sintaxis real, cerrar `S01-00_REALITY_PASS` y crear `scr_AssetDetail_S01` para iniciar `S01-01 — Fixture state only`.
+Después iniciar `S01-01 — Fixture state only` pegando el bloque Power Fx preparado en la propiedad `OnVisible` de esa nueva screen, no en `App.OnStart`.
+
+Razón:
+
+- aislar el incremento;
+- no contaminar el startup global;
+- facilitar repetición del fixture al navegar a la pantalla;
+- permitir retirar el fixture en S02 sin tocar la foundation global.
