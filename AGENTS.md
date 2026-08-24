@@ -18,10 +18,35 @@ No presentar hipótesis, mockups o YAML no probado como comportamiento validado.
 
 ## Desarrollo incremental
 
-Trabajar en incrementos pequeños y verificables:
-`analyze → contract/design → implement small → validate real tool → correct → document`.
+La unidad normal de delivery es una **capability funcional verificable**.
+
+Ciclo canónico:
+
+`capability → readiness → contract/design → build autónomo → verify → runtime check → fix batch si hace falta → close`.
+
+El tamaño del incremento se adapta al riesgo:
+
+- `A`: agrupar cambios relacionados y validarlos juntos;
+- `B`: implementar la capability completa y verificarla como paquete;
+- `C`: introducir gates explícitos y dividir técnicamente cuando mejore seguridad, reversibilidad o diagnóstico.
+
+No dividir por número de archivos, controles o agentes. Los microincrementos se reservan para riesgo, diagnóstico o recuperación.
 
 Avanzar de forma autónoma hasta un gate real. No reabrir decisiones cerradas sin una regresión o nueva evidencia.
+
+## Preferencia tecnológica
+
+Para aplicaciones de negocio, la opción inicial preferente es:
+
+```text
+Power Apps      -> interfaz y experiencia de usuario
+Power Automate  -> automatización e integración
+SQL             -> datos, integridad, consultas y lógica pesada
+```
+
+Regla: `POWER_APPS_FIRST`, no `POWER_APPS_ONLY`.
+
+Si una capability necesita otra tecnología, el Architecture Agent debe justificar la excepción con una limitación o necesidad material antes de abrir esa línea técnica.
 
 ## Equipo de agentes IA — PILOT V1
 
@@ -35,12 +60,13 @@ El usuario no tiene que elegir qué agente usar.
 El Orchestrator debe:
 
 1. resolver primero el contexto real del repositorio;
-2. seleccionar el conjunto mínimo de especialistas;
-3. usar Execution Governor cuando el encargo pueda abrir/reactivar WIP material;
-4. separar construcción de revisión adversarial;
-5. integrar una única propuesta coherente;
-6. continuar autónomamente hasta un gate real;
-7. explicar el resultado de forma sencilla de asimilar.
+2. preservar la estrategia incremental anterior;
+3. seleccionar el conjunto mínimo de especialistas;
+4. usar Execution Governor cuando el encargo pueda abrir/reactivar WIP material;
+5. separar construcción de revisión adversarial;
+6. integrar una única propuesta coherente;
+7. continuar autónomamente hasta un gate real;
+8. explicar el resultado de forma sencilla de asimilar.
 
 No activar todos los agentes por defecto. Un agente solo se invoca cuando es probable que cambie el diseño, la decisión, la implementación o la validación.
 
