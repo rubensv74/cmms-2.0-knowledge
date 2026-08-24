@@ -1,0 +1,216 @@
+/* ============================================================
+   CMMS 2.0 — AE6-S01 Asset Detail fixture loader
+   Status: SYNTHETIC_FIXTURE_ONLY / PRE-STUDIO
+
+   Purpose:
+   Load the minimum UI-facing state for Asset Detail S01.
+
+   Important:
+   - No SQL / Flow / DML.
+   - No productive engineering source.
+   - Values come from the P-101 conceptual fixture.
+   - Standard Power Fx notation shown here uses commas for
+     function arguments and semicolons between statements.
+     Confirm the authoring locale in S01-00 before paste.
+   ============================================================ */
+
+Set(gblAE6_DataMode, "SYNTHETIC_FIXTURE");
+Set(gblAE6_SelectedSection, "OVERVIEW");
+
+Set(
+    recAE6_Asset,
+    {
+        AssetCode: "P-101",
+        Description: "Bomba centrífuga de agua de refrigeración",
+        EquipmentTypeCode: "PUMP_CENTRIFUGAL_HORIZONTAL",
+        EquipmentTypeLabel: "Pump — Centrifugal Horizontal",
+        LifecycleStatusCode: "IN_OPERATION",
+        LifecycleStatusLabel: "In operation",
+        CriticalityCode: "A",
+        CriticalityLabel: "Criticality A",
+        LocationCode: "DEMO-UNIT-A",
+        LocationLabel: "Unidad de proceso A",
+        ParentAssetCode: Blank(),
+        RelationshipType: Blank(),
+        ManufacturerName: Blank(),
+        ModelName: Blank(),
+        SerialNumber: Blank()
+    }
+);
+
+ClearCollect(
+    colAE6_HierarchyPath,
+    { DisplayOrder: 10, NodeType: "PLANT", Label: "Demo Plant" },
+    { DisplayOrder: 20, NodeType: "AREA", Label: "Unidad de proceso A" },
+    { DisplayOrder: 30, NodeType: "SYSTEM", Label: "Cooling Water" },
+    { DisplayOrder: 40, NodeType: "LOCATION", Label: "Pump Train P-101" }
+);
+
+ClearCollect(
+    colAE6_TechnicalValues,
+    {
+        FieldKey: "DUTY_FLOW",
+        Label: "Duty flow",
+        SectionKey: "OPERATING_POINT",
+        SectionLabel: "Operating point",
+        DisplayOrder: 10,
+        ValueType: "NUMBER",
+        ValueDisplay: "120",
+        UnitDisplay: "m³/h",
+        AvailabilityStatus: "READY",
+        IsRequired: true,
+        IsOverride: false,
+        ProvenanceType: "IMPORTED",
+        SourceLabel: "P-101 demo engineering context",
+        FreshnessStatus: "CURRENT"
+    },
+    {
+        FieldKey: "DUTY_PRESSURE",
+        Label: "Duty pressure",
+        SectionKey: "OPERATING_POINT",
+        SectionLabel: "Operating point",
+        DisplayOrder: 20,
+        ValueType: "NUMBER",
+        ValueDisplay: "6",
+        UnitDisplay: "bar",
+        AvailabilityStatus: "READY",
+        IsRequired: true,
+        IsOverride: false,
+        ProvenanceType: "IMPORTED",
+        SourceLabel: "P-101 demo engineering context",
+        FreshnessStatus: "CURRENT"
+    },
+    {
+        FieldKey: "REDUNDANCY",
+        Label: "Redundancy",
+        SectionKey: "OPERATING_CONTEXT",
+        SectionLabel: "Operating context",
+        DisplayOrder: 30,
+        ValueType: "TEXT",
+        ValueDisplay: "P-102 en reserva automática",
+        UnitDisplay: Blank(),
+        AvailabilityStatus: "READY",
+        IsRequired: false,
+        IsOverride: false,
+        ProvenanceType: "IMPORTED",
+        SourceLabel: "P-101 demo engineering context",
+        FreshnessStatus: "CURRENT"
+    },
+    {
+        FieldKey: "MANUFACTURER",
+        Label: "Manufacturer",
+        SectionKey: "IDENTIFICATION",
+        SectionLabel: "Identification",
+        DisplayOrder: 40,
+        ValueType: "TEXT",
+        ValueDisplay: Blank(),
+        UnitDisplay: Blank(),
+        AvailabilityStatus: "UNAVAILABLE",
+        IsRequired: false,
+        IsOverride: false,
+        ProvenanceType: Blank(),
+        SourceLabel: Blank(),
+        FreshnessStatus: "UNAVAILABLE"
+    },
+    {
+        FieldKey: "MODEL",
+        Label: "Model",
+        SectionKey: "IDENTIFICATION",
+        SectionLabel: "Identification",
+        DisplayOrder: 50,
+        ValueType: "TEXT",
+        ValueDisplay: Blank(),
+        UnitDisplay: Blank(),
+        AvailabilityStatus: "UNAVAILABLE",
+        IsRequired: false,
+        IsOverride: false,
+        ProvenanceType: Blank(),
+        SourceLabel: Blank(),
+        FreshnessStatus: "UNAVAILABLE"
+    }
+);
+
+ClearCollect(
+    colAE6_EngineeringSources,
+    {
+        SourceKey: "DEMO_FIXTURE",
+        SourceLabel: "P-101 conceptual case",
+        SourceType: "SYSTEM_REFERENCE",
+        Status: "AVAILABLE",
+        Revision: "1.1.0",
+        OpenReference: Blank()
+    }
+);
+
+ClearCollect(
+    colAE6_Documents,
+    {
+        DocumentId: "DEMO-DATASHEET",
+        DocumentType: "DATASHEET",
+        Title: "Ficha técnica",
+        Revision: Blank(),
+        Status: "REFERENCE_ONLY",
+        OpenReference: Blank()
+    },
+    {
+        DocumentId: "DEMO-PID",
+        DocumentType: "P_AND_ID",
+        Title: "P&ID",
+        Revision: Blank(),
+        Status: "REFERENCE_ONLY",
+        OpenReference: Blank()
+    },
+    {
+        DocumentId: "DEMO-OEM",
+        DocumentType: "OEM_MANUAL",
+        Title: "Manual O&M",
+        Revision: Blank(),
+        Status: "REFERENCE_ONLY",
+        OpenReference: Blank()
+    }
+);
+
+ClearCollect(
+    colAE6_Visuals,
+    {
+        VisualId: "TYPE:PUMP_CENTRIFUGAL_HORIZONTAL",
+        VisualKind: "TYPE_ILLUSTRATION",
+        Label: "Type illustration",
+        AssetKey: "ap-eq-pump-centrifugal-horizontal",
+        RuntimeMediaKey: Blank(),
+        Status: "READY",
+        Provider: "AssetPlan Industrial Technical 3D"
+    }
+);
+
+Set(
+    recAE6_Maintenance,
+    {
+        Status: "PARTIAL_DEMO",
+        PlanVersionId: "P101-DEMO-PLAN-1.0",
+        PlanLabel: "P-101 demo maintenance plan",
+        StrategyLabel: "Mantenimiento basado en condición",
+        PlanStatus: "CONCEPTUAL_FIXTURE",
+        OpenWorkOrders: Blank(),
+        OverdueWorkOrders: Blank(),
+        NextDueAt: Blank()
+    }
+);
+
+Set(
+    recAE6_Freshness,
+    {
+        AssetMasterStatus: "CURRENT",
+        TechnicalProfileStatus: "CURRENT",
+        EngineeringContextStatus: "CURRENT",
+        MaintenanceContextStatus: "UNAVAILABLE"
+    }
+);
+
+/* Smoke-test expectations
+   CountRows(colAE6_HierarchyPath)       = 4
+   CountRows(colAE6_TechnicalValues)     = 5
+   CountRows(colAE6_EngineeringSources)  = 1
+   CountRows(colAE6_Documents)           = 3
+   CountRows(colAE6_Visuals)             = 1
+*/
