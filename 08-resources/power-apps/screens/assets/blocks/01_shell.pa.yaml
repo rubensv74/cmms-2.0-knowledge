@@ -1,0 +1,147 @@
+Screens:
+  scr_Assets_I01:
+    Properties:
+      Fill: =gblTheme.Canvas
+      LoadingSpinnerColor: =gblTheme.Primary
+      OnVisible: =Set(gblSelectedNavKey,"assets")
+    Children:
+      - conAssets_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            DropShadow: =DropShadow.None
+            Fill: =gblTheme.Canvas
+            Height: =App.Height
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            LayoutMinHeight: =480
+            LayoutMinWidth: =720
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =App.Width
+          Children:
+            - conAssets_SidebarSlot:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Sidebar
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =480
+                  LayoutMinWidth: =gblLayout.SidebarCollapsed
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Width: =If(gblSidebarCollapsed,gblLayout.SidebarCollapsed,gblLayout.SidebarExpanded)
+                Children:
+                  - cmpAssets_Sidebar:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_SidebarPro_RC0
+                      Properties:
+                        Fill: =gblTheme.Sidebar
+                        Height: =Parent.Height
+                        Width: =Parent.Width
+            - conAssets_Content:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  DropShadow: =DropShadow.None
+                  Fill: =gblTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =gblLayout.GapMajor
+                  LayoutMinHeight: =480
+                  LayoutMinWidth: =600
+                  PaddingBottom: =gblLayout.PagePaddingDesktop
+                  PaddingLeft: =gblLayout.PagePaddingDesktop
+                  PaddingRight: =gblLayout.PagePaddingDesktop
+                  PaddingTop: =gblLayout.PagePaddingDesktop
+                  Width: =Parent.Width
+                Children:
+                  - conAssets_ContextSlot:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Height: =gblLayout.TopBarHeight
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =0
+                        LayoutMinHeight: =gblLayout.TopBarHeight
+                        LayoutMinWidth: =320
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpAssets_ProjectContext:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_ProjectContextPro_RC0
+                            Properties:
+                              Fill: =Color.Transparent
+                              Height: =Parent.Height
+                              Width: =Parent.Width
+                  - conAssets_HeaderSlot:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Height: =104
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =0
+                        LayoutMinHeight: =104
+                        LayoutMinWidth: =320
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Width: =Parent.Width
+                      Children:
+                        - cmpAssets_PageHeader:
+                            Control: CanvasComponent
+                            ComponentName: cmp_CMMS_PageHeaderPro_RC0
+                            Properties:
+                              Fill: =Color.Transparent
+                              Height: =Parent.Height
+                              Width: =Parent.Width
+                  - conAssets_WorkspaceHost:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =gblTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =gblTheme.Surface
+                        FillPortions: =1
+                        Height: =Parent.Height
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =0
+                        LayoutMinHeight: =240
+                        LayoutMinWidth: =320
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        RadiusBottomLeft: =gblLayout.RadiusCard
+                        RadiusBottomRight: =gblLayout.RadiusCard
+                        RadiusTopLeft: =gblLayout.RadiusCard
+                        RadiusTopRight: =gblLayout.RadiusCard
+                        Width: =Parent.Width
