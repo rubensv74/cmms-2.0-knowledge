@@ -4,72 +4,30 @@
 
 ## Estado general
 
-CMMS 2.0 continúa en la fase **Functional Lab**.
+CMMS 2.0 continúa en fase **Functional Lab**, con tres líneas gobernadas en paralelo:
 
-El núcleo AMEF + RCM mantiene la revisión funcional **v1.1** consolidada el 2026-08-14. La reunión del 2026-08-21 no exige rehacer ese journey, pero abre formalmente un **discovery de Gestión del Trabajo** para estudiar el proceso posterior al plan publicado.
+1. **AMEF + RCM / Functional Lab** — foundation conceptual consolidada y siguiente gate técnico en Power Apps real.
+2. **Asset Experience Redefinition** — contratos AE-0 a AE-4 cerrados; AE-5 preparado y detenido en runtime gate real.
+3. **Work Management Discovery** — AS-IS inicial documentado; todavía no es modelo TO-BE ni workspace canónico.
 
-En paralelo, el 2026-08-24 se acepta el track transversal **Asset Experience Redefinition** para revisar `Assets`, el sistema visual asociado y las pantallas de Asset Master sin crear una segunda biblioteca técnica 3D.
-
-El laboratorio sigue teniendo como propósito validar el modelo funcional mediante casos ejecutables y producir documentación trazable para IT, sin convertir Power Apps ni el comportamiento del sistema actual en decisiones de arquitectura productiva.
-
-## Cambio principal del 2026-08-24 — Asset Experience
-
-Se formalizan tres decisiones:
-
-1. **Revisar Assets** como superficie nuclear de CMMS 2.0, separando identidad, Technical Profile, Engineering Context, Visual Context y Maintenance Context.
-2. **Revisar el sistema visual** que soporta esa experiencia: iconografía, jerarquía visual, semántica de estados/provenance y componentes premium compartidos.
-3. **Reutilizar la colección 3D de AssetPlan** en lugar de crear una biblioteca CMMS duplicada. CMMS será consumidor gobernado de `AssetPlan Industrial Technical 3D`.
-
-Documento canónico:
-
-- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`.
-
-El catálogo de componentes incorpora candidatos `TO_VALIDATE` específicos del dominio Assets, y `06-ui-ux/branding/README.md` documenta la regla de iconografía y reutilización 3D.
-
-Primer incremento ejecutable:
+El principio general sigue siendo:
 
 ```text
-AE-0 — Baseline y auditoría
+observe
+→ model
+→ contract
+→ implement small
+→ validate real tool
+→ promote
 ```
 
-Debe auditar pantalla Assets actual, componentes, iconografía, datos, fuentes y deuda antes de cerrar el diseño objetivo.
+No se considera validada una capacidad por existir únicamente como documento, mockup o código no probado.
 
-## Cambio principal del 2026-08-21
+---
 
-La reunión con Hernando aporta un primer flujo de referencia para órdenes de trabajo:
+# 1. Functional Lab — AMEF + RCM
 
-```text
-Plan / calendario preventivo
-→ inspecciones próximas
-→ selección y propuesta del Maintenance Planner
-→ validación o reprogramación por Maintenance Responsible
-→ Supervisor opcional según estructura del proyecto
-→ Technician / Executor
-→ ejecución
-```
-
-Este recorrido procede del sistema actual y queda marcado como **AS-IS de referencia / `to_validate`**.
-
-Se ha creado:
-
-- `02-functional/process-model/work-management-discovery.md`;
-- `05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md`;
-- `05-meetings/01_Analysis/ANL-003_revision-funcional-post-reunion-2026-08-21.md`;
-- `06-ui-ux/functional-lab/work-management-extension.md`.
-
-## Decisiones confirmadas o reforzadas
-
-1. **Riesgo configurable:** la matriz debe adaptarse al cliente/proyecto.
-2. **RCM explicable:** las preguntas y el criterio humano siguen siendo parte esencial de la decisión.
-3. **Plan base + overrides:** una particularidad de un activo puede añadir/eliminar/modificar actividades sin alterar el plan genérico.
-4. **Routing organizativo configurable:** Supervisor no puede ser un paso obligatorio porque la estructura cambia según el proyecto.
-5. **Gestión del Trabajo es el siguiente dominio natural de discovery**, pero no se convierte todavía en workspace canónico.
-6. **Assets se revisará como Object 360 técnico/operativo**, sin confundir ingeniería y mantenimiento.
-7. **No se crea biblioteca 3D CMMS:** se reutiliza la colección gobernada de AssetPlan.
-
-## Completado
-
-### Foundation Functional Lab — F00
+## Foundation completada
 
 - auditoría de transición;
 - protocolo incremental;
@@ -80,177 +38,331 @@ Se ha creado:
 - fixture P-101 v1.1;
 - arquitectura conceptual;
 - paquete documental para IT;
-- revisión funcional 2026-08-14;
-- revisión funcional 2026-08-21;
+- revisiones funcionales 2026-08-14 y 2026-08-21;
 - discovery inicial de Gestión del Trabajo.
 
-### Power Apps Foundation — F01-00 estático
+## Power Apps Foundation — estado
 
-- revisión de compatibilidad Source Code;
-- shell técnico mínimo definido;
-- secuencia F01-01 a F01-09;
-- estrategia SaaS premium;
-- foundation protegida contra hardcodes de riesgo, scoring RCM, relación rígida plan-activo y rutas organizativas futuras.
+`F01-00` sigue pendiente de cierre en herramienta real.
 
-### Asset Experience — definición inicial
+Debe confirmarse en la Canvas app:
 
-- decisión formal de revisar Assets;
-- decisión formal de revisar iconografía, jerarquía visual y componentes premium;
-- decisión formal de reutilizar AssetPlan Industrial Technical 3D;
-- plan AE-0 → AE-7 documentado;
-- candidatos de componentes registrados como `TO_VALIDATE`.
+- Source Code/schema aceptado;
+- controles y versiones reales;
+- baseline App Checker;
+- componentes premium disponibles/instalados;
+- Premium App Shell Foundation;
+- baseline visual real.
 
-## En curso
+Siguiente secuencia:
 
-### F01-00 — cierre en herramienta real
+```text
+F01-01 Premium App Shell
+→ F01-02 runtime state
+→ F01-03 P-101 v1.1 adapter
+→ F01-04 navigation
+→ F01-05..09 WS-01 + validation/hardening
+```
 
-Falta disponer de la Canvas app real del Functional Lab para confirmar:
-
-- schema Source Code aceptado;
-- versiones reales de controles;
-- baseline de App Checker;
-- componentes premium instalados;
-- aceptación del primer bloque en Power Apps Studio;
-- baseline de calidad visual.
-
-La revisión del 2026-08-21 **no bloquea WS-01**.
-
-### AE-0 — Baseline y auditoría de Assets
-
-Siguiente incremento del track Asset Experience:
-
-- auditar Assets actual;
-- inventariar componentes;
-- inventariar iconografía;
-- mapear datos y fuentes;
-- revisar prototipos históricos de activos;
-- clasificar REUSE / ADAPT / EXTEND / CREATE / RETIRE;
-- identificar gaps antes del contrato AE-1.
-
-## Próximos incrementos técnicos
-
-### Functional Lab
-
-1. F01-01 — Premium App Shell Foundation.
-2. F01-02 — Runtime state mínimo compatible con configuración y decisiones trazadas.
-3. F01-03 — Adaptador P-101 v1.1.
-4. F01-04 — Navegación base.
-5. F01-05 — WS-01 contexto visual premium.
-6. F01-06 — WS-01 edición.
-7. F01-07 — WS-01 gate de evidencia.
-8. F01-08 — WS-01 output.
-9. F01-09 — Hardening, Visual QA y documentación.
-
-No se iniciará WS-02 hasta validar WS-01 en Power Apps Studio.
-
-### Asset Experience
-
-1. AE-0 — Baseline y auditoría.
-2. AE-1 — Contrato de Asset Experience.
-3. AE-2 — Sistema visual: iconografía, jerarquía y semántica.
-4. AE-3 — Componentes premium compartidos.
-5. AE-4 — Rediseño de pantallas.
-6. AE-5 — Consumo gobernado de ilustraciones 3D AssetPlan.
-7. AE-6 — Implementación incremental Power Apps.
-8. AE-7 — Convergencia y rollout.
+No iniciar WS-02 antes del gate real de WS-01.
 
 ## Gates funcionales ya identificados
 
-- antes de WS-03: contrato mínimo `RiskProfile`;
-- antes de WS-04: contrato de árbol RCM sin scoring;
-- antes de WS-06: `BasePlan`, `CandidateAssets`, `ApplicabilityDecision`, `AssetPlanOverride` y reglas de agrupación;
-- antes de cerrar WS-08: output de publicación preparado para handoff operacional.
+- antes de WS-03: contrato `RiskProfile`;
+- antes de WS-04: árbol RCM sin scoring;
+- antes de WS-06: `BasePlan`, `CandidateAssets`, `ApplicabilityDecision`, `AssetPlanOverride` y agrupación;
+- antes de cerrar WS-08: `PublishedPlanVersion` preparado para handoff operacional.
 
-## Gates Asset Experience
+---
 
-- `AE-G0`: baseline Assets/visual auditado;
-- `AE-G1`: contrato de datos, autoridad y semántica cerrado;
-- `AE-G2`: sistema visual compatible con CMMS y reusable;
-- `AE-G3`: componentes con contrato/lifecycle veraz;
-- `AE-G4`: cada pantalla declara tarea, criterio de éxito, arquetipo y componentes;
-- `AE-G5`: reuso 3D sin segunda fuente de verdad y con rendimiento aceptable;
-- `AE-G6`: evidencia Power Apps real antes de promoción visual;
-- `AE-G7`: convergencia sin rutas visuales legacy no gobernadas.
+# 2. Asset Experience Redefinition
 
-## Discovery de Gestión del Trabajo
+## Decisiones canónicas
 
-Antes de diseñar workspaces de órdenes de trabajo deben superarse:
+1. `Assets` se considera una superficie nuclear y debe evolucionar hacia un Object 360 técnico/operativo.
+2. Se revisan iconografía, jerarquía visual y componentes premium como sistema compartido.
+3. CMMS no crea una biblioteca 3D propia; consume `AssetPlan Industrial Technical 3D` como fuente visual externa gobernada.
+
+Documento de gobierno:
+
+- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`.
+
+## AE-0 — Baseline y auditoría
+
+**Estado:** `COMPLETE / AE-G0 PASS`.
+
+Resultado principal:
+
+- no existe todavía una pantalla Assets productiva que deba retocarse;
+- existen dos prototipos conceptuales valiosos: Asset Model y ADR;
+- FLH / Taxonomy / ADR, `EquipmentTypeCode`, composición física, ubicación y criticidad se conservan;
+- el shell/wizard visual histórico se retira como baseline;
+- iconografía CMMS actual se conserva y se extiende;
+- gaps de Technical Profile, provenance, Engineering/Visual Context y Maintenance Summary quedan identificados.
+
+Evidencia:
+
+- `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`.
+
+## AE-1 — Asset Experience Contract
+
+**Estado:** `COMPLETE / AE-G1 PASS_WITH_DEFERRED_ITEMS`.
+
+Contratos definidos:
+
+```text
+Asset Identity
+Equipment Type
+Technical Field Definition
+Technical Field Unit
+Equipment Type applicability
+Asset Technical Value
+Provenance / authority
+Override / freshness
+Engineering Context
+Visual Context
+Maintenance Summary read model
+```
+
+Decisiones importantes:
+
+- CMMS no copia `PreservationAttributeCatalog` de AssetPlan;
+- se reutiliza el patrón conceptual Technical Fields, no su binding físico de Rules;
+- Manufacturer / Model / Serial usan authority policy por integración/proyecto;
+- `Maintenance Summary` es read model;
+- `HealthIndex` no forma parte de V1;
+- `Model Template` queda `DEFERRED` hasta demostrar necesidad real.
+
+Fuente:
+
+- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`.
+
+## AE-2 — Asset Visual System
+
+**Estado:** `COMPLETE / AE-G2 PASS_CONTRACT`.
+
+Definido:
+
+- jerarquía N0–N4 aplicada a Assets;
+- Object 360 / Data Explorer / Configuration Studio como arquetipos;
+- extensión del icon system CMMS sin segundo estilo;
+- Equipment Type icons y Technical Attribute icons como gaps gobernados;
+- provenance/freshness visual grammar;
+- Technical Value grammar;
+- separación `Type Illustration / Model Image / Asset Photo`;
+- criticality visual configurable;
+- estados `READY / LOADING / EMPTY / UNAVAILABLE / STALE / ERROR / BLOCKED`.
+
+Guardrail nuevo:
+
+```text
+PNG con apariencia 3D != visor 3D interactivo
+```
+
+No mostrar `Rotate / Explode / Orbit` sobre las ilustraciones estáticas actuales.
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`.
+
+## AE-3 — Premium Components
+
+**Estado:** `DESIGN BASELINE COMPLETE / AE-G3 CONTRACT PASS / PHYSICAL VALIDATION PENDING`.
+
+Candidatos compartidos:
+
+```text
+AssetIdentityHero
+TechnicalValue
+TechnicalSpecificationGrid
+ProvenanceBadge
+EngineeringContextPanel
+AssetVisualGallery
+HierarchyPath
+MaintenanceSummary
+EquipmentTypeCard
+```
+
+Adaptation candidates:
+
+```text
+PageHeader
+StatePanel
+FilterBar
+DataGrid
+ActionButton
+IconPro
+```
+
+Todos permanecen `TO_VALIDATE_CMMS` hasta existir en la app real.
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`.
+
+## AE-4 — Screen Architecture
+
+**Estado:** `COMPLETE / AE-G4 PASS_CONTRACT`.
+
+Superficies V1:
+
+```text
+AS-01 Assets List              = Data Explorer
+AS-02 Asset Detail             = Object 360
+AS-03 Asset Create / Edit      = Governed Form
+AS-04 Equipment Type Library   = Configuration Studio
+```
+
+Decisiones:
+
+- `Visual Mapping` vive dentro de Equipment Type Library;
+- no crear Standalone Visual Library V1;
+- no crear Model Template screen mientras el concepto siga diferido;
+- implementar Asset Detail antes de Assets List para fijar el destino y lenguaje Object 360.
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`.
+
+## AE-5 — AssetPlan 3D consumption
+
+**Estado:** `CONTRACT PASS / RUNTIME HOLD`.
+
+Fuente externa real observada:
+
+```text
+AssetPlan Industrial Technical 3D
+183 PNG
+PNG RGBA
+transparent
+max 384 px
+target <200 KB
+hard limit <250 KB
+BASELINE_CLOSED
+```
+
+Contrato definido:
+
+```text
+EquipmentTypeCode
+→ VisualProvider
+→ AssetKey
+→ controlled runtime distribution
+```
+
+Estrategia inicial recomendada para Canvas app:
+
+```text
+controlled Media snapshot
+```
+
+solo del subconjunto realmente mapeado, manteniendo AssetPlan como master source.
+
+### Gate real actual — AE-G5 runtime
+
+Pendiente ejecutar en la Canvas app:
+
+- importar subset representativo;
+- renderizar varios tipos;
+- medir impacto de tamaño/carga;
+- validar fallback;
+- comprobar sourceVersion/rebuild;
+- save/close/reopen;
+- smoke/App Checker cuando proceda.
+
+Hasta ese PASS:
+
+```text
+AE-6 PRODUCTIVE IMPLEMENTATION = HOLD
+```
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`.
+
+## Siguiente acción Asset Experience
+
+Preparar el primer baseline Power Apps de `AS-02 Asset Detail` con un subconjunto visual representativo y ejecutar `AE-G5` junto con el Premium App Shell/Studio foundation cuando la Canvas app esté disponible.
+
+No seguir generando documentación downstream como si el runtime gate hubiera pasado.
+
+---
+
+# 3. Work Management Discovery
+
+La reunión 2026-08-21 aporta AS-IS de referencia:
+
+```text
+Plan / calendario preventivo
+→ inspecciones próximas
+→ Maintenance Planner
+→ propuesta WO
+→ Maintenance Responsible
+→ Supervisor opcional
+→ Technician / Executor
+→ ejecución
+```
+
+Permanece `to_validate`.
+
+## Gates
 
 ### WM-G01 — Demo del proceso real
 
-Revisar la aplicación actual de Los Barrios y registrar:
-
-- actores;
-- secuencia;
-- estados;
-- decisiones;
-- excepciones.
+Revisar actores, secuencia, estados, decisiones y excepciones.
 
 ### WM-G02 — Check sheets reales
 
-Separar correctamente:
+Separar:
 
-- tarea de mantenimiento;
-- procedimiento/checklist;
-- orden de trabajo;
-- captura de ejecución.
+```text
+tarea
+procedimiento/checklist
+work order
+feedback de ejecución
+```
 
 ### WM-G03 — Planning/Scheduling
 
-Validar:
-
-- horizonte de selección;
-- agrupación;
-- ventanas;
-- reprogramación;
-- capacidad;
-- turnos;
-- asignación.
+Validar horizonte, agrupación, ventanas, reprogramación, capacidad, turnos, asignación y routing.
 
 ### WM-G04 — Costes y contratos
 
-Abrir esta parte solo después de trabajar con Eduardo y/o perfiles de Contratos/Subcontratos.
+Abrir detalle únicamente con conocimiento de responsables de Contratos/Subcontratos.
 
-## Impacto sobre la demo
+---
 
-El Functional Lab podrá explicar después de WS-08:
+# 4. Riesgos principales
 
-```text
-PublishedPlanVersion
-→ Annual Preventive Preparation
-→ Work Management (discovery / to_validate)
-```
+- convertir AS-IS de una instalación en TO-BE sin validación;
+- hardcodear routing organizativo;
+- inventar planning/scheduling;
+- confundir tarea, procedimiento y WO;
+- crear componentes visuales locales donde existe patrón compartido;
+- copiar físicamente patrones AssetPlan ligados a Preservation;
+- convertir CMMS en segundo maestro de ingeniería;
+- duplicar la biblioteca 3D;
+- presentar una Type Illustration como CAD/BIM/modelo interactivo;
+- mostrar datos `UNAVAILABLE` como cero/blank válido;
+- implementar Asset Detail productivo antes de runtime/Studio gates.
 
-Pero no debe presentar todavía una WO simulada como modelo aprobado ni ampliar P-101 con reglas de planning no validadas.
+---
 
-El ejemplo de **bomba con lubricación convencional vs lubricación por neblina** se conserva como caso pedagógico futuro para demostrar overrides en WS-06.
+# 5. Fuentes de verdad principales
 
-## Riesgos principales
-
-- convertir el AS-IS de Los Barrios en TO-BE sin análisis;
-- hardcodear Supervisor como paso obligatorio;
-- inventar reglas de vencimiento, agrupación o scheduling;
-- mezclar tarea, procedimiento y WO antes de revisar ejemplos reales;
-- avanzar a costes/facturación sin los perfiles responsables;
-- confundir el Functional Lab con la arquitectura productiva futura;
-- convertir hipótesis conceptuales en automatismos;
-- rediseñar Assets antes de cerrar fuentes y semántica de Technical Profile;
-- crear componentes locales para patrones que deben ser compartidos;
-- duplicar la colección 3D de AssetPlan dentro de CMMS;
-- presentar Type Illustration como si fuera un modelo de ingeniería real.
-
-## Fuentes de verdad principales
-
+- `ROADMAP.md`
 - `00-governance/cmms-functional-lab-incremental-protocol.md`
 - `02-functional/process-model/functional-journey.md`
 - `02-functional/process-model/human-system-decisions.md`
 - `02-functional/process-model/work-management-discovery.md`
-- `05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md`
-- `05-meetings/01_Analysis/ANL-003_revision-funcional-post-reunion-2026-08-21.md`
-- `06-ui-ux/functional-lab/architecture.md`
-- `06-ui-ux/functional-lab/implementation-status.md`
-- `06-ui-ux/functional-lab/work-management-extension.md`
+- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
 - `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
+- `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`
+- `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`
+- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`
+- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
+- `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`
 - `06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md`
 - `06-ui-ux/branding/README.md`
-- `ROADMAP.md`
+- `06-ui-ux/functional-lab/architecture.md`
+- `06-ui-ux/functional-lab/design-system.md`
