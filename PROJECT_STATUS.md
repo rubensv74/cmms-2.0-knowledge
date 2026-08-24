@@ -7,10 +7,10 @@
 CMMS 2.0 continúa en fase **Functional Lab**, con tres líneas gobernadas en paralelo:
 
 1. **AMEF + RCM / Functional Lab** — foundation conceptual consolidada y siguiente gate técnico en Power Apps real.
-2. **Asset Experience Redefinition** — contratos AE-0 a AE-4 cerrados; AE-5 preparado y detenido en runtime gate real.
+2. **Asset Experience Redefinition** — AE-0 a AE-4 cerrados por contrato; AE-5 definido y pendiente de runtime; AE6-S01 preparado hasta el gate real de Studio.
 3. **Work Management Discovery** — AS-IS inicial documentado; todavía no es modelo TO-BE ni workspace canónico.
 
-El principio general sigue siendo:
+Principio general:
 
 ```text
 observe
@@ -41,13 +41,14 @@ No se considera validada una capacidad por existir únicamente como documento, m
 - revisiones funcionales 2026-08-14 y 2026-08-21;
 - discovery inicial de Gestión del Trabajo.
 
-## Power Apps Foundation — estado
+## Power Apps Foundation
 
 `F01-00` sigue pendiente de cierre en herramienta real.
 
 Debe confirmarse en la Canvas app:
 
 - Source Code/schema aceptado;
+- authoring locale;
 - controles y versiones reales;
 - baseline App Checker;
 - componentes premium disponibles/instalados;
@@ -66,22 +67,16 @@ F01-01 Premium App Shell
 
 No iniciar WS-02 antes del gate real de WS-01.
 
-## Gates funcionales ya identificados
-
-- antes de WS-03: contrato `RiskProfile`;
-- antes de WS-04: árbol RCM sin scoring;
-- antes de WS-06: `BasePlan`, `CandidateAssets`, `ApplicabilityDecision`, `AssetPlanOverride` y agrupación;
-- antes de cerrar WS-08: `PublishedPlanVersion` preparado para handoff operacional.
-
 ---
 
 # 2. Asset Experience Redefinition
 
 ## Decisiones canónicas
 
-1. `Assets` se considera una superficie nuclear y debe evolucionar hacia un Object 360 técnico/operativo.
-2. Se revisan iconografía, jerarquía visual y componentes premium como sistema compartido.
+1. `Assets` es una superficie nuclear y evoluciona hacia un Object 360 técnico/operativo.
+2. Iconografía, jerarquía y componentes premium se gobiernan como sistema compartido.
 3. CMMS no crea una biblioteca 3D propia; consume `AssetPlan Industrial Technical 3D` como fuente visual externa gobernada.
+4. La UI consume un read model resuelto; no decide autoridad, applicability, unidad, provenance ni conflictos.
 
 Documento de gobierno:
 
@@ -91,16 +86,15 @@ Documento de gobierno:
 
 **Estado:** `COMPLETE / AE-G0 PASS`.
 
-Resultado principal:
+Resultado:
 
-- no existe todavía una pantalla Assets productiva que deba retocarse;
-- existen dos prototipos conceptuales valiosos: Asset Model y ADR;
+- no existe una pantalla Assets productiva que deba retocarse;
+- Asset Model y ADR históricos conservan valor funcional;
 - FLH / Taxonomy / ADR, `EquipmentTypeCode`, composición física, ubicación y criticidad se conservan;
-- el shell/wizard visual histórico se retira como baseline;
-- iconografía CMMS actual se conserva y se extiende;
-- gaps de Technical Profile, provenance, Engineering/Visual Context y Maintenance Summary quedan identificados.
+- el wizard visual histórico no es baseline premium;
+- gaps de Technical Profile, provenance, Engineering/Visual Context y Maintenance Summary identificados.
 
-Evidencia:
+Fuente:
 
 - `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`.
 
@@ -108,7 +102,7 @@ Evidencia:
 
 **Estado:** `COMPLETE / AE-G1 PASS_WITH_DEFERRED_ITEMS`.
 
-Contratos definidos:
+Definidos:
 
 ```text
 Asset Identity
@@ -124,18 +118,18 @@ Visual Context
 Maintenance Summary read model
 ```
 
-Decisiones importantes:
+Decisiones:
 
 - CMMS no copia `PreservationAttributeCatalog` de AssetPlan;
-- se reutiliza el patrón conceptual Technical Fields, no su binding físico de Rules;
 - Manufacturer / Model / Serial usan authority policy por integración/proyecto;
 - `Maintenance Summary` es read model;
-- `HealthIndex` no forma parte de V1;
-- `Model Template` queda `DEFERRED` hasta demostrar necesidad real.
+- `HealthIndex` no entra en V1;
+- `Model Template` queda DEFERRED.
 
-Fuente:
+Fuentes:
 
-- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`.
+- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`;
+- `02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md`.
 
 ## AE-2 — Asset Visual System
 
@@ -143,23 +137,19 @@ Fuente:
 
 Definido:
 
-- jerarquía N0–N4 aplicada a Assets;
-- Object 360 / Data Explorer / Configuration Studio como arquetipos;
-- extensión del icon system CMMS sin segundo estilo;
-- Equipment Type icons y Technical Attribute icons como gaps gobernados;
-- provenance/freshness visual grammar;
+- jerarquía N0–N4;
+- Object 360 / Data Explorer / Configuration Studio;
+- extensión del icon system CMMS;
+- provenance/freshness grammar;
 - Technical Value grammar;
-- separación `Type Illustration / Model Image / Asset Photo`;
-- criticality visual configurable;
+- `Type Illustration / Model Image / Asset Photo`;
 - estados `READY / LOADING / EMPTY / UNAVAILABLE / STALE / ERROR / BLOCKED`.
 
-Guardrail nuevo:
+Guardrail:
 
 ```text
 PNG con apariencia 3D != visor 3D interactivo
 ```
-
-No mostrar `Rotate / Explode / Orbit` sobre las ilustraciones estáticas actuales.
 
 Fuente:
 
@@ -169,7 +159,7 @@ Fuente:
 
 **Estado:** `DESIGN BASELINE COMPLETE / AE-G3 CONTRACT PASS / PHYSICAL VALIDATION PENDING`.
 
-Candidatos compartidos:
+Componentes Asset Experience definidos:
 
 ```text
 AssetIdentityHero
@@ -194,11 +184,26 @@ ActionButton
 IconPro
 ```
 
-Todos permanecen `TO_VALIDATE_CMMS` hasta existir en la app real.
+Auditoría de source real AssetPlan completada para AE6:
 
-Fuente:
+```text
+PageHeader source SHA  f751f828f2cf99ab8150f5ee43f94774283d3af0
+ActionButton source    6407ed46af2ccc0566a734203764b1d4ff031d94
+StatePanel source      2e2878291ec3053db16f3e8c459c17774abafc38
+IconPro source         1023c60b98e1cb465d4f6f86edc929a4c0163a68
+```
 
-- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`.
+Hallazgos:
+
+- PageHeader debe eliminar breadcrumbs/status/acoplamiento AP antes de CMMS;
+- ActionButton es baseline de alto valor y conserva `IsBusy`/lock visual;
+- StatePanel requiere añadir `STALE` y `BLOCKED`;
+- IconPro debe desacoplarse del `Switch()` de Media AP y usar resolver CMMS.
+
+Fuentes:
+
+- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`;
+- `06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md`.
 
 ## AE-4 — Screen Architecture
 
@@ -215,10 +220,10 @@ AS-04 Equipment Type Library   = Configuration Studio
 
 Decisiones:
 
-- `Visual Mapping` vive dentro de Equipment Type Library;
-- no crear Standalone Visual Library V1;
-- no crear Model Template screen mientras el concepto siga diferido;
-- implementar Asset Detail antes de Assets List para fijar el destino y lenguaje Object 360.
+- Visual Mapping vive dentro de Equipment Type Library;
+- no Standalone Visual Library V1;
+- no Model Template screen mientras siga diferido;
+- implementar `AS-02 Asset Detail` antes de Assets List.
 
 Fuente:
 
@@ -228,7 +233,7 @@ Fuente:
 
 **Estado:** `CONTRACT PASS / RUNTIME HOLD`.
 
-Fuente externa real observada:
+Fuente externa observada:
 
 ```text
 AssetPlan Industrial Technical 3D
@@ -241,7 +246,7 @@ hard limit <250 KB
 BASELINE_CLOSED
 ```
 
-Contrato definido:
+Contrato:
 
 ```text
 EquipmentTypeCode
@@ -250,41 +255,70 @@ EquipmentTypeCode
 → controlled runtime distribution
 ```
 
-Estrategia inicial recomendada para Canvas app:
+Gate real:
+
+- `06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md`.
+
+Hasta runtime PASS no se puede declarar aprobado el visual de Asset Detail.
+
+## AE-6 — primer incremento preparado
+
+**Estado:** `AE6-S01 PREPARED / PENDING_POWER_APPS_STUDIO`.
+
+Primer consumer:
 
 ```text
-controlled Media snapshot
+AS-02 Asset Detail
+P-101 synthetic fixture
+Object 360
+read-only
+no backend
+no DML
 ```
 
-solo del subconjunto realmente mapeado, manteniendo AssetPlan como master source.
+Preparado:
 
-### Gate real actual — AE-G5 runtime
+1. `Asset Detail Read Contract V1`;
+2. fixture `p101-asset-detail.v1.json`;
+3. Power Fx loader copiable;
+4. pre-Studio implementation plan S01-00..S01-06;
+5. source audit de componentes AssetPlan;
+6. `AE-G6 Asset Detail S01 Studio Gate`.
 
-Pendiente ejecutar en la Canvas app:
-
-- importar subset representativo;
-- renderizar varios tipos;
-- medir impacto de tamaño/carga;
-- validar fallback;
-- comprobar sourceVersion/rebuild;
-- save/close/reopen;
-- smoke/App Checker cuando proceda.
-
-Hasta ese PASS:
+El fixture contiene de forma deliberada:
 
 ```text
-AE-6 PRODUCTIVE IMPLEMENTATION = HOLD
+Duty flow      READY
+Duty pressure  READY
+Redundancy     READY
+Manufacturer   UNAVAILABLE
+Model          UNAVAILABLE
 ```
 
-Fuente:
+La pantalla debe demostrar calidad visual también con datos incompletos.
 
-- `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`.
+### Repositorio ejecutable
 
-## Siguiente acción Asset Experience
+La búsqueda GitHub actual solo encuentra `rubensv74/cmms-2.0-knowledge` para CMMS. No se ha identificado un repositorio separado con la Canvas app/source ejecutable.
 
-Preparar el primer baseline Power Apps de `AS-02 Asset Detail` con un subconjunto visual representativo y ejecutar `AE-G5` junto con el Premium App Shell/Studio foundation cuando la Canvas app esté disponible.
+Por tanto no se genera YAML `.pa.yaml` especulativo antes de `S01-00 App reality audit`.
 
-No seguir generando documentación downstream como si el runtime gate hubiera pasado.
+### Gate real actual
+
+```text
+AE-G5 runtime
++
+AE-G6 S01 Studio
+```
+
+El siguiente paso requiere la Canvas app real.
+
+Fuentes:
+
+- `06-ui-ux/functional-lab/development/AE6_ASSET_DETAIL_S01_PRESTUDIO_IMPLEMENTATION.md`;
+- `06-ui-ux/functional-lab/cases/P101/p101-asset-detail.v1.json`;
+- `08-resources/powerfx/asset-experience/AE6_ASSET_DETAIL_S01_FIXTURE_LOAD.powerfx.txt`;
+- `06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md`.
 
 ---
 
@@ -334,16 +368,17 @@ Abrir detalle únicamente con conocimiento de responsables de Contratos/Subcontr
 
 # 4. Riesgos principales
 
-- convertir AS-IS de una instalación en TO-BE sin validación;
+- convertir AS-IS en TO-BE sin validación;
 - hardcodear routing organizativo;
 - inventar planning/scheduling;
 - confundir tarea, procedimiento y WO;
-- crear componentes visuales locales donde existe patrón compartido;
-- copiar físicamente patrones AssetPlan ligados a Preservation;
+- crear componentes locales donde existe patrón compartido;
+- copiar físicamente componentes AssetPlan ligados a Preservation;
 - convertir CMMS en segundo maestro de ingeniería;
 - duplicar la biblioteca 3D;
-- presentar una Type Illustration como CAD/BIM/modelo interactivo;
-- mostrar datos `UNAVAILABLE` como cero/blank válido;
+- presentar Type Illustration como CAD/BIM/modelo interactivo;
+- mostrar `UNAVAILABLE` como cero/blank válido;
+- generar YAML Power Apps contra un schema/locale no confirmado;
 - implementar Asset Detail productivo antes de runtime/Studio gates.
 
 ---
@@ -356,12 +391,16 @@ Abrir detalle únicamente con conocimiento de responsables de Contratos/Subcontr
 - `02-functional/process-model/human-system-decisions.md`
 - `02-functional/process-model/work-management-discovery.md`
 - `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
+- `02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md`
 - `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
 - `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`
 - `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`
 - `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`
+- `06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md`
 - `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
 - `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`
+- `06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md`
+- `06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md`
 - `06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md`
 - `06-ui-ux/branding/README.md`
 - `06-ui-ux/functional-lab/architecture.md`
