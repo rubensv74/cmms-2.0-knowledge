@@ -7,8 +7,25 @@ transversal_contracts:
   knowledge_base: rubensv74/functional-engineering-knowledge-base
   concept: 10-concepts/ai-assisted-engineering/ai-engineering-agent-team.md
   standard: 15-standards/ai-assisted-engineering/ai-agent-contract-standard.md
+  incremental_delivery_policy: 15-standards/ai-assisted-engineering/ai-agent-team-incremental-delivery-policy.md
   routing_pattern: 20-patterns/ai-assisted-engineering/orchestrator-led-specialist-agent-routing.md
-  playbook: 30-playbooks/ai-assisted-engineering/run-ai-engineering-agent-team.md
+  team_playbook: 30-playbooks/ai-assisted-engineering/run-ai-engineering-agent-team.md
+  incremental_playbook: 30-playbooks/ai-assisted-engineering/incremental-ai-assisted-implementation.md
+
+technology_policy:
+  preferred_business_app_platform: POWER_APPS
+  preferred_automation_platform: POWER_AUTOMATE
+  preferred_data_platform: SQL
+  exception_requires_architecture_rationale: true
+  principle: POWER_APPS_FIRST_NOT_POWER_APPS_ONLY
+
+delivery_policy:
+  unit_of_delivery: FUNCTIONAL_CAPABILITY
+  continue_until_real_gate: true
+  risk_classification: [A, B, C]
+  split_only_for_material_risk_gate_or_diagnostic_value: true
+  runtime_validation_separate_from_repository_state: true
+  preserve_incremental_architecture: true
 
 routing_policy:
   orchestrator_required_for_material_work: true
@@ -30,7 +47,7 @@ agents:
   - id: ORCHESTRATOR
     family: COORDINATION
     status: ACTIVE
-    purpose: Route each material request to the minimum necessary specialist set and integrate one coherent result.
+    purpose: Route each material request to the minimum necessary specialist set and integrate one coherent result while preserving incremental delivery.
     triggers: [material_request, cross_specialty_request, new_capability, ambiguous_workstream]
 
   - id: KNOWLEDGE_NAVIGATOR
@@ -57,7 +74,7 @@ agents:
   - id: ARCHITECTURE
     family: BUILD_SPECIALIST
     status: ACTIVE
-    purpose: Protect system boundaries, contracts, dependencies and architectural decisions.
+    purpose: Protect system boundaries, contracts, dependencies and architectural decisions, and justify any exception to the preferred Power Platform stack.
 
   - id: DATABASE
     family: BUILD_SPECIALIST
@@ -67,7 +84,7 @@ agents:
   - id: POWER_PLATFORM
     family: BUILD_SPECIALIST
     status: ACTIVE
-    purpose: Design/review Power Apps and Power Automate implementation and runtime contracts.
+    purpose: Design/review Power Apps and Power Automate implementation and runtime contracts as the preferred CMMS application stack.
 
   - id: UI_UX
     family: BUILD_SPECIALIST
