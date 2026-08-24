@@ -1,0 +1,213 @@
+{
+  "fixtureVersion": "1.0.0",
+  "fixtureType": "ASSET_DETAIL_UI_VALIDATION",
+  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "sourceCase": "P101-AMEF-RCM-001 / p101-case.v1.json",
+  "disclaimer": "Fixture de validación UI. Los datos derivan del caso pedagógico P-101 y no representan un registro productivo de Asset Master ni una fuente oficial de ingeniería.",
+  "asset": {
+    "assetCode": "P-101",
+    "description": "Bomba centrífuga de agua de refrigeración",
+    "equipmentTypeCode": "PUMP_CENTRIFUGAL_HORIZONTAL",
+    "equipmentTypeLabel": "Pump — Centrifugal Horizontal",
+    "lifecycleStatusCode": "IN_OPERATION",
+    "lifecycleStatusLabel": "In operation",
+    "criticalityCode": "A",
+    "criticalityLabel": "Criticality A",
+    "locationCode": "DEMO-UNIT-A",
+    "locationLabel": "Unidad de proceso A",
+    "locationPath": [
+      "Demo Plant",
+      "Unidad de proceso A",
+      "Cooling Water",
+      "Pump Train P-101"
+    ],
+    "parentAssetCode": null,
+    "relationshipType": null,
+    "manufacturerName": null,
+    "modelName": null,
+    "serialNumber": null
+  },
+  "technicalProfile": [
+    {
+      "fieldKey": "DUTY_FLOW",
+      "label": "Duty flow",
+      "sectionKey": "OPERATING_POINT",
+      "sectionLabel": "Operating point",
+      "displayOrder": 10,
+      "valueType": "NUMBER",
+      "rawValue": 120,
+      "valueDisplay": "120",
+      "unitCode": "M3_H",
+      "unitDisplay": "m³/h",
+      "availabilityStatus": "READY",
+      "isRequired": true,
+      "isOverride": false,
+      "provenance": {
+        "type": "IMPORTED",
+        "sourceSystem": "DEMO_ENGINEERING_FIXTURE",
+        "sourceReference": "P101 operationalContext.dutyFlowM3h",
+        "sourceLabel": "P-101 demo engineering context",
+        "freshnessStatus": "CURRENT",
+        "effectiveAt": null
+      }
+    },
+    {
+      "fieldKey": "DUTY_PRESSURE",
+      "label": "Duty pressure",
+      "sectionKey": "OPERATING_POINT",
+      "sectionLabel": "Operating point",
+      "displayOrder": 20,
+      "valueType": "NUMBER",
+      "rawValue": 6,
+      "valueDisplay": "6",
+      "unitCode": "BAR",
+      "unitDisplay": "bar",
+      "availabilityStatus": "READY",
+      "isRequired": true,
+      "isOverride": false,
+      "provenance": {
+        "type": "IMPORTED",
+        "sourceSystem": "DEMO_ENGINEERING_FIXTURE",
+        "sourceReference": "P101 operationalContext.dutyPressureBar",
+        "sourceLabel": "P-101 demo engineering context",
+        "freshnessStatus": "CURRENT",
+        "effectiveAt": null
+      }
+    },
+    {
+      "fieldKey": "REDUNDANCY",
+      "label": "Redundancy",
+      "sectionKey": "OPERATING_CONTEXT",
+      "sectionLabel": "Operating context",
+      "displayOrder": 30,
+      "valueType": "TEXT",
+      "rawValue": "P-102 en reserva automática",
+      "valueDisplay": "P-102 en reserva automática",
+      "unitCode": null,
+      "unitDisplay": null,
+      "availabilityStatus": "READY",
+      "isRequired": false,
+      "isOverride": false,
+      "provenance": {
+        "type": "IMPORTED",
+        "sourceSystem": "DEMO_ENGINEERING_FIXTURE",
+        "sourceReference": "P101 operationalContext.redundancy",
+        "sourceLabel": "P-101 demo engineering context",
+        "freshnessStatus": "CURRENT",
+        "effectiveAt": null
+      }
+    },
+    {
+      "fieldKey": "MANUFACTURER",
+      "label": "Manufacturer",
+      "sectionKey": "IDENTIFICATION",
+      "sectionLabel": "Identification",
+      "displayOrder": 40,
+      "valueType": "TEXT",
+      "rawValue": null,
+      "valueDisplay": null,
+      "unitCode": null,
+      "unitDisplay": null,
+      "availabilityStatus": "UNAVAILABLE",
+      "isRequired": false,
+      "isOverride": false,
+      "provenance": null
+    },
+    {
+      "fieldKey": "MODEL",
+      "label": "Model",
+      "sectionKey": "IDENTIFICATION",
+      "sectionLabel": "Identification",
+      "displayOrder": 50,
+      "valueType": "TEXT",
+      "rawValue": null,
+      "valueDisplay": null,
+      "unitCode": null,
+      "unitDisplay": null,
+      "availabilityStatus": "UNAVAILABLE",
+      "isRequired": false,
+      "isOverride": false,
+      "provenance": null
+    }
+  ],
+  "engineeringContext": {
+    "status": "READY",
+    "sources": [
+      {
+        "sourceKey": "DEMO_FIXTURE",
+        "sourceLabel": "P-101 conceptual case",
+        "sourceType": "SYSTEM_REFERENCE",
+        "status": "AVAILABLE",
+        "reference": "06-ui-ux/functional-lab/cases/P101/p101-case.v1.json",
+        "revision": "1.1.0",
+        "lastSyncAt": null
+      }
+    ],
+    "documents": [
+      {
+        "documentId": "DEMO-DATASHEET",
+        "documentType": "DATASHEET",
+        "title": "Ficha técnica",
+        "revision": null,
+        "status": "REFERENCE_ONLY",
+        "openReference": null
+      },
+      {
+        "documentId": "DEMO-PID",
+        "documentType": "P_AND_ID",
+        "title": "P&ID",
+        "revision": null,
+        "status": "REFERENCE_ONLY",
+        "openReference": null
+      },
+      {
+        "documentId": "DEMO-OEM",
+        "documentType": "OEM_MANUAL",
+        "title": "Manual O&M",
+        "revision": null,
+        "status": "REFERENCE_ONLY",
+        "openReference": null
+      }
+    ]
+  },
+  "visualContext": {
+    "status": "READY",
+    "primaryVisualKind": "TYPE_ILLUSTRATION",
+    "items": [
+      {
+        "visualId": "TYPE:PUMP_CENTRIFUGAL_HORIZONTAL",
+        "visualKind": "TYPE_ILLUSTRATION",
+        "label": "Type illustration",
+        "assetKey": "ap-eq-pump-centrifugal-horizontal",
+        "runtimeUri": null,
+        "status": "READY",
+        "provenance": {
+          "provider": "AssetPlan Industrial Technical 3D",
+          "providerAssetKey": "ap-eq-pump-centrifugal-horizontal"
+        }
+      }
+    ]
+  },
+  "maintenanceContext": {
+    "status": "PARTIAL_DEMO",
+    "activePlan": {
+      "planVersionId": "P101-DEMO-PLAN-1.0",
+      "label": "P-101 demo maintenance plan",
+      "strategyLabel": "Mantenimiento basado en condición",
+      "status": "CONCEPTUAL_FIXTURE"
+    },
+    "workSummary": {
+      "openWorkOrders": null,
+      "overdueWorkOrders": null,
+      "nextDueAt": null
+    },
+    "recentEvents": []
+  },
+  "freshness": {
+    "assetMasterStatus": "CURRENT",
+    "technicalProfileStatus": "CURRENT",
+    "engineeringContextStatus": "CURRENT",
+    "maintenanceContextStatus": "UNAVAILABLE",
+    "resolvedAt": "2026-08-24T00:00:00Z"
+  }
+}
