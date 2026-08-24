@@ -18,6 +18,8 @@
 - [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
 - [Gestión del Trabajo — Discovery funcional preliminar](02-functional/process-model/work-management-discovery.md)
 - [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
+- [ASSETS Functional Baseline V1](02-functional/asset-master/CMMS_ASSETS_LIST_FUNCTIONAL_BASELINE_V1.md)
+- [ASSETS List Read Contract V1](02-functional/asset-master/CMMS_ASSETS_LIST_READ_CONTRACT_V1.md)
 - [Asset Detail Read Contract V1](02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md)
 
 ## Reuniones y análisis
@@ -37,6 +39,7 @@
 - [CMMS Page Header Hierarchy V1](06-ui-ux/CMMS_PAGE_HEADER_HIERARCHY_V1.md)
 - [CMMS Component Catalog V1](06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md)
 - [CMMS Asset Experience Redefinition V1](06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md)
+- [ASSETS UX Contract V1](06-ui-ux/CMMS_ASSETS_LIST_UX_CONTRACT_V1.md)
 - [AE-0 — Assets Current-State Audit](06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md)
 - [AE-2 — Asset Visual System V1](06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md)
 - [AE-3 — Asset Premium Components V1](06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md)
@@ -63,6 +66,8 @@
 - [Caso P-101 v1](06-ui-ux/functional-lab/cases/P101/p101-case.v1.json)
 - [P-101 Asset Detail fixture](06-ui-ux/functional-lab/cases/P101/p101-asset-detail.v1.json)
 - [AE6-S01 — Asset Detail Pre-Studio Implementation](06-ui-ux/functional-lab/development/AE6_ASSET_DETAIL_S01_PRESTUDIO_IMPLEMENTATION.md)
+- [ASSETS Incremental Build Plan](06-ui-ux/functional-lab/development/ASSETS_I01_INCREMENTAL_PLAN.md)
+- [ASSETS I01-01 Shell](06-ui-ux/functional-lab/development/ASSETS_I01_01_SHELL.md)
 
 ## Power Fx reusable
 
