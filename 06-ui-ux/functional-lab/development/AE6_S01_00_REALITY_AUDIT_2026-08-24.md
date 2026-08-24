@@ -3,7 +3,7 @@
 **Fecha:** 2026-08-24  
 **Incremento:** `AE6-S01-00`  
 **Fuente de evidencia:** Power Apps Studio real — capturas aportadas durante el gate  
-**Estado:** `PARTIAL_PASS / APP_REALITY_CONFIRMED / APP_CHECKER_AND_LOCALE_PENDING`
+**Estado:** `PARTIAL_PASS / APP_REALITY_CONFIRMED / LOCALE_PENDING`
 
 ## 1. Objetivo
 
@@ -76,6 +76,25 @@ Conclusión:
 - los contenedores y componentes deberán responder al ancho disponible;
 - el gate visual sí podrá usar una resolución desktop representativa para evidencia, pero no como única geometría soportada.
 
+### App Checker baseline observado
+
+Power Apps Studio > App checker muestra el siguiente baseline previo a AE6-S01:
+
+```text
+Accessibility = 208 findings
+Performance   = 3 findings
+Formulas      = no counter visible in summary
+Runtime       = no counter visible in summary
+Data source   = no counter visible in summary
+```
+
+Regla de interpretación:
+
+- `208` y `3` se registran como deuda preexistente de la app;
+- ausencia de contador visible en la captura **no se interpreta como cero confirmado**;
+- AE6-S01 no debe asumir como propia esta deuda baseline;
+- durante AE-G6 se comparará el App Checker posterior contra este punto de partida y se revisarán específicamente los hallazgos nuevos atribuibles a `scr_AssetDetail_S01` y sus componentes.
+
 ## 3. Impacto sobre el plan AE6-S01
 
 El bloque S01-02 puede reutilizar directamente la foundation física instalada:
@@ -96,15 +115,16 @@ La composición de `scr_AssetDetail_S01` deberá construirse sobre containers re
 
 ### P1 — App Checker baseline
 
-Pendiente capturar el estado actual de App Checker antes de introducir AE6-S01.
+**PASS / BASELINE_CAPTURED**.
 
-Necesitamos registrar:
+Baseline:
 
 ```text
-Errors
-Warnings
-Accessibility findings cuando se muestren
+Accessibility = 208
+Performance   = 3
 ```
+
+Los demás grupos no muestran contador visible en el resumen capturado.
 
 ### P2 — Authoring locale
 
@@ -118,7 +138,7 @@ Layout responsive ya confirmado.
 
 Pendiente únicamente confirmar la disponibilidad real del mecanismo Source Code/YAML que vaya a usarse si se decide editar source en incrementos posteriores.
 
-Esto no bloquea S01-01, que puede empezar con Power Fx pegado directamente en Studio después de cerrar App Checker baseline y locale.
+Esto no bloquea S01-01, que puede empezar con Power Fx pegado directamente en Studio después de cerrar authoring locale.
 
 ## 5. Gate actual
 
@@ -129,7 +149,7 @@ CORE COMPONENT INVENTORY       = PASS
 RESPONSIVE LAYOUT              = PASS
 LOCK ASPECT RATIO              = OFF / CONFIRMED
 LOCK ORIENTATION               = OFF / CONFIRMED
-APP CHECKER BASELINE           = PENDING
+APP CHECKER BASELINE           = PASS / CAPTURED
 AUTHORING LOCALE               = PENDING
 SOURCE-CODE MECHANISM          = OPTIONAL / PENDING
 
@@ -138,8 +158,12 @@ S01-00_REALITY_PASS            = NOT YET CLOSED
 
 ## 6. Siguiente acción manual
 
-Abrir **App Checker** en la Canvas app sin modificar nada y capturar su estado actual.
+Confirmar **authoring locale / fórmula real** sin modificar lógica funcional:
 
-Después se confirmará authoring locale y se cerrará `S01-00_REALITY_PASS`.
+1. cerrar `App checker`;
+2. seleccionar `App` en Tree view;
+3. seleccionar la propiedad `OnStart` en el selector de propiedades de la barra de fórmulas;
+4. capturar la fórmula existente completa o suficiente para observar separadores y estilo de Power Fx;
+5. no editar ni ejecutar nada todavía.
 
-No crear todavía `scr_AssetDetail_S01` hasta registrar el App Checker baseline; así cualquier error posterior podrá atribuirse correctamente al nuevo incremento.
+Una vez confirmada la sintaxis real, cerrar `S01-00_REALITY_PASS` y crear `scr_AssetDetail_S01` para iniciar `S01-01 — Fixture state only`.
