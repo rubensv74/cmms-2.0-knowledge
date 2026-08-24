@@ -23,6 +23,29 @@ Trabajar en incrementos pequeños y verificables:
 
 Avanzar de forma autónoma hasta un gate real. No reabrir decisiones cerradas sin una regresión o nueva evidencia.
 
+## Equipo de agentes IA — PILOT V1
+
+Para cualquier encargo material o transversal, aplicar automáticamente:
+
+- `00-governance/ai/CMMS_AGENT_REGISTRY_V1.yaml`;
+- `00-governance/ai/prompts/RUN_ENGINEERING_ORCHESTRATOR.md`.
+
+El usuario no tiene que elegir qué agente usar.
+
+El Orchestrator debe:
+
+1. resolver primero el contexto real del repositorio;
+2. seleccionar el conjunto mínimo de especialistas;
+3. usar Execution Governor cuando el encargo pueda abrir/reactivar WIP material;
+4. separar construcción de revisión adversarial;
+5. integrar una única propuesta coherente;
+6. continuar autónomamente hasta un gate real;
+7. explicar el resultado de forma sencilla de asimilar.
+
+No activar todos los agentes por defecto. Un agente solo se invoca cuando es probable que cambie el diseño, la decisión, la implementación o la validación.
+
+Los contratos transversales del equipo viven en `rubensv74/functional-engineering-knowledge-base`; este repositorio conserva únicamente la configuración y las reglas específicas de CMMS 2.0.
+
 ## Gobernanza premium de pantallas — OBLIGATORIA
 
 Toda pantalla/workspace nuevo o modificado debe consultar:
