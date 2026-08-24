@@ -18,6 +18,7 @@
 - [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
 - [Gestión del Trabajo — Discovery funcional preliminar](02-functional/process-model/work-management-discovery.md)
 - [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
+- [Asset Detail Read Contract V1](02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md)
 
 ## Reuniones y análisis
 
@@ -42,6 +43,8 @@
 - [AE-4 — Asset Screen Architecture V1](06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md)
 - [AE-5 — AssetPlan 3D Consumption Contract V1](06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md)
 - [AE-G5 — AssetPlan 3D Power Apps Runtime Gate](06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md)
+- [AE6 — Component Adaptation Baseline](06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md)
+- [AE-G6 — Asset Detail S01 Studio Gate](06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md)
 - [CMMS Branding Library V1](06-ui-ux/branding/README.md)
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
 - [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
@@ -58,6 +61,12 @@
 - [Schema del journey](06-ui-ux/functional-lab/contracts/functional-journey.schema.json)
 - [Schema de casos](06-ui-ux/functional-lab/contracts/case-fixture.schema.json)
 - [Caso P-101 v1](06-ui-ux/functional-lab/cases/P101/p101-case.v1.json)
+- [P-101 Asset Detail fixture](06-ui-ux/functional-lab/cases/P101/p101-asset-detail.v1.json)
+- [AE6-S01 — Asset Detail Pre-Studio Implementation](06-ui-ux/functional-lab/development/AE6_ASSET_DETAIL_S01_PRESTUDIO_IMPLEMENTATION.md)
+
+## Power Fx reusable
+
+- [AE6-S01 Asset Detail fixture loader](08-resources/powerfx/asset-experience/AE6_ASSET_DETAIL_S01_FIXTURE_LOAD.powerfx.txt)
 
 ## Handoff funcional para IT
 
