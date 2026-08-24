@@ -3,7 +3,7 @@
 **Fecha:** 2026-08-24  
 **Incremento:** `AE6-S01-00`  
 **Fuente de evidencia:** Power Apps Studio real — capturas aportadas durante el gate  
-**Estado:** `PARTIAL_PASS / APP_REALITY_CONFIRMED / MANUAL_CHECKS_PENDING`
+**Estado:** `PARTIAL_PASS / APP_REALITY_CONFIRMED / APP_CHECKER_AND_LOCALE_PENDING`
 
 ## 1. Objetivo
 
@@ -57,6 +57,25 @@ Conclusión:
 - deben auditarse/adaptarse solamente si el contrato de Asset Detail exige un delta real;
 - `Component1` parece un componente vacío/default y no debe convertirse en dependencia de S01.
 
+### Display / layout observado
+
+Power Apps Studio > Settings > Display confirma:
+
+```text
+App layout        = Responsive
+Orientation       = managed by responsive layout
+Size preset       = 16:9 Default (disabled by responsive mode)
+Lock aspect ratio = Off
+Lock orientation  = Off
+```
+
+Conclusión:
+
+- `Asset Detail` no debe diseñarse contra una resolución fija como contrato principal;
+- deben evitarse coordenadas rígidas como baseline de arquitectura;
+- los contenedores y componentes deberán responder al ancho disponible;
+- el gate visual sí podrá usar una resolución desktop representativa para evidencia, pero no como única geometría soportada.
+
 ## 3. Impacto sobre el plan AE6-S01
 
 El bloque S01-02 puede reutilizar directamente la foundation física instalada:
@@ -70,6 +89,8 @@ cmp_CMMS_PageHeaderPro_RC0
 `cmp_CMMS_StatePanelPro_RC0` queda disponible para estados localizados.
 
 Por tanto, la primera implementación no debe importar/copiar los componentes AssetPlan equivalentes. AssetPlan sigue siendo referencia de diseño/adaptación, no source físico de esta app.
+
+La composición de `scr_AssetDetail_S01` deberá construirse sobre containers responsive y no sobre una maqueta 1366x768 hard-coded.
 
 ## 4. Checks todavía pendientes para cerrar S01-00
 
@@ -91,13 +112,13 @@ Pendiente confirmar el locale real usado por la app para fórmulas.
 
 No inferirlo únicamente por el idioma de Studio o por una fórmula aislada.
 
-### P3 — Canvas/source-code reality
+### P3 — Source-code reality
 
-Pendiente confirmar:
+Layout responsive ya confirmado.
 
-- tamaño/resolución de diseño de la app;
-- Scale to fit / Lock aspect ratio / responsive settings cuando apliquen;
-- disponibilidad real del mecanismo Source Code/YAML que vaya a usarse.
+Pendiente únicamente confirmar la disponibilidad real del mecanismo Source Code/YAML que vaya a usarse si se decide editar source en incrementos posteriores.
+
+Esto no bloquea S01-01, que puede empezar con Power Fx pegado directamente en Studio después de cerrar App Checker baseline y locale.
 
 ## 5. Gate actual
 
@@ -105,9 +126,12 @@ Pendiente confirmar:
 CANVAS APP EXISTS              = PASS
 EXISTING SCREEN INVENTORY      = PASS
 CORE COMPONENT INVENTORY       = PASS
+RESPONSIVE LAYOUT              = PASS
+LOCK ASPECT RATIO              = OFF / CONFIRMED
+LOCK ORIENTATION               = OFF / CONFIRMED
 APP CHECKER BASELINE           = PENDING
 AUTHORING LOCALE               = PENDING
-CANVAS/SOURCE SETTINGS         = PENDING
+SOURCE-CODE MECHANISM          = OPTIONAL / PENDING
 
 S01-00_REALITY_PASS            = NOT YET CLOSED
 ```
@@ -116,6 +140,6 @@ S01-00_REALITY_PASS            = NOT YET CLOSED
 
 Abrir **App Checker** en la Canvas app sin modificar nada y capturar su estado actual.
 
-Después se revisarán Settings/Display para cerrar locale/layout/source reality.
+Después se confirmará authoring locale y se cerrará `S01-00_REALITY_PASS`.
 
 No crear todavía `scr_AssetDetail_S01` hasta registrar el App Checker baseline; así cualquier error posterior podrá atribuirse correctamente al nuevo incremento.
