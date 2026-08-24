@@ -8,9 +8,15 @@ transversal_contracts:
   concept: 10-concepts/ai-assisted-engineering/ai-engineering-agent-team.md
   standard: 15-standards/ai-assisted-engineering/ai-agent-contract-standard.md
   incremental_delivery_policy: 15-standards/ai-assisted-engineering/ai-agent-team-incremental-delivery-policy.md
+  runtime_routing_standard: 15-standards/ai-assisted-engineering/ai-runtime-capability-routing-standard.md
+  runtime_routing_reference: 50-reference/ai-assisted-engineering/AI_RUNTIME_ROUTING_MATRIX_V1.md
   routing_pattern: 20-patterns/ai-assisted-engineering/orchestrator-led-specialist-agent-routing.md
   team_playbook: 30-playbooks/ai-assisted-engineering/run-ai-engineering-agent-team.md
   incremental_playbook: 30-playbooks/ai-assisted-engineering/incremental-ai-assisted-implementation.md
+
+local_runtime_profile:
+  path: 00-governance/ai/CMMS_RUNTIME_ROUTING_V1.yaml
+  status: PILOT_ACTIVE
 
 technology_policy:
   preferred_business_app_platform: POWER_APPS
@@ -34,6 +40,10 @@ routing_policy:
   build_review_separation: true
   human_gate_only_when_material: true
   execution_governor: PILOT
+  runtime_routing_profile_required: true
+  use_lowest_sufficient_capability: true
+  escalate_reasoning_only_when_needed: true
+  demote_after_complex_decision_closes: true
 
 source_precedence:
   - real_tool_evidence
@@ -47,49 +57,59 @@ agents:
   - id: ORCHESTRATOR
     family: COORDINATION
     status: ACTIVE
-    purpose: Route each material request to the minimum necessary specialist set and integrate one coherent result while preserving incremental delivery.
+    purpose: Route each material request to the minimum necessary specialist set and runtime capability, integrate one coherent result, and preserve incremental delivery.
     triggers: [material_request, cross_specialty_request, new_capability, ambiguous_workstream]
 
   - id: KNOWLEDGE_NAVIGATOR
     family: COORDINATION
     status: ACTIVE
     purpose: Resolve CMMS canonical context before design or implementation.
+    default_runtime: R1_FAST_WITH_CONNECTED_SOURCES
     required_sources:
       - AGENTS.md
       - PROJECT_STATUS.md
       - ROADMAP.md
       - 00-governance/ai/README.md
+      - 00-governance/ai/CMMS_RUNTIME_ROUTING_V1.yaml
 
   - id: EXECUTION_GOVERNOR
     family: COORDINATION
     status: PILOT
     purpose: Avoid opening unnecessary parallel WIP and prefer continuing governed active work when possible.
+    default_runtime: R2_STANDARD
     triggers: [new_material_issue_branch_pr, reactivate_parked_work, material_priority_change]
 
   - id: FUNCTIONAL_REQUIREMENTS
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Convert maintenance/business needs into governed requirements, states, acceptance and traceability.
+    default_runtime: R2_STANDARD
+    escalate_to: R3_DEEP_WHEN_AMBIGUOUS_OR_HIGH_IMPACT
 
   - id: ARCHITECTURE
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Protect system boundaries, contracts, dependencies and architectural decisions, and justify any exception to the preferred Power Platform stack.
+    default_runtime: R3_DEEP
 
   - id: DATABASE
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Design/review SQL, schema, integrity, transactions, concurrency, permissions and functional performance.
+    default_runtime: R2_STANDARD
+    escalate_to: R3_DEEP_FOR_RISK_C_CONCURRENCY_MIGRATION_OR_COMPLEX_PERFORMANCE
 
   - id: POWER_PLATFORM
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Design/review Power Apps and Power Automate implementation and runtime contracts as the preferred CMMS application stack.
+    default_runtime: R2_STANDARD_CODE
 
   - id: UI_UX
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Design information architecture, interaction, premium visual composition and component reuse.
+    default_runtime: R2_STANDARD
     required_sources:
       - 06-ui-ux/CMMS_PREMIUM_SCREEN_STANDARD_V1.md
       - 06-ui-ux/CMMS_PAGE_HEADER_HIERARCHY_V1.md
@@ -99,21 +119,25 @@ agents:
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Derive tests/evidence from requirements and contracts and detect regression gaps.
+    default_runtime: R2_STANDARD_CODE
 
   - id: SECURITY
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Review identity, permissions, exposure, secrets and trust boundaries.
+    default_runtime: R3_DEEP_WHEN_MATERIAL
 
   - id: DOCUMENTATION_KNOWLEDGE
     family: BUILD_SPECIALIST
     status: ACTIVE
     purpose: Keep decisions, contracts, project status, AI catalog and reusable learning current.
+    default_runtime: R1_FAST_OR_R2_STANDARD
 
   - id: CMMS_DOMAIN
     family: DOMAIN_SPECIALIST
     status: ACTIVE
     purpose: Apply CMMS/maintenance semantics without replacing engineering specialists.
+    default_runtime: R2_STANDARD
     required_sources:
       - 03-functional-model
       - 04-domain-model
@@ -123,36 +147,44 @@ agents:
     family: GUARDIAN
     status: ACTIVE
     purpose: Try to falsify requirement coverage, status honesty and gate compliance.
+    default_runtime: R2_STANDARD
 
   - id: ARCHITECTURE_GUARDIAN
     family: GUARDIAN
     status: ACTIVE
     purpose: Try to detect architectural drift, duplicated authority and invalid dependency closure.
+    default_runtime: R3_DEEP
 
   - id: DATABASE_GUARDIAN
     family: GUARDIAN
     status: ACTIVE
     purpose: Try to detect integrity, concurrency, idempotency, permission, recovery and performance risks.
+    default_runtime: R2_STANDARD
+    escalate_to: R3_DEEP_WHEN_MATERIAL
 
   - id: UI_GUARDIAN
     family: GUARDIAN
     status: ACTIVE
     purpose: Try to detect misleading UI states, visual-system drift and avoidable component duplication.
+    default_runtime: R2_STANDARD
 
   - id: ASYNC_ACTION_GUARDIAN
     family: GUARDIAN
     status: ACTIVE
     purpose: Try to detect duplicate-execution exposure in async, transactional or non-repeatable actions.
+    default_runtime: R2_STANDARD
 
   - id: SECURITY_GUARDIAN
     family: GUARDIAN
     status: ACTIVE
     purpose: Adversarially review security boundaries independently from the builder.
+    default_runtime: R3_DEEP_WHEN_MATERIAL
 
   - id: RED_TEAM
     family: GUARDIAN
     status: ACTIVE
     purpose: Combine plausible data, user, concurrency, dependency and recovery failures before material closeout.
+    default_runtime: R3_DEEP
 
 human_gate_policy:
   valid_gate_types:
@@ -168,6 +200,7 @@ human_gate_policy:
     - standard_not_read
     - technical_question_resolvable_by_evidence
     - agent_preference
+    - model_selection
 
 common_output_contract:
   - result_or_verdict
