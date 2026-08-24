@@ -17,6 +17,7 @@
 - [Functional Journey AMEF + RCM](02-functional/process-model/functional-journey.md)
 - [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
 - [Gestión del Trabajo — Discovery funcional preliminar](02-functional/process-model/work-management-discovery.md)
+- [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
 
 ## Reuniones y análisis
 
@@ -36,6 +37,10 @@
 - [CMMS Component Catalog V1](06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md)
 - [CMMS Asset Experience Redefinition V1](06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md)
 - [AE-0 — Assets Current-State Audit](06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md)
+- [AE-2 — Asset Visual System V1](06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md)
+- [AE-3 — Asset Premium Components V1](06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md)
+- [AE-4 — Asset Screen Architecture V1](06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md)
+- [AE-5 — AssetPlan 3D Consumption Contract V1](06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md)
 - [CMMS Branding Library V1](06-ui-ux/branding/README.md)
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
 - [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
