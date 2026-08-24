@@ -35,6 +35,7 @@
 - [CMMS Page Header Hierarchy V1](06-ui-ux/CMMS_PAGE_HEADER_HIERARCHY_V1.md)
 - [CMMS Component Catalog V1](06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md)
 - [CMMS Asset Experience Redefinition V1](06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md)
+- [AE-0 — Assets Current-State Audit](06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md)
 - [CMMS Branding Library V1](06-ui-ux/branding/README.md)
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
 - [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
