@@ -41,6 +41,7 @@
 - [AE-3 — Asset Premium Components V1](06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md)
 - [AE-4 — Asset Screen Architecture V1](06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md)
 - [AE-5 — AssetPlan 3D Consumption Contract V1](06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md)
+- [AE-G5 — AssetPlan 3D Power Apps Runtime Gate](06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md)
 - [CMMS Branding Library V1](06-ui-ux/branding/README.md)
 - [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
 - [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
