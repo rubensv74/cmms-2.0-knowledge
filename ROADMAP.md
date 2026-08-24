@@ -30,11 +30,13 @@ Que un dominio se estudie antes no significa necesariamente que se implemente an
 - contexto visual `Type Illustration / Model Image / Asset Photo`;
 - reutilización de la colección técnica 3D gobernada por AssetPlan, sin crear una segunda biblioteca CMMS.
 
-**Madurez conceptual:** media-alta en FLH, taxonomía y activos. Asset Experience entra en revisión estructurada desde 2026-08-24.
+**Madurez conceptual:** alta en FLH/Taxonomía/ADR y Asset Experience V1. La implementación Power Apps sigue pendiente de runtime gates.
 
-Documento canónico del rediseño:
+Fuentes canónicas:
 
+- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
 - `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
+- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
 
 ## B. Ingeniería de mantenimiento y fiabilidad
 
@@ -107,7 +109,7 @@ Documento de referencia:
 
 **Madurez conceptual:** temprana / parcial.
 
-La relación WO → coste → contrato/subcontrato → facturación sigue abierta y requiere incorporar a Eduardo y/o perfiles de Contratos/Subcontratos.
+La relación WO → coste → contrato/subcontrato → facturación sigue abierta y requiere incorporar conocimiento de perfiles responsables.
 
 ---
 
@@ -260,7 +262,7 @@ Solo cuando exista evidencia suficiente se decidirá:
 
 ## Fase FL-10 — Gestión económica
 
-No iniciar diseño detallado hasta incorporar conocimiento de Eduardo y/o Contratos/Subcontratos.
+No iniciar diseño detallado hasta incorporar conocimiento de perfiles responsables de Contratos/Subcontratos.
 
 Objetivo posterior:
 
@@ -276,70 +278,215 @@ WO ejecutada
 
 # 4. Track transversal AE — Asset Experience Redefinition
 
-**Estado:** `ACCEPTED / PLANNED / PRE-IMPLEMENTATION` desde 2026-08-24.
+**Estado actual:** `AE-0..AE-4 COMPLETE AT CONTRACT LEVEL / AE-5 RUNTIME HOLD`.
 
 Este track no sustituye las fases FL. Revisa la foundation de activos y el sistema visual que utilizarán superficies presentes y futuras.
 
-Secuencia gobernada:
+Secuencia:
 
 ```text
-AE-0 Baseline y auditoría
-→ AE-1 Contrato de Asset Experience
-→ AE-2 Sistema visual: iconografía + jerarquía + semántica
-→ AE-3 Componentes premium compartidos
-→ AE-4 Rediseño de pantallas
-→ AE-5 Consumo de ilustraciones 3D AssetPlan
-→ AE-6 Implementación incremental Power Apps
-→ AE-7 Convergencia y rollout
+AE-0 Baseline y auditoría                 PASS
+→ AE-1 Asset Experience Contract          PASS_WITH_DEFERRED_ITEMS
+→ AE-2 Asset Visual System                PASS_CONTRACT
+→ AE-3 Premium Component Contracts        PASS_CONTRACT / physical validation pending
+→ AE-4 Screen Architecture                PASS_CONTRACT
+→ AE-5 AssetPlan 3D Consumption           CONTRACT PASS / RUNTIME HOLD
+→ AE-6 Incremental Power Apps             BLOCKED_BY_AE-G5 + Studio foundation
+→ AE-7 Convergence                        FUTURE
 ```
 
-### AE-0 — Baseline y auditoría
+## AE-0 — Baseline y auditoría
 
-Auditar Assets actual, componentes, iconografía, datos, fuentes y deuda. Primer incremento ejecutable del track.
+**Estado:** `COMPLETE / AE-G0 PASS`.
 
-### AE-1 — Contrato
+Conclusión:
 
-Cerrar identidad, Technical Profile, Engineering Context, Visual Context, Maintenance Context y provenance antes de fijar UI productiva.
+- no existe Assets productivo que retocar;
+- Asset Model + ADR son foundation funcional reusable;
+- shell visual histórico se retira;
+- gaps de Technical Profile/provenance/visual/engineering quedan localizados.
 
-### AE-2 — Sistema visual
+Fuente:
 
-Revisar iconografía, jerarquía y semántica sin crear un lenguaje paralelo a CMMS.
+- `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`
 
-### AE-3 — Componentes premium
+## AE-1 — Contrato
 
-Crear/adaptar únicamente gaps reusables y mantener lifecycle `TO_VALIDATE → CMMS_RC → VALIDATED_CMMS`.
+**Estado:** `COMPLETE / AE-G1 PASS_WITH_DEFERRED_ITEMS`.
 
-### AE-4 — Pantallas
+Cerrados:
 
-Rediseñar, según contrato y componentes:
+- Asset Identity;
+- Technical Field / Unit / Applicability / Value;
+- authority/provenance;
+- override/freshness;
+- Engineering Context;
+- Visual Context;
+- Maintenance Summary read model.
 
-- Assets List / Explorer;
-- Asset Detail / Asset Technical Profile;
-- Asset Create/Edit;
-- Equipment Type Library;
-- Model Template Detail cuando se confirme la necesidad funcional;
-- Visual Mapping/Library solo como consumer/mapping, nunca como segunda biblioteca 3D.
+Diferidos deliberadamente:
 
-### AE-5 — Reuso 3D
+- Model Template;
+- Health Index;
+- repositorio documental concreto;
+- tecnología API/SQL física;
+- autoridad concreta Manufacturer/Model/Serial por integración.
 
-Consumir la colección `AssetPlan Industrial Technical 3D` de `rubensv74/app_preserv` mediante mapping gobernado. CMMS no crea otra fuente de verdad.
+Fuente:
 
-### AE-6 — Implementación
+- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
 
-Construir incrementalmente y validar en herramienta real antes de promoción visual.
+## AE-2 — Sistema visual
 
-### AE-7 — Convergencia
+**Estado:** `COMPLETE / AE-G2 PASS_CONTRACT`.
 
-Retirar duplicaciones visuales/legacy únicamente después de validar la nueva foundation.
+- jerarquía N0–N4;
+- iconografía CMMS extendida, no reemplazada;
+- provenance/freshness grammar;
+- Type Illustration / Model Image / Asset Photo separados;
+- `PNG 3D-look != interactive 3D viewer`;
+- fake Rotate/Explode/Orbit prohibido.
 
-Documento canónico con gates y entregables:
+Fuente:
 
-- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
+- `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`
+
+## AE-3 — Componentes premium
+
+**Estado:** `CONTRACT COMPLETE / PHYSICAL VALIDATION PENDING`.
+
+Shared candidates:
+
+```text
+AssetIdentityHero
+TechnicalValue
+TechnicalSpecificationGrid
+ProvenanceBadge
+EngineeringContextPanel
+AssetVisualGallery
+HierarchyPath
+MaintenanceSummary
+EquipmentTypeCard
+```
+
+Generic primitives deben adaptarse antes de recrearse.
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`
+
+## AE-4 — Pantallas
+
+**Estado:** `COMPLETE / AE-G4 PASS_CONTRACT`.
+
+V1:
+
+```text
+AS-01 Assets List             Data Explorer
+AS-02 Asset Detail            Object 360
+AS-03 Asset Create/Edit       Governed Form
+AS-04 Equipment Type Library  Configuration Studio
+```
+
+No V1:
+
+```text
+Standalone Visual Library = DO NOT CREATE
+Model Template Detail      = DEFERRED
+```
+
+Orden recomendado:
+
+```text
+Asset Detail
+→ Assets List
+→ Technical Profile
+→ Equipment Type Library
+→ Engineering / Visuals
+→ Create/Edit
+→ Maintenance when source ready
+```
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
+
+## AE-5 — Reuso 3D
+
+**Estado:** `CONTRACT PASS / AE-G5 RUNTIME HOLD`.
+
+Fuente visual:
+
+```text
+AssetPlan Industrial Technical 3D
+183 PNG
+BASELINE_CLOSED
+```
+
+Mapping:
+
+```text
+EquipmentTypeCode
+→ VisualProvider
+→ AssetKey
+→ controlled runtime distribution
+```
+
+Estrategia inicial recomendada:
+
+```text
+controlled Power Apps Media snapshot
+```
+
+solo para Equipment Types realmente mapeados.
+
+### AE-G5 runtime — siguiente gate real
+
+Requiere Canvas app:
+
+1. importar subset representativo;
+2. renderizar Asset Detail candidate;
+3. medir app-size/carga;
+4. validar fallback;
+5. comprobar sourceVersion/rebuild;
+6. save/close/reopen;
+7. smoke/App Checker cuando aplique.
+
+Hasta PASS:
+
+```text
+AE-6 PRODUCTIVE IMPLEMENTATION = HOLD
+```
+
+Fuente:
+
+- `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`
+
+## AE-6 — Implementación Power Apps
+
+**Estado:** `HOLD`.
+
+No avanzar como implementación productiva hasta:
+
+```text
+Premium App Shell Foundation available
++ AE-G5 runtime PASS
+```
+
+El primer target será `AS-02 Asset Detail` con subset visual controlado.
+
+## AE-7 — Convergencia
+
+**Estado:** `FUTURE`.
+
+Retirar duplicaciones/legacy solo después de validar la nueva foundation en herramienta real.
 
 ---
 
 # 5. Regla de continuidad
 
-El siguiente dominio no se construirá porque “parezca lógico”.
+El siguiente dominio o implementación no se construirá porque “parezca lógico”.
 
-Primero se observa, después se modela, después se valida y solo entonces se convierte en experiencia ejecutable del Functional Lab.
+Primero se observa, después se modela, después se valida y solo entonces se convierte en experiencia ejecutable.
+
+Para Asset Experience, el siguiente paso ya no es más diseño documental: es **evidencia runtime de AE-G5 + Power Apps Foundation**.
