@@ -1,0 +1,352 @@
+Screens:
+  scr_ReliabilityEngineering:
+    Properties:
+      Fill: =CMMSTheme.Canvas
+      LoadingSpinnerColor: =CMMSTheme.Primary
+      OnVisible: =Set(gblCMMSNavKey, "reliability")
+    Children:
+      - conReliability_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            DropShadow: =DropShadow.None
+            Fill: =CMMSTheme.Canvas
+            Height: =App.Height
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            LayoutMinHeight: =480
+            LayoutMinWidth: =720
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =App.Width
+          Children:
+            - cmpReliability_Sidebar:
+                Control: CanvasComponent
+                ComponentName: cmp_CMMS_SidebarPro
+                Properties:
+                  ActiveKey: =gblCMMSNavKey
+                  AppVersion: =CMMSBuild.Version
+                  EnvironmentLabel: =gblCMMSEnvironmentLabel
+                  Height: =Parent.Height
+                  IsCollapsed: =gblCMMSSidebarCollapsed
+                  NavItems: =CMMSNavItems
+                  OnNavigate: =Set(gblCMMSNavKey, p_key)
+                  OnToggleCollapse: =Set(gblCMMSSidebarCollapsed, !gblCMMSSidebarCollapsed)
+                  UserDisplayName: =gblCMMSUserName
+                  Width: =If(gblCMMSSidebarCollapsed, CMMSLayout.SidebarCollapsed, CMMSLayout.SidebarExpanded)
+            - conReliability_Content:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  Fill: =CMMSTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =CMMSLayout.GapL
+                  LayoutMinHeight: =480
+                  LayoutMinWidth: =600
+                  PaddingBottom: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  PaddingLeft: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  PaddingRight: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  PaddingTop: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  Width: =Parent.Width
+                Children:
+                  - cmpReliability_ProjectContext:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_ProjectContextPro
+                      Properties:
+                        ActorEmail: =gblCMMSUserEmail
+                        CanChangeProject: =false
+                        Height: =CMMSLayout.TopBarHeight
+                        IsBusy: =gblCMMSBusy
+                        ProjectCode: =gblCMMSProjectCode
+                        ProjectName: =gblCMMSProjectName
+                        Width: =Parent.Width
+                  - cmpReliability_PageHeader:
+                      Control: CanvasComponent
+                      ComponentName: cmp_CMMS_PageHeaderPro
+                      Properties:
+                        Eyebrow: ="Reliability"
+                        Height: =CMMSLayout.PageHeaderHeight
+                        Subtitle: ="Build traceable FMEA, RCM and maintenance strategies from asset functions to approved maintenance actions."
+                        Title: ="Reliability Engineering"
+                        Width: =Parent.Width
+                  - conReliability_Workspace:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =CMMSLayout.GapL
+                        LayoutMinHeight: =260
+                        Width: =Parent.Width
+                      Children:
+                        - conReliability_Areas:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =120
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =CMMSLayout.GapL
+                              LayoutMinHeight: =120
+                              Width: =Parent.Width
+                            Children:
+                              - conReliability_Studies:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =CMMSTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =CMMSTheme.Surface
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinHeight: =116
+                                    LayoutMinWidth: =180
+                                    PaddingBottom: =14
+                                    PaddingLeft: =16
+                                    PaddingRight: =16
+                                    PaddingTop: =14
+                                    RadiusBottomLeft: =CMMSLayout.RadiusM
+                                    RadiusBottomRight: =CMMSLayout.RadiusM
+                                    RadiusTopLeft: =CMMSLayout.RadiusM
+                                    RadiusTopRight: =CMMSLayout.RadiusM
+                                  Children:
+                                    - lblReliability_StudiesTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =11
+                                          Text: ="Reliability Studies"
+                                          Width: =Parent.Width
+                                    - lblReliability_StudiesBody:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =42
+                                          Size: =9
+                                          Text: ="Create, continue and review governed reliability studies."
+                                          Width: =Parent.Width
+                                          Wrap: =true
+                              - conReliability_Library:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =CMMSTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =CMMSTheme.Surface
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinHeight: =116
+                                    LayoutMinWidth: =180
+                                    PaddingBottom: =14
+                                    PaddingLeft: =16
+                                    PaddingRight: =16
+                                    PaddingTop: =14
+                                    RadiusBottomLeft: =CMMSLayout.RadiusM
+                                    RadiusBottomRight: =CMMSLayout.RadiusM
+                                    RadiusTopLeft: =CMMSLayout.RadiusM
+                                    RadiusTopRight: =CMMSLayout.RadiusM
+                                  Children:
+                                    - lblReliability_LibraryTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =11
+                                          Text: ="Reliability Library"
+                                          Width: =Parent.Width
+                                    - lblReliability_LibraryBody:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =42
+                                          Size: =9
+                                          Text: ="Reuse governed functions, failure knowledge and strategy patterns."
+                                          Width: =Parent.Width
+                                          Wrap: =true
+                              - conReliability_Reviews:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =CMMSTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =CMMSTheme.Surface
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinHeight: =116
+                                    LayoutMinWidth: =180
+                                    PaddingBottom: =14
+                                    PaddingLeft: =16
+                                    PaddingRight: =16
+                                    PaddingTop: =14
+                                    RadiusBottomLeft: =CMMSLayout.RadiusM
+                                    RadiusBottomRight: =CMMSLayout.RadiusM
+                                    RadiusTopLeft: =CMMSLayout.RadiusM
+                                    RadiusTopRight: =CMMSLayout.RadiusM
+                                  Children:
+                                    - lblReliability_ReviewsTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =11
+                                          Text: ="Reviews"
+                                          Width: =Parent.Width
+                                    - lblReliability_ReviewsBody:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =42
+                                          Size: =9
+                                          Text: ="Validate readiness, exceptions, overrides and approvals."
+                                          Width: =Parent.Width
+                                          Wrap: =true
+                        - conReliability_Backbone:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =CMMSTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =CMMSTheme.Surface
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =12
+                              LayoutMinHeight: =220
+                              PaddingBottom: =18
+                              PaddingLeft: =20
+                              PaddingRight: =20
+                              PaddingTop: =18
+                              RadiusBottomLeft: =CMMSLayout.RadiusM
+                              RadiusBottomRight: =CMMSLayout.RadiusM
+                              RadiusTopLeft: =CMMSLayout.RadiusM
+                              RadiusTopRight: =CMMSLayout.RadiusM
+                              Width: =Parent.Width
+                            Children:
+                              - lblReliability_BackboneEyebrow:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =CMMSTheme.Success
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =20
+                                    Size: =9
+                                    Text: ="FIRST VERTICAL SLICE"
+                                    Width: =Parent.Width
+                              - lblReliability_BackboneTitle:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =CMMSTheme.TextPrimary
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =30
+                                    Size: =16
+                                    Text: ="P-101 Reliability Study Backbone"
+                                    Width: =Parent.Width
+                              - lblReliability_BackboneBody:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =CMMSTheme.TextSecondary
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    Height: =34
+                                    Size: =9
+                                    Text: ="The implementation path proves Scope, Functions & Failures, FMEA, RCM, Maintenance Strategy and Review through stable Power Automate / SQL contracts."
+                                    Width: =Parent.Width
+                                    Wrap: =true
+                              - galReliability_Stages:
+                                  Control: Gallery@2.15.0
+                                  Variant: Horizontal
+                                  Properties:
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    Height: =52
+                                    Items: =SortByColumns(CMMSReliabilityStages, "Order", SortOrder.Ascending)
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =3
+                                    TemplateSize: =150
+                                    Width: =Parent.Width
+                                  Children:
+                                    - lblReliability_Stage:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =If(ThisItem.Key = "scope", CMMSTheme.Primary, CMMSTheme.Border)
+                                          BorderThickness: =1
+                                          Color: =If(ThisItem.Key = "scope", CMMSTheme.PrimaryDark, CMMSTheme.TextSecondary)
+                                          Fill: =If(ThisItem.Key = "scope", RGBA(37, 99, 235, 0.08), CMMSTheme.SurfaceSoft)
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =If(ThisItem.Key = "scope", FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =34
+                                          Size: =8
+                                          Text: =Text(ThisItem.Label)
+                                          Width: =Parent.TemplateWidth - 6
+                                          X: =3
+                                          Y: =7
+                              - galReliability_FoundationStates:
+                                  Control: Gallery@2.15.0
+                                  Variant: Horizontal
+                                  Properties:
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    Height: =34
+                                    Items: =SortByColumns(CMMSFoundationStates, "Order", SortOrder.Ascending)
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =3
+                                    TemplateSize: =92
+                                    Width: =Parent.Width
+                                  Children:
+                                    - lblReliability_State:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Border
+                                          BorderThickness: =1
+                                          Color: =Switch(ThisItem.Key, "READY", CMMSTheme.Success, "ERROR", CMMSTheme.Danger, "CONFLICT", CMMSTheme.Warning, CMMSTheme.TextSecondary)
+                                          Fill: =CMMSTheme.SurfaceSoft
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =7
+                                          Text: =Text(ThisItem.Label)
+                                          Width: =Parent.TemplateWidth - 6
+                                          X: =3
+                                          Y: =4
