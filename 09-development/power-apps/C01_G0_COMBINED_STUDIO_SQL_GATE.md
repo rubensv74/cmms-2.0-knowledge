@@ -17,7 +17,6 @@ Ejecutar en `db-omm-dev`, en orden:
 
 ```text
 09-development/sql/001_CMMS_NAMESPACE_BOOTSTRAP.sql
-09-development/sql/002_CMMS_RUNTIME_ROLE.sql
 09-development/sql/003_CMMS_NAMESPACE_VERIFY.sql
 ```
 
@@ -25,7 +24,6 @@ Resultado esperado:
 
 ```text
 PASS_001_CMMS_NAMESPACE_BOOTSTRAP
-PASS_002_CMMS_RUNTIME_ROLE
 PASS_003_CMMS_NAMESPACE_VERIFY
 ```
 
@@ -42,10 +40,18 @@ Edition
 DatabaseCollation
 HasSpGetAppLock
 schema ownership
-cmms_runtime permissions
+current DDL capability checks
 ```
 
-No ejecutar todavía DDL de ReliabilityStudy ni añadir una identidad Power Automate al rol.
+### Runtime identity decision
+
+Power Automate ejecutará los procedimientos almacenados con el usuario de base de datos ya disponible para desarrollo y con permisos suficientes para administrar `db-omm-dev`.
+
+No se crea ningún rol CMMS adicional en esta fase.
+
+La cuenta SQL de conexión no sustituye la identidad funcional del usuario. Los commands iniciados desde Power Apps deberán transportar `ActorEmail`/identidad funcional cuando aplique para auditoría.
+
+No ejecutar todavía DDL de `ReliabilityStudy`.
 
 ## 3. Parte B — Canvas app baseline
 
@@ -96,7 +102,6 @@ No importar todavía componentes de TMS/AssetPlan directamente.
 
 ```text
 SQL 001 result
-SQL 002 result
 SQL 003 full output
 Power Apps environment
 App Checker baseline
