@@ -69,9 +69,9 @@ ComponentDefinitions:
         Default: |+
           =
     Properties:
-      Fill: =CMMSTheme.NavBg
-      Height: =App.Height
-      Width: =If(cmp_CMMS_SidebarPro.IsCollapsed, CMMSLayout.SidebarCollapsed, CMMSLayout.SidebarExpanded)
+      Fill: =ColorValue("#001B2A")
+      Height: =768
+      Width: =If(cmp_CMMS_SidebarPro.IsCollapsed, 72, 280)
     Children:
       - conCMMSNav_Root:
           Control: GroupContainer@1.5.0
@@ -79,7 +79,7 @@ ComponentDefinitions:
           Properties:
             BorderColor: =RGBA(0, 0, 0, 0)
             DropShadow: =DropShadow.None
-            Fill: =CMMSTheme.NavBg
+            Fill: =ColorValue("#001B2A")
             Height: =Parent.Height
             LayoutDirection: =LayoutDirection.Vertical
             LayoutGap: =0
@@ -127,7 +127,7 @@ ComponentDefinitions:
                         - lblCMMSNav_Brand:
                             Control: Label@2.5.1
                             Properties:
-                              Color: =CMMSTheme.White
+                              Color: =Color.White
                               Fill: =Color.Transparent
                               Font: =Font.'Segoe UI'
                               FontWeight: =FontWeight.Bold
@@ -138,7 +138,7 @@ ComponentDefinitions:
                         - lblCMMSNav_Descriptor:
                             Control: Label@2.5.1
                             Properties:
-                              Color: =CMMSTheme.PrimaryLight
+                              Color: =ColorValue("#38BDF8")
                               Fill: =Color.Transparent
                               Font: =Font.'Segoe UI'
                               FontWeight: =FontWeight.Semibold
@@ -151,7 +151,7 @@ ComponentDefinitions:
                       Properties:
                         BorderColor: =RGBA(255, 255, 255, 0.10)
                         BorderThickness: =1
-                        Color: =CMMSTheme.NavText
+                        Color: =ColorValue("#D9E6ED")
                         Fill: =RGBA(255, 255, 255, 0.03)
                         Font: =Font.'Segoe UI'
                         FontWeight: =FontWeight.Semibold
@@ -209,7 +209,7 @@ ComponentDefinitions:
                             Control: Rectangle@2.3.0
                             Properties:
                               BorderStyle: =BorderStyle.None
-                              Fill: =CMMSTheme.PrimaryLight
+                              Fill: =ColorValue("#38BDF8")
                               Height: =Parent.TemplateHeight - 8
                               Visible: =Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey)
                               Width: =3
@@ -218,7 +218,7 @@ ComponentDefinitions:
                         - lblCMMSNav_Item:
                             Control: Label@2.5.1
                             Properties:
-                              Color: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), CMMSTheme.White, CMMSTheme.NavText)
+                              Color: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), Color.White, ColorValue("#D9E6ED"))
                               Fill: =Color.Transparent
                               Font: =Font.'Segoe UI'
                               FontWeight: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), FontWeight.Semibold, FontWeight.Normal)
@@ -247,7 +247,7 @@ ComponentDefinitions:
                   AlignInContainer: =AlignInContainer.Stretch
                   BorderColor: =RGBA(0, 0, 0, 0)
                   DropShadow: =DropShadow.None
-                  Fill: =CMMSTheme.NavSurface
+                  Fill: =ColorValue("#062436")
                   FillPortions: =0
                   Height: =If(cmp_CMMS_SidebarPro.IsCollapsed, 58, 92)
                   LayoutDirection: =LayoutDirection.Vertical
@@ -262,7 +262,7 @@ ComponentDefinitions:
                   - lblCMMSNav_User:
                       Control: Label@2.5.1
                       Properties:
-                        Color: =CMMSTheme.White
+                        Color: =Color.White
                         Fill: =Color.Transparent
                         Font: =Font.'Segoe UI'
                         FontWeight: =FontWeight.Semibold
@@ -274,7 +274,7 @@ ComponentDefinitions:
                   - lblCMMSNav_Meta:
                       Control: Label@2.5.1
                       Properties:
-                        Color: =CMMSTheme.TextMuted
+                        Color: =ColorValue("#64748B")
                         Fill: =Color.Transparent
                         Font: =Font.'Segoe UI'
                         Height: =18
