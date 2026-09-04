@@ -8,7 +8,7 @@
 
 ## 0. Estado real confirmado 2026-09-04
 
-Nueva evidencia confirmada por el responsable funcional:
+Evidencia confirmada por el responsable funcional:
 
 ```text
 Canvas app target = CMMS
@@ -16,9 +16,11 @@ Canvas current state = exists / empty
 SQL database target = db-omm-dev
 Database nature = shared O&M development database
 Shared with = TMS + future Operations & Maintenance developments
+Power Automate SQL runtime identity = existing database user with administrative capability
+Additional CMMS database role = DO NOT CREATE
 ```
 
-Decisión de namespace aprobada para evitar colisión y acoplamiento dentro de la base compartida:
+Decisión de namespace aprobada:
 
 ```text
 cmms        -- domain data
@@ -30,7 +32,7 @@ cmms_stage  -- controlled imports/staging when needed
 
 No se crearán objetos CMMS nuevos en `dbo`.
 
-La evidencia Power Apps de 2026-08-24 se conserva como histórica: en aquella fecha la app `CMMS` fue observada en `ENV PRE TR 162`, con responsive layout, componentes foundation y App Checker baseline. Como el estado actual declarado es `empty`, dicha evidencia no demuestra el inventario físico actual; solo conserva aprendizaje de compatibilidad y authoring.
+La evidencia Power Apps de 2026-08-24 se conserva como histórica. Como el estado actual declarado es `empty`, dicha evidencia conserva aprendizaje técnico pero no demuestra el inventario físico actual.
 
 ### Estado de checks
 
@@ -41,23 +43,21 @@ G0-PA-03 Current App Checker        = REBASELINE_REQUIRED
 G0-PA-04 Current components         = REAUDIT_REQUIRED
 
 G0-SQL-01 Database target           = PARTIAL_PASS / db-omm-dev known
-G0-SQL-02 Runtime identity          = OPEN
-G0-SQL-03 DDL identity              = PARTIAL / next SQL execution will capture executor
+G0-SQL-02 Runtime identity strategy = PASS / existing admin-capable user, no extra role
+G0-SQL-03 DDL identity              = PARTIAL / next SQL execution captures executor
 G0-SQL-04 Feature availability      = WAITING_003_VERIFY
 
-G0-FLOW-01 SQL connector reality    = OPEN
+G0-FLOW-01 SQL connector reality    = PARTIAL_PASS / existing connection identity confirmed conceptually
 G0-FLOW-02 Contract transport       = NOT_STARTED
 ```
 
-The next real gate is execution of the SQL namespace bootstrap in `db-omm-dev`.
+The next real gate is execution of the SQL namespace bootstrap in `db-omm-dev` plus current Canvas baseline evidence.
 
 ---
 
 ## 1. Propósito
 
-Este es el primer gate que ya no puede cerrarse solo con documentación.
-
-Su objetivo es confirmar la realidad técnica del entorno en el que se construirá CMMS 2.0 antes de generar una foundation Power Apps/SQL que luego haya que rehacer.
+Confirmar la realidad técnica del entorno en el que se construirá CMMS 2.0 antes de generar una foundation Power Apps/SQL que luego haya que rehacer.
 
 No reabre decisiones funcionales ya tomadas.
 
@@ -68,8 +68,6 @@ No reabre decisiones funcionales ya tomadas.
 ### G0-PA-01 — Canvas app target
 
 Estado: `PASS`.
-
-Confirmado:
 
 ```text
 App name: CMMS
@@ -96,13 +94,11 @@ instructions = semicolon
 responsive layout = confirmed
 ```
 
-Debe confirmarse que la nueva app vacía conserva esa realidad antes de multiplicar artefactos.
+Debe confirmarse la realidad actual antes de multiplicar artefactos.
 
 ### G0-PA-03 — App Checker baseline
 
-Capturar un baseline limpio de la app vacía antes de introducir C01.
-
-Registrar:
+Capturar baseline de la app vacía:
 
 ```text
 Errors:
@@ -110,8 +106,6 @@ Warnings:
 Accessibility:
 Performance suggestions:
 ```
-
-La captura histórica `Accessibility = 208 / Performance = 3` pertenece a una composición anterior y no debe usarse como baseline de la app vacía actual.
 
 ### G0-PA-04 — Component reality
 
@@ -129,7 +123,7 @@ Skeleton Loader
 Icon resolver
 ```
 
-Clasificación obligatoria:
+Clasificación:
 
 ```text
 REUSE_CMMS
@@ -148,8 +142,6 @@ Ningún componente se marca `VALIDATED_CMMS` por existir en otro repositorio.
 ### G0-SQL-01 — Database target
 
 Estado: `PARTIAL_PASS`.
-
-Confirmado:
 
 ```text
 Database: db-omm-dev
@@ -170,43 +162,32 @@ Feature availability
 
 ### G0-SQL-02 — Runtime identity
 
-Confirmar qué identidad utilizará Power Automate para ejecutar SQL en desarrollo.
+Estado: `PASS`.
 
-Registrar:
-
-```text
-Connection identity:
-Authentication mechanism:
-Existing role/permissions:
-Can EXECUTE stored procedures?:
-Can SELECT approved views/read contracts?:
-Direct table DML currently available?:
-```
-
-Objetivo:
+Decisión vigente:
 
 ```text
-Power Automate runtime database user
-→ member of cmms_runtime
-→ SELECT/EXECUTE approved cmms_api contracts
-→ NO direct CRUD on physical CMMS schemas
+Power Automate
+→ existing development database user
+→ execute CMMS stored procedures
 ```
 
-El rol `cmms_runtime` puede crearse antes de conocer la identidad concreta; el binding del usuario es posterior.
+No se crea un rol `cmms_runtime` ni ningún otro rol CMMS adicional.
+
+La existencia de permisos administrativos en la cuenta técnica de desarrollo no cambia la arquitectura funcional:
+
+- Power Apps no hará DML directo sobre tablas CMMS;
+- las mutaciones se expresan como Stored Procedures orientados a intención de negocio;
+- Power Automate transporta/orquesta y no redefine invariantes;
+- SQL conserva integridad, concurrencia y transacciones.
+
+La identidad técnica de conexión no sustituye la identidad funcional del usuario que inició la acción. Los commands transportarán `ActorEmail`/actor funcional cuando aplique.
 
 ### G0-SQL-03 — DDL authority
 
-La siguiente ejecución de `003` captura la identidad que está ejecutando el bootstrap.
+La ejecución de `003` captura la identidad utilizada durante desarrollo.
 
-Debe mantenerse la separación conceptual:
-
-```text
-Deployment / DDL identity
-!=
-Runtime Power Automate identity
-```
-
-cuando sea viable.
+No se exige separar una identidad DDL de una identidad runtime durante esta fase de desarrollo.
 
 ### G0-SQL-04 — Feature availability
 
@@ -217,9 +198,10 @@ El script `003` verifica/recoge evidencia para:
 - transactions;
 - `UNIQUE` / `CHECK` constraints;
 - SQL platform/version;
-- `sp_getapplock` availability.
+- `sp_getapplock` availability;
+- capacidad actual para crear tables/procedures/views en los schemas CMMS.
 
-Stored Procedures/views se introducirán en I01-A/I01-B una vez que el namespace PASS.
+Stored Procedures/views de negocio se introducirán en I01-A/I01-B una vez que el namespace PASS.
 
 ### SQL bootstrap runbook
 
@@ -231,7 +213,6 @@ Orden:
 
 ```text
 001_CMMS_NAMESPACE_BOOTSTRAP.sql
-→ 002_CMMS_RUNTIME_ROLE.sql
 → 003_CMMS_NAMESPACE_VERIFY.sql
 ```
 
@@ -239,7 +220,6 @@ Expected markers:
 
 ```text
 PASS_001_CMMS_NAMESPACE_BOOTSTRAP
-PASS_002_CMMS_RUNTIME_ROLE
 PASS_003_CMMS_NAMESPACE_VERIFY
 ```
 
@@ -249,7 +229,9 @@ PASS_003_CMMS_NAMESPACE_VERIFY
 
 ### G0-FLOW-01 — SQL connector reality
 
-Confirmar que el environment puede crear/usar un Flow invocado desde Power Apps con conexión SQL a `db-omm-dev`.
+Usar la conexión SQL existente con el usuario ya disponible para desarrollo contra `db-omm-dev`.
+
+No crear roles adicionales como parte de este gate.
 
 ### G0-FLOW-02 — Contract transport
 
@@ -264,8 +246,6 @@ Power Apps request
 
 No introducir reglas de negocio del Reliability Study en el Flow.
 
-La identidad SQL del Flow se asociará a `cmms_runtime` solo cuando esté confirmada.
-
 ---
 
 ## 5. Gate PASS
@@ -279,20 +259,15 @@ G0 se considera PASS cuando exista evidencia suficiente de:
 [ ] foundation component strategy real confirmada
 [x] SQL dev database target identificado
 [ ] CMMS namespace bootstrap PASS
-[ ] runtime SQL identity identificada y bind strategy definida
-[ ] DDL/deployment authority conocida
-[ ] least-privilege direction validated
+[x] runtime SQL identity strategy definida / no additional role
+[ ] DDL execution identity captured
 [ ] rowversion/transactions/constraints supported
-[ ] Power Apps → Power Automate → SQL connector path viable
+[ ] Power Apps → Power Automate → SQL connector path proven with first contract
 ```
 
 ---
 
 ## 6. Acciones inmediatamente posteriores al PASS
-
-No habrá nueva fase conceptual.
-
-Secuencia:
 
 ```text
 G0 PASS
