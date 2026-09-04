@@ -1,0 +1,80 @@
+// CMMS 2.0 — C01-B Shared Shell Foundation
+// Target property: App.Formulas
+// Replaces C01-A formulas as the current development baseline.
+
+CMMSTheme = {
+    Canvas: ColorValue("#F6F8FB"),
+    Surface: ColorValue("#FFFFFF"),
+    SurfaceSoft: ColorValue("#F1F5F9"),
+    Border: ColorValue("#E2E8F0"),
+    BorderStrong: ColorValue("#CBD5E1"),
+    TextPrimary: ColorValue("#0F172A"),
+    TextSecondary: ColorValue("#475569"),
+    TextMuted: ColorValue("#64748B"),
+    NavBg: ColorValue("#001B2A"),
+    NavSurface: ColorValue("#062436"),
+    NavText: ColorValue("#D9E6ED"),
+    Primary: ColorValue("#2563EB"),
+    PrimaryDark: ColorValue("#1E3A8A"),
+    PrimaryLight: ColorValue("#38BDF8"),
+    Success: ColorValue("#10B981"),
+    Warning: ColorValue("#F59E0B"),
+    Danger: ColorValue("#DC2626"),
+    Info: ColorValue("#0EA5E9"),
+    White: Color.White
+};
+
+CMMSLayout = {
+    SidebarExpanded: 280,
+    SidebarCollapsed: 72,
+    TopBarHeight: 56,
+    PageHeaderHeight: 104,
+    PagePaddingDesktop: 24,
+    PagePaddingCompact: 16,
+    GapXS: 4,
+    GapS: 8,
+    GapM: 12,
+    GapL: 16,
+    GapXL: 24,
+    RadiusS: 8,
+    RadiusM: 12,
+    RadiusL: 16,
+    CompactBreakpoint: 1080,
+    MinDesktopWidth: 720
+};
+
+CMMSBuild = {
+    AppName: "CMMS",
+    ProductLanguage: "English",
+    Version: "0.1.0-dev",
+    Increment: "C01-B"
+};
+
+CMMSNavItems = Table(
+    {Order: 10, Key: "home", Label: "Home", Section: "Core", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 20, Key: "assets", Label: "Assets", Section: "Core", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 30, Key: "reliability", Label: "Reliability Engineering", Section: "Engineering", IsVisible: true, IsEnabled: true, Tooltip: "Reliability Engineering"},
+    {Order: 40, Key: "maintenance", Label: "Maintenance", Section: "Execution", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 50, Key: "work", Label: "Work Management", Section: "Execution", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 60, Key: "materials", Label: "Materials", Section: "Execution", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 70, Key: "operations", Label: "Operations", Section: "Operations", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 80, Key: "reports", Label: "Reports", Section: "Insights", IsVisible: true, IsEnabled: false, Tooltip: "Planned"},
+    {Order: 90, Key: "admin", Label: "Administration", Section: "Governance", IsVisible: true, IsEnabled: false, Tooltip: "Planned"}
+);
+
+CMMSReliabilityStages = Table(
+    {Order: 10, Key: "scope", Label: "Scope"},
+    {Order: 20, Key: "functions", Label: "Functions & Failures"},
+    {Order: 30, Key: "fmea", Label: "FMEA"},
+    {Order: 40, Key: "rcm", Label: "RCM"},
+    {Order: 50, Key: "strategy", Label: "Maintenance Strategy"},
+    {Order: 60, Key: "review", Label: "Review & Approval"}
+);
+
+CMMSFoundationStates = Table(
+    {Order: 10, Key: "READY", Label: "Ready"},
+    {Order: 20, Key: "LOADING", Label: "Loading"},
+    {Order: 30, Key: "EMPTY", Label: "Empty"},
+    {Order: 40, Key: "ERROR", Label: "Error"},
+    {Order: 50, Key: "CONFLICT", Label: "Conflict"}
+);
