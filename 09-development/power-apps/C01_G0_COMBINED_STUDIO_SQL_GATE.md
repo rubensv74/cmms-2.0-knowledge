@@ -1,140 +1,117 @@
 # CMMS 2.0 — Combined G0 SQL + C01 Studio Gate
 
-**Estado:** `WAITING_USER_EXECUTION`  
+**Estado:** `SQL_PASS / WAITING_POWER_APPS_STUDIO_EVIDENCE`  
 **Fecha:** 2026-09-04
 
-## 1. Objetivo
+## 1. Estado
 
-Evitar dos rondas manuales separadas. Este gate recoge en una sola sesión la evidencia mínima que no puede obtenerse desde el repositorio:
+The SQL portion of G0 is complete.
 
-1. bootstrap SQL real en `db-omm-dev`;
-2. baseline de la Canvas app `CMMS` vacía;
-3. comprobación de que la foundation Power Apps puede comenzar sin deuda previa oculta.
-
-## 2. Parte A — SQL
-
-Ejecutar en `db-omm-dev`, en orden:
+Confirmed real target:
 
 ```text
-09-development/sql/001_CMMS_NAMESPACE_BOOTSTRAP.sql
-09-development/sql/003_CMMS_NAMESPACE_VERIFY.sql
+Server   = dbs-hointegration-dev
+Database = db-omm-dev
+Identity = tradminomm
+Edition  = SQL Azure
 ```
 
-Resultado esperado:
+Confirmed CMMS schemas:
 
 ```text
-PASS_001_CMMS_NAMESPACE_BOOTSTRAP
-PASS_003_CMMS_NAMESPACE_VERIFY
+cmms
+cmms_api
+cmms_cfg
+cmms_audit
+cmms_stage
 ```
 
-Conservar el output completo de `003`, porque aporta:
+Confirmed development capabilities:
 
 ```text
-ServerName
-DatabaseName
-LoginName
-DatabaseUser
-OriginalLogin
-ProductVersion
-Edition
-DatabaseCollation
-HasSpGetAppLock
-schema ownership
-current DDL capability checks
+rowversion              = PASS
+transactions/rollback   = PASS
+UNIQUE/CHECK             = PASS
+sp_getapplock            = available
+CREATE TABLE             = yes
+CREATE PROCEDURE         = yes
+CREATE VIEW              = yes
+ALTER cmms               = yes
+ALTER cmms_api           = yes
 ```
 
-### Runtime identity decision
+Evidence record:
 
-Power Automate ejecutará los procedimientos almacenados con el usuario de base de datos ya disponible para desarrollo y con permisos suficientes para administrar `db-omm-dev`.
+`09-development/gates/evidence/2026-09-04_G0_SQL_NAMESPACE_PASS.md`
 
-No se crea ningún rol CMMS adicional en esta fase.
+No additional CMMS database role is to be created. Power Automate will use the existing development database user.
 
-La cuenta SQL de conexión no sustituye la identidad funcional del usuario. Los commands iniciados desde Power Apps deberán transportar `ActorEmail`/identidad funcional cuando aplique para auditoría.
+## 2. Remaining gate — Canvas app `CMMS`
 
-No ejecutar todavía DDL de `ReliabilityStudy`.
+The only remaining manual foundation evidence is Power Apps Studio reality.
 
-## 3. Parte B — Canvas app baseline
+Open the current `CMMS` Canvas app and capture:
 
-Abrir la app `CMMS` en Power Apps Studio.
+### A — Current app / environment
 
-Registrar:
+A screenshot showing the current screen tree and environment/app context.
 
-```text
-Environment
-App remains empty / current screen inventory
-Responsive / display settings
-App Checker summary
-```
+### B — App Checker
 
-La captura histórica de agosto no sustituye esta evidencia porque la app actual se declara vacía.
-
-### B1 — App Checker
-
-Abrir App Checker y conservar el resumen actual:
+Capture the summary for the current empty app:
 
 ```text
 Errors
-Warnings / formulas when visible
+Formula/warnings if shown
 Accessibility
 Performance
 ```
 
-Este será el nuevo baseline C01.
+This becomes the C01 baseline.
 
-### B2 — Current authoring reality
+### C — Components
 
-Confirmar mediante una fórmula mínima o la UI de Studio la sintaxis actual:
+Capture the Components tree.
 
-```text
-function arguments
-instruction separator
-```
+The current declaration is that the app is empty. Historical components from August are not considered installed until current Studio evidence confirms them.
 
-La evidencia histórica fue `comma + semicolon`, pero se registra nuevamente si la app fue recreada.
+### D — Display / responsive settings
 
-### B3 — Component inventory
+If not already obvious from the app screenshot, capture Settings > Display sufficiently to confirm the current responsive/layout reality.
 
-Confirmar que no existen componentes CMMS instalados actualmente, o listar cualquiera que sí exista.
+One or two screenshots are enough if they show all of the above clearly.
 
-No importar todavía componentes de TMS/AssetPlan directamente.
+## 3. What happens immediately after PASS
 
-## 4. Evidencia mínima que debe volver al repositorio
-
-```text
-SQL 001 result
-SQL 003 full output
-Power Apps environment
-App Checker baseline
-Current components list
-```
-
-Capturas son válidas para Power Apps. Para SQL se prefiere output textual/tabular de `003`.
-
-## 5. Decisión automática después del gate
-
-### Si PASS
-
-El siguiente incremento será C01-A y no requerirá otra ronda conceptual:
+No further conceptual planning round is required.
 
 ```text
 C01-A Theme/Layout Foundation
 → C01-B CMMS Sidebar + Project Context + Page Header
 → C01-C Canonical Screen Template
 → I01-A Backend Common Contracts
+→ I01-B Project/Asset/Study Read Slice
+→ I01-C Safe Study Scope Command
+→ C02 P-101 Reliability Backbone
 ```
 
-### Si SQL falla
+## 4. Guardrails already frozen
 
-Se corrige únicamente el bootstrap/capability que falle. No se rediseña el producto.
+```text
+Power Apps
+→ Power Automate
+→ cmms_api Stored Procedures / read contracts
+→ CMMS domain schemas
+```
 
-### Si Power Apps falla
+- no API is built now;
+- contracts remain suitable for a future API boundary;
+- SQL owns integrity, transactions and concurrency;
+- Power Automate does not own business invariants;
+- no direct Power Apps table DML;
+- `ActorEmail`/functional actor is preserved separately from the technical SQL connection;
+- no additional CMMS database role is created in development.
 
-Se corrige compatibilidad de controles/source/locale antes de multiplicar componentes.
+## 5. Stop condition
 
-## 6. Criterio de parada
-
-Este documento representa el siguiente gate real.
-
-No crear aún tablas `ReliabilityStudy`, `Function`, `FailureMode` o `MaintenanceStrategy` antes de confirmar el namespace y capacidades SQL reales.
-
-No promover componentes a `VALIDATED_CMMS` antes de Studio.
+Do not create the productive ReliabilityStudy aggregate before the current Studio baseline is captured. The SQL platform itself no longer blocks development.
