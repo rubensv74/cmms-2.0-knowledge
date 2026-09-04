@@ -78,7 +78,7 @@ cmms_stage  -- future imports/staging
 
 Reglas:
 
-1. Runtime no escribe directamente tablas `cmms`.
+1. Runtime no escribe directamente tablas `cmms` desde Power Apps.
 2. Las escrituras operativas se realizan mediante Stored Procedures orientados a intención de negocio.
 3. Las lecturas se exponen mediante read models apropiados al caso de uso.
 4. La estructura física puede evolucionar sin romper el contrato consumidor cuando la semántica no cambie.
@@ -292,7 +292,7 @@ Todo lock tendrá scope mínimo y justificado.
 
 ## 11. Stored Procedures como commands de negocio
 
-Las escrituras no se expondrán como CRUD libre.
+Las escrituras no se expondrán como CRUD libre desde Power Apps/Power Automate.
 
 Ejemplos conceptuales:
 
@@ -346,7 +346,7 @@ Reglas:
 - null no se convierte en dato positivo;
 - paginación/orden determinista cuando aplique;
 - `ConcurrencyToken` incluido cuando el consumer pueda editar la entidad leída;
-- `ProjectId` y autorización no se delegan a un filtro visual.
+- `ProjectId` y autorización funcional no se delegan a un filtro visual.
 
 ---
 
@@ -431,26 +431,36 @@ Por tanto:
 - read/command contracts son versionables;
 - identifiers de concurrency/idempotency/correlation son transportables;
 - SQL devuelve outcomes contractuales;
-- seguridad y permisos no dependen solo de controles visibles;
+- seguridad funcional no depende solo de controles visibles;
 - la futura API podrá reutilizar la frontera sin replicar lógica de integridad.
 
 La API futura requerirá una decisión propia sobre auth, authorization, ownership, versioning, observability, deployment y operations.
 
 ---
 
-## 16. Connection / Least Privilege
+## 16. Connection Identity — Development Decision
 
-La conexión runtime no debe requerir `db_owner` ni permisos directos de escritura sobre tablas del dominio.
-
-Objetivo inicial:
+Durante el desarrollo actual:
 
 ```text
-EXECUTE on approved cmms_api Stored Procedures
-SELECT/EXECUTE on approved read contracts
-no direct DML on cmms tables
+Power Automate
+→ existing database user with administrative capability
+→ db-omm-dev
 ```
 
-Los permisos definitivos se ajustarán al mecanismo real de conexión, pero el principio de mínimo privilegio es obligatorio desde el primer piloto.
+No se crea un rol `cmms_runtime` ni ningún otro rol CMMS adicional.
+
+Esta decisión es deliberada para el entorno de desarrollo y no bloquea el producto.
+
+Guardrails que siguen siendo obligatorios aunque la cuenta técnica disponga de permisos amplios:
+
+- Power Apps no hace DML directo sobre tablas CMMS;
+- Power Automate ejecuta Stored Procedures/read contracts y no contiene las invariantes de negocio;
+- SQL conserva la autoridad transaccional y de concurrencia;
+- la identidad técnica de conexión no sustituye `ActorEmail`/actor funcional en auditoría;
+- los contratos no deben depender de que la cuenta tenga permisos administrativos.
+
+El endurecimiento de permisos de una futura implantación productiva se tratará como decisión de deployment/security y no requiere rediseñar pantallas, contratos ni procedimientos de negocio.
 
 ---
 
@@ -468,7 +478,7 @@ Antes de aprobar cualquier command mutable:
 [ ] IdempotencyKey cuando aplica
 [ ] RequestId / CorrelationId cuando aplica
 [ ] PK/FK/UNIQUE/CHECK/nullability revisados
-[ ] authorization boundary definida
+[ ] authorization boundary funcional definida cuando aplica
 [ ] locking/serialization justificado y mínimo
 [ ] actor/audit definido
 [ ] result/error/conflict contract definido
@@ -476,7 +486,6 @@ Antes de aprobar cualquier command mutable:
 [ ] negative/invariant test
 [ ] concurrent/conflict test o equivalente
 [ ] retry/idempotency test cuando aplica
-[ ] least privilege test
 [ ] future API compatibility reviewed
 ```
 
