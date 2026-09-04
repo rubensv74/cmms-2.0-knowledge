@@ -1,8 +1,55 @@
 # CMMS 2.0 — G0 Runtime Foundation Gate
 
-**Estado:** WAITING_REAL_TOOL_EVIDENCE  
+**Estado:** `IN_PROGRESS / WAITING_SQL_BOOTSTRAP_EVIDENCE`  
 **Fecha:** 2026-09-04  
 **Bloquea:** C01 Premium App Shell + I01 Backend Pilot implementation
+
+---
+
+## 0. Estado real confirmado 2026-09-04
+
+Nueva evidencia confirmada por el responsable funcional:
+
+```text
+Canvas app target = CMMS
+Canvas current state = exists / empty
+SQL database target = db-omm-dev
+Database nature = shared O&M development database
+Shared with = TMS + future Operations & Maintenance developments
+```
+
+Decisión de namespace aprobada para evitar colisión y acoplamiento dentro de la base compartida:
+
+```text
+cmms        -- domain data
+cmms_api    -- stable application boundary
+cmms_cfg    -- governed/versioned configuration
+cmms_audit  -- audit/history
+cmms_stage  -- controlled imports/staging when needed
+```
+
+No se crearán objetos CMMS nuevos en `dbo`.
+
+La evidencia Power Apps de 2026-08-24 se conserva como histórica: en aquella fecha la app `CMMS` fue observada en `ENV PRE TR 162`, con responsive layout, componentes foundation y App Checker baseline. Como el estado actual declarado es `empty`, dicha evidencia no demuestra el inventario físico actual; solo conserva aprendizaje de compatibilidad y authoring.
+
+### Estado de checks
+
+```text
+G0-PA-01 Canvas app target          = PASS
+G0-PA-02 Current source reality     = RECHECK_REQUIRED_ON_EMPTY_APP
+G0-PA-03 Current App Checker        = REBASELINE_REQUIRED
+G0-PA-04 Current components         = REAUDIT_REQUIRED
+
+G0-SQL-01 Database target           = PARTIAL_PASS / db-omm-dev known
+G0-SQL-02 Runtime identity          = OPEN
+G0-SQL-03 DDL identity              = PARTIAL / next SQL execution will capture executor
+G0-SQL-04 Feature availability      = WAITING_003_VERIFY
+
+G0-FLOW-01 SQL connector reality    = OPEN
+G0-FLOW-02 Contract transport       = NOT_STARTED
+```
+
+The next real gate is execution of the SQL namespace bootstrap in `db-omm-dev`.
 
 ---
 
@@ -20,36 +67,42 @@ No reabre decisiones funcionales ya tomadas.
 
 ### G0-PA-01 — Canvas app target
 
-Confirmar:
+Estado: `PASS`.
+
+Confirmado:
 
 ```text
-Environment:
-App name:
-App ID / URL if available:
-Owner / maker context:
-Desktop-first canvas:
+App name: CMMS
+Current state: empty
+Desktop-first target: yes
 ```
 
-Resultado esperado:
-
-`PASS — existe una app real objetivo para comenzar la foundation`.
-
-Si todavía no existe, crear una Canvas app vacía es parte del gate.
+Environment/App ID se capturarán durante la siguiente sesión real de Studio si fueran necesarios para trazabilidad.
 
 ### G0-PA-02 — Source Code reality
 
-Confirmar en la app real:
+Confirmar en la app actual:
 
-- Source Code schema aceptado;
-- authoring locale;
-- versiones reales de `GroupContainer` y controles que vayamos a usar;
-- posibilidad real de copiar/pegar Source Code/YAML conforme al patrón utilizado en AssetPlan/TMS.
+- Source Code schema aceptado cuando se use;
+- authoring locale/syntax actual;
+- versiones reales de `GroupContainer` y controles elegidos;
+- posibilidad real de copiar/pegar Source Code/YAML conforme al patrón AssetPlan/TMS cuando proceda.
 
-No se generará una cadena larga de pantallas antes de confirmar esto.
+La evidencia histórica de 2026-08-24 registró:
+
+```text
+arguments = comma
+instructions = semicolon
+responsive layout = confirmed
+```
+
+Debe confirmarse que la nueva app vacía conserva esa realidad antes de multiplicar artefactos.
 
 ### G0-PA-03 — App Checker baseline
 
-Capturar baseline antes de introducir CMMS foundation:
+Capturar un baseline limpio de la app vacía antes de introducir C01.
+
+Registrar:
 
 ```text
 Errors:
@@ -58,11 +111,13 @@ Accessibility:
 Performance suggestions:
 ```
 
-El objetivo no es exigir cero warnings de una app vacía, sino distinguir deuda previa de defectos nuevos.
+La captura histórica `Accessibility = 208 / Performance = 3` pertenece a una composición anterior y no debe usarse como baseline de la app vacía actual.
 
 ### G0-PA-04 — Component reality
 
-Auditar primero candidatos reales de AssetPlan/TMS/PULSE para:
+Como la app actual se declara vacía, ningún componente histórico se considera instalado.
+
+Auditar/adaptar primero candidatos reales de AssetPlan/TMS/PULSE para:
 
 ```text
 Sidebar
@@ -74,7 +129,7 @@ Skeleton Loader
 Icon resolver
 ```
 
-Por cada candidato:
+Clasificación obligatoria:
 
 ```text
 REUSE_CMMS
@@ -92,18 +147,26 @@ Ningún componente se marca `VALIDATED_CMMS` por existir en otro repositorio.
 
 ### G0-SQL-01 — Database target
 
-Confirmar:
+Estado: `PARTIAL_PASS`.
+
+Confirmado:
 
 ```text
-SQL platform / service:
-Server:
-Database:
-Development environment:
-Existing schemas relevant to CMMS:
-Collation if material:
+Database: db-omm-dev
+Environment intent: development
+Database is shared with TMS and future O&M products
+CMMS namespace strategy: approved
 ```
 
-No se requiere todavía diseñar el modelo completo.
+Pendiente de `003_CMMS_NAMESPACE_VERIFY.sql`:
+
+```text
+Server
+Platform/edition
+Collation
+Execution identity
+Feature availability
+```
 
 ### G0-SQL-02 — Runtime identity
 
@@ -120,38 +183,65 @@ Can SELECT approved views/read contracts?:
 Direct table DML currently available?:
 ```
 
-Objetivo final:
+Objetivo:
 
 ```text
-runtime
-→ EXECUTE/SELECT approved cmms_api contracts
-→ NO direct DML on cmms tables
+Power Automate runtime database user
+→ member of cmms_runtime
+→ SELECT/EXECUTE approved cmms_api contracts
+→ NO direct CRUD on physical CMMS schemas
 ```
+
+El rol `cmms_runtime` puede crearse antes de conocer la identidad concreta; el binding del usuario es posterior.
 
 ### G0-SQL-03 — DDL authority
 
-Confirmar qué identidad/persona ejecutará scripts de instalación/migración durante desarrollo.
+La siguiente ejecución de `003` captura la identidad que está ejecutando el bootstrap.
 
-Separar:
+Debe mantenerse la separación conceptual:
 
 ```text
 Deployment / DDL identity
 !=
-Runtime Flow identity
+Runtime Power Automate identity
 ```
 
-cuando sea posible.
+cuando sea viable.
 
 ### G0-SQL-04 — Feature availability
 
-Confirmar soporte para:
+El script `003` verifica/recoge evidencia para:
 
 - schemas;
 - `rowversion`;
 - transactions;
-- unique indexes/constraints;
-- Stored Procedures;
-- `sp_getapplock` si el motor/plataforma lo permite y llega a necesitarse.
+- `UNIQUE` / `CHECK` constraints;
+- SQL platform/version;
+- `sp_getapplock` availability.
+
+Stored Procedures/views se introducirán en I01-A/I01-B una vez que el namespace PASS.
+
+### SQL bootstrap runbook
+
+Ruta:
+
+`09-development/sql/README.md`
+
+Orden:
+
+```text
+001_CMMS_NAMESPACE_BOOTSTRAP.sql
+→ 002_CMMS_RUNTIME_ROLE.sql
+→ 003_CMMS_NAMESPACE_VERIFY.sql
+```
+
+Expected markers:
+
+```text
+PASS_001_CMMS_NAMESPACE_BOOTSTRAP
+PASS_002_CMMS_RUNTIME_ROLE
+PASS_003_CMMS_NAMESPACE_VERIFY
+```
 
 ---
 
@@ -159,20 +249,22 @@ Confirmar soporte para:
 
 ### G0-FLOW-01 — SQL connector reality
 
-Confirmar que el environment puede crear/usar un Flow invocado desde Power Apps con conexión SQL al target de desarrollo.
+Confirmar que el environment puede crear/usar un Flow invocado desde Power Apps con conexión SQL a `db-omm-dev`.
 
 ### G0-FLOW-02 — Contract transport
 
-El primer Flow deberá ser fino:
+El primer Flow será fino:
 
 ```text
 Power Apps request
-→ validate transport fields
+→ transport fields
 → execute cmms_api read/command contract
 → return normalized result
 ```
 
 No introducir reglas de negocio del Reliability Study en el Flow.
+
+La identidad SQL del Flow se asociará a `cmms_runtime` solo cuando esté confirmada.
 
 ---
 
@@ -181,15 +273,16 @@ No introducir reglas de negocio del Reliability Study en el Flow.
 G0 se considera PASS cuando exista evidencia suficiente de:
 
 ```text
-[ ] Canvas app real identificada/creada
-[ ] Source Code reality confirmada
-[ ] App Checker baseline capturado
+[x] Canvas app real identificada/creada
+[ ] Source Code/current authoring reality confirmada
+[ ] App Checker baseline de app actual capturado
 [ ] foundation component strategy real confirmada
-[ ] SQL dev target identificado
-[ ] runtime SQL identity identificada
+[x] SQL dev database target identificado
+[ ] CMMS namespace bootstrap PASS
+[ ] runtime SQL identity identificada y bind strategy definida
 [ ] DDL/deployment authority conocida
-[ ] least-privilege direction viable
-[ ] rowversion/transactions/SP supported
+[ ] least-privilege direction validated
+[ ] rowversion/transactions/constraints supported
 [ ] Power Apps → Power Automate → SQL connector path viable
 ```
 
@@ -216,6 +309,6 @@ G0 PASS
 
 ## 7. Regla de parada
 
-Si G0 detecta una incompatibilidad real de Source Code, permisos SQL o conectividad, se corrige el diseño de foundation antes de multiplicar artefactos.
+Si G0 detecta una incompatibilidad real de Source Code, permisos SQL o conectividad, se corrige la foundation antes de multiplicar artefactos.
 
-Eso es un gate técnico real, no una razón para volver a discutir conceptos de CMMS ya consolidados.
+Eso es un gate técnico real, no una razón para reabrir conceptos CMMS ya consolidados.
