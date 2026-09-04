@@ -22,7 +22,7 @@ ComponentDefinitions:
         Default: ="Page title"
     Properties:
       Fill: =Color.Transparent
-      Height: =CMMSLayout.PageHeaderHeight
+      Height: =104
       Width: =640
     Children:
       - conCMMSPageHeader_Root:
@@ -46,7 +46,7 @@ ComponentDefinitions:
             - lblCMMSPageHeader_Eyebrow:
                 Control: Label@2.5.1
                 Properties:
-                  Color: =CMMSTheme.Primary
+                  Color: =ColorValue("#2563EB")
                   Fill: =Color.Transparent
                   Font: =Font.'Segoe UI'
                   FontWeight: =FontWeight.Semibold
@@ -57,7 +57,7 @@ ComponentDefinitions:
             - lblCMMSPageHeader_Title:
                 Control: Label@2.5.1
                 Properties:
-                  Color: =CMMSTheme.TextPrimary
+                  Color: =ColorValue("#0F172A")
                   Fill: =Color.Transparent
                   Font: =Font.'Segoe UI'
                   FontWeight: =FontWeight.Bold
@@ -69,7 +69,7 @@ ComponentDefinitions:
             - lblCMMSPageHeader_Subtitle:
                 Control: Label@2.5.1
                 Properties:
-                  Color: =CMMSTheme.TextSecondary
+                  Color: =ColorValue("#475569")
                   Fill: =Color.Transparent
                   Font: =Font.'Segoe UI'
                   Height: =24
