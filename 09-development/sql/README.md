@@ -28,6 +28,10 @@ cmms_api (views / query SPs / command SPs)
 cmms / cmms_cfg / cmms_audit
 ```
 
+Power Automate will use the existing database user already available for development. No CMMS-specific database role is created in this phase.
+
+This technical connection identity is not the functional actor. Commands that represent a user action must transport the initiating Power Apps identity, normally `ActorEmail` and the applicable Project/context identifiers, so audit records identify the person responsible for the business action rather than only the SQL connection account.
+
 Future evolution may become:
 
 ```text
@@ -51,24 +55,18 @@ Run in this order against `db-omm-dev`:
    - creates no business tables;
    - aborts if executed in a different database.
 
-2. `002_CMMS_RUNTIME_ROLE.sql`
-   - creates database role `cmms_runtime`;
-   - grants only `SELECT`/`EXECUTE` on `cmms_api`;
-   - explicitly denies direct CRUD access to physical CMMS schemas;
-   - does **not** bind a real user/login yet.
-
-3. `003_CMMS_NAMESPACE_VERIFY.sql`
+2. `003_CMMS_NAMESPACE_VERIFY.sql`
    - confirms target server/database/current execution identity;
-   - confirms schemas and role permissions;
+   - confirms the five schemas;
    - proves `rowversion`, `UNIQUE`, `CHECK` and transaction rollback using a temporary object;
    - reports whether `sp_getapplock` is available;
+   - reports whether the current execution identity can create the SQL objects needed for development;
    - creates no persistent business object.
 
 Expected final markers:
 
 ```text
 PASS_001_CMMS_NAMESPACE_BOOTSTRAP
-PASS_002_CMMS_RUNTIME_ROLE
 PASS_003_CMMS_NAMESPACE_VERIFY
 ```
 
@@ -83,6 +81,23 @@ The database is shared. A single `cmms` schema would isolate names from TMS but 
 - transient staging.
 
 Separating those responsibilities now is inexpensive and prevents Power Apps/Power Automate from becoming coupled to the physical model.
+
+## Runtime rule
+
+The current development runtime identity may have broad database permissions. We do not add another CMMS role merely to restrict it during this phase.
+
+The application boundary is enforced by design:
+
+```text
+Power Apps
+→ Power Automate
+→ stored procedures / read contracts
+→ SQL domain objects
+```
+
+Power Apps does not perform direct table DML and Power Automate does not become the owner of business invariants.
+
+A future production security model can tighten the connection identity without changing the functional contracts or screen design.
 
 ## Mandatory SQL rules from first business table
 
