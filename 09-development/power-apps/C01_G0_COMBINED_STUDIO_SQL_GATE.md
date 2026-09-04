@@ -1,117 +1,70 @@
 # CMMS 2.0 — Combined G0 SQL + C01 Studio Gate
 
-**Estado:** `SQL_PASS / WAITING_POWER_APPS_STUDIO_EVIDENCE`  
+**Estado:** `CLOSED / G0_PASS`  
 **Fecha:** 2026-09-04
 
-## 1. Estado
+## Resultado
 
-The SQL portion of G0 is complete.
+La foundation runtime ha sido validada con evidencia real de SQL y Power Apps.
 
-Confirmed real target:
-
-```text
-Server   = dbs-hointegration-dev
-Database = db-omm-dev
-Identity = tradminomm
-Edition  = SQL Azure
-```
-
-Confirmed CMMS schemas:
+### SQL
 
 ```text
-cmms
-cmms_api
-cmms_cfg
-cmms_audit
-cmms_stage
+Database     = db-omm-dev
+Server       = dbs-hointegration-dev
+Identity     = tradminomm
+Platform     = SQL Azure
+CMMS schemas = installed
+rowversion   = PASS
+transactions = PASS
+constraints  = PASS
+DDL capability = PASS
 ```
 
-Confirmed development capabilities:
+### Power Apps
 
 ```text
-rowversion              = PASS
-transactions/rollback   = PASS
-UNIQUE/CHECK             = PASS
-sp_getapplock            = available
-CREATE TABLE             = yes
-CREATE PROCEDURE         = yes
-CREATE VIEW              = yes
-ALTER cmms               = yes
-ALTER cmms_api           = yes
+App          = CMMS
+Environment  = ENV PRE TR 162
+Current tree = Screen1 / ScreenContainer1
+Components   = empty
+Layout       = Responsive
+Aspect lock  = Off
+Orientation lock = Off
+App Checker  = Accessibility (1), no other visible counters
 ```
 
-Evidence record:
+Evidence:
 
-`09-development/gates/evidence/2026-09-04_G0_SQL_NAMESPACE_PASS.md`
+- `09-development/gates/evidence/2026-09-04_G0_SQL_NAMESPACE_PASS.md`
+- `09-development/gates/evidence/2026-09-04_G0_POWER_APPS_PASS.md`
 
-No additional CMMS database role is to be created. Power Automate will use the existing development database user.
+## Runtime identity decision
 
-## 2. Remaining gate — Canvas app `CMMS`
+Power Automate uses the existing development database user. No additional CMMS database role is created.
 
-The only remaining manual foundation evidence is Power Apps Studio reality.
+Functional actor identity remains explicit through `ActorEmail`/actor data when applicable.
 
-Open the current `CMMS` Canvas app and capture:
-
-### A — Current app / environment
-
-A screenshot showing the current screen tree and environment/app context.
-
-### B — App Checker
-
-Capture the summary for the current empty app:
+## Gate marker
 
 ```text
-Errors
-Formula/warnings if shown
-Accessibility
-Performance
+G0_RUNTIME_FOUNDATION_PASS
 ```
 
-This becomes the C01 baseline.
+## Next real gate
 
-### C — Components
+The next blocking uncertainty is Source Code/control compatibility for the current Power Apps Studio.
 
-Capture the Components tree.
+Use:
 
-The current declaration is that the app is empty. Historical components from August are not considered installed until current Studio evidence confirms them.
+`09-development/power-apps/C01_A_STUDIO_GATE.md`
 
-### D — Display / responsive settings
-
-If not already obvious from the app screenshot, capture Settings > Display sufficiently to confirm the current responsive/layout reality.
-
-One or two screenshots are enough if they show all of the above clearly.
-
-## 3. What happens immediately after PASS
-
-No further conceptual planning round is required.
+Sequence:
 
 ```text
-C01-A Theme/Layout Foundation
-→ C01-B CMMS Sidebar + Project Context + Page Header
-→ C01-C Canonical Screen Template
-→ I01-A Backend Common Contracts
-→ I01-B Project/Asset/Study Read Slice
-→ I01-C Safe Study Scope Command
-→ C02 P-101 Reliability Backbone
+App.Formulas
+→ App.OnStart
+→ scr_CMMS_Foundation_C01 native screen
+→ responsive/App Checker evidence
+→ C01_A_FOUNDATION_STUDIO_PASS
 ```
-
-## 4. Guardrails already frozen
-
-```text
-Power Apps
-→ Power Automate
-→ cmms_api Stored Procedures / read contracts
-→ CMMS domain schemas
-```
-
-- no API is built now;
-- contracts remain suitable for a future API boundary;
-- SQL owns integrity, transactions and concurrency;
-- Power Automate does not own business invariants;
-- no direct Power Apps table DML;
-- `ActorEmail`/functional actor is preserved separately from the technical SQL connection;
-- no additional CMMS database role is created in development.
-
-## 5. Stop condition
-
-Do not create the productive ReliabilityStudy aggregate before the current Studio baseline is captured. The SQL platform itself no longer blocks development.
