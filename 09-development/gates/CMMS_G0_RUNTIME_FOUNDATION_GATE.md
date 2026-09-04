@@ -1,26 +1,27 @@
 # CMMS 2.0 — G0 Runtime Foundation Gate
 
-**Estado:** `IN_PROGRESS / WAITING_SQL_BOOTSTRAP_EVIDENCE`  
+**Estado:** `IN_PROGRESS / SQL_PASS / WAITING_POWER_APPS_STUDIO_EVIDENCE`  
 **Fecha:** 2026-09-04  
 **Bloquea:** C01 Premium App Shell + I01 Backend Pilot implementation
 
 ---
 
-## 0. Estado real confirmado 2026-09-04
-
-Evidencia confirmada por el responsable funcional:
+## 0. Estado real confirmado
 
 ```text
 Canvas app target = CMMS
 Canvas current state = exists / empty
-SQL database target = db-omm-dev
+SQL server = dbs-hointegration-dev
+SQL database = db-omm-dev
+SQL edition = SQL Azure
+SQL connection/deployment identity = tradminomm
 Database nature = shared O&M development database
 Shared with = TMS + future Operations & Maintenance developments
-Power Automate SQL runtime identity = existing database user with administrative capability
+Power Automate SQL runtime identity = existing administrative-capable database user
 Additional CMMS database role = DO NOT CREATE
 ```
 
-Decisión de namespace aprobada:
+CMMS namespace installed:
 
 ```text
 cmms        -- domain data
@@ -30,88 +31,150 @@ cmms_audit  -- audit/history
 cmms_stage  -- controlled imports/staging when needed
 ```
 
-No se crearán objetos CMMS nuevos en `dbo`.
+No new CMMS object is created in `dbo`.
 
-La evidencia Power Apps de 2026-08-24 se conserva como histórica. Como el estado actual declarado es `empty`, dicha evidencia conserva aprendizaje técnico pero no demuestra el inventario físico actual.
-
-### Estado de checks
+### Gate status
 
 ```text
 G0-PA-01 Canvas app target          = PASS
-G0-PA-02 Current source reality     = RECHECK_REQUIRED_ON_EMPTY_APP
-G0-PA-03 Current App Checker        = REBASELINE_REQUIRED
-G0-PA-04 Current components         = REAUDIT_REQUIRED
+G0-PA-02 Current source reality     = WAITING_STUDIO_EVIDENCE
+G0-PA-03 Current App Checker        = WAITING_STUDIO_EVIDENCE
+G0-PA-04 Current components         = WAITING_STUDIO_EVIDENCE
 
-G0-SQL-01 Database target           = PARTIAL_PASS / db-omm-dev known
-G0-SQL-02 Runtime identity strategy = PASS / existing admin-capable user, no extra role
-G0-SQL-03 DDL identity              = PARTIAL / next SQL execution captures executor
-G0-SQL-04 Feature availability      = WAITING_003_VERIFY
+G0-SQL-01 Database target           = PASS
+G0-SQL-02 Runtime identity strategy = PASS / existing user, no extra role
+G0-SQL-03 DDL identity              = PASS / tradminomm
+G0-SQL-04 Feature availability      = PASS
 
-G0-FLOW-01 SQL connector reality    = PARTIAL_PASS / existing connection identity confirmed conceptually
-G0-FLOW-02 Contract transport       = NOT_STARTED
+G0-FLOW-01 SQL identity/path        = PASS_FOR_FOUNDATION / existing SQL connection identity
+G0-FLOW-02 Contract transport       = NOT_STARTED / first contract in I01
 ```
 
-The next real gate is execution of the SQL namespace bootstrap in `db-omm-dev` plus current Canvas baseline evidence.
+SQL evidence:
+
+`09-development/gates/evidence/2026-09-04_G0_SQL_NAMESPACE_PASS.md`
 
 ---
 
-## 1. Propósito
+## 1. SQL PASS evidence
 
-Confirmar la realidad técnica del entorno en el que se construirá CMMS 2.0 antes de generar una foundation Power Apps/SQL que luego haya que rehacer.
+Real execution returned:
 
-No reabre decisiones funcionales ya tomadas.
+```text
+ServerName        = dbs-hointegration-dev
+DatabaseName      = db-omm-dev
+LoginName         = tradminomm
+DatabaseUser      = tradminomm
+OriginalLogin     = tradminomm
+ProductVersion    = 12.0.2000.8
+Edition           = SQL Azure
+DatabaseCollation = SQL_Latin1_General_CP1_CI_AS
+HasSpGetAppLock   = 1
+```
+
+Schemas confirmed, owner `dbo`:
+
+```text
+cmms
+cmms_api
+cmms_audit
+cmms_cfg
+cmms_stage
+```
+
+Current development identity capability:
+
+```text
+CanCreateTable          = 1
+CanCreateProcedure      = 1
+CanCreateView           = 1
+CanAlterCmmsSchema      = 1
+CanAlterCmmsApiSchema   = 1
+```
+
+The verification script completed after exercising its temporary capability probe. Therefore G0 records PASS for:
+
+```text
+rowversion
+transaction rollback
+UNIQUE/CHECK constraints
+sp_getapplock availability
+schema creation/use
+procedure/view/table deployment capability
+```
+
+No persistent CMMS business table was created by the probe.
 
 ---
 
-## 2. Evidencia Power Apps requerida
+## 2. Runtime SQL decision
 
-### G0-PA-01 — Canvas app target
+Power Automate will execute CMMS Stored Procedures with the existing development database user.
 
-Estado: `PASS`.
+No `cmms_runtime` or other CMMS-specific database role will be created in this phase.
 
-```text
-App name: CMMS
-Current state: empty
-Desktop-first target: yes
-```
-
-Environment/App ID se capturarán durante la siguiente sesión real de Studio si fueran necesarios para trazabilidad.
-
-### G0-PA-02 — Source Code reality
-
-Confirmar en la app actual:
-
-- Source Code schema aceptado cuando se use;
-- authoring locale/syntax actual;
-- versiones reales de `GroupContainer` y controles elegidos;
-- posibilidad real de copiar/pegar Source Code/YAML conforme al patrón AssetPlan/TMS cuando proceda.
-
-La evidencia histórica de 2026-08-24 registró:
+The broad technical permission of the development connection does not change the application architecture:
 
 ```text
-arguments = comma
-instructions = semicolon
-responsive layout = confirmed
+Power Apps
+→ Power Automate
+→ cmms_api read/command contracts
+→ cmms / cmms_cfg / cmms_audit
 ```
 
-Debe confirmarse la realidad actual antes de multiplicar artefactos.
+Rules that remain mandatory:
+
+- Power Apps does not perform direct table DML;
+- business mutations are Stored Procedures oriented to intent;
+- Power Automate transports/orchestrates, it does not own critical invariants;
+- SQL owns integrity, transactionality and concurrency;
+- the technical SQL identity is not the functional actor;
+- Power Apps commands transport `ActorEmail` / actor identity when applicable.
+
+---
+
+## 3. Remaining Power Apps evidence
+
+The previous August Power Apps evidence is historical only. The current app is declared empty, therefore G0 needs a fresh baseline before multiplying C01 components.
+
+### G0-PA-02 — Current authoring/source reality
+
+Confirm in the current `CMMS` app:
+
+```text
+Environment
+Responsive/display configuration
+Source Code / copy-paste mechanism available when used
+Power Fx authoring syntax
+```
+
+Historical syntax was:
+
+```text
+function arguments = comma
+instruction separator = semicolon
+```
+
+It must not be assumed if the app was recreated.
 
 ### G0-PA-03 — App Checker baseline
 
-Capturar baseline de la app vacía:
+Capture the current summary:
 
 ```text
-Errors:
-Warnings:
-Accessibility:
-Performance suggestions:
+Errors
+Formula/warnings when visible
+Accessibility
+Performance
 ```
 
-### G0-PA-04 — Component reality
+### G0-PA-04 — Component inventory
 
-Como la app actual se declara vacía, ningún componente histórico se considera instalado.
+Capture the current Components tree.
 
-Auditar/adaptar primero candidatos reales de AssetPlan/TMS/PULSE para:
+Because the app is currently declared empty, no historical CMMS component is considered installed until shown in Studio.
+
+Candidate shared capabilities after the inventory:
 
 ```text
 Sidebar
@@ -123,7 +186,7 @@ Skeleton Loader
 Icon resolver
 ```
 
-Clasificación:
+Lifecycle decision per candidate:
 
 ```text
 REUSE_CMMS
@@ -133,146 +196,37 @@ CREATE_SHARED
 DO_NOT_USE
 ```
 
-Ningún componente se marca `VALIDATED_CMMS` por existir en otro repositorio.
+No component becomes `VALIDATED_CMMS` without a real Studio/host gate.
 
 ---
 
-## 3. Evidencia SQL requerida
-
-### G0-SQL-01 — Database target
-
-Estado: `PARTIAL_PASS`.
+## 4. G0 PASS criteria
 
 ```text
-Database: db-omm-dev
-Environment intent: development
-Database is shared with TMS and future O&M products
-CMMS namespace strategy: approved
+[x] Canvas app target identified
+[ ] current Studio/source reality confirmed
+[ ] current App Checker baseline captured
+[ ] current component inventory captured
+[x] SQL server/database target confirmed
+[x] CMMS namespace bootstrap PASS
+[x] runtime SQL identity strategy confirmed / no additional role
+[x] DDL identity captured
+[x] rowversion/transactions/constraints supported
+[x] sp_getapplock available
+[ ] first Power Apps → Power Automate → cmms_api contract proven
 ```
 
-Pendiente de `003_CMMS_NAMESPACE_VERIFY.sql`:
-
-```text
-Server
-Platform/edition
-Collation
-Execution identity
-Feature availability
-```
-
-### G0-SQL-02 — Runtime identity
-
-Estado: `PASS`.
-
-Decisión vigente:
-
-```text
-Power Automate
-→ existing development database user
-→ execute CMMS stored procedures
-```
-
-No se crea un rol `cmms_runtime` ni ningún otro rol CMMS adicional.
-
-La existencia de permisos administrativos en la cuenta técnica de desarrollo no cambia la arquitectura funcional:
-
-- Power Apps no hará DML directo sobre tablas CMMS;
-- las mutaciones se expresan como Stored Procedures orientados a intención de negocio;
-- Power Automate transporta/orquesta y no redefine invariantes;
-- SQL conserva integridad, concurrencia y transacciones.
-
-La identidad técnica de conexión no sustituye la identidad funcional del usuario que inició la acción. Los commands transportarán `ActorEmail`/actor funcional cuando aplique.
-
-### G0-SQL-03 — DDL authority
-
-La ejecución de `003` captura la identidad utilizada durante desarrollo.
-
-No se exige separar una identidad DDL de una identidad runtime durante esta fase de desarrollo.
-
-### G0-SQL-04 — Feature availability
-
-El script `003` verifica/recoge evidencia para:
-
-- schemas;
-- `rowversion`;
-- transactions;
-- `UNIQUE` / `CHECK` constraints;
-- SQL platform/version;
-- `sp_getapplock` availability;
-- capacidad actual para crear tables/procedures/views en los schemas CMMS.
-
-Stored Procedures/views de negocio se introducirán en I01-A/I01-B una vez que el namespace PASS.
-
-### SQL bootstrap runbook
-
-Ruta:
-
-`09-development/sql/README.md`
-
-Orden:
-
-```text
-001_CMMS_NAMESPACE_BOOTSTRAP.sql
-→ 003_CMMS_NAMESPACE_VERIFY.sql
-```
-
-Expected markers:
-
-```text
-PASS_001_CMMS_NAMESPACE_BOOTSTRAP
-PASS_003_CMMS_NAMESPACE_VERIFY
-```
+The last connector-path item will be proven by I01. It does not require creating a fake Flow merely to close the visual foundation.
 
 ---
 
-## 4. Evidencia Power Automate requerida
+## 5. Actions after Studio evidence
 
-### G0-FLOW-01 — SQL connector reality
-
-Usar la conexión SQL existente con el usuario ya disponible para desarrollo contra `db-omm-dev`.
-
-No crear roles adicionales como parte de este gate.
-
-### G0-FLOW-02 — Contract transport
-
-El primer Flow será fino:
+If the current empty app baseline is compatible, there is no additional conceptual phase:
 
 ```text
-Power Apps request
-→ transport fields
-→ execute cmms_api read/command contract
-→ return normalized result
-```
-
-No introducir reglas de negocio del Reliability Study en el Flow.
-
----
-
-## 5. Gate PASS
-
-G0 se considera PASS cuando exista evidencia suficiente de:
-
-```text
-[x] Canvas app real identificada/creada
-[ ] Source Code/current authoring reality confirmada
-[ ] App Checker baseline de app actual capturado
-[ ] foundation component strategy real confirmada
-[x] SQL dev database target identificado
-[ ] CMMS namespace bootstrap PASS
-[x] runtime SQL identity strategy definida / no additional role
-[ ] DDL execution identity captured
-[ ] rowversion/transactions/constraints supported
-[ ] Power Apps → Power Automate → SQL connector path proven with first contract
-```
-
----
-
-## 6. Acciones inmediatamente posteriores al PASS
-
-```text
-G0 PASS
-→ C01-A Theme/Layout Foundation
-→ C01-B Shell Components
+C01-A Theme/Layout Foundation
+→ C01-B Shared Shell Components
 → C01-C Canonical Screen Template
 → I01-A Common Backend Contracts
 → I01-B First Read Slice
@@ -282,8 +236,17 @@ G0 PASS
 
 ---
 
-## 7. Regla de parada
+## 6. Next real gate
 
-Si G0 detecta una incompatibilidad real de Source Code, permisos SQL o conectividad, se corrige la foundation antes de multiplicar artefactos.
+Open the real `CMMS` Canvas app and provide evidence of:
 
-Eso es un gate técnico real, no una razón para reabrir conceptos CMMS ya consolidados.
+```text
+1. Environment + current screen tree
+2. App Checker summary
+3. Components tree
+4. Display/responsive settings if not obvious from the first capture
+```
+
+One or two screenshots are sufficient if they show those items clearly.
+
+No more SQL bootstrap work is required before C01/I01.
