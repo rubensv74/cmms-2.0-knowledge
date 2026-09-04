@@ -1,0 +1,135 @@
+ComponentDefinitions:
+  cmp_CMMS_ProjectContextPro:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      ActorEmail:
+        PropertyKind: Input
+        DisplayName: ActorEmail
+        Description: Functional user email displayed by the host context.
+        DataType: Text
+        Default: =""
+      Caption:
+        PropertyKind: Input
+        DisplayName: Caption
+        Description: Context caption.
+        DataType: Text
+        Default: ="PROJECT CONTEXT"
+      CanChangeProject:
+        PropertyKind: Input
+        DisplayName: CanChangeProject
+        Description: Whether the host allows requesting a project change.
+        DataType: Boolean
+        Default: =false
+      IsBusy:
+        PropertyKind: Input
+        DisplayName: IsBusy
+        Description: Loading state controlled by the host.
+        DataType: Boolean
+        Default: =false
+      ProjectCode:
+        PropertyKind: Input
+        DisplayName: ProjectCode
+        Description: Loaded project code.
+        DataType: Text
+        Default: =""
+      ProjectName:
+        PropertyKind: Input
+        DisplayName: ProjectName
+        Description: Loaded project name.
+        DataType: Text
+        Default: =""
+      OnRequestProjectChange:
+        PropertyKind: Event
+        DisplayName: OnRequestProjectChange
+        Description: Requests the host to open/change project context. Component does not load data directly.
+        ReturnType: None
+        Default: |+
+          =
+    Properties:
+      Fill: =Color.Transparent
+      Height: =CMMSLayout.TopBarHeight
+      Width: =640
+    Children:
+      - conCMMSProjectContext_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            AlignInContainer: =AlignInContainer.Stretch
+            BorderColor: =CMMSTheme.Border
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            Fill: =CMMSTheme.Surface
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =CMMSLayout.GapM
+            PaddingBottom: =8
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =8
+            RadiusBottomLeft: =CMMSLayout.RadiusM
+            RadiusBottomRight: =CMMSLayout.RadiusM
+            RadiusTopLeft: =CMMSLayout.RadiusM
+            RadiusTopRight: =CMMSLayout.RadiusM
+            Width: =Parent.Width
+          Children:
+            - lblCMMSProjectContext_Caption:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =CMMSTheme.TextMuted
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =28
+                  Size: =8
+                  Text: =cmp_CMMS_ProjectContextPro.Caption
+                  Width: =112
+            - lblCMMSProjectContext_Project:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =CMMSTheme.TextPrimary
+                  Fill: =Color.Transparent
+                  FillPortions: =1
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =30
+                  Size: =10
+                  Text: =If(cmp_CMMS_ProjectContextPro.IsBusy, "Loading project context…", If(IsBlank(cmp_CMMS_ProjectContextPro.ProjectCode), "No project selected", cmp_CMMS_ProjectContextPro.ProjectCode & If(IsBlank(cmp_CMMS_ProjectContextPro.ProjectName), "", " · " & cmp_CMMS_ProjectContextPro.ProjectName)))
+                  Width: =Parent.Width
+                  Wrap: =false
+            - btnCMMSProjectContext_Change:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =CMMSTheme.BorderStrong
+                  BorderThickness: =1
+                  Color: =CMMSTheme.TextPrimary
+                  DisplayMode: =If(cmp_CMMS_ProjectContextPro.IsBusy, DisplayMode.Disabled, DisplayMode.Edit)
+                  Fill: =CMMSTheme.Surface
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =30
+                  HoverFill: =CMMSTheme.SurfaceSoft
+                  OnSelect: =cmp_CMMS_ProjectContextPro.OnRequestProjectChange()
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  Size: =9
+                  Text: ="Change"
+                  Visible: =cmp_CMMS_ProjectContextPro.CanChangeProject
+                  Width: =72
+            - lblCMMSProjectContext_Actor:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Right
+                  Color: =CMMSTheme.TextSecondary
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Font: =Font.'Segoe UI'
+                  Height: =30
+                  Size: =9
+                  Text: =cmp_CMMS_ProjectContextPro.ActorEmail
+                  Visible: =!IsBlank(cmp_CMMS_ProjectContextPro.ActorEmail)
+                  Width: =220
+                  Wrap: =false
