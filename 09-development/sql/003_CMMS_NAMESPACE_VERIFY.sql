@@ -68,7 +68,11 @@ IF @BeforeRv = @AfterRv
     THROW 51024, 'rowversion capability probe failed.', 1;
 
 SELECT
+    CAST(@@SERVERNAME AS nvarchar(256)) AS ServerName,
     DB_NAME() AS DatabaseName,
+    SUSER_SNAME() AS LoginName,
+    USER_NAME() AS DatabaseUser,
+    ORIGINAL_LOGIN() AS OriginalLogin,
     CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(128)) AS ProductVersion,
     CAST(SERVERPROPERTY('Edition') AS nvarchar(128)) AS Edition,
     CAST(DATABASEPROPERTYEX(DB_NAME(), 'Collation') AS nvarchar(128)) AS DatabaseCollation,
