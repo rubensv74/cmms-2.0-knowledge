@@ -7,7 +7,7 @@ ComponentDefinitions:
         DisplayName: ActiveKey
         Description: Active navigation key controlled by the host screen.
         DataType: Text
-        Default: ="home"
+        Default: ="reliability"
       AppVersion:
         PropertyKind: Input
         DisplayName: AppVersion
@@ -29,19 +29,19 @@ ComponentDefinitions:
       NavItems:
         PropertyKind: Input
         DisplayName: NavItems
-        Description: Normalized navigation table with Order, Key and Label fields.
+        Description: Normalized navigation table with Order, Key, Label, IsVisible, IsEnabled and Tooltip fields.
         DataType: Table
         Default: |-
           =Table(
-              {Order:10, Key:"home", Label:"Home"},
-              {Order:20, Key:"assets", Label:"Assets"},
-              {Order:30, Key:"reliability", Label:"Reliability Engineering"},
-              {Order:40, Key:"maintenance", Label:"Maintenance"},
-              {Order:50, Key:"work", Label:"Work Management"},
-              {Order:60, Key:"materials", Label:"Materials"},
-              {Order:70, Key:"operations", Label:"Operations"},
-              {Order:80, Key:"reports", Label:"Reports"},
-              {Order:90, Key:"admin", Label:"Administration"}
+              {Order:10, Key:"home", Label:"Home", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:20, Key:"assets", Label:"Assets", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:30, Key:"reliability", Label:"Reliability Engineering", IsVisible:true, IsEnabled:true, Tooltip:"Reliability Engineering"},
+              {Order:40, Key:"maintenance", Label:"Maintenance", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:50, Key:"work", Label:"Work Management", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:60, Key:"materials", Label:"Materials", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:70, Key:"operations", Label:"Operations", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:80, Key:"reports", Label:"Reports", IsVisible:true, IsEnabled:false, Tooltip:"Planned"},
+              {Order:90, Key:"admin", Label:"Administration", IsVisible:true, IsEnabled:false, Tooltip:"Planned"}
           )
       UserDisplayName:
         PropertyKind: Input
@@ -196,11 +196,11 @@ ComponentDefinitions:
                       Properties:
                         BorderColor: =RGBA(0, 0, 0, 0)
                         Height: =Parent.Height
-                        Items: =SortByColumns(cmp_CMMS_SidebarPro.NavItems, "Order", SortOrder.Ascending)
+                        Items: =SortByColumns(Filter(cmp_CMMS_SidebarPro.NavItems, IsVisible), "Order", SortOrder.Ascending)
                         LayoutMinHeight: =200
-                        OnSelect: =cmp_CMMS_SidebarPro.OnNavigate(Text(ThisItem.Key))
+                        OnSelect: =If(ThisItem.IsEnabled, cmp_CMMS_SidebarPro.OnNavigate(Text(ThisItem.Key)), false)
                         ShowScrollbar: =false
-                        TemplateFill: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), RGBA(37, 99, 235, 0.18), Color.Transparent)
+                        TemplateFill: =If(ThisItem.IsEnabled && Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), RGBA(37, 99, 235, 0.18), Color.Transparent)
                         TemplatePadding: =2
                         TemplateSize: =44
                         Width: =Parent.Width
@@ -211,23 +211,23 @@ ComponentDefinitions:
                               BorderStyle: =BorderStyle.None
                               Fill: =ColorValue("#38BDF8")
                               Height: =Parent.TemplateHeight - 8
-                              Visible: =Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey)
+                              Visible: =ThisItem.IsEnabled && Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey)
                               Width: =3
                               X: =1
                               Y: =4
                         - lblCMMSNav_Item:
                             Control: Label@2.5.1
                             Properties:
-                              Color: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), Color.White, ColorValue("#D9E6ED"))
+                              Color: =If(!ThisItem.IsEnabled, ColorValue("#71808D"), If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), Color.White, ColorValue("#D9E6ED")))
                               Fill: =Color.Transparent
                               Font: =Font.'Segoe UI'
-                              FontWeight: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), FontWeight.Semibold, FontWeight.Normal)
+                              FontWeight: =If(ThisItem.IsEnabled && Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), FontWeight.Semibold, FontWeight.Normal)
                               Height: =Parent.TemplateHeight
                               OnSelect: =Select(Parent)
                               PaddingLeft: =If(cmp_CMMS_SidebarPro.IsCollapsed, 0, 14)
                               Size: =If(cmp_CMMS_SidebarPro.IsCollapsed, 8, 10)
                               Text: =If(cmp_CMMS_SidebarPro.IsCollapsed, Upper(Left(Text(ThisItem.Label), 1)), Text(ThisItem.Label))
-                              Tooltip: =Text(ThisItem.Label)
+                              Tooltip: =Text(ThisItem.Tooltip)
                               Width: =Parent.TemplateWidth - 4
                               Wrap: =false
                               X: =4
