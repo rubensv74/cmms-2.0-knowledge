@@ -1,0 +1,284 @@
+ComponentDefinitions:
+  cmp_CMMS_SidebarPro:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      ActiveKey:
+        PropertyKind: Input
+        DisplayName: ActiveKey
+        Description: Active navigation key controlled by the host screen.
+        DataType: Text
+        Default: ="home"
+      AppVersion:
+        PropertyKind: Input
+        DisplayName: AppVersion
+        Description: Version text shown in the footer.
+        DataType: Text
+        Default: ="0.1.0-dev"
+      EnvironmentLabel:
+        PropertyKind: Input
+        DisplayName: EnvironmentLabel
+        Description: Environment label shown in the footer.
+        DataType: Text
+        Default: ="DEV"
+      IsCollapsed:
+        PropertyKind: Input
+        DisplayName: IsCollapsed
+        Description: External sidebar state. false=expanded; true=collapsed.
+        DataType: Boolean
+        Default: =false
+      NavItems:
+        PropertyKind: Input
+        DisplayName: NavItems
+        Description: Normalized navigation table with Order, Key and Label fields.
+        DataType: Table
+        Default: |-
+          =Table(
+              {Order:10, Key:"home", Label:"Home"},
+              {Order:20, Key:"assets", Label:"Assets"},
+              {Order:30, Key:"reliability", Label:"Reliability Engineering"},
+              {Order:40, Key:"maintenance", Label:"Maintenance"},
+              {Order:50, Key:"work", Label:"Work Management"},
+              {Order:60, Key:"materials", Label:"Materials"},
+              {Order:70, Key:"operations", Label:"Operations"},
+              {Order:80, Key:"reports", Label:"Reports"},
+              {Order:90, Key:"admin", Label:"Administration"}
+          )
+      UserDisplayName:
+        PropertyKind: Input
+        DisplayName: UserDisplayName
+        Description: Display name provided by the host.
+        DataType: Text
+        Default: ="CMMS User"
+      OnNavigate:
+        PropertyKind: Event
+        DisplayName: OnNavigate
+        Description: Emits the selected navigation key. Component never executes Navigate().
+        ReturnType: None
+        Default: |+
+          =
+        Parameters:
+          - p_key:
+              Description: Selected navigation key.
+              DataType: Text
+              Default: =""
+      OnToggleCollapse:
+        PropertyKind: Event
+        DisplayName: OnToggleCollapse
+        Description: Requests host to toggle expanded/collapsed state.
+        ReturnType: None
+        Default: |+
+          =
+    Properties:
+      Fill: =CMMSTheme.NavBg
+      Height: =App.Height
+      Width: =If(cmp_CMMS_SidebarPro.IsCollapsed, CMMSLayout.SidebarCollapsed, CMMSLayout.SidebarExpanded)
+    Children:
+      - conCMMSNav_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            DropShadow: =DropShadow.None
+            Fill: =CMMSTheme.NavBg
+            Height: =Parent.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            LayoutMinHeight: =480
+            PaddingBottom: =10
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            Width: =Parent.Width
+          Children:
+            - conCMMSNav_Brand:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =72
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutMinHeight: =72
+                  PaddingLeft: =10
+                  PaddingRight: =6
+                  Width: =Parent.Width
+                Children:
+                  - conCMMSNav_BrandText:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =0
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =54
+                        PaddingBottom: =4
+                        PaddingTop: =4
+                        Visible: =!cmp_CMMS_SidebarPro.IsCollapsed
+                      Children:
+                        - lblCMMSNav_Brand:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.White
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Bold
+                              Height: =28
+                              Size: =18
+                              Text: ="CMMS"
+                              Width: =Parent.Width
+                        - lblCMMSNav_Descriptor:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.PrimaryLight
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =18
+                              Size: =8
+                              Text: ="OPERATIONS & MAINTENANCE"
+                              Width: =Parent.Width
+                  - btnCMMSNav_Toggle:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =RGBA(255, 255, 255, 0.10)
+                        BorderThickness: =1
+                        Color: =CMMSTheme.NavText
+                        Fill: =RGBA(255, 255, 255, 0.03)
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        HoverFill: =RGBA(255, 255, 255, 0.08)
+                        OnSelect: =cmp_CMMS_SidebarPro.OnToggleCollapse()
+                        PressedFill: =RGBA(56, 189, 248, 0.12)
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        Size: =10
+                        Text: =If(cmp_CMMS_SidebarPro.IsCollapsed, ">", "<")
+                        Tooltip: =If(cmp_CMMS_SidebarPro.IsCollapsed, "Expand navigation", "Collapse navigation")
+                        Width: =30
+            - recCMMSNav_DividerTop:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderStyle: =BorderStyle.None
+                  Fill: =RGBA(255, 255, 255, 0.08)
+                  FillPortions: =0
+                  Height: =1
+                  LayoutMinHeight: =1
+                  Width: =Parent.Width
+            - conCMMSNav_Menu:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.Transparent
+                  FillPortions: =1
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =200
+                  PaddingTop: =10
+                  Width: =Parent.Width
+                Children:
+                  - galCMMSNav:
+                      Control: Gallery@2.15.0
+                      Variant: Vertical
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Height: =Parent.Height
+                        Items: =SortByColumns(cmp_CMMS_SidebarPro.NavItems, "Order", SortOrder.Ascending)
+                        LayoutMinHeight: =200
+                        OnSelect: =cmp_CMMS_SidebarPro.OnNavigate(Text(ThisItem.Key))
+                        ShowScrollbar: =false
+                        TemplateFill: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), RGBA(37, 99, 235, 0.18), Color.Transparent)
+                        TemplatePadding: =2
+                        TemplateSize: =44
+                        Width: =Parent.Width
+                      Children:
+                        - recCMMSNav_Active:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderStyle: =BorderStyle.None
+                              Fill: =CMMSTheme.PrimaryLight
+                              Height: =Parent.TemplateHeight - 8
+                              Visible: =Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey)
+                              Width: =3
+                              X: =1
+                              Y: =4
+                        - lblCMMSNav_Item:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), CMMSTheme.White, CMMSTheme.NavText)
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =If(Lower(Text(ThisItem.Key)) = Lower(cmp_CMMS_SidebarPro.ActiveKey), FontWeight.Semibold, FontWeight.Normal)
+                              Height: =Parent.TemplateHeight
+                              OnSelect: =Select(Parent)
+                              PaddingLeft: =If(cmp_CMMS_SidebarPro.IsCollapsed, 0, 14)
+                              Size: =If(cmp_CMMS_SidebarPro.IsCollapsed, 8, 10)
+                              Text: =If(cmp_CMMS_SidebarPro.IsCollapsed, Upper(Left(Text(ThisItem.Label), 1)), Text(ThisItem.Label))
+                              Tooltip: =Text(ThisItem.Label)
+                              Width: =Parent.TemplateWidth - 4
+                              Wrap: =false
+                              X: =4
+            - recCMMSNav_DividerBottom:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderStyle: =BorderStyle.None
+                  Fill: =RGBA(255, 255, 255, 0.08)
+                  FillPortions: =0
+                  Height: =1
+                  LayoutMinHeight: =1
+                  Width: =Parent.Width
+            - conCMMSNav_Footer:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  Fill: =CMMSTheme.NavSurface
+                  FillPortions: =0
+                  Height: =If(cmp_CMMS_SidebarPro.IsCollapsed, 58, 92)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =2
+                  LayoutMinHeight: =58
+                  PaddingBottom: =10
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =10
+                  Width: =Parent.Width
+                Children:
+                  - lblCMMSNav_User:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: =CMMSTheme.White
+                        Fill: =Color.Transparent
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =20
+                        Size: =9
+                        Text: =If(cmp_CMMS_SidebarPro.IsCollapsed, Upper(Left(cmp_CMMS_SidebarPro.UserDisplayName, 1)), cmp_CMMS_SidebarPro.UserDisplayName)
+                        Width: =Parent.Width
+                        Wrap: =false
+                  - lblCMMSNav_Meta:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: =CMMSTheme.TextMuted
+                        Fill: =Color.Transparent
+                        Font: =Font.'Segoe UI'
+                        Height: =18
+                        Size: =8
+                        Text: =If(cmp_CMMS_SidebarPro.IsCollapsed, "DEV", cmp_CMMS_SidebarPro.EnvironmentLabel & " · " & cmp_CMMS_SidebarPro.AppVersion)
+                        Width: =Parent.Width
+                        Wrap: =false
