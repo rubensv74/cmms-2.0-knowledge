@@ -1,9 +1,10 @@
 # CMMS 2.0 — Incremental Delivery Sequence 1.0
 
-**Estado:** CANDIDATE  
-**Fecha:** 2026-09-04  
+**Estado:** ACTIVE DEVELOPMENT BASELINE  
+**Actualizado:** 2026-09-05  
 **Primary delivery lane:** Reliability Engineering  
-**Architecture:** Power Apps → Power Automate → SQL Server
+**Architecture:** Power Apps → Power Automate → SQL Server  
+**Database / schema:** `db-omm-dev` / `cmms`
 
 ---
 
@@ -45,46 +46,48 @@ Reglas:
 5. no introducir pantallas/tabs decorativos sin capability;
 6. cada pantalla es premium desde el skeleton;
 7. cada command mutable aplica la policy de concurrency/API readiness;
-8. los datos iniciales pueden ser sintéticos, pero vivirán bajo contratos reales y podrán sustituirse sin rediseñar la UI;
+8. los datos iniciales pueden ser sintéticos, pero viven bajo contratos reales y pueden sustituirse sin rediseñar la UI;
 9. un componente validado en AssetPlan/PULSE/TMS sigue requiriendo host validation en CMMS;
-10. Work Management productivo no entra hasta cerrar sus gates funcionales pendientes.
+10. Work Management productivo no entra hasta cerrar sus gates funcionales pendientes;
+11. Power Automate usa la conexión SQL de desarrollo existente (`tradminomm`); no se crean roles CMMS adicionales;
+12. la aplicación no usa DML directo sobre tablas aunque la cuenta técnica de desarrollo disponga de permisos amplios.
 
 ---
 
-## 3. Critical path
+## 3. Estado del critical path
 
-| Orden | Capability | Resultado observable | Gate dominante |
-|---:|---|---|---|
-| 0 | D00 Development Baseline | Arquitectura y reglas de desarrollo congeladas | Repository/Architecture |
-| 1 | C01 Premium App Shell | Canvas app con shell premium real y estados base | Studio |
-| 2 | I01-A Backend Pilot Contracts | Frontera SQL, outcomes, identity, audit y conventions cerrados | SQL Contract |
-| 3 | I01-B Project / Asset / Study Read Slice | P-101 y Reliability Study se leen por contrato estable | SQL + Integration |
-| 4 | I01-C Safe Study Scope Command | Primer command demuestra concurrency, audit y error contract | SQL C |
-| 5 | C02 P-101 Reliability Backbone | Journey Power Apps → Flow → SQL integrado y visible | Runtime |
-| 6 | C03 Reliability Studies | Usuario localiza/crea/continúa estudios | UX + Integration |
-| 7 | C04 Study Scope | Boundary/context/evidence operables | Functional + SQL |
-| 8 | C05 Functions & Failures | Funciones, fallos y modos navegables/editables | Functional + SQL |
-| 9 | C06 FMEA Workspace | Effects + risk configurable + readiness | Risk Contract |
-| 10 | C07 RCM Decision Workspace | Decision path explicable, sin scoring | RCM Contract |
-| 11 | C08 Maintenance Strategy | Política → acciones → residual risk | Strategy Contract |
-| 12 | C09 Review & Approval | Trazabilidad, overrides, submit/approve/freeze | Workflow + SQL C |
-| 13 | C10 Implementation Handoff | Approved revision produce output hacia Maintenance | Contract |
-| 14 | C11 Effectiveness Review | Datos simulados/reales abren nueva revisión sin sobrescribir historia | Versioning |
+| Orden | Capability | Estado actual | Resultado observable | Gate dominante |
+|---:|---|---|---|---|
+| 0 | D00 Development Baseline | PASS | Arquitectura y reglas congeladas | Repository/Architecture |
+| 1 | C01 Premium App Shell | IN_PROGRESS | Canvas app con shell premium real y estados base | Studio |
+| 2 | I01-A Backend Pilot Contracts | READY_FOR_RUNTIME_GATE | Contrato SQL/Flow mínimo probado | Runtime |
+| 3 | I01-B Project / Asset / Study Read Slice | NOT_STARTED | P-101 y Reliability Study se leen por contrato estable | SQL + Integration |
+| 4 | I01-C Safe Study Scope Command | NOT_STARTED | Primer command demuestra concurrency, audit y error contract | SQL Concurrency |
+| 5 | C02 P-101 Reliability Backbone | NOT_STARTED | Journey Power Apps → Flow → SQL integrado y visible | Runtime |
+| 6 | C03 Reliability Studies | NOT_STARTED | Usuario localiza/crea/continúa estudios | UX + Integration |
+| 7 | C04 Study Scope | NOT_STARTED | Boundary/context/evidence operables | Functional + SQL |
+| 8 | C05 Functions & Failures | NOT_STARTED | Funciones, fallos y modos navegables/editables | Functional + SQL |
+| 9 | C06 FMEA Workspace | NOT_STARTED | Effects + risk configurable + readiness | Risk Contract |
+| 10 | C07 RCM Decision Workspace | NOT_STARTED | Decision path explicable, sin scoring | RCM Contract |
+| 11 | C08 Maintenance Strategy | NOT_STARTED | Política → acciones → residual risk | Strategy Contract |
+| 12 | C09 Review & Approval | NOT_STARTED | Trazabilidad, overrides, submit/approve/freeze | Workflow + SQL C |
+| 13 | C10 Implementation Handoff | NOT_STARTED | Approved revision produce output hacia Maintenance | Contract |
+| 14 | C11 Effectiveness Review | NOT_STARTED | Evidencia real/simulada abre nueva revisión sin sobrescribir historia | Versioning |
 
 ---
 
 # 4. D00 — Development Baseline
 
-**Objetivo:** convertir CMMS 2.0 de Functional Lab/documentación a producto construible.
+**Estado:** PASS.
 
-Entregables:
+Resultado:
 
-- `CMMS_DEVELOPMENT_BASELINE_1_0.md`;
-- mandatory SQL concurrency/API readiness policy;
-- delivery sequence;
-- runtime foundation gate.
-
-**Gate:** repository review + no contradiction material conocida con Functional Journey.
+- arquitectura actual: Power Apps → Power Automate → SQL Server;
+- futura API preparada mediante contratos estables, no implementada ahora;
+- concurrencia obligatoria desde el primer modelo mutable;
+- `db-omm-dev` confirmado;
+- schema `cmms` confirmado;
+- conexión SQL de desarrollo existente, sin roles adicionales.
 
 ---
 
@@ -108,39 +111,48 @@ Notification / State Layer
 
 ### C01-A Theme + layout foundation
 
-- tokens;
-- spacing;
-- typography;
-- semantic states;
-- responsive desktop/laptop;
-- canonical geometry.
+**Estado:** PASS en Studio real.
+
+Confirmado:
+
+- named formulas/theme;
+- responsive app;
+- Source Code screen compatible;
+- visual language CMMS;
+- Reliability Engineering landing concept renderizado.
 
 ### C01-B Shared shell components
 
-Aplicar decisión:
+**Estado:** READY_FOR_STUDIO_GATE.
+
+Componentes candidatos canónicos:
 
 ```text
-REUSE_CMMS
-→ ADAPT_VERIFIED_BASE
-→ EXTEND_SHARED
-→ CREATE_SHARED
+cmp_CMMS_SidebarPro
+cmp_CMMS_ProjectContextPro
+cmp_CMMS_PageHeaderPro
 ```
 
-Candidatos a auditar primero desde AssetPlan/TMS/PULSE:
+Decisiones:
 
-- Sidebar;
-- Project Context;
-- Page Header;
-- Action Button;
-- State Panel;
-- Skeleton Loader;
-- Icon resolver.
+- host owns navigation/project state;
+- componentes no ejecutan navegación física;
+- solo Reliability Engineering está habilitado hasta existir pantallas reales para otros módulos;
+- componentes son visualmente autosuficientes y no dependen de App Scope para tokens.
 
 ### C01-C Canonical screen template
 
-Debe poder alojar cualquier workspace sin modificar el shell.
+Se congela **después de C01-B PASS**, no antes.
 
-**Exit Gate:** save/close/reopen + App Checker baseline + navegación + responsive mínimo + visual PASS.
+Exit Gate C01:
+
+```text
+save/close/reopen
++ App Checker
++ sidebar collapse/expand
++ responsive representative desktop widths
++ retained Reliability Engineering screen
+```
 
 ---
 
@@ -152,29 +164,49 @@ Se implementa solamente lo necesario para demostrar el patrón productivo.
 
 ## I01-A — Common Contracts
 
-Cerrar antes del primer DDL mutable:
+**Estado:** CONTRACT BASELINE + RUNTIME PROBE PREPARED.
 
-- schema/application boundary;
-- identifiers / keys;
-- result/error envelope;
-- identity and authorization boundary;
-- audit convention;
-- UTC date convention;
-- `ProjectId` scope;
-- concurrency/idempotency classification;
-- least privilege;
-- naming/versioning rules;
-- test and rollback convention.
+Baseline congelada en:
 
-**Acceptance:** Power Apps puede distinguir `SUCCESS / VALIDATION / PERMISSION_DENIED / CONFLICT / DUPLICATE_REPLAY / ERROR` sin analizar texto libre.
+```text
+09-development/backend/I01_A_COMMON_BACKEND_CONTRACTS.md
+```
+
+Decisiones:
+
+- database `db-omm-dev`;
+- current implementation schema `cmms`;
+- Power Automate usa conexión existente `tradminomm`;
+- no roles/principals nuevos;
+- `uniqueidentifier` para IDs;
+- UTC `datetime2(3)`;
+- `RequestId` round-trip;
+- functional actor via `ActorEmail`;
+- normalized result envelope;
+- `rowversion` → textual `ConcurrencyToken` for mutable consumers;
+- SQL remains transactional/concurrency authority.
+
+Primer procedimiento:
+
+```text
+cmms.usp_Runtime_Probe
+```
+
+No crea tablas de negocio.
+
+Acceptance:
+
+```text
+Power Apps → Power Automate → cmms.usp_Runtime_Probe → normalized response → Power Apps
+```
 
 ## I01-B — First Read Slice
 
 Consumers:
 
 ```text
-Project context
-P-101 Asset context
+Project Context
+P-101 Asset Context
 Reliability Study list/header
 Study Scope read
 ```
@@ -186,22 +218,17 @@ Acceptance:
 - deterministic ordering;
 - Project scope applied;
 - null/unavailable semantics preserved;
-- data read through `cmms_api` boundary;
-- runtime account has no direct DML on domain tables.
+- data read through published `cmms` Stored Procedures;
+- Power Apps/Power Automate do not issue direct table DML;
+- physical tables remain replaceable behind the published contracts.
 
 ## I01-C — Safe Study Scope Command
 
-Primer command recomendado:
+Primer mutable command recomendado:
 
-`Update Reliability Study Scope Draft`
-
-¿Por qué este command?
-
-- impacto acotado;
-- editable/reversible;
-- permite demostrar lost-update protection;
-- no requiere aún workflow complejo;
-- encaja en el primer screen backbone.
+```text
+Update Reliability Study Scope Draft
+```
 
 Debe demostrar:
 
@@ -216,7 +243,7 @@ result contract
 audit
 ```
 
-IdempotencyKey se añadirá si el diseño final del submit/transport implica riesgo real de replay del mismo effect; si se omite deberá quedar justificado por clasificación del command.
+Idempotency se clasificará expresamente. Power Automate retry se considera un replay source real.
 
 Negative tests:
 
@@ -224,15 +251,13 @@ Negative tests:
 - invalid Study → `NOT_FOUND`;
 - wrong Project scope → no cross-project mutation;
 - invalid boundary state → `VALIDATION`;
-- runtime principal direct write → denied.
+- application path performs no direct table DML.
 
 ---
 
 # 7. C02 — P-101 Reliability Backbone
 
-Este es el **primer vertical slice tangible**.
-
-Journey:
+Primer vertical slice tangible:
 
 ```text
 Open CMMS
@@ -243,8 +268,8 @@ Open CMMS
 → Study Scope
 → edit draft
 → Save
-→ Flow
-→ SQL command
+→ Power Automate
+→ cmms command procedure
 → new ConcurrencyToken
 → refresh/reopen
 → continue to Functions & Failures
@@ -265,7 +290,7 @@ UI debe demostrar:
 
 No se completa todavía FMEA/RCM/Strategy.
 
-**Exit Gate:** un usuario puede recorrer el journey completo en runtime sin depender de datos hardcoded en la pantalla.
+**Exit Gate:** journey completo en runtime sin datos hardcoded en la pantalla.
 
 ---
 
@@ -285,9 +310,7 @@ Capabilities:
 - create study;
 - no Project / loading / empty / error.
 
-Create Study debe crear el aggregate mediante un command transaccional cuando se conecte a SQL.
-
-No se crearán KPIs sin dato/acción real.
+Create Study crea el aggregate mediante command transaccional cuando se conecte a SQL.
 
 ---
 
@@ -300,7 +323,7 @@ Arquetipo: `Object 360 / Governed Form`.
 Capabilities:
 
 - Analysis Object;
-- scope type: System / Asset / Asset Group cuando esté validado;
+- scope type System / Asset / Asset Group cuando esté validado;
 - included/excluded members;
 - Operating Context;
 - Evidence drawer;
@@ -310,7 +333,9 @@ Capabilities:
 
 Salida estructurada:
 
-`StudyScopeReadyForFunctions`.
+```text
+StudyScopeReadyForFunctions
+```
 
 ---
 
@@ -319,8 +344,6 @@ Salida estructurada:
 Pantalla: `RE-03 Functions & Failures`.
 
 Arquetipo: `Master–Detail / Analysis Tree`.
-
-Capabilities:
 
 ```text
 Function
@@ -336,11 +359,6 @@ Principios:
 - add/edit/archive under governed states;
 - dirty state;
 - no silent cascade delete.
-
-Gate a C06:
-
-- required function/failure/mode data complete;
-- relevant exclusion decisions traceable where applicable.
 
 ---
 
@@ -365,9 +383,7 @@ Risk matrix/profile:
 
 - configurable/versioned;
 - never hardcoded as universal 5×5;
-- UI renders the active profile.
-
-**Gate previo:** minimum `RiskProfile` contract materialized.
+- UI renders active profile.
 
 ---
 
@@ -376,8 +392,6 @@ Risk matrix/profile:
 Pantalla: `RE-05 RCM Decision Workspace`.
 
 Arquetipo: `Guided Decision Workspace`.
-
-Interaction:
 
 ```text
 one question
@@ -401,17 +415,13 @@ Must show:
 
 RCM has no accumulated score in the current methodology.
 
-**Gate previo:** minimum RCM tree contract versioned and testable.
-
 ---
 
 # 13. C08 — Maintenance Strategy
 
 Pantalla: `RE-06 Maintenance Strategy`.
 
-Arquetipo: `Operational Workbench`.
-
-Conceptual relationship:
+Relationship:
 
 ```text
 FailureMode
@@ -433,15 +443,11 @@ Capabilities:
 - residual risk;
 - engineering action / redesign / run-to-failure outcomes when applicable.
 
-Task, Job Plan and Maintenance Plan remain separate concepts.
-
 ---
 
 # 14. C09 — Review & Approval
 
 Pantalla: `RE-07 Review & Approval`.
-
-Arquetipo: `Governed Review Workspace`.
 
 Capabilities:
 
@@ -455,23 +461,13 @@ Capabilities:
 - Approve / Reject / Return;
 - immutable approved revision.
 
-Critical commands:
-
-- submit;
-- approve/freeze;
-- publish when defined.
-
-Estos commands requieren análisis explícito de transaction, idempotency y serialization.
+Critical commands require explicit transaction, idempotency and serialization review.
 
 Approved content is never edited in place. A new revision is opened.
 
 ---
 
 # 15. C10 — Implementation Handoff
-
-Objetivo: producir un output estructurado, no Work Orders ficticias.
-
-Conceptual output:
 
 ```text
 Approved Reliability Study Revision
@@ -480,13 +476,11 @@ Approved Reliability Study Revision
 → Maintenance Development / Plan Handoff
 ```
 
-Mientras Work Management siga `to_validate`, el producto mostrará la frontera sin inventar routing/planning/scheduling.
+Mientras Work Management siga `to_validate`, el producto muestra la frontera sin inventar routing/planning/scheduling.
 
 ---
 
 # 16. C11 — Effectiveness Review
-
-Cerrar el ciclo:
 
 ```text
 approved hypothesis
@@ -502,52 +496,50 @@ Never overwrite historical approved versions.
 
 ## 17. Supporting Asset track
 
-Asset Experience sigue siendo foundation transversal, pero no debe competir con el PRIMARY.
+Asset Experience sigue siendo foundation transversal, pero no compite con el PRIMARY.
 
-Durante Reliability Engineering solo se construirá lo mínimo necesario:
+Durante Reliability Engineering se construye lo mínimo necesario:
 
 - Asset identity/context;
 - hierarchy path;
 - criticality/context available by contract;
 - technical/evidence links required by the study.
 
-El Object 360 completo puede evolucionar como supporting capability si no bloquea el primary slice.
-
 ---
 
 ## 18. Work Management hold
 
-No iniciar implementación productiva detallada de:
-
-- Planner;
-- Scheduling;
-- routing;
-- assignment;
-- execution/check sheets;
-- cost/contract/facturation
-
-hasta cerrar los gates de discovery correspondientes.
-
-El producto puede mostrar handoff conceptual y contratos de frontera, no comportamiento inventado.
+No iniciar implementación productiva detallada de Planner, Scheduling, routing, assignment, execution/check sheets o costes hasta cerrar discovery/gates correspondientes.
 
 ---
 
-## 19. Próximo gate real
+## 19. Próximo gate real — Combined C01-B + I01-A
 
-Después de esta baseline, el siguiente gate requiere herramienta real:
+No hay otro bloqueo conceptual antes de este punto.
+
+La siguiente intervención manual debe probar dos cosas en una misma ronda:
 
 ```text
-G0 Runtime Foundation
+A. Power Apps
+C01-B shared components + retained Reliability Engineering screen
+
+B. Backend runtime
+cmms.usp_Runtime_Probe
+→ Power Automate
+→ Power Apps round-trip
 ```
 
-Debe identificar:
+PASS combinado cuando:
 
-- Canvas app/environment real;
-- Power Apps Source Code reality;
-- SQL database target;
-- runtime SQL/Flow connection identity;
-- permissions baseline;
-- App Checker baseline;
-- first component import/adaptation reality.
+```text
+C01_B_SHARED_SHELL_STUDIO_PASS
+PASS_I01A_RUNTIME_CONTRACT
+```
 
-No se debe generar DDL productivo ni declarar componentes CMMS `VALIDATED` antes de este gate.
+Después del PASS:
+
+```text
+freeze C01-C canonical template
+→ I01-B minimum Project / Asset / Reliability Study model
+→ real Reliability Studies read slice
+```
