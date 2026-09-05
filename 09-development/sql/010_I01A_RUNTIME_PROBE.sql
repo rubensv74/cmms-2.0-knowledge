@@ -11,7 +11,9 @@ SET QUOTED_IDENTIFIER ON;
 GO
 
 IF SCHEMA_ID(N'cmms') IS NULL
+BEGIN
     THROW 51100, 'Required schema cmms does not exist. Run CMMS namespace bootstrap first.', 1;
+END;
 GO
 
 CREATE OR ALTER PROCEDURE cmms.usp_Runtime_Probe
