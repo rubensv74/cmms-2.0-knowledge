@@ -1,147 +1,190 @@
-# CMMS 2.0 — SQL Development Bootstrap
+# CMMS 2.0 — SQL Development Runbook
 
 **Target:** `db-omm-dev`  
-**Database role:** shared O&M development database used by CMMS, TMS and future Operations & Maintenance products.  
-**Rule:** CMMS objects are namespaced; no new CMMS object is created in `dbo`.
+**Shared database:** CMMS, TMS and future Operations & Maintenance developments  
+**Current CMMS implementation schema:** `cmms`
 
-## Namespace
+---
 
-```text
-cmms        = physical/domain data owned by CMMS
-cmms_api    = stable application boundary exposed to Power Automate / future API
-cmms_cfg    = governed/versioned configuration
-cmms_audit  = command/decision/audit data
-cmms_stage  = controlled staging/import area when needed
-```
-
-`cmms_api` does **not** mean that an HTTP API exists today. It is the SQL application boundary deliberately prepared so a future API can consume stable contracts without making the Power Apps UI depend on physical tables.
-
-## Runtime architecture now
+## Runtime architecture
 
 ```text
 Power Apps
    ↓
 Power Automate
+   ↓ existing SQL connection / tradminomm
+cmms Stored Procedures
    ↓
-cmms_api (views / query SPs / command SPs)
-   ↓
-cmms / cmms_cfg / cmms_audit
+cmms business tables
 ```
 
-Power Automate will use the existing database user already available for development. No CMMS-specific database role is created in this phase.
+No HTTP API is built in the current phase.
 
-This technical connection identity is not the functional actor. Commands that represent a user action must transport the initiating Power Apps identity, normally `ActorEmail` and the applicable Project/context identifiers, so audit records identify the person responsible for the business action rather than only the SQL connection account.
+No CMMS-specific database role or SQL principal is created.
 
-Future evolution may become:
+The SQL connection identity is technical. User-originated commands transport the functional actor (`ActorEmail` initially) so audit/business traceability does not collapse into the shared SQL connection account.
+
+---
+
+## Schema rule
+
+All new CMMS business tables and published Stored Procedures introduced by the current implementation baseline are created under:
 
 ```text
-Power Apps / Web / Mobile / Integrations
-   ↓
-Corporate API
-   ↓
-cmms_api-compatible backend contracts
-   ↓
-CMMS domain data
+cmms
 ```
 
-No API is built in the current development phase.
+The earlier namespace bootstrap also created `cmms_api`, `cmms_cfg`, `cmms_audit` and `cmms_stage`. They may remain present and empty; the current I01 implementation does not require them and creates no new objects there.
 
-## Initial scripts
+Future API readiness is achieved through stable procedure contracts and separation of Power Apps from physical tables, not by requiring a particular SQL schema name.
 
-Run in this order against `db-omm-dev`:
+---
 
-1. `001_CMMS_NAMESPACE_BOOTSTRAP.sql`
-   - creates the five CMMS schemas if missing;
-   - creates no business tables;
-   - aborts if executed in a different database.
+## Completed bootstrap
 
-2. `003_CMMS_NAMESPACE_VERIFY.sql`
-   - confirms target server/database/current execution identity;
-   - confirms the five schemas;
-   - proves `rowversion`, `UNIQUE`, `CHECK` and transaction rollback using a temporary object;
-   - reports whether `sp_getapplock` is available;
-   - reports whether the current execution identity can create the SQL objects needed for development;
-   - creates no persistent business object.
-
-Expected final markers:
+Already executed against `db-omm-dev`:
 
 ```text
-PASS_001_CMMS_NAMESPACE_BOOTSTRAP
-PASS_003_CMMS_NAMESPACE_VERIFY
+001_CMMS_NAMESPACE_BOOTSTRAP.sql
+003_CMMS_NAMESPACE_VERIFY.sql
 ```
 
-## Why there are several schemas instead of only `cmms`
+Confirmed:
 
-The database is shared. A single `cmms` schema would isolate names from TMS but would still mix:
+- target database `db-omm-dev`;
+- Azure SQL;
+- current development identity `tradminomm`;
+- `cmms` schema available;
+- `rowversion` supported;
+- transactions/rollback supported;
+- `UNIQUE` / `CHECK` constraints supported;
+- `sp_getapplock` available;
+- current identity can create tables/procedures/views and alter CMMS schemas.
 
-- physical tables;
-- stable consumer contracts;
-- mutable configuration;
-- audit/history;
-- transient staging.
+Evidence is stored under `09-development/gates/evidence/`.
 
-Separating those responsibilities now is inexpensive and prevents Power Apps/Power Automate from becoming coupled to the physical model.
+---
 
-## Runtime rule
+## I01-A — first executable backend contract
 
-The current development runtime identity may have broad database permissions. We do not add another CMMS role merely to restrict it during this phase.
+I01-A deliberately introduces **no business table**.
 
-The application boundary is enforced by design:
+Run in this order:
 
 ```text
-Power Apps
-→ Power Automate
-→ stored procedures / read contracts
-→ SQL domain objects
+010_I01A_RUNTIME_PROBE.sql
+011_I01A_RUNTIME_PROBE_VERIFY.sql
 ```
 
-Power Apps does not perform direct table DML and Power Automate does not become the owner of business invariants.
+Expected markers:
 
-A future production security model can tighten the connection identity without changing the functional contracts or screen design.
+```text
+PASS_010_I01A_RUNTIME_PROBE_DEPLOYED
+PASS_011_I01A_RUNTIME_PROBE_VERIFY
+```
+
+The procedure created is:
+
+```text
+cmms.usp_Runtime_Probe
+```
+
+It proves the normalized Power Platform contract shape before Reliability data is introduced.
+
+Rollback if needed:
+
+```text
+010_I01A_RUNTIME_PROBE_ROLLBACK.sql
+```
+
+The rollback removes only the probe procedure.
+
+---
+
+## Power Automate rule
+
+Power Automate remains thin:
+
+```text
+Power Apps request
+→ pass fields unchanged
+→ execute cmms Stored Procedure
+→ return normalized outcome
+```
+
+Do not move CMMS business rules into Flow conditions merely because the Flow can express them.
+
+---
 
 ## Mandatory SQL rules from first business table
 
-Every mutable capability must classify:
+Every mutable capability must classify and test:
 
 ```text
-Project scope
-Atomic transaction boundary
-Lost-update risk
-rowversion / ConcurrencyToken need
-Retry / duplicate execution risk
-IdempotencyKey need
-RequestId / CorrelationId
-UNIQUE / FK / CHECK invariants
-Locking / serialization need
-Actor / audit
-Result / validation / conflict contract
-Future API compatibility
+ProjectId scope
+aggregate boundary
+transaction boundary
+lost-update risk
+rowversion / ConcurrencyToken
+retry / replay risk
+IdempotencyKey where applicable
+RequestId
+PK / FK / UNIQUE / CHECK / nullability
+locking / serialization when truly required
+ActorEmail / audit
+result / validation / conflict contract
+future API compatibility
 ```
 
-No table or command is considered ready merely because it executes successfully.
+A successful execution alone is not PASS.
 
-## Next SQL increment after bootstrap PASS
+---
 
-Do **not** design the whole CMMS relational model next.
+## Future API readiness
 
-The first productive vertical slice is:
+Current:
 
 ```text
-Project / Asset context read
-→ Reliability Study read
-→ Study Scope draft read
-→ safe Study Scope command
+Power Apps → Power Automate → cmms Stored Procedures → SQL
 ```
 
-That slice will introduce only the minimum entities and contracts required to prove:
+Future option:
 
 ```text
-Power Apps
-→ Power Automate
-→ cmms_api contract
-→ transaction / validation / audit / concurrency
-→ normalized result
-→ Power Apps refresh/conflict UX
+Power Apps / Web / Mobile
+          ↓
+      Corporate API
+          ↓
+ same business intentions / stable backend contracts
+          ↓
+          SQL
 ```
 
-This is the first backend gate for the P-101 Reliability Engineering backbone.
+The future API must not require a rewrite because screens know table names or Flow owns critical invariants.
+
+---
+
+## Next productive slice after I01-A PASS
+
+Only after the runtime contract is proven:
+
+```text
+I01-B
+Project Context read
+→ P-101 Asset Context read
+→ Reliability Study list/header read
+→ Study Scope read
+```
+
+Then:
+
+```text
+I01-C
+safe Study Scope draft command
+→ transaction
+→ rowversion conflict protection
+→ functional actor/audit
+→ normalized outcome
+```
+
+This keeps SQL development driven by real UI consumers instead of designing the entire CMMS database upfront.
