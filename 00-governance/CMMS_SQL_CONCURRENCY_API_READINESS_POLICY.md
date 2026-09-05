@@ -1,7 +1,7 @@
 # CMMS 2.0 — Mandatory SQL Concurrency & API Readiness Policy
 
 **Estado:** MANDATORY / ACTIVE FOR NEW DEVELOPMENT  
-**Fecha:** 2026-09-04  
+**Actualizado:** 2026-09-05  
 **Ámbito:** SQL, Power Automate y contratos backend de CMMS 2.0
 
 ---
@@ -13,7 +13,11 @@ Power Apps
     ↓
 Power Automate
     ↓
-SQL Server
+SQL Server / Azure SQL
+    ↓
+db-omm-dev
+    ↓
+cmms
 ```
 
 No se implementará una API HTTP en esta fase.
@@ -25,12 +29,12 @@ Power Apps / Web / Mobile / Integrations
               ↓
         Corporate API
               ↓
-     Stable backend contracts
+     stable business contracts
               ↓
           SQL Server
 ```
 
-La futura API no debe exigir reconstruir la UX, reglas de negocio o modelo funcional por haber acoplado la aplicación a tablas físicas o lógica específica de Power Automate.
+La futura API no debe exigir reconstruir UX, reglas de negocio o modelo funcional por haber acoplado la aplicación a tablas físicas o lógica específica de Power Automate.
 
 ---
 
@@ -45,7 +49,7 @@ SQL es la autoridad final de:
 - prevención de lost updates;
 - restricciones estructurales;
 - protección idempotente cuando aplique;
-- command audit y persistencia transaccional.
+- audit y persistencia transaccional.
 
 Power Apps expresa una intención.  
 Power Automate transporta/orquesta esa intención.  
@@ -58,31 +62,40 @@ No se considera protección suficiente:
 - confiar en que un Flow no tendrá retry;
 - usar solo `Concurrency Control = 1` en un Flow;
 - encadenar varios cambios esperando que todos terminen;
-- ocultar un command en UI para tratar de garantizar autorización o integridad.
+- ocultar un command en UI para intentar garantizar integridad.
 
 ---
 
-## 3. Application Boundary
+## 3. Schema y application boundary actual
 
-Schemas iniciales previstos:
+La instrucción vigente de implementación es:
 
 ```text
-cmms        -- domain data
-cmms_api    -- stable application boundary
-cmms_cfg    -- governed/versioned configuration
-cmms_audit  -- command and decision audit
-cmms_stage  -- future imports/staging
+Database = db-omm-dev
+CMMS implementation schema = cmms
 ```
 
-`cmms_api` es una frontera contractual, no una API HTTP existente.
+Todos los nuevos business tables, read procedures y command procedures de I01 se publican bajo `cmms`.
 
-Reglas:
+Schemas creados durante el bootstrap previo:
 
-1. Runtime no escribe directamente tablas `cmms` desde Power Apps.
-2. Las escrituras operativas se realizan mediante Stored Procedures orientados a intención de negocio.
-3. Las lecturas se exponen mediante read models apropiados al caso de uso.
-4. La estructura física puede evolucionar sin romper el contrato consumidor cuando la semántica no cambie.
-5. Una futura API podrá consumir la misma frontera o adaptarla sin replicar reglas críticas.
+```text
+cmms
+cmms_api
+cmms_cfg
+cmms_audit
+cmms_stage
+```
+
+pueden permanecer existentes. I01 no necesita crear nuevos objetos fuera de `cmms`.
+
+La preparación para una API futura **no depende** del nombre del schema. Depende de que:
+
+1. Power Apps no haga DML directo sobre tablas;
+2. Power Automate invoque Stored Procedures/read contracts estables;
+3. los Stored Procedures expresen intenciones de negocio, no CRUD genérico;
+4. SQL conserve invariantes, transacciones y concurrencia;
+5. el consumidor no necesite conocer el modelo físico para operar.
 
 ---
 
@@ -117,13 +130,13 @@ ProjectId
 + Command/Resource
 ```
 
-Ejemplo conceptual:
+Ejemplo:
 
 ```text
-MAL
+EVITAR
 LOCK ApproveReliabilityStudy
 
-MEJOR
+PREFERIR
 LOCK ApproveReliabilityStudy:Project:4103:Study:127
 ```
 
@@ -142,16 +155,19 @@ READ
 COMMAND
 → ExpectedConcurrencyToken
 → conditional UPDATE
-→ 0 rows affected = CONFLICT
+→ 0 affected rows because version changed = CONFLICT
 ```
 
 Nunca se sobrescribe silenciosamente una modificación posterior a la lectura original.
 
-El consumidor debe recibir un resultado `CONFLICT` y refrescar/reconciliar según el caso de uso.
+Formato contractual inicial del token:
 
-### Candidatos iniciales a evaluar
+```text
+varchar(18)
+0x + 16 hexadecimal characters
+```
 
-No significa que todos deban llevar token, pero deben revisarse expresamente:
+Candidatos iniciales a evaluar:
 
 - ReliabilityStudy;
 - StudyRevision / editable draft;
@@ -162,7 +178,7 @@ No significa que todos deban llevar token, pero deben revisarse expresamente:
 - MaintenanceStrategy;
 - MaintenanceAction;
 - configuration/versioned profiles;
-- mutable Asset master data cuando CMMS sea autoridad de ese campo.
+- mutable Asset master data cuando CMMS sea autoridad del campo.
 
 `ConcurrencyToken` y `IdempotencyKey` tienen semánticas distintas.
 
@@ -172,7 +188,7 @@ No significa que todos deban llevar token, pero deben revisarse expresamente:
 
 Toda intención de negocio que deba ser atómica se encapsula en una transacción SQL.
 
-Ejemplos CMMS previsibles:
+Ejemplos previsibles:
 
 - Create Reliability Study + initial draft revision;
 - change Study Scope + boundary members;
@@ -219,17 +235,7 @@ Mecanismos:
 - transaction boundary;
 - Stored Procedure validation cuando la regla no sea expresable declarativamente.
 
-Ejemplo de antipatrón:
-
-```text
-Power Apps
-→ SELECT existence
-→ if not exists INSERT
-```
-
-si dos ejecuciones simultáneas pueden vulnerar la unicidad.
-
-La UI puede anticipar el error por usabilidad, pero SQL sigue siendo la autoridad.
+La UI puede anticipar un error por usabilidad, pero SQL sigue siendo la autoridad.
 
 ---
 
@@ -237,7 +243,7 @@ La UI puede anticipar el error por usabilidad, pero SQL sigue siendo la autorida
 
 Los commands críticos/no repetibles deben evaluar protección idempotente.
 
-Riesgos:
+Riesgos reales:
 
 - double click;
 - repeated submit;
@@ -250,19 +256,17 @@ Cuando aplique el contrato transportará:
 
 ```text
 IdempotencyKey
-RequestId / CorrelationId
+RequestId
 ExpectedConcurrencyToken
 ```
 
 Semántica:
 
-- `IdempotencyKey`: identifica la misma intención lógica y evita aplicar dos veces su efecto.
-- `RequestId / CorrelationId`: traza la ejecución/cadena.
-- `ConcurrencyToken`: evita lost updates sobre una versión obsoleta.
+- `IdempotencyKey`: misma intención lógica / mismo efecto;
+- `RequestId`: traza la petición/ejecución;
+- `ConcurrencyToken`: detecta edición contra versión obsoleta.
 
 Power Automate debe conservar la misma `IdempotencyKey` durante retries de la misma intención.
-
-El almacenamiento durable y política de replay se definirán con el primer command que lo requiera, no mediante una solución genérica sobredimensionada antes de tener consumer.
 
 ---
 
@@ -274,12 +278,11 @@ Solo se utilizará cuando una invariante requiera exclusión real, por ejemplo:
 
 - asignación de número/secuencia de negocio;
 - transición única de workflow;
-- aprobación/freeze irreversible de una revisión;
-- elección de una sola versión efectiva/activa;
-- generación controlada de un paquete único;
-- invariantes que no puedan resolverse de forma suficiente con constraints + optimistic concurrency.
+- aprobación/freeze irreversible;
+- una sola versión efectiva/activa;
+- generación controlada de un paquete único.
 
-Mecanismos a evaluar según caso:
+Mecanismos posibles según caso:
 
 - `UPDLOCK`;
 - `HOLDLOCK`;
@@ -292,27 +295,27 @@ Todo lock tendrá scope mínimo y justificado.
 
 ## 11. Stored Procedures como commands de negocio
 
-Las escrituras no se expondrán como CRUD libre desde Power Apps/Power Automate.
+Las escrituras no se exponen como CRUD libre desde Power Apps/Power Automate.
 
-Ejemplos conceptuales:
+Ejemplos conceptuales vigentes:
 
 ```text
-cmms_api.usp_ReliabilityStudy_Create
-cmms_api.usp_ReliabilityStudyScope_Update
-cmms_api.usp_FailureMode_SaveAssessment
-cmms_api.usp_RcmDecision_Confirm
-cmms_api.usp_MaintenanceStrategy_Save
-cmms_api.usp_ReliabilityStudy_SubmitReview
-cmms_api.usp_ReliabilityStudy_ApproveRevision
+cmms.usp_ReliabilityStudy_Create
+cmms.usp_ReliabilityStudyScope_UpdateDraft
+cmms.usp_FailureMode_SaveAssessment
+cmms.usp_RcmDecision_Confirm
+cmms.usp_MaintenanceStrategy_Save
+cmms.usp_ReliabilityStudy_SubmitReview
+cmms.usp_ReliabilityStudy_ApproveRevision
 ```
 
-Parámetros comunes solo cuando tengan semántica real:
+Parámetros comunes solo cuando tienen semántica real:
 
 ```text
 @ProjectId
-@ActorEmail / @ActorId
+@ActorEmail / future @ActorId
 @IdempotencyKey
-@RequestId / @CorrelationId
+@RequestId
 @ExpectedConcurrencyToken
 ```
 
@@ -324,12 +327,19 @@ Los nombres físicos de tablas no deben filtrarse innecesariamente al consumidor
 
 Las pantallas consumirán read models orientados a su tarea, no el modelo relacional completo.
 
-Ejemplos:
+Primeros consumers:
 
 ```text
+Project Context
+Asset Context
 Reliability Studies list
 Study header/context
-Study scope detail
+Study Scope detail
+```
+
+Posteriormente:
+
+```text
 Functions & Failures tree
 FMEA work item
 RCM decision context
@@ -337,7 +347,7 @@ Maintenance Strategy detail
 Review summary
 ```
 
-El read model puede implementarse mediante View o Stored Procedure según filtros, seguridad, paginación y coste.
+El read model puede implementarse mediante Stored Procedure o View interna según filtros, paginación y coste, pero Power Automate consume el contrato publicado.
 
 Reglas:
 
@@ -345,8 +355,8 @@ Reglas:
 - semántica explícita;
 - null no se convierte en dato positivo;
 - paginación/orden determinista cuando aplique;
-- `ConcurrencyToken` incluido cuando el consumer pueda editar la entidad leída;
-- `ProjectId` y autorización funcional no se delegan a un filtro visual.
+- `ConcurrencyToken` incluido cuando el consumer pueda editar;
+- `ProjectId` no se delega a un filtro visual.
 
 ---
 
@@ -354,14 +364,21 @@ Reglas:
 
 La cuenta técnica utilizada por Flow/SQL no es el actor funcional.
 
+Durante desarrollo:
+
+```text
+SQL connection = existing user tradminomm
+Functional actor = ActorEmail from Power Apps
+```
+
 Cuando el usuario sea conocido, se transportará y conservará explícitamente.
 
 Campos a evaluar por entidad:
 
 ```text
-CreatedAt
+CreatedAtUtc
 CreatedBy
-ModifiedAt
+ModifiedAtUtc
 ModifiedBy
 ```
 
@@ -374,22 +391,22 @@ AggregateType
 AggregateId
 RequestId
 IdempotencyKey
-Actor
-StartedAt
-CompletedAt
+ActorEmail
+StartedAtUtc
+CompletedAtUtc
 OutcomeCode
 ErrorCode
 ```
 
-No se almacenará información sensible innecesaria en el audit payload.
+No se almacenará información sensible innecesaria en audit payloads.
 
 ---
 
 ## 14. Result Contract
 
-Power Apps no debe inferir outcomes leyendo texto libre o comprobando efectos secundarios.
+Power Apps no debe inferir outcomes leyendo texto libre.
 
-Los commands deberán distinguir, cuando aplique:
+Vocabulary inicial:
 
 ```text
 SUCCESS
@@ -401,19 +418,28 @@ NOT_FOUND
 ERROR
 ```
 
-Contrato conceptual mínimo:
+Envelope baseline:
 
 ```text
-OutcomeCode
-ErrorCode
-Message
-EntityId
-ConcurrencyToken
-RequestId
-IsReplay
+contractVersion
+requestId
+ok
+outcomeCode
+message
+entityId
+concurrencyToken
+dataJson
+isReplay
+generatedAtUtc
 ```
 
-No todos los commands necesitan todos los campos.
+Para listas podrán añadirse:
+
+```text
+count
+hasMore
+continuationToken
+```
 
 `CONFLICT` es un outcome esperado y debe tener tratamiento UX específico.
 
@@ -426,15 +452,16 @@ Queda prohibido introducir acoplamientos nuevos que obliguen a una futura reescr
 Por tanto:
 
 - ninguna pantalla depende del nombre de una tabla física;
-- ningún Flow debe convertirse en la única ubicación de una regla crítica;
+- ningún Flow es la única ubicación de una regla crítica;
 - los commands son intenciones de negocio;
 - read/command contracts son versionables;
-- identifiers de concurrency/idempotency/correlation son transportables;
+- concurrency/idempotency/request identifiers son transportables;
 - SQL devuelve outcomes contractuales;
-- seguridad funcional no depende solo de controles visibles;
-- la futura API podrá reutilizar la frontera sin replicar lógica de integridad.
+- seguridad funcional no depende solo de controles visibles.
 
-La API futura requerirá una decisión propia sobre auth, authorization, ownership, versioning, observability, deployment y operations.
+Una futura API podrá envolver/reutilizar estas intenciones sin duplicar lógica de integridad.
+
+La API futura tendrá su propia decisión de auth, authorization, ownership, versioning, observability, deployment y operations.
 
 ---
 
@@ -444,23 +471,21 @@ Durante el desarrollo actual:
 
 ```text
 Power Automate
-→ existing database user with administrative capability
+→ existing database user: tradminomm
 → db-omm-dev
 ```
 
-No se crea un rol `cmms_runtime` ni ningún otro rol CMMS adicional.
+No se crea `cmms_runtime` ni ningún otro rol/principal CMMS adicional.
 
-Esta decisión es deliberada para el entorno de desarrollo y no bloquea el producto.
-
-Guardrails que siguen siendo obligatorios aunque la cuenta técnica disponga de permisos amplios:
+Guardrails obligatorios aunque la cuenta técnica disponga de permisos amplios:
 
 - Power Apps no hace DML directo sobre tablas CMMS;
-- Power Automate ejecuta Stored Procedures/read contracts y no contiene las invariantes de negocio;
-- SQL conserva la autoridad transaccional y de concurrencia;
-- la identidad técnica de conexión no sustituye `ActorEmail`/actor funcional en auditoría;
-- los contratos no deben depender de que la cuenta tenga permisos administrativos.
+- Power Automate ejecuta Stored Procedures/read contracts;
+- SQL conserva autoridad transaccional y de concurrencia;
+- la identidad técnica no sustituye `ActorEmail`;
+- los contratos no dependen funcionalmente de privilegios administrativos.
 
-El endurecimiento de permisos de una futura implantación productiva se tratará como decisión de deployment/security y no requiere rediseñar pantallas, contratos ni procedimientos de negocio.
+El endurecimiento de permisos de producción será una decisión de deployment/security sin rediseñar pantallas ni contratos.
 
 ---
 
@@ -476,11 +501,11 @@ Antes de aprobar cualquier command mutable:
 [ ] rowversion / ConcurrencyToken cuando aplica
 [ ] retry / duplicate execution evaluado
 [ ] IdempotencyKey cuando aplica
-[ ] RequestId / CorrelationId cuando aplica
+[ ] RequestId cuando aplica
 [ ] PK/FK/UNIQUE/CHECK/nullability revisados
 [ ] authorization boundary funcional definida cuando aplica
 [ ] locking/serialization justificado y mínimo
-[ ] actor/audit definido
+[ ] ActorEmail/audit definido
 [ ] result/error/conflict contract definido
 [ ] positive test
 [ ] negative/invariant test
@@ -497,4 +522,4 @@ Un punto aplicable sin resolver implica `NO PASS`.
 
 Esta política prevalece para todo desarrollo SQL nuevo o modificado posterior a su activación.
 
-Si un documento histórico del Functional Lab dice que backend/API/persistencia están pendientes, debe interpretarse como estado histórico del laboratorio, no como permiso para ignorar esta nueva baseline de desarrollo.
+Si documentación histórica del Functional Lab contradice esta baseline de ejecución, se considera histórica hasta que se promueva explícitamente al baseline actual.
