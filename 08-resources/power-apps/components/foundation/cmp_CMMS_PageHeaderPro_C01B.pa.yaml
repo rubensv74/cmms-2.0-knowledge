@@ -1,0 +1,79 @@
+ComponentDefinitions:
+  cmp_CMMS_PageHeaderPro:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      Eyebrow:
+        PropertyKind: Input
+        DisplayName: Eyebrow
+        Description: Small uppercase section label.
+        DataType: Text
+        Default: ="CMMS"
+      Subtitle:
+        PropertyKind: Input
+        DisplayName: Subtitle
+        Description: Page purpose / explanatory subtitle.
+        DataType: Text
+        Default: =""
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Page title.
+        DataType: Text
+        Default: ="Page title"
+    Properties:
+      Fill: =Color.Transparent
+      Height: =104
+      Width: =640
+    Children:
+      - conCMMSPageHeader_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            AlignInContainer: =AlignInContainer.Stretch
+            BorderColor: =RGBA(0, 0, 0, 0)
+            DropShadow: =DropShadow.None
+            Fill: =Color.Transparent
+            Height: =Parent.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =4
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            PaddingBottom: =4
+            PaddingLeft: =2
+            PaddingRight: =2
+            PaddingTop: =4
+            Width: =Parent.Width
+          Children:
+            - lblCMMSPageHeader_Eyebrow:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =ColorValue("#2563EB")
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =20
+                  Size: =9
+                  Text: =Upper(cmp_CMMS_PageHeaderPro.Eyebrow)
+                  Width: =Parent.Width
+            - lblCMMSPageHeader_Title:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =ColorValue("#0F172A")
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  Height: =38
+                  Size: =24
+                  Text: =cmp_CMMS_PageHeaderPro.Title
+                  Width: =Parent.Width
+                  Wrap: =false
+            - lblCMMSPageHeader_Subtitle:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =ColorValue("#475569")
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  Height: =24
+                  Size: =10
+                  Text: =cmp_CMMS_PageHeaderPro.Subtitle
+                  Width: =Parent.Width
+                  Wrap: =true
