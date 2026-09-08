@@ -1,0 +1,28 @@
+// CMMS 2.0 — I01-A temporary runtime probe
+// Use on a TEMPORARY development button OnSelect after adding Flow CMMS_I01A_RuntimeProbe.
+// Delete the button after PASS; this is not a product control.
+
+Set(gblCMMSProbeRequestId, Text(GUID()));
+Set(gblCMMSBusy, true);
+Set(
+    gblCMMSProbeResult,
+    CMMS_I01A_RuntimeProbe.Run(
+        gblCMMSUserEmail,
+        gblCMMSProbeRequestId
+    )
+);
+Set(gblCMMSBusy, false);
+If(
+    gblCMMSProbeResult.outcomeCode = "SUCCESS" &&
+    gblCMMSProbeResult.requestId = gblCMMSProbeRequestId,
+    Notify(
+        "CMMS runtime contract PASS · " & gblCMMSProbeResult.requestId,
+        NotificationType.Success,
+        5000
+    ),
+    Notify(
+        "CMMS runtime contract failed · " & gblCMMSProbeResult.outcomeCode & " · " & gblCMMSProbeResult.message,
+        NotificationType.Error,
+        8000
+    )
+)

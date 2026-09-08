@@ -1,0 +1,14 @@
+// CMMS 2.0 — C01-A Runtime State Foundation
+// Target property: App.OnStart
+// Keep runtime/user/session state here; design constants live in App.Formulas.
+
+Set(gblCMMSUserEmail, Lower(User().Email));
+Set(gblCMMSUserName, User().FullName);
+Set(gblCMMSEnvironmentLabel, "ENV PRE TR 162");
+Set(gblCMMSNavKey, "reliability");
+Set(gblCMMSSidebarCollapsed, false);
+Set(gblCMMSProjectId, Blank());
+Set(gblCMMSProjectCode, "");
+Set(gblCMMSProjectName, "");
+Set(gblCMMSBusy, false);
+Set(gblCMMSInitialized, true);

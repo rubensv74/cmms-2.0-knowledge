@@ -1,0 +1,661 @@
+Screens:
+  scr_CMMS_Foundation_C01:
+    Properties:
+      Fill: =CMMSTheme.Canvas
+      LoadingSpinnerColor: =CMMSTheme.Primary
+      OnVisible: =Set(gblCMMSNavKey, "reliability")
+    Children:
+      - conCMMSF_Root:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            DropShadow: =DropShadow.None
+            Fill: =CMMSTheme.Canvas
+            Height: =App.Height
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =0
+            LayoutMinHeight: =480
+            LayoutMinWidth: =720
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =App.Width
+          Children:
+            - conCMMSF_Sidebar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  Fill: =CMMSTheme.NavBg
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =0
+                  LayoutMinHeight: =480
+                  LayoutMinWidth: =CMMSLayout.SidebarCollapsed
+                  PaddingBottom: =10
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  Width: =If(gblCMMSSidebarCollapsed, CMMSLayout.SidebarCollapsed, CMMSLayout.SidebarExpanded)
+                Children:
+                  - conCMMSF_Brand:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Height: =72
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =0
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =72
+                        PaddingBottom: =6
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =6
+                        Width: =Parent.Width
+                      Children:
+                        - lblCMMSF_Brand:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.White
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Bold
+                              Height: =28
+                              LayoutMinHeight: =28
+                              Size: =18
+                              Text: ="CMMS"
+                              Visible: =!gblCMMSSidebarCollapsed
+                              Width: =Parent.Width
+                        - lblCMMSF_BrandDescriptor:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.PrimaryLight
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =20
+                              Size: =8
+                              Text: ="OPERATIONS & MAINTENANCE"
+                              Visible: =!gblCMMSSidebarCollapsed
+                              Width: =Parent.Width
+                  - recCMMSF_DividerTop:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderStyle: =BorderStyle.None
+                        Fill: =RGBA(255, 255, 255, 0.08)
+                        FillPortions: =0
+                        Height: =1
+                        LayoutMinHeight: =1
+                        Width: =Parent.Width
+                  - conCMMSF_NavHost:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =200
+                        PaddingTop: =10
+                        Width: =Parent.Width
+                      Children:
+                        - galCMMSF_Nav:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Height: =Parent.Height
+                              Items: =SortByColumns(CMMSNavItems, "Order", SortOrder.Ascending)
+                              LayoutMinHeight: =200
+                              OnSelect: =Set(gblCMMSNavKey, Text(ThisItem.Key))
+                              ShowScrollbar: =false
+                              TemplateFill: =If(Lower(Text(ThisItem.Key)) = Lower(gblCMMSNavKey), RGBA(37, 99, 235, 0.18), Color.Transparent)
+                              TemplatePadding: =2
+                              TemplateSize: =44
+                              Width: =Parent.Width
+                            Children:
+                              - recCMMSF_NavActive:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderStyle: =BorderStyle.None
+                                    Fill: =CMMSTheme.PrimaryLight
+                                    Height: =Parent.TemplateHeight - 8
+                                    Visible: =Lower(Text(ThisItem.Key)) = Lower(gblCMMSNavKey)
+                                    Width: =3
+                                    X: =1
+                                    Y: =4
+                              - lblCMMSF_NavItem:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =If(Lower(Text(ThisItem.Key)) = Lower(gblCMMSNavKey), CMMSTheme.White, CMMSTheme.NavText)
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    FontWeight: =If(Lower(Text(ThisItem.Key)) = Lower(gblCMMSNavKey), FontWeight.Semibold, FontWeight.Normal)
+                                    Height: =Parent.TemplateHeight
+                                    OnSelect: =Select(Parent)
+                                    PaddingLeft: =If(gblCMMSSidebarCollapsed, 8, 14)
+                                    Size: =If(gblCMMSSidebarCollapsed, 8, 10)
+                                    Text: =If(gblCMMSSidebarCollapsed, Left(Text(ThisItem.Label), 1), Text(ThisItem.Label))
+                                    Tooltip: =Text(ThisItem.Label)
+                                    Width: =Parent.TemplateWidth
+                                    Wrap: =false
+                                    X: =4
+                  - recCMMSF_DividerBottom:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderStyle: =BorderStyle.None
+                        Fill: =RGBA(255, 255, 255, 0.08)
+                        FillPortions: =0
+                        Height: =1
+                        LayoutMinHeight: =1
+                        Width: =Parent.Width
+                  - conCMMSF_Footer:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =CMMSTheme.NavSurface
+                        FillPortions: =0
+                        Height: =If(gblCMMSSidebarCollapsed, 64, 104)
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =2
+                        LayoutMinHeight: =64
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        Width: =Parent.Width
+                      Children:
+                        - lblCMMSF_User:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.White
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              Size: =9
+                              Text: =If(gblCMMSSidebarCollapsed, Left(gblCMMSUserName, 1), gblCMMSUserName)
+                              Width: =Parent.Width
+                              Wrap: =false
+                        - lblCMMSF_Environment:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.TextMuted
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              Height: =18
+                              Size: =8
+                              Text: =If(gblCMMSSidebarCollapsed, "DEV", gblCMMSEnvironmentLabel & " · " & CMMSBuild.Version)
+                              Width: =Parent.Width
+                              Wrap: =false
+            - conCMMSF_Content:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  Fill: =CMMSTheme.Canvas
+                  FillPortions: =1
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =CMMSLayout.GapL
+                  LayoutMinHeight: =480
+                  LayoutMinWidth: =600
+                  PaddingBottom: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  PaddingLeft: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  PaddingRight: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  PaddingTop: =If(App.Width < CMMSLayout.CompactBreakpoint, CMMSLayout.PagePaddingCompact, CMMSLayout.PagePaddingDesktop)
+                  Width: =Parent.Width
+                Children:
+                  - conCMMSF_ContextBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =CMMSTheme.Border
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =CMMSTheme.Surface
+                        FillPortions: =0
+                        Height: =CMMSLayout.TopBarHeight
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =CMMSLayout.GapM
+                        LayoutMinHeight: =CMMSLayout.TopBarHeight
+                        PaddingBottom: =8
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =8
+                        RadiusBottomLeft: =CMMSLayout.RadiusM
+                        RadiusBottomRight: =CMMSLayout.RadiusM
+                        RadiusTopLeft: =CMMSLayout.RadiusM
+                        RadiusTopRight: =CMMSLayout.RadiusM
+                        Width: =Parent.Width
+                      Children:
+                        - lblCMMSF_ContextCaption:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.TextMuted
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =8
+                              Text: ="PROJECT CONTEXT"
+                              Width: =112
+                        - lblCMMSF_Project:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.TextPrimary
+                              Fill: =Color.Transparent
+                              FillPortions: =1
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Size: =10
+                              Text: =If(IsBlank(gblCMMSProjectCode), "No project selected", gblCMMSProjectCode & If(IsBlank(gblCMMSProjectName), "", " · " & gblCMMSProjectName))
+                              Width: =Parent.Width
+                              Wrap: =false
+                        - lblCMMSF_ContextActor:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Right
+                              Color: =CMMSTheme.TextSecondary
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Font: =Font.'Segoe UI'
+                              Height: =30
+                              Size: =9
+                              Text: =gblCMMSUserEmail
+                              Width: =240
+                              Wrap: =false
+                  - conCMMSF_Header:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =0
+                        Height: =CMMSLayout.PageHeaderHeight
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =CMMSLayout.PageHeaderHeight
+                        PaddingBottom: =4
+                        PaddingLeft: =2
+                        PaddingRight: =2
+                        PaddingTop: =4
+                        Width: =Parent.Width
+                      Children:
+                        - lblCMMSF_Eyebrow:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.Primary
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              Size: =9
+                              Text: ="RELIABILITY"
+                              Width: =Parent.Width
+                        - lblCMMSF_Title:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.TextPrimary
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Bold
+                              Height: =38
+                              Size: =24
+                              Text: ="Reliability Engineering"
+                              Width: =Parent.Width
+                        - lblCMMSF_Subtitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =CMMSTheme.TextSecondary
+                              Fill: =Color.Transparent
+                              Font: =Font.'Segoe UI'
+                              Height: =24
+                              Size: =10
+                              Text: ="Build traceable FMEA, RCM and maintenance strategies from asset functions to approved maintenance actions."
+                              Width: =Parent.Width
+                  - conCMMSF_Workspace:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        DropShadow: =DropShadow.None
+                        Fill: =Color.Transparent
+                        FillPortions: =1
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =CMMSLayout.GapL
+                        LayoutMinHeight: =260
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Width: =Parent.Width
+                      Children:
+                        - conCMMSF_Cards:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              DropShadow: =DropShadow.None
+                              Fill: =Color.Transparent
+                              FillPortions: =0
+                              Height: =120
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =CMMSLayout.GapL
+                              LayoutMinHeight: =120
+                              Width: =Parent.Width
+                            Children:
+                              - conCMMSF_CardStudies:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =CMMSTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =CMMSTheme.Surface
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinHeight: =116
+                                    LayoutMinWidth: =180
+                                    PaddingBottom: =14
+                                    PaddingLeft: =16
+                                    PaddingRight: =16
+                                    PaddingTop: =14
+                                    RadiusBottomLeft: =CMMSLayout.RadiusM
+                                    RadiusBottomRight: =CMMSLayout.RadiusM
+                                    RadiusTopLeft: =CMMSLayout.RadiusM
+                                    RadiusTopRight: =CMMSLayout.RadiusM
+                                  Children:
+                                    - lblCMMSF_CardStudiesTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =11
+                                          Text: ="Reliability Studies"
+                                          Width: =Parent.Width
+                                    - lblCMMSF_CardStudiesBody:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =42
+                                          Size: =9
+                                          Text: ="Create, continue and review governed reliability studies."
+                                          Width: =Parent.Width
+                                          Wrap: =true
+                              - conCMMSF_CardLibrary:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =CMMSTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =CMMSTheme.Surface
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinHeight: =116
+                                    LayoutMinWidth: =180
+                                    PaddingBottom: =14
+                                    PaddingLeft: =16
+                                    PaddingRight: =16
+                                    PaddingTop: =14
+                                    RadiusBottomLeft: =CMMSLayout.RadiusM
+                                    RadiusBottomRight: =CMMSLayout.RadiusM
+                                    RadiusTopLeft: =CMMSLayout.RadiusM
+                                    RadiusTopRight: =CMMSLayout.RadiusM
+                                  Children:
+                                    - lblCMMSF_CardLibraryTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =11
+                                          Text: ="Reliability Library"
+                                          Width: =Parent.Width
+                                    - lblCMMSF_CardLibraryBody:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =42
+                                          Size: =9
+                                          Text: ="Reuse governed functions, failure knowledge and strategy patterns."
+                                          Width: =Parent.Width
+                                          Wrap: =true
+                              - conCMMSF_CardReviews:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =CMMSTheme.Border
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =CMMSTheme.Surface
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinHeight: =116
+                                    LayoutMinWidth: =180
+                                    PaddingBottom: =14
+                                    PaddingLeft: =16
+                                    PaddingRight: =16
+                                    PaddingTop: =14
+                                    RadiusBottomLeft: =CMMSLayout.RadiusM
+                                    RadiusBottomRight: =CMMSLayout.RadiusM
+                                    RadiusTopLeft: =CMMSLayout.RadiusM
+                                    RadiusTopRight: =CMMSLayout.RadiusM
+                                  Children:
+                                    - lblCMMSF_CardReviewsTitle:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextPrimary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =24
+                                          Size: =11
+                                          Text: ="Reviews"
+                                          Width: =Parent.Width
+                                    - lblCMMSF_CardReviewsBody:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =Color.Transparent
+                                          Font: =Font.'Segoe UI'
+                                          Height: =42
+                                          Size: =9
+                                          Text: ="Validate readiness, exceptions, overrides and approvals."
+                                          Width: =Parent.Width
+                                          Wrap: =true
+                        - conCMMSF_FirstSlice:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =CMMSTheme.Border
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =CMMSTheme.Surface
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =CMMSLayout.GapM
+                              LayoutMinHeight: =180
+                              PaddingBottom: =20
+                              PaddingLeft: =20
+                              PaddingRight: =20
+                              PaddingTop: =20
+                              RadiusBottomLeft: =CMMSLayout.RadiusM
+                              RadiusBottomRight: =CMMSLayout.RadiusM
+                              RadiusTopLeft: =CMMSLayout.RadiusM
+                              RadiusTopRight: =CMMSLayout.RadiusM
+                              Width: =Parent.Width
+                            Children:
+                              - lblCMMSF_SliceEyebrow:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =CMMSTheme.Success
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =20
+                                    Size: =9
+                                    Text: ="FIRST VERTICAL SLICE"
+                                    Width: =Parent.Width
+                              - lblCMMSF_SliceTitle:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =CMMSTheme.TextPrimary
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =30
+                                    Size: =16
+                                    Text: ="P-101 Reliability Study Backbone"
+                                    Width: =Parent.Width
+                              - lblCMMSF_SliceBody:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Color: =CMMSTheme.TextSecondary
+                                    Fill: =Color.Transparent
+                                    Font: =Font.'Segoe UI'
+                                    Height: =42
+                                    Size: =9
+                                    Text: ="The implementation path will prove scope, functions and failures, FMEA, RCM decision logic, maintenance strategy and approval through stable Power Automate / SQL contracts."
+                                    Width: =Parent.Width
+                                    Wrap: =true
+                              - conCMMSF_Stages:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    DropShadow: =DropShadow.None
+                                    Fill: =Color.Transparent
+                                    FillPortions: =0
+                                    Height: =46
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =CMMSLayout.GapS
+                                    LayoutMinHeight: =46
+                                    Width: =Parent.Width
+                                  Children:
+                                    - lblCMMSF_Stage1:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Primary
+                                          BorderThickness: =1
+                                          Color: =CMMSTheme.PrimaryDark
+                                          Fill: =RGBA(37, 99, 235, 0.06)
+                                          FillPortions: =1
+                                          Font: =Font.'Segoe UI'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =34
+                                          Size: =8
+                                          Text: ="Scope"
+                                          Width: =120
+                                    - lblCMMSF_Stage2:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Border
+                                          BorderThickness: =1
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =CMMSTheme.SurfaceSoft
+                                          FillPortions: =1
+                                          Font: =Font.'Segoe UI'
+                                          Height: =34
+                                          Size: =8
+                                          Text: ="Functions & Failures"
+                                          Width: =150
+                                    - lblCMMSF_Stage3:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Border
+                                          BorderThickness: =1
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =CMMSTheme.SurfaceSoft
+                                          FillPortions: =1
+                                          Font: =Font.'Segoe UI'
+                                          Height: =34
+                                          Size: =8
+                                          Text: ="FMEA"
+                                          Width: =100
+                                    - lblCMMSF_Stage4:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Border
+                                          BorderThickness: =1
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =CMMSTheme.SurfaceSoft
+                                          FillPortions: =1
+                                          Font: =Font.'Segoe UI'
+                                          Height: =34
+                                          Size: =8
+                                          Text: ="RCM"
+                                          Width: =100
+                                    - lblCMMSF_Stage5:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Border
+                                          BorderThickness: =1
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =CMMSTheme.SurfaceSoft
+                                          FillPortions: =1
+                                          Font: =Font.'Segoe UI'
+                                          Height: =34
+                                          Size: =8
+                                          Text: ="Strategy"
+                                          Width: =110
+                                    - lblCMMSF_Stage6:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =CMMSTheme.Border
+                                          BorderThickness: =1
+                                          Color: =CMMSTheme.TextSecondary
+                                          Fill: =CMMSTheme.SurfaceSoft
+                                          FillPortions: =1
+                                          Font: =Font.'Segoe UI'
+                                          Height: =34
+                                          Size: =8
+                                          Text: ="Review"
+                                          Width: =110

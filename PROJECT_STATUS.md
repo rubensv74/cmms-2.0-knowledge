@@ -1,13 +1,138 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-08-24
+**Última actualización:** 2026-09-08
 
-## Estado general
+## Estado operativo actual — Development Baseline 1.0
 
-CMMS 2.0 continúa en fase **Functional Lab**, con tres líneas gobernadas en paralelo:
+CMMS 2.0 ha pasado de una fase exclusivamente **Functional Lab / documentación** a una fase de **desarrollo ejecutable gobernado**, todavía abierta en el PR #11 (`CMMS 2.0 — Development Baseline 1.0`).
 
-1. **AMEF + RCM / Functional Lab** — foundation conceptual consolidada y siguiente gate técnico en Power Apps real.
-2. **Asset Experience Redefinition** — AE-0 a AE-4 cerrados por contrato; AE-5 definido y pendiente de runtime; AE6-S01 preparado hasta el gate real de Studio.
+La arquitectura de implementación vigente es:
+
+```text
+Power Apps
+→ Power Automate
+→ SQL Server
+```
+
+Baseline confirmada:
+
+```text
+Canvas app       = CMMS
+Environment      = ENV PRE TR 162
+Database         = db-omm-dev
+SQL schema       = cmms
+SQL execution    = existing development connection/user
+API now          = NO
+Future API       = stable stored-procedure contracts
+```
+
+Reglas técnicas protegidas desde el primer modelo mutable:
+
+- `ProjectId` explícito;
+- transacciones SQL para intenciones compuestas;
+- `rowversion` / `ConcurrencyToken` cuando exista riesgo de lost update;
+- PK/FK/UNIQUE/CHECK como autoridad SQL;
+- idempotencia/replay clasificada por comando;
+- locking acotado solo cuando la serialización sea necesaria;
+- `RequestId` + actor/auditoría;
+- outcomes estructurados, incluido `CONFLICT`.
+
+### Gates ya confirmados en runtime
+
+```text
+G0 = PASS
+C01-A = PASS
+```
+
+Evidencia confirmada:
+
+- Canvas app real y responsive;
+- namespace `cmms` disponible en `db-omm-dev`;
+- capacidades SQL de constraints, transactions, `rowversion` y `sp_getapplock` confirmadas;
+- foundation native-control de `Reliability Engineering` renderizada en Power Apps Studio;
+- compatibilidad de Source Code y Named Formulas de C01-A probada.
+
+### WIP actual
+
+```text
+C01-B — Shared Shell
+I01-A — First Power Apps → Power Automate → SQL runtime contract
+```
+
+Paquete C01-B:
+
+- `cmp_CMMS_SidebarPro`;
+- `cmp_CMMS_ProjectContextPro`;
+- `cmp_CMMS_PageHeaderPro`;
+- `scr_ReliabilityEngineering`.
+
+Contrato I01-A:
+
+```text
+cmms.usp_Runtime_Probe
+```
+
+El probe no crea tablas de negocio, roles ni principals. Su función es demostrar el envelope normalizado y el transporte `RequestId` / `ActorEmail` a través de la arquitectura real.
+
+### Gate real actual
+
+Fuente canónica del gate:
+
+```text
+09-development/gates/CMMS_GATE_C01B_I01A_RUNTIME.md
+```
+
+Estado:
+
+```text
+WAITING_REAL_RUNTIME_EVIDENCE
+```
+
+El gate solo cierra cuando existen ambos marcadores:
+
+```text
+C01_B_SHARED_SHELL_STUDIO_PASS
+PASS_I01A_RUNTIME_CONTRACT
+```
+
+No declarar C01-B ni I01-A como PASS por existencia de código o documentación.
+
+### Siguiente secuencia después del PASS
+
+```text
+C01-C canonical screen template
+→ I01-B minimum Project / Asset / Reliability Study model
+→ synthetic P-101 + RCM-000127
+→ cmms read procedures
+→ thin Power Automate read flows
+→ Reliability Studies real screen
+```
+
+El siguiente gate mutable posterior será I01-C Study Scope concurrency.
+
+### Precedencia de estado durante el PR #11
+
+Mientras el Development Baseline 1.0 permanezca abierto:
+
+```text
+real runtime evidence
+> explicit gate evidence in 09-development/gates/evidence
+> current gate in 09-development/gates/CMMS_GATE_C01B_I01A_RUNTIME.md
+> this PROJECT_STATUS.md
+> PR #11 summary
+> historical Functional Lab status below
+```
+
+El contenido histórico que sigue permanece válido como baseline funcional y de Asset Experience, pero **no sustituye al estado operativo de desarrollo anterior**.
+
+---
+
+## Baseline funcional conservada — 2026-08-24
+
+CMMS 2.0 mantiene tres líneas funcionales gobernadas:
+
+1. **AMEF + RCM / Functional Lab** — foundation conceptual consolidada.
+2. **Asset Experience Redefinition** — AE-0 a AE-4 cerrados por contrato; AE-5 definido y pendiente de runtime; AE6-S01 preparado hasta gate real de Studio.
 3. **Work Management Discovery** — AS-IS inicial documentado; todavía no es modelo TO-BE ni workspace canónico.
 
 Principio general:
@@ -43,29 +168,9 @@ No se considera validada una capacidad por existir únicamente como documento, m
 
 ## Power Apps Foundation
 
-`F01-00` sigue pendiente de cierre en herramienta real.
+La antigua secuencia F01 queda conservada como baseline histórica. El estado operativo vigente de construcción está gobernado por `09-development/` y por el gate C01-B + I01-A descrito al inicio de este documento.
 
-Debe confirmarse en la Canvas app:
-
-- Source Code/schema aceptado;
-- authoring locale;
-- controles y versiones reales;
-- baseline App Checker;
-- componentes premium disponibles/instalados;
-- Premium App Shell Foundation;
-- baseline visual real.
-
-Siguiente secuencia:
-
-```text
-F01-01 Premium App Shell
-→ F01-02 runtime state
-→ F01-03 P-101 v1.1 adapter
-→ F01-04 navigation
-→ F01-05..09 WS-01 + validation/hardening
-```
-
-No iniciar WS-02 antes del gate real de WS-01.
+No reabrir una baseline histórica para contradecir evidencia posterior del runtime.
 
 ---
 
@@ -297,22 +402,6 @@ Model          UNAVAILABLE
 
 La pantalla debe demostrar calidad visual también con datos incompletos.
 
-### Repositorio ejecutable
-
-La búsqueda GitHub actual solo encuentra `rubensv74/cmms-2.0-knowledge` para CMMS. No se ha identificado un repositorio separado con la Canvas app/source ejecutable.
-
-Por tanto no se genera YAML `.pa.yaml` especulativo antes de `S01-00 App reality audit`.
-
-### Gate real actual
-
-```text
-AE-G5 runtime
-+
-AE-G6 S01 Studio
-```
-
-El siguiente paso requiere la Canvas app real.
-
 Fuentes:
 
 - `06-ui-ux/functional-lab/development/AE6_ASSET_DETAIL_S01_PRESTUDIO_IMPLEMENTATION.md`;
@@ -378,12 +467,21 @@ Abrir detalle únicamente con conocimiento de responsables de Contratos/Subcontr
 - duplicar la biblioteca 3D;
 - presentar Type Illustration como CAD/BIM/modelo interactivo;
 - mostrar `UNAVAILABLE` como cero/blank válido;
-- generar YAML Power Apps contra un schema/locale no confirmado;
-- implementar Asset Detail productivo antes de runtime/Studio gates.
+- implementar downstream antes de runtime/Studio gates.
 
 ---
 
 # 5. Fuentes de verdad principales
+
+## Estado operativo de desarrollo
+
+- `09-development/CMMS_DEVELOPMENT_BASELINE_1_0.md`
+- `09-development/roadmap/CMMS_DELIVERY_SEQUENCE_1_0.md`
+- `09-development/gates/CMMS_GATE_C01B_I01A_RUNTIME.md`
+- `09-development/gates/evidence/`
+- PR #11 mientras permanezca abierto
+
+## Baseline funcional / producto
 
 - `ROADMAP.md`
 - `00-governance/cmms-functional-lab-incremental-protocol.md`
