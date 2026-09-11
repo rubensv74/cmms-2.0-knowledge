@@ -1,15 +1,15 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-08-24
+**Última revisión:** 2026-09-11
 
 ## 1. Cómo leer este roadmap
 
-Este documento separa:
+Se separan dos dimensiones:
 
-1. **mapa funcional del producto** — capacidades que CMMS 2.0 debe cubrir;
-2. **roadmap de validación** — orden en el que aprendemos, probamos y consolidamos esas capacidades.
+1. **mapa funcional del producto** — capacidades objetivo;
+2. **roadmap de validación** — orden en el que se observa, modela, contrata, prueba y consolida.
 
-Que un dominio se estudie antes no significa necesariamente que se implemente antes en producción.
+Que un dominio se estudie antes no implica necesariamente que se implemente antes en producción.
 
 ---
 
@@ -17,476 +17,393 @@ Que un dominio se estudie antes no significa necesariamente que se implemente an
 
 ## A. Fundamentos de activos
 
-- visión del producto;
-- jerarquía funcional FLH;
-- taxonomía corporativa;
-- modelo de activos;
-- registro de activos físicos;
+- FLH / taxonomía / ADR;
+- modelo y registro de activos;
+- Equipment Type;
 - contexto operacional;
-- criticidad configurable por proyecto/cliente;
-- Asset Technical Profile;
-- Technical Fields dinámicos por Equipment Type;
-- contexto de ingeniería y provenance;
-- contexto visual `Type Illustration / Model Image / Asset Photo`;
-- reutilización de la colección técnica 3D gobernada por AssetPlan, sin crear una segunda biblioteca CMMS.
+- criticidad configurable;
+- Technical Profile;
+- provenance / authority;
+- Engineering Context;
+- Visual Context;
+- Maintenance Summary read model.
 
-**Madurez conceptual:** alta en FLH/Taxonomía/ADR y Asset Experience V1. La implementación Power Apps sigue pendiente de runtime gates.
+**Madurez:** alta a nivel contractual; implementación física sujeta a gates Asset Experience.
 
-Fuentes canónicas:
+## B. Reliability Engineering / Maintenance Engineering
 
-- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
-- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
-- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
+### B1. RCM specific engineering
 
-## B. Ingeniería de mantenimiento y fiabilidad
+- funciones;
+- fallos funcionales;
+- modos y efectos de fallo;
+- riesgo configurable;
+- P–F;
+- árbol RCM;
+- políticas/estrategias;
+- tareas/frecuencias;
+- recursos;
+- applicability;
+- publicación/versionado;
+- effectiveness loop.
 
-- biblioteca de mantenimiento;
-- AMEF / FMEA;
-- perfiles y matrices de riesgo configurables;
-- RCM como árbol lógico de decisión;
-- criterios de factibilidad técnica y efectividad;
-- estrategias y políticas;
-- definición de tareas y frecuencias;
-- recursos y condiciones de ejecución;
-- agrupación de tareas;
-- aplicabilidad a activos equivalentes;
-- plan genérico y overrides por activo;
-- Job Plans / procedimientos;
-- revisión, publicación y versionado;
-- revisión de efectividad.
+**Madurez:** alta respecto del resto del programa; journey v1.2.
 
-**Madurez conceptual:** alta en AMEF/RCM respecto del resto del programa. Procedimientos/checklists y reglas exactas de agrupación siguen pendientes.
+### B2. Maintenance Standards Library
+
+- corporate standards por Equipment Type;
+- Standard Plan versions;
+- Standard Maintenance Activities;
+- Job Plans;
+- procedures/checklists;
+- default frequencies;
+- resources/tools/materials;
+- source/provenance;
+- project adoption snapshots;
+- project overrides;
+- corporate change proposals;
+- feedback loop master ↔ project.
+
+**Madurez:** principios funcionales confirmados el 2026-09-11; contratos detallados pendientes.
+
+Regla central:
+
+```text
+RCM / Corporate Standard / OEM / Expert
+→ Governed Project Maintenance Plan
+```
+
+RCM no es la única vía para crear un plan.
 
 ## C. Gestión del trabajo
 
-- handoff desde plan publicado;
-- generación anual de preventivas;
-- calendario preventivo;
+- calendar/scheduled maintenance;
 - work candidates;
-- planificación;
-- validación/reprogramación;
-- programación;
+- planning;
+- reprogramación;
+- scheduling;
 - routing organizativo;
-- asignación de ejecutores;
+- assignment;
 - work orders;
-- ejecución;
-- feedback de campo;
-- inspecciones;
+- execution package;
+- ejecución/feedback;
 - cierre técnico.
 
-**Madurez conceptual:** discovery inicial.
+**Madurez:** discovery.
 
-La reunión 2026-08-21 aporta un primer AS-IS de referencia:
+Regla confirmada 2026-09-11:
 
 ```text
-Plan / calendario
-→ inspecciones próximas
-→ Planner
-→ propuesta WO
-→ Maintenance Responsible
-→ Supervisor opcional
-→ Technician / Executor
-→ ejecución
+WO / Work Candidate
+→ Maintenance Activity
+   └── JobPlan / ProcedureChecklist
 ```
 
-Este flujo permanece `to_validate` y debe contrastarse con la demo y check sheets de Los Barrios antes de convertirse en modelo objetivo.
-
-Documento de referencia:
-
-- `02-functional/process-model/work-management-discovery.md`
+No se convierten por defecto los pasos del checklist en actividades independientes.
 
 ## D. Gestión económica y empresarial
 
-- centros de coste y contexto presupuestario;
-- costes reales de mantenimiento;
-- materiales y servicios;
-- partidas de contrato/subcontrato;
-- facturación cuando aplique;
-- reporting;
-- KPIs;
-- integraciones corporativas;
-- roles y seguridad.
+- centros de coste;
+- contexto presupuestario;
+- costes reales;
+- materiales/servicios;
+- contratos/subcontratos;
+- facturación;
+- reporting/KPIs;
+- integraciones;
+- roles/seguridad.
 
-**Madurez conceptual:** temprana / parcial.
-
-La relación WO → coste → contrato/subcontrato → facturación sigue abierta y requiere incorporar conocimiento de perfiles responsables.
+**Madurez:** temprana/parcial.
 
 ---
 
 # 3. Roadmap de validación funcional
 
-## Fase FL-0 — Foundation
+## FL-0 — Foundation
 
-**Estado:** completada documentalmente y revisada con reuniones de 2026-08-14 y 2026-08-21.
+**Estado:** completada documentalmente y revisada hasta 2026-09-11.
 
-- auditoría de transición;
+Incluye:
+
 - protocolo incremental;
-- visión del Functional Lab;
-- Functional Journey de 28 etapas;
-- matriz persona vs sistema;
-- arquitectura del laboratorio;
-- contratos JSON;
-- fixture P-101;
-- paquete documental para IT;
-- revisión riesgo/RCM/aplicabilidad;
-- apertura del discovery de Gestión del Trabajo.
+- RCM Functional Journey;
+- persona vs sistema;
+- arquitectura Functional Lab;
+- contracts/fixtures iniciales;
+- riesgo configurable;
+- RCM sin scoring;
+- applicability/overrides;
+- Work Management discovery;
+- Maintenance Standards discovery.
 
-## Fase FL-1 — Power Apps Foundation + WS-01
+## FL-1 — Power Apps Foundation + WS-01
 
-**Estado:** siguiente fase técnica.
+- shell/runtime;
+- adapter de caso;
+- navegación;
+- WS-01;
+- Studio validation;
+- hardening.
 
-1. cerrar auditoría en Power Apps real;
-2. crear shell;
-3. crear runtime state compatible con configuración y decisiones trazadas;
-4. implementar adaptador P-101 v1.1;
-5. implementar navegación;
-6. completar `WS-01 Caso y contexto`;
-7. validar en Power Apps Studio;
-8. actualizar documentación funcional.
+Gate: WS-01 real validado.
 
-Gate de salida: WS-01 integrado y validado sin errores abiertos.
+## FL-2 — Funciones y fallos
 
-## Fase FL-2 — Funciones y fallos
+- WS-02;
+- funciones/fallos/modos como parte del RCM;
+- ownership y evidencia.
 
-- `WS-02 Funciones y fallos`;
-- validar responsabilidad sobre funciones, fallos y modos;
-- consolidar requisitos y entidades asociadas.
+## FL-3 — Riesgo configurable
 
-## Fase FL-3 — AMEF y riesgo configurable
+Gate previo: `RiskProfile`.
 
-Gate previo: contrato mínimo `RiskProfile`.
+- WS-03;
+- escalas/rangos/reglas desde configuración;
+- no matriz fija.
 
-- `WS-03 Efectos y riesgo`;
-- validar escalas, rangos, cálculos, recomendaciones y gates;
-- demostrar que la matriz procede de configuración.
+## FL-4 — Árbol RCM
 
-## Fase FL-4 — Decisión RCM
+Gate previo: contrato de árbol.
 
-Gate previo: contrato mínimo de árbol RCM.
+- WS-04;
+- branches sin scoring;
+- P–F;
+- factibilidad/efectividad;
+- human authority.
 
-- `WS-04 Decisión RCM`;
-- representar preguntas, respuestas, evidencia y ramas sin scoring;
-- hacer visibles factibilidad técnica y efectividad;
-- separar recomendación del sistema y autoridad humana.
+## FL-5 — Actividad, Job Plan y plan
 
-## Fase FL-5 — Tratamiento y plan
-
-- `WS-05 Economía y tarea`;
-- `WS-06 Recursos y alcance`;
-- validar tareas, frecuencias, recursos y condiciones;
-- validar agrupación;
-- validar candidatos de aplicabilidad y overrides por activo.
+- WS-05;
+- WS-06;
+- `sourceBasis`;
+- actividad gestionable;
+- frecuencia;
+- recursos;
+- Job Plan / Procedure reference;
+- applicability;
+- overrides.
 
 Gate previo a WS-06:
 
-- `BasePlan`;
-- `CandidateAssets`;
-- `ApplicabilityDecision`;
-- `AssetPlanOverride`.
-
-Caso pedagógico reservado: bomba con lubricación convencional frente a lubricación por neblina.
-
-## Fase FL-6 — Gobernanza y handoff
-
-- `WS-07 Trazabilidad y calidad`;
-- `WS-08 Revisión y publicación`;
-- validar approvals y snapshots;
-- producir `PublishedPlanVersion`;
-- mostrar handoff conceptual hacia preparación anual y Gestión del Trabajo.
-
-La demo podrá mostrar:
-
 ```text
-PublishedPlanVersion
-→ Annual Preventive Preparation
-→ Work Management (discovery / to_validate)
+BasePlan / StandardVersion
+CandidateAssets
+ApplicabilityDecision
+Project/AssetOverride
+JobPlan / Procedure reference
 ```
 
-No se implementarán todavía reglas operativas de planning/scheduling.
+## FL-6 — Gobernanza y publicación
 
-## Fase FL-7 — Efectividad
+- WS-07 / WS-08;
+- provenance;
+- version lineage;
+- approvals;
+- `PublishedProjectMaintenancePlanVersion`;
+- handoff a Annual Preventive Preparation / Work Management.
 
-- `WS-09 Efectividad y mejora`;
-- cerrar el loop con datos reales simulados;
-- abrir revisión sin sobrescribir versiones anteriores.
+## FL-7 — Efectividad
 
-## Fase FL-8 — Consolidación AMEF/RCM para IT
+- WS-09;
+- comparar hipótesis/baseline con ejecución;
+- abrir revisión;
+- identificar posibles aprendizajes corporativos.
 
-- requisitos funcionales;
-- reglas de negocio;
-- modelo conceptual de datos;
-- mapa de pantallas;
-- roles y dependencias;
-- preguntas de arquitectura;
-- contrato de salida hacia Gestión del Trabajo.
+## FL-8 — Consolidación Reliability Engineering para IT
 
-## Fase FL-9 — Discovery de Gestión del Trabajo
-
-**Estado:** iniciado documentalmente el 2026-08-21; todavía no es una fase de implementación Power Apps.
-
-### WM-G01 — observar AS-IS
-
-- demo de la aplicación actual de Los Barrios;
-- actores;
-- estados;
-- decisiones;
-- excepciones.
-
-### WM-G02 — revisar contenido operativo
-
-- hojas/check sheets reales;
-- tarea vs procedimiento;
-- procedimiento vs WO;
-- feedback de ejecución.
-
-### WM-G03 — validar planning/scheduling
-
-- horizonte temporal;
-- work candidates;
-- agrupación;
-- ventanas;
-- reprogramación;
-- capacidad;
-- turnos;
-- asignación;
-- rutas organizativas configurables.
-
-### Gate de salida FL-9
-
-Solo cuando exista evidencia suficiente se decidirá:
-
-- journey canónico de Gestión del Trabajo;
-- nuevos workspaces del Functional Lab;
-- contratos funcionales;
-- fixture/caso de demostración.
-
-## Fase FL-10 — Gestión económica
-
-No iniciar diseño detallado hasta incorporar conocimiento de perfiles responsables de Contratos/Subcontratos.
-
-Objetivo posterior:
-
-```text
-WO ejecutada
-→ coste real
-→ centro de coste / presupuesto
-→ contrato / subcontrato
-→ integración corporativa / facturación
-```
+- requisitos;
+- reglas;
+- conceptual data model;
+- roles;
+- screen map;
+- contratos de salida;
+- preguntas de arquitectura.
 
 ---
 
-# 4. Track transversal AE — Asset Experience Redefinition
+# 4. Track MSL — Maintenance Standards Library
 
-**Estado actual:** `AE-0..AE-4 COMPLETE AT CONTRACT LEVEL / AE-5 RUNTIME HOLD`.
+**Estado:** iniciado 2026-09-11.
 
-Este track no sustituye las fases FL. Revisa la foundation de activos y el sistema visual que utilizarán superficies presentes y futuras.
+## MSL-G01 — Source normalization
 
-Secuencia:
+Objetivo:
 
-```text
-AE-0 Baseline y auditoría                 PASS
-→ AE-1 Asset Experience Contract          PASS_WITH_DEFERRED_ITEMS
-→ AE-2 Asset Visual System                PASS_CONTRACT
-→ AE-3 Premium Component Contracts        PASS_CONTRACT / physical validation pending
-→ AE-4 Screen Architecture                PASS_CONTRACT
-→ AE-5 AssetPlan 3D Consumption           CONTRACT PASS / RUNTIME HOLD
-→ AE-6 Incremental Power Apps             BLOCKED_BY_AE-G5 + Studio foundation
-→ AE-7 Convergence                        FUTURE
-```
+- registrar una fuente real;
+- extraer por tipo de equipo;
+- normalizar actividades, frecuencias, Job Plans, procedures, resources y sources;
+- conservar provenance.
 
-## AE-0 — Baseline y auditoría
+No crear fixture de biblioteca antes de PASS.
 
-**Estado:** `COMPLETE / AE-G0 PASS`.
+## MSL-G02 — Core contracts
 
-Conclusión:
-
-- no existe Assets productivo que retocar;
-- Asset Model + ADR son foundation funcional reusable;
-- shell visual histórico se retira;
-- gaps de Technical Profile/provenance/visual/engineering quedan localizados.
-
-Fuente:
-
-- `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`
-
-## AE-1 — Contrato
-
-**Estado:** `COMPLETE / AE-G1 PASS_WITH_DEFERRED_ITEMS`.
-
-Cerrados:
-
-- Asset Identity;
-- Technical Field / Unit / Applicability / Value;
-- authority/provenance;
-- override/freshness;
-- Engineering Context;
-- Visual Context;
-- Maintenance Summary read model.
-
-Diferidos deliberadamente:
-
-- Model Template;
-- Health Index;
-- repositorio documental concreto;
-- tecnología API/SQL física;
-- autoridad concreta Manufacturer/Model/Serial por integración.
-
-Fuente:
-
-- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
-
-## AE-2 — Sistema visual
-
-**Estado:** `COMPLETE / AE-G2 PASS_CONTRACT`.
-
-- jerarquía N0–N4;
-- iconografía CMMS extendida, no reemplazada;
-- provenance/freshness grammar;
-- Type Illustration / Model Image / Asset Photo separados;
-- `PNG 3D-look != interactive 3D viewer`;
-- fake Rotate/Explode/Orbit prohibido.
-
-Fuente:
-
-- `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`
-
-## AE-3 — Componentes premium
-
-**Estado:** `CONTRACT COMPLETE / PHYSICAL VALIDATION PENDING`.
-
-Shared candidates:
+Cerrar:
 
 ```text
-AssetIdentityHero
-TechnicalValue
-TechnicalSpecificationGrid
-ProvenanceBadge
-EngineeringContextPanel
-AssetVisualGallery
-HierarchyPath
-MaintenanceSummary
-EquipmentTypeCard
+MaintenanceStandardLibrary
+EquipmentTypeStandard
+StandardPlanVersion
+StandardMaintenanceActivity
+MaintenanceStrategy
+JobPlan
+ProcedureChecklist
+ResourceRequirement
+Frequency
+SourceReference
 ```
 
-Generic primitives deben adaptarse antes de recrearse.
+## MSL-G03 — Project adoption/versioning
 
-Fuente:
-
-- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`
-
-## AE-4 — Pantallas
-
-**Estado:** `COMPLETE / AE-G4 PASS_CONTRACT`.
-
-V1:
+Validar:
 
 ```text
-AS-01 Assets List             Data Explorer
-AS-02 Asset Detail            Object 360
-AS-03 Asset Create/Edit       Governed Form
-AS-04 Equipment Type Library  Configuration Studio
+Corporate Standard Version
+→ Project Adoption Snapshot
+→ disabled / modified / added
+→ Published Project Plan Version
 ```
 
-No V1:
+## MSL-G04 — Corporate feedback loop
+
+Validar:
 
 ```text
-Standalone Visual Library = DO NOT CREATE
-Model Template Detail      = DEFERRED
+Project Learning
+→ Corporate Change Proposal
+→ Review / Approval
+→ New Master Version
 ```
 
-Orden recomendado:
+## MSL-UX — superficie futura
+
+Solo después de G01/G02 decidir si se necesita:
 
 ```text
-Asset Detail
-→ Assets List
-→ Technical Profile
-→ Equipment Type Library
-→ Engineering / Visuals
-→ Create/Edit
-→ Maintenance when source ready
+Maintenance Standards Library
+= Configuration Studio / Library Explorer
 ```
 
-Fuente:
-
-- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
-
-## AE-5 — Reuso 3D
-
-**Estado:** `CONTRACT PASS / AE-G5 RUNTIME HOLD`.
-
-Fuente visual:
-
-```text
-AssetPlan Industrial Technical 3D
-183 PNG
-BASELINE_CLOSED
-```
-
-Mapping:
-
-```text
-EquipmentTypeCode
-→ VisualProvider
-→ AssetKey
-→ controlled runtime distribution
-```
-
-Estrategia inicial recomendada:
-
-```text
-controlled Power Apps Media snapshot
-```
-
-solo para Equipment Types realmente mapeados.
-
-### AE-G5 runtime — siguiente gate real
-
-Requiere Canvas app:
-
-1. importar subset representativo;
-2. renderizar Asset Detail candidate;
-3. medir app-size/carga;
-4. validar fallback;
-5. comprobar sourceVersion/rebuild;
-6. save/close/reopen;
-7. smoke/App Checker cuando aplique.
-
-Hasta PASS:
-
-```text
-AE-6 PRODUCTIVE IMPLEMENTATION = HOLD
-```
-
-Fuente:
-
-- `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`
-
-## AE-6 — Implementación Power Apps
-
-**Estado:** `HOLD`.
-
-No avanzar como implementación productiva hasta:
-
-```text
-Premium App Shell Foundation available
-+ AE-G5 runtime PASS
-```
-
-El primer target será `AS-02 Asset Detail` con subset visual controlado.
-
-## AE-7 — Convergencia
-
-**Estado:** `FUTURE`.
-
-Retirar duplicaciones/legacy solo después de validar la nueva foundation en herramienta real.
+No se añade automáticamente al mapa de pantallas.
 
 ---
 
-# 5. Regla de continuidad
+# 5. FL-9 — Work Management Discovery
 
-El siguiente dominio o implementación no se construirá porque “parezca lógico”.
+**Estado:** discovery v0.2.
 
-Primero se observa, después se modela, después se valida y solo entonces se convierte en experiencia ejecutable.
+## WM-G01 — AS-IS
 
-Para Asset Experience, el siguiente paso ya no es más diseño documental: es **evidencia runtime de AE-G5 + Power Apps Foundation**.
+Observar actores, estados, decisiones y excepciones.
+
+## WM-G02 — Execution package
+
+Cerrar:
+
+```text
+Activity
+↔ JobPlan
+↔ ProcedureChecklist
+↔ Execution Result
+```
+
+La reunión 2026-09-11 aporta evidencia, pero no cierra el gate.
+
+## WM-G03 — Planning/Scheduling
+
+- horizon;
+- candidates;
+- grouping;
+- windows;
+- reprogramming;
+- capacity;
+- shifts;
+- assignment;
+- configurable routing.
+
+## WM-G04 — Costes/contratos
+
+Abrir detalle con perfiles responsables.
+
+---
+
+# 6. FL-10 — Gestión económica
+
+Objetivo futuro:
+
+```text
+WO executed
+→ actual cost
+→ cost center / budget
+→ contract / subcontract
+→ corporate integration / invoicing
+```
+
+No iniciar diseño detallado sin discovery específico.
+
+---
+
+# 7. Track transversal AE — Asset Experience
+
+Se conserva el estado contractual vigente:
+
+```text
+AE-0 Baseline audit                 PASS
+AE-1 Asset Experience Contract      PASS_WITH_DEFERRED_ITEMS
+AE-2 Asset Visual System            PASS_CONTRACT
+AE-3 Premium Components             CONTRACT PASS / physical validation pending
+AE-4 Screen Architecture            PASS_CONTRACT
+AE-5 AssetPlan 3D consumption       CONTRACT PASS / runtime hold
+AE-6 Power Apps implementation      gate-driven
+AE-7 Convergence                    future
+```
+
+Conexión nueva con MSL:
+
+```text
+Asset.EquipmentTypeCode
+→ candidate EquipmentTypeStandard
+```
+
+La relación física no se incorpora a contratos Asset hasta MSL-G02.
+
+---
+
+# 8. Orden recomendado de próximo aprendizaje
+
+Para la nueva línea de mantenimiento estándar:
+
+```text
+1. MSL-G01 normalizar fuente real
+2. MSL-G02 cerrar core contracts
+3. seleccionar fixture real de standard adoption
+4. definir UX surface
+5. implementar incremento pequeño
+6. validar en Studio
+7. continuar MSL-G03/G04
+```
+
+El caso RCM P-101 puede seguir avanzando en paralelo con sus gates propios.
+
+---
+
+# 9. Regla de continuidad
+
+No construir porque “parezca lógico”.
+
+```text
+Evidence
+→ Model
+→ Contract
+→ Small Implementation
+→ Real Validation
+→ Promotion
+```
+
+Y específicamente:
+
+> No asumir que toda actividad nace de RCM.
+
+> No cargar cada paso del checklist como actividad CMMS.
+
+> No permitir que un override de proyecto modifique el estándar corporativo sin governance.
