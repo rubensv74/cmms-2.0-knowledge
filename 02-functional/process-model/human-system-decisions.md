@@ -1,16 +1,18 @@
 # Matriz preliminar — Persona vs sistema
 
-**Versión funcional:** v1.1  
-**Última revisión:** 2026-08-14  
-**Fuente de revisión:** [`../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md`](../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md)
+**Versión funcional:** v1.2  
+**Última revisión:** 2026-09-11  
+**Fuentes de revisión:**  
+- [`../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md`](../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md)  
+- [`../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
 
 ## 1. Propósito
 
-Hacer explícito, antes de construir pantallas, qué parte del recorrido debe aportar una persona y qué parte puede ejecutar o sugerir el sistema.
+Hacer explícito qué parte del recorrido debe aportar una persona y qué parte puede calcular, sugerir o resolver el sistema.
 
-**Estado general:** `to_validate`, con criterios concretos confirmados en la reunión del 2026-08-14.
+La matriz principal sigue describiendo la **RCM Engineering Route**. La revisión 2026-09-11 añade decisiones específicas de la **Corporate Standard Route**.
 
-Esta matriz es una hipótesis funcional para las reuniones. No autoriza todavía automatismos productivos.
+**Estado general:** `to_validate`, con principios funcionales confirmados en reuniones.
 
 ## 2. Leyenda
 
@@ -18,64 +20,53 @@ Esta matriz es una hipótesis funcional para las reuniones. No autoriza todavía
 - **C** — cálculo determinista del sistema.
 - **R** — recomendación del sistema que necesita confirmación.
 - **G** — gate automático o semiautomático.
-- **O** — output estructurado.
 
-## 3. Matriz v1.1
+## 3. Matriz RCM route v1.2
 
 | Etapa | H | C | R | G | Resultado esperado |
 |---|:---:|:---:|:---:|:---:|---|
-| FL-01 Activo y límites | ✓ |  |  |  | Alcance del análisis confirmado. |
+| FL-01 Activo y límites | ✓ |  |  |  | Alcance confirmado. |
 | FL-02 Contexto operacional | ✓ |  |  |  | Demanda, modos, redundancia y restricciones. |
-| FL-03 Preparación de datos | ✓ | ✓ |  | ✓ | Nivel de evidencia y confianza; bloqueo si es insuficiente. |
+| FL-03 Preparación de datos | ✓ | ✓ |  | ✓ | Evidencia/confianza suficiente o bloqueo. |
 | FL-04 Funciones | ✓ |  |  |  | Funciones con estándar medible. |
 | FL-05 Fallos funcionales | ✓ |  |  |  | Incumplimientos totales/parciales. |
-| FL-06 Modos relevantes | ✓ |  | ✓ | ✓ | Modos incluidos/excluidos y modo de análisis. |
+| FL-06 Modos relevantes | ✓ |  | ✓ | ✓ | Modos incluidos/excluidos y justificación. |
 | FL-07 Efectos | ✓ |  |  |  | Efectos local, sistema y operacional. |
-| FL-08 Consecuencias | ✓ |  | ✓ |  | Clasificación de consecuencia confirmada. |
-| FL-09 Perfil de riesgo | ✓ | ✓ |  |  | Valoraciones humanas aplicadas sobre escalas/rangos configurados y resultado calculado por el sistema. |
-| FL-10 Criticidad / sobreclasificación | ✓ | ✓ | ✓ |  | Prioridad ajustada según reglas configuradas y motivo. |
-| FL-11 Controles y excepciones | ✓ | ✓ |  | ✓ | AMEF preparado o bloqueado para RCM. |
-| FL-12 Fallo evidente | ✓ |  |  |  | Rama RCM seleccionada desde una respuesta trazada. |
-| FL-13 Degradación detectable | ✓ |  | ✓ |  | Evidencia de fallo potencial y continuidad de la rama. |
-| FL-14 Ventana P–F | ✓ | ✓ | ✓ | ✓ | Viabilidad de detección e intervención. |
-| FL-15 Políticas válidas | ✓ | ✓ | ✓ |  | Alternativas técnicamente viables/efectivas según criterios del árbol. |
-| FL-16 Decisión RCM | ✓ | ✓ | ✓ |  | Política resultante del árbol lógico, confirmada con evidencia y autoridad; sin scoring. |
+| FL-08 Consecuencias | ✓ |  | ✓ |  | Consecuencia confirmada. |
+| FL-09 Perfil de riesgo | ✓ | ✓ |  |  | Valoraciones sobre configuración activa y resultado calculado. |
+| FL-10 Criticidad / sobreclasificación | ✓ | ✓ | ✓ |  | Prioridad ajustada y motivo. |
+| FL-11 Controles y excepciones | ✓ | ✓ |  | ✓ | Análisis preparado o bloqueado. |
+| FL-12 Fallo evidente | ✓ |  |  |  | Rama RCM seleccionada. |
+| FL-13 Degradación detectable | ✓ |  | ✓ |  | Evidencia de fallo potencial. |
+| FL-14 Ventana P–F | ✓ | ✓ | ✓ | ✓ | Ventana desde P hasta fallo funcional F y viabilidad de intervención. |
+| FL-15 Políticas válidas | ✓ | ✓ | ✓ |  | Alternativas técnicamente válidas/efectivas. |
+| FL-16 Decisión RCM | ✓ | ✓ | ✓ |  | Política resultante confirmada; sin scoring. |
 | FL-17 Coste esperado | ✓ | ✓ | ✓ |  | Comparación económica cuando proceda. |
-| FL-18 Tarea ejecutable | ✓ |  |  |  | Tarea, técnica, criterio, reacción y fuentes de justificación. |
-| FL-19 Intervalo | ✓ | ✓ | ✓ | ✓ | Intervalo defendible desde P–F, fabricante, histórico y/o experiencia. |
-| FL-20 Recursos | ✓ |  |  |  | Disciplina, ejecutor, cantidad, horas-hombre, herramientas, repuestos, permisos y parada. |
-| FL-21 Alcance y aplicabilidad | ✓ | ✓ | ✓ | ✓ | Plan genérico, activos candidatos, decisión de aplicabilidad y overrides específicos. |
-| FL-22 Gate del plan |  | ✓ | ✓ | ✓ | Paquete agrupado, coherente y preparado para gobernanza. |
-| FL-23 Trazabilidad | ✓ | ✓ |  | ✓ | Cadena completa sin referencias huérfanas. |
+| FL-18 Actividad ejecutable | ✓ |  | ✓ |  | Actividad CMMS gestionable, `sourceBasis` y referencia a Job Plan/procedimiento. |
+| FL-19 Intervalo | ✓ | ✓ | ✓ | ✓ | Intervalo justificable desde P–F, estándar, fabricante, histórico o experiencia. |
+| FL-20 Recursos | ✓ | ✓ | ✓ |  | Disciplina, crew, horas-hombre, herramientas/equipos, materiales y condiciones. |
+| FL-21 Alcance y aplicabilidad | ✓ | ✓ | ✓ | ✓ | Plan base/adoptado, activos candidatos y overrides. |
+| FL-22 Gate del plan |  | ✓ | ✓ | ✓ | Paquete coherente y preparado para gobernanza. |
+| FL-23 Trazabilidad | ✓ | ✓ |  | ✓ | Cadena completa incluyendo fuente/origen. |
 | FL-24 Control de calidad | ✓ | ✓ | ✓ | ✓ | Observaciones resueltas, aceptadas o bloqueadas. |
-| FL-25 Revisión multidisciplinar | ✓ |  |  |  | Resolución y responsable del seguimiento. |
-| FL-26 Aprobación y snapshot | ✓ | ✓ |  | ✓ | Aprobaciones completas, versión inmutable y output de handoff operacional. |
-| FL-27 Datos reales | ✓ | ✓ | ✓ |  | Desviaciones frente a hipótesis iniciales. |
-| FL-28 Mejora continua | ✓ | ✓ | ✓ |  | Mantener, ajustar o abrir nueva revisión. |
+| FL-25 Revisión multidisciplinar | ✓ |  |  |  | Resolución y responsable. |
+| FL-26 Aprobación y snapshot | ✓ | ✓ |  | ✓ | Versión inmutable y handoff operacional. |
+| FL-27 Datos reales | ✓ | ✓ | ✓ |  | Desviaciones frente a hipótesis/baseline. |
+| FL-28 Mejora continua | ✓ | ✓ | ✓ |  | Mantener, ajustar, reabrir o proponer aprendizaje corporativo. |
 
 ## 4. Reglas de diseño derivadas
 
 ### 4.1. Un cálculo no sustituye a una decisión
 
-Ejemplo: el sistema puede calcular la posición o indicador de riesgo según el `RiskProfile` configurado, pero las valoraciones de entrada necesitan fuente y responsabilidad definida.
+El sistema puede calcular riesgo, vencimientos o consistencia. Las valoraciones y decisiones con interpretación necesitan autoridad humana definida.
 
-### 4.2. La matriz de riesgo es configuración, no código de UI
+### 4.2. La matriz de riesgo es configuración
 
-El sistema no debe asumir una matriz 5×5. El cliente/proyecto debe poder definir y versionar, según aplique:
+No se asume 5×5. El proyecto/cliente puede definir niveles, rangos, dimensiones, umbrales y reglas.
 
-- número de niveles;
-- rangos de severidad/consecuencia;
-- dimensiones utilizadas;
-- reglas de clasificación;
-- umbrales y sobreclasificaciones.
+### 4.3. RCM es árbol lógico, no scoring
 
-La reunión del 2026-08-14 confirmó el principio de configurabilidad. La estructura exacta del `RiskProfile` permanece `to_validate`.
-
-### 4.3. RCM es un árbol lógico, no scoring
-
-Las respuestas a las preguntas RCM conducen a una rama/política. El sistema puede determinar de forma reproducible la siguiente rama a partir de respuestas y reglas configuradas, pero no debe inventar una puntuación acumulada.
-
-Debe conservarse como mínimo:
+Debe conservarse:
 
 ```text
 questionId
@@ -87,20 +78,28 @@ humanConfirmation
 actorRole
 ```
 
-### 4.4. Factibilidad técnica y efectividad son parte de la decisión
+### 4.4. AMEF forma parte de RCM
 
-Una política no debe mostrarse como válida solo porque una rama la alcance. Deben quedar visibles los criterios que la justifican, por ejemplo cuando aplique:
+Funciones, fallos funcionales, modos y efectos forman parte del análisis RCM. La UI no debe inducir a pensar que AMEF y RCM son dos procesos independientes desconectados.
 
-- condición de fallo potencial identificable;
-- intervalo P–F conocido y razonablemente consistente;
-- tiempo suficiente para actuar;
-- posibilidad práctica de ejecutar a una frecuencia menor que P–F;
-- reducción del riesgo a un nivel tolerable para consecuencias de seguridad/ambiente;
-- razonabilidad económica para consecuencias económicas.
+### 4.5. P–F termina en fallo funcional
 
-### 4.5. Una recomendación debe conservar su identidad
+`F` es el umbral de fallo funcional definido, no necesariamente la rotura física del activo.
 
-Cuando exista recomendación automática y decisión humana final, deben conservarse ambas.
+El sistema puede calcular ventanas a partir de datos/umbrales, pero su definición técnica necesita fuente y autoridad.
+
+### 4.6. Factibilidad técnica y efectividad son parte de la decisión
+
+Cuando aplique deben quedar visibles:
+
+- condición de fallo potencial detectable;
+- P–F consistente;
+- tiempo para actuar;
+- frecuencia practicable;
+- reducción/tolerabilidad del riesgo;
+- razonabilidad económica.
+
+### 4.7. Una recomendación conserva su identidad
 
 ```text
 systemRecommendation
@@ -108,42 +107,53 @@ humanDecision
 reason
 ```
 
-### 4.6. La taxonomía recomienda candidatos; el especialista decide aplicabilidad
+### 4.8. Taxonomía y Equipment Type sugieren; la persona decide
 
-La búsqueda de activos similares/equivalentes puede automatizarse. La decisión de aplicar el plan no.
+Esto aplica tanto a activos candidatos como a estándares de mantenimiento candidatos.
 
 ```text
 candidateAssets = system_recommendation
+candidateStandard = system_recommendation
 applicabilityDecision = human_decision
 ```
 
-No se aplicará silenciosamente un plan a todos los activos devueltos por taxonomía.
+### 4.9. El override no modifica el baseline
 
-### 4.7. El override por activo no modifica el plan genérico
+Sea un plan genérico, un estándar corporativo o un plan de proyecto, el cambio específico debe quedar separado y trazado.
 
-Si un especialista necesita añadir, eliminar o modificar una actividad para un activo concreto, debe crearse una variante/override trazado para ese activo.
+### 4.10. La unidad CMMS no es cada paso del checklist
 
-Debe conservarse:
+Regla confirmada 2026-09-11:
 
 ```text
-basePlanVersion
-assetId
-overrideType
-baseTaskId
-assetSpecificTask
-reason
-actor
+Maintenance Activity        → unidad planificable / cerrable
+Job Plan                    → template reusable
+Procedure / Checklist       → detalle de ejecución
 ```
 
-### 4.8. La agrupación de tareas necesita reglas explícitas
+El sistema no debe generar avance obligatorio de actividad por cada subpaso salvo que exista una regla funcional explícita que lo justifique.
 
-La reunión confirmó que actividades compatibles sobre el mismo equipo y frecuencia pueden agruparse en una misma orden/paquete de ejecución.
+### 4.11. Los recursos deben cuantificarse
 
-Sin embargo, el algoritmo exacto de duración y horas-hombre cuando intervienen distintas disciplinas permanece `to_validate`; no debe implementarse una suma o máximo automático sin regla validada.
+El CMMS debe poder representar, según aplique:
 
-### 4.9. La generación anual de órdenes debe ser explícita
+```text
+discipline / role
+crew / quantity
+labor hours
+materials / consumables / spares
+tools
+special / heavy equipment
+shutdown / permit / safety conditions
+```
 
-El handoff posterior a publicación debe permitir conceptualmente:
+El sistema puede calcular totales si existe regla validada; no debe inventar lógica de suma/máximo entre disciplinas.
+
+### 4.12. La agrupación de tareas necesita reglas explícitas
+
+Puede sugerirse agrupación, pero el algoritmo exacto continúa `to_validate`.
+
+### 4.13. La generación anual de órdenes debe ser explícita
 
 ```text
 planVersion
@@ -153,55 +163,75 @@ costCenterContext
 generateAnnualPreventiveOrders = explicit_user_action
 ```
 
-No se pregenerarán órdenes para toda la vida útil de la planta y no se generarán nuevas órdenes anuales mediante un automatismo silencioso.
+### 4.14. Un gate debe ser explicable
 
-### 4.10. Un override debe ser visible
+Debe mostrar:
 
-Si la decisión humana contradice una recomendación, la app debe solicitar motivo y conservar la recomendación original.
+- condición que falla;
+- dato faltante;
+- rol capaz de resolverlo;
+- estado de validación de la regla.
 
-### 4.11. Un gate debe ser explicable
+### 4.15. Automatismo no significa autoridad
 
-No basta con deshabilitar `Siguiente`. Debe mostrarse:
+La app puede calcular, validar y sugerir. La autoridad funcional se define para cada decisión.
 
-- qué condición falla;
-- qué dato falta;
-- qué rol puede resolverlo;
-- si el bloqueo es una regla validada o una simulación.
+## 5. Corporate Standard Route — persona vs sistema
 
-### 4.12. Automatismo no significa autoridad
+| Acción | Sistema | Persona | Estado |
+|---|---|---|---|
+| Resolver estándar candidato por Equipment Type | Busca/sugiere | Especialista confirma | principio confirmado |
+| Mostrar versión y fuentes | Automático | Revisa | principio confirmado |
+| Adoptar estándar en proyecto | Prepara snapshot | Usuario autorizado confirma | workflow `to_validate` |
+| Desactivar actividad | Valida referencias | Especialista decide y justifica | principio confirmado |
+| Ajustar frecuencia | Compara baseline | Especialista decide y justifica | principio confirmado |
+| Ajustar recursos | Puede sugerir baseline | Responsable funcional decide | principio confirmado |
+| Añadir actividad local | Asiste | Especialista decide | principio confirmado |
+| Propagar cambio a maestro | **No automático** | Gobierno corporativo revisa/aprueba | principio confirmado |
+| Crear nueva versión maestra | Sistema versiona | Rol autorizado publica | workflow `to_validate` |
+| Escalar a RCM específico | Puede recomendar por criticidad/contexto | Autoridad funcional decide | `to_validate` regla |
 
-La app puede calcular, validar consistencia y sugerir. La autoridad final se decide funcionalmente para cada proceso.
+## 6. Roles: hallazgo y precaución
 
-## 5. Frontera operacional todavía abierta
-
-Después de FL-26 se ha identificado el siguiente flujo objetivo:
+La reunión distingue conceptualmente:
 
 ```text
-plan publicado
-→ generación anual de preventivas
-→ planificación/programación
-→ asignación
-→ ejecución/feedback
-→ coste real
-→ imputación presupuestaria/contractual
-→ integración corporativa / facturación
+Planner     → qué se ejecuta
+Programmer  → cómo, con quién y recursos
 ```
 
-Solo el primer handoff está suficientemente validado para representarlo en la demo. Las responsabilidades persona/sistema del resto del flujo deben definirse en futuras reuniones.
+Esto es útil como separación de responsabilidades, pero los nombres no deben convertirse todavía en roles de seguridad o workflow universales. La terminología corporativa y las variantes por proyecto deben validarse.
 
-## 6. Preguntas que deben resolverse en reuniones
+## 7. Frontera operacional
 
-La matriz debe utilizarse para preguntar sistemáticamente:
+```text
+Published Project Plan
+→ Annual Preventive Preparation
+→ Maintenance Activity / Work Candidate
+→ Work Order
+   └── references Job Plan / Procedure Checklist
+→ planning / scheduling
+→ assignment
+→ execution / feedback
+→ actual cost
+```
 
-1. ¿Este dato ya existe en otro módulo?
+Las responsabilidades del tramo Work Management siguen gobernadas por `work-management-discovery.md`.
+
+## 8. Preguntas que deben resolverse
+
+1. ¿Qué dato ya existe en otro módulo o estándar?
 2. ¿Quién es responsable de su calidad?
 3. ¿Puede calcularlo el sistema sin interpretación?
-4. ¿Puede sugerirlo el sistema pero debe confirmarlo una persona?
-5. ¿Qué rol tiene autoridad para aceptar o cambiar la recomendación?
-6. ¿Qué evidencia debe quedar registrada?
-7. ¿Qué condición debe bloquear realmente el avance?
-8. ¿La regla es corporativa o configurable por cliente/proyecto?
-9. ¿Una decisión afecta al plan genérico o solo a un activo concreto?
-10. ¿El output inicia otro proceso que todavía no está modelado?
+4. ¿Puede sugerirlo y debe confirmarlo una persona?
+5. ¿Qué rol tiene autoridad?
+6. ¿Qué evidencia queda registrada?
+7. ¿Qué bloquea realmente el avance?
+8. ¿La regla es corporativa o configurable por proyecto?
+9. ¿El cambio afecta al master, al proyecto o a un activo?
+10. ¿Cuál es el `sourceBasis` de la actividad?
+11. ¿El detalle pertenece a actividad, Job Plan o procedure/checklist?
+12. ¿Existe un estándar corporativo antes de iniciar ingeniería desde cero?
+13. ¿La criticidad justifica escalar a RCM específico?
 
-Las respuestas validadas deberán actualizar esta matriz y generar requisitos funcionales asociados.
+Las respuestas validadas deberán actualizar contratos, requisitos y demos asociados.
