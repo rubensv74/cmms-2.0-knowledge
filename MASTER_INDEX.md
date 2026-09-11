@@ -14,9 +14,10 @@
 
 ## Modelo funcional
 
-- [Functional Journey AMEF + RCM](02-functional/process-model/functional-journey.md)
-- [Matriz persona vs sistema](02-functional/process-model/human-system-decisions.md)
-- [Gestión del Trabajo — Discovery funcional preliminar](02-functional/process-model/work-management-discovery.md)
+- [Functional Journey — RCM Engineering Route v1.2](02-functional/process-model/functional-journey.md)
+- [Matriz persona vs sistema v1.2](02-functional/process-model/human-system-decisions.md)
+- [Maintenance Standards Library — Functional Model](02-functional/process-model/maintenance-standards-library.md)
+- [Gestión del Trabajo — Discovery v0.2](02-functional/process-model/work-management-discovery.md)
 - [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
 - [ASSETS Functional Baseline V1](02-functional/asset-master/CMMS_ASSETS_LIST_FUNCTIONAL_BASELINE_V1.md)
 - [ASSETS List Read Contract V1](02-functional/asset-master/CMMS_ASSETS_LIST_READ_CONTRACT_V1.md)
@@ -24,10 +25,12 @@
 
 ## Reuniones y análisis
 
+- [Reunión 2026-09-11 — Estándares de mantenimiento y Job Plans](05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
+- [ANL-004 — Impacto funcional reunión 2026-09-11](05-meetings/01_Analysis/ANL-004_revision-funcional-post-reunion-2026-09-11.md)
 - [Reunión 2026-08-21 — Gestión de órdenes de trabajo](05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)
-- [ANL-003 — Impacto funcional de la reunión 2026-08-21](05-meetings/01_Analysis/ANL-003_revision-funcional-post-reunion-2026-08-21.md)
+- [ANL-003 — Impacto funcional reunión 2026-08-21](05-meetings/01_Analysis/ANL-003_revision-funcional-post-reunion-2026-08-21.md)
 - [Reunión 2026-08-14 — Revisión Modelo Conceptual AMEF + RCM](05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md)
-- [ANL-002 — Impacto funcional de la reunión 2026-08-14](05-meetings/01_Analysis/ANL-002_revision-funcional-post-reunion-2026-08-14.md)
+- [ANL-002 — Impacto funcional reunión 2026-08-14](05-meetings/01_Analysis/ANL-002_revision-funcional-post-reunion-2026-08-14.md)
 - `05-meetings/2026/`
 - `05-meetings/01_Analysis/`
 - `05-meetings/02-Specifications/`
@@ -49,17 +52,15 @@
 - [AE6 — Component Adaptation Baseline](06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md)
 - [AE-G6 — Asset Detail S01 Studio Gate](06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md)
 - [CMMS Branding Library V1](06-ui-ux/branding/README.md)
-- [01 - Configuración FLH](06-ui-ux/html-prototypes/01_configuracion_FLH_corporativa_revision_03.html)
-- [02 - Modelo de activos](06-ui-ux/html-prototypes/02_modelo_activos_corporativo_revision_04.html)
-- [03 - Registro de activos físicos](06-ui-ux/html-prototypes/03_registro_activos_fisicos_revision_14.html)
 - [AMEF–RCM Experience Center](06-ui-ux/html-prototypes/amef-rcm-experience-center/README.md)
 
 ## CMMS 2.0 Functional Lab
 
 - [README](06-ui-ux/functional-lab/README.md)
-- [Arquitectura](06-ui-ux/functional-lab/architecture.md)
+- [Arquitectura v1.2](06-ui-ux/functional-lab/architecture.md)
 - [Estrategia SaaS Premium](06-ui-ux/functional-lab/design-system.md)
 - [Estado de implementación](06-ui-ux/functional-lab/implementation-status.md)
+- [Maintenance Standards Extension](06-ui-ux/functional-lab/maintenance-standards-extension.md)
 - [Extensión futura de Gestión del Trabajo](06-ui-ux/functional-lab/work-management-extension.md)
 - [Schema del journey](06-ui-ux/functional-lab/contracts/functional-journey.schema.json)
 - [Schema de casos](06-ui-ux/functional-lab/contracts/case-fixture.schema.json)
