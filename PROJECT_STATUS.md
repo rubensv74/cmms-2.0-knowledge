@@ -1,14 +1,15 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-08-24
+**Última actualización:** 2026-09-11
 
 ## Estado general
 
-CMMS 2.0 continúa en fase **Functional Lab**, con tres líneas gobernadas en paralelo:
+CMMS 2.0 mantiene varias líneas funcionales gobernadas en paralelo:
 
-1. **AMEF + RCM / Functional Lab** — foundation conceptual consolidada y siguiente gate técnico en Power Apps real.
-2. **Asset Experience Redefinition** — AE-0 a AE-4 cerrados por contrato; AE-5 definido y pendiente de runtime; AE6-S01 preparado hasta el gate real de Studio.
-3. **Work Management Discovery** — AS-IS inicial documentado; todavía no es modelo TO-BE ni workspace canónico.
+1. **Reliability Engineering / Functional Lab** — journey RCM consolidado y revisado a v1.2.
+2. **Maintenance Standards Library** — nuevo modelo funcional confirmado a nivel de principios; contratos detallados pendientes.
+3. **Asset Experience Redefinition** — contratos AE consolidados; implementación física sujeta a gates runtime/Studio.
+4. **Work Management Discovery** — AS-IS y frontera de ejecución documentados; todavía no es modelo TO-BE canónico.
 
 Principio general:
 
@@ -25,383 +26,299 @@ No se considera validada una capacidad por existir únicamente como documento, m
 
 ---
 
-# 1. Functional Lab — AMEF + RCM
+# 1. Reliability Engineering / Functional Lab
 
-## Foundation completada
+## Cambio funcional 2026-09-11
 
-- auditoría de transición;
-- protocolo incremental;
-- visión y límites;
-- Functional Journey AMEF + RCM de 28 etapas / 9 workspaces;
-- matriz persona vs sistema;
-- contratos JSON base;
-- fixture P-101 v1.1;
-- arquitectura conceptual;
-- paquete documental para IT;
-- revisiones funcionales 2026-08-14 y 2026-08-21;
-- discovery inicial de Gestión del Trabajo.
+La reunión con Hernando y Eduardo corrige una suposición importante:
 
-## Power Apps Foundation
+> RCM no es el único camino para crear un plan de mantenimiento.
 
-`F01-00` sigue pendiente de cierre en herramienta real.
-
-Debe confirmarse en la Canvas app:
-
-- Source Code/schema aceptado;
-- authoring locale;
-- controles y versiones reales;
-- baseline App Checker;
-- componentes premium disponibles/instalados;
-- Premium App Shell Foundation;
-- baseline visual real.
-
-Siguiente secuencia:
+Modelo superior actual:
 
 ```text
-F01-01 Premium App Shell
-→ F01-02 runtime state
-→ F01-03 P-101 v1.1 adapter
-→ F01-04 navigation
-→ F01-05..09 WS-01 + validation/hardening
+Maintenance Engineering Sources
+├── RCM specific engineering
+├── Corporate Maintenance Standards
+├── OEM / Vendor
+└── Expert / historical experience
+        ↓
+Governed Project Maintenance Plan
+        ↓
+Work Management
 ```
 
-No iniciar WS-02 antes del gate real de WS-01.
+### Journey RCM
+
+El Functional Journey pasa a **v1.2**.
+
+Principios consolidados:
+
+- AMEF/FMEA forma parte del análisis RCM;
+- RCM es árbol lógico, no scoring;
+- P–F termina en fallo funcional, no necesariamente rotura física;
+- estrategias mínimas: `TIME_BASED`, `CONDITION_BASED`, `RUN_TO_FAILURE`;
+- un mismo equipo puede combinar estrategias;
+- riesgo/criticidad sigue configurable por cliente/proyecto;
+- P-101 permanece como caso de referencia de la ruta RCM.
+
+### Granularidad de mantenimiento
+
+Regla confirmada:
+
+```text
+Maintenance Activity        = unidad planificable / programable / cerrable
+Job Plan                    = template reusable de preparación/ejecución
+Procedure / Checklist       = detalle paso a paso
+```
+
+No debe crearse una actividad CMMS independiente por cada subpaso del checklist salvo regla funcional explícita.
+
+### Workspaces
+
+Los nueve workspaces del caso RCM se mantienen.
+
+WS-05/06 deberán soportar en el futuro `sourceBasis` y provenance, sin asumir que toda actividad procede de RCM.
 
 ---
 
-# 2. Asset Experience Redefinition
+# 2. Maintenance Standards Library
 
-## Decisiones canónicas
-
-1. `Assets` es una superficie nuclear y evoluciona hacia un Object 360 técnico/operativo.
-2. Iconografía, jerarquía y componentes premium se gobiernan como sistema compartido.
-3. CMMS no crea una biblioteca 3D propia; consume `AssetPlan Industrial Technical 3D` como fuente visual externa gobernada.
-4. La UI consume un read model resuelto; no decide autoridad, applicability, unidad, provenance ni conflictos.
-
-Documento de gobierno:
-
-- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`.
-
-## AE-0 — Baseline y auditoría
-
-**Estado:** `COMPLETE / AE-G0 PASS`.
-
-Resultado:
-
-- no existe una pantalla Assets productiva que deba retocarse;
-- Asset Model y ADR históricos conservan valor funcional;
-- FLH / Taxonomy / ADR, `EquipmentTypeCode`, composición física, ubicación y criticidad se conservan;
-- el wizard visual histórico no es baseline premium;
-- gaps de Technical Profile, provenance, Engineering/Visual Context y Maintenance Summary identificados.
+**Estado:** functional model v0.1; principles confirmed; contracts `to_validate`.
 
 Fuente:
 
-- `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`.
+- `02-functional/process-model/maintenance-standards-library.md`
 
-## AE-1 — Asset Experience Contract
-
-**Estado:** `COMPLETE / AE-G1 PASS_WITH_DEFERRED_ITEMS`.
-
-Definidos:
+Modelo:
 
 ```text
-Asset Identity
-Equipment Type
-Technical Field Definition
-Technical Field Unit
-Equipment Type applicability
-Asset Technical Value
-Provenance / authority
-Override / freshness
-Engineering Context
-Visual Context
-Maintenance Summary read model
+Historical plans / OEM / RCM / experience
+→ Corporate Standard by Equipment Type
+→ Project Adoption Snapshot
+→ Project Tailoring
+→ Published Project Maintenance Plan
 ```
 
-Decisiones:
+## Principios confirmados
 
-- CMMS no copia `PreservationAttributeCatalog` de AssetPlan;
-- Manufacturer / Model / Serial usan authority policy por integración/proyecto;
-- `Maintenance Summary` es read model;
-- `HealthIndex` no entra en V1;
-- `Model Template` queda DEFERRED.
+1. La biblioteca corporativa es baseline, no imposición inmutable.
+2. El proyecto puede desactivar, modificar o añadir actividades/frecuencias.
+3. El cambio local no modifica automáticamente el master.
+4. El aprendizaje del proyecto puede volver mediante propuesta gobernada y nueva versión.
+5. Todos los equipos pueden estar en CMMS; la criticidad cambia profundidad/estrategia, no existencia.
+6. Equipos críticos/especiales pueden requerir RCM específico; otros pueden usar estándar/OEM/expert judgement.
+7. `EquipmentTypeCode` es candidato natural para resolver estándares aplicables.
 
-Fuentes:
+## Gates
+
+```text
+MSL-G01 Source normalization
+MSL-G02 Core contracts
+MSL-G03 Project adoption/versioning
+MSL-G04 Corporate feedback loop
+```
+
+No crear una biblioteca demo ficticia antes de MSL-G01/MSL-G02.
+
+## Fuente real candidata
+
+Durante la reunión se mostraron planes históricos para tipos como gas detector, gas turbine y pressure safety valve, con frecuencias, Job Plans, operations, recursos y herramientas.
+
+Esos documentos son evidencia y posible seed del master, pero todavía deben registrarse/normalizarse antes de ser fixtures o datos canónicos.
+
+---
+
+# 3. Functional Lab — impacto de demo
+
+## P-101
+
+P-101 se conserva como RCM Engineering case.
+
+No debe transformarse en ejemplo de biblioteca estándar.
+
+## Segundo tipo de caso futuro
+
+Después de MSL-G01/MSL-G02:
+
+```text
+Equipment Type
+→ Corporate Standard candidate
+→ inspect version/source
+→ adopt project snapshot
+→ disable / modify / add
+→ compare master vs project
+→ publish
+```
+
+Documento:
+
+- `06-ui-ux/functional-lab/maintenance-standards-extension.md`
+
+No se añade automáticamente un `WS-10`. La biblioteca probablemente necesite una superficie propia tipo Configuration Studio / Library Explorer, pendiente de contrato UX.
+
+---
+
+# 4. Asset Experience Redefinition
+
+Se mantiene el estado consolidado anterior.
+
+## AE-0
+
+`COMPLETE / AE-G0 PASS`.
+
+## AE-1
+
+`COMPLETE / AE-G1 PASS_WITH_DEFERRED_ITEMS`.
+
+Contratos principales:
 
 - `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`;
 - `02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md`.
 
-## AE-2 — Asset Visual System
+## AE-2
 
-**Estado:** `COMPLETE / AE-G2 PASS_CONTRACT`.
+`COMPLETE / AE-G2 PASS_CONTRACT`.
 
-Definido:
+## AE-3
 
-- jerarquía N0–N4;
-- Object 360 / Data Explorer / Configuration Studio;
-- extensión del icon system CMMS;
-- provenance/freshness grammar;
-- Technical Value grammar;
-- `Type Illustration / Model Image / Asset Photo`;
-- estados `READY / LOADING / EMPTY / UNAVAILABLE / STALE / ERROR / BLOCKED`.
+`CONTRACT COMPLETE / PHYSICAL VALIDATION PENDING`.
 
-Guardrail:
+## AE-4
+
+`COMPLETE / AE-G4 PASS_CONTRACT`.
+
+Superficies:
 
 ```text
-PNG con apariencia 3D != visor 3D interactivo
-```
-
-Fuente:
-
-- `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`.
-
-## AE-3 — Premium Components
-
-**Estado:** `DESIGN BASELINE COMPLETE / AE-G3 CONTRACT PASS / PHYSICAL VALIDATION PENDING`.
-
-Componentes Asset Experience definidos:
-
-```text
-AssetIdentityHero
-TechnicalValue
-TechnicalSpecificationGrid
-ProvenanceBadge
-EngineeringContextPanel
-AssetVisualGallery
-HierarchyPath
-MaintenanceSummary
-EquipmentTypeCard
-```
-
-Adaptation candidates:
-
-```text
-PageHeader
-StatePanel
-FilterBar
-DataGrid
-ActionButton
-IconPro
-```
-
-Auditoría de source real AssetPlan completada para AE6:
-
-```text
-PageHeader source SHA  f751f828f2cf99ab8150f5ee43f94774283d3af0
-ActionButton source    6407ed46af2ccc0566a734203764b1d4ff031d94
-StatePanel source      2e2878291ec3053db16f3e8c459c17774abafc38
-IconPro source         1023c60b98e1cb465d4f6f86edc929a4c0163a68
-```
-
-Hallazgos:
-
-- PageHeader debe eliminar breadcrumbs/status/acoplamiento AP antes de CMMS;
-- ActionButton es baseline de alto valor y conserva `IsBusy`/lock visual;
-- StatePanel requiere añadir `STALE` y `BLOCKED`;
-- IconPro debe desacoplarse del `Switch()` de Media AP y usar resolver CMMS.
-
-Fuentes:
-
-- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`;
-- `06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md`.
-
-## AE-4 — Screen Architecture
-
-**Estado:** `COMPLETE / AE-G4 PASS_CONTRACT`.
-
-Superficies V1:
-
-```text
-AS-01 Assets List              = Data Explorer
-AS-02 Asset Detail             = Object 360
-AS-03 Asset Create / Edit      = Governed Form
-AS-04 Equipment Type Library   = Configuration Studio
-```
-
-Decisiones:
-
-- Visual Mapping vive dentro de Equipment Type Library;
-- no Standalone Visual Library V1;
-- no Model Template screen mientras siga diferido;
-- implementar `AS-02 Asset Detail` antes de Assets List.
-
-Fuente:
-
-- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`.
-
-## AE-5 — AssetPlan 3D consumption
-
-**Estado:** `CONTRACT PASS / RUNTIME HOLD`.
-
-Fuente externa observada:
-
-```text
-AssetPlan Industrial Technical 3D
-183 PNG
-PNG RGBA
-transparent
-max 384 px
-target <200 KB
-hard limit <250 KB
-BASELINE_CLOSED
-```
-
-Contrato:
-
-```text
-EquipmentTypeCode
-→ VisualProvider
-→ AssetKey
-→ controlled runtime distribution
-```
-
-Gate real:
-
-- `06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md`.
-
-Hasta runtime PASS no se puede declarar aprobado el visual de Asset Detail.
-
-## AE-6 — primer incremento preparado
-
-**Estado:** `AE6-S01 PREPARED / PENDING_POWER_APPS_STUDIO`.
-
-Primer consumer:
-
-```text
+AS-01 Assets List
 AS-02 Asset Detail
-P-101 synthetic fixture
-Object 360
-read-only
-no backend
-no DML
+AS-03 Asset Create/Edit
+AS-04 Equipment Type Library
 ```
 
-Preparado:
+## AE-5
 
-1. `Asset Detail Read Contract V1`;
-2. fixture `p101-asset-detail.v1.json`;
-3. Power Fx loader copiable;
-4. pre-Studio implementation plan S01-00..S01-06;
-5. source audit de componentes AssetPlan;
-6. `AE-G6 Asset Detail S01 Studio Gate`.
+`CONTRACT PASS / RUNTIME HOLD` para consumo de AssetPlan Industrial Technical 3D.
 
-El fixture contiene de forma deliberada:
+## AE-6
+
+Primer consumer previsto: `AS-02 Asset Detail`, sujeto a gates runtime/Studio activos.
+
+La revisión 2026-09-11 añade una conexión conceptual útil:
 
 ```text
-Duty flow      READY
-Duty pressure  READY
-Redundancy     READY
-Manufacturer   UNAVAILABLE
-Model          UNAVAILABLE
+Asset.EquipmentTypeCode
+→ candidate Corporate Maintenance Standard
 ```
 
-La pantalla debe demostrar calidad visual también con datos incompletos.
-
-### Repositorio ejecutable
-
-La búsqueda GitHub actual solo encuentra `rubensv74/cmms-2.0-knowledge` para CMMS. No se ha identificado un repositorio separado con la Canvas app/source ejecutable.
-
-Por tanto no se genera YAML `.pa.yaml` especulativo antes de `S01-00 App reality audit`.
-
-### Gate real actual
-
-```text
-AE-G5 runtime
-+
-AE-G6 S01 Studio
-```
-
-El siguiente paso requiere la Canvas app real.
-
-Fuentes:
-
-- `06-ui-ux/functional-lab/development/AE6_ASSET_DETAIL_S01_PRESTUDIO_IMPLEMENTATION.md`;
-- `06-ui-ux/functional-lab/cases/P101/p101-asset-detail.v1.json`;
-- `08-resources/powerfx/asset-experience/AE6_ASSET_DETAIL_S01_FIXTURE_LOAD.powerfx.txt`;
-- `06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md`.
+pero no modifica los contratos Asset Experience actuales hasta disponer del contrato MSL correspondiente.
 
 ---
 
-# 3. Work Management Discovery
+# 5. Work Management Discovery
 
-La reunión 2026-08-21 aporta AS-IS de referencia:
+`work-management-discovery.md` pasa a discovery **v0.2**.
+
+AS-IS inicial:
 
 ```text
-Plan / calendario preventivo
-→ inspecciones próximas
-→ Maintenance Planner
+Plan / calendario
+→ trabajo próximo
+→ Planner
 → propuesta WO
 → Maintenance Responsible
 → Supervisor opcional
-→ Technician / Executor
+→ Technician
 → ejecución
 ```
 
-Permanece `to_validate`.
+Nuevo principio confirmado 2026-09-11:
+
+```text
+Work Candidate / WO
+→ Scheduled Maintenance Activity
+   └── JobPlan / ProcedureChecklist
+```
+
+No:
+
+```text
+checklist step
+→ work candidate independiente por defecto
+```
 
 ## Gates
 
-### WM-G01 — Demo del proceso real
+### WM-G01
 
-Revisar actores, secuencia, estados, decisiones y excepciones.
+Observar flujo real, actores, estados y excepciones.
 
-### WM-G02 — Check sheets reales
+### WM-G02
 
-Separar:
+Normalizar contenido operativo y cerrar:
 
 ```text
-tarea
-procedimiento/checklist
-work order
-feedback de ejecución
+Activity ↔ JobPlan ↔ ProcedureChecklist ↔ Execution Result
 ```
 
-### WM-G03 — Planning/Scheduling
+La reunión 2026-09-11 aporta evidencia, pero **WM-G02 sigue abierto**.
 
-Validar horizonte, agrupación, ventanas, reprogramación, capacidad, turnos, asignación y routing.
+### WM-G03
 
-### WM-G04 — Costes y contratos
+Planning/scheduling: horizonte, agrupación, ventanas, reprogramación, capacidad, turnos y assignment.
 
-Abrir detalle únicamente con conocimiento de responsables de Contratos/Subcontratos.
+### WM-G04
 
----
-
-# 4. Riesgos principales
-
-- convertir AS-IS en TO-BE sin validación;
-- hardcodear routing organizativo;
-- inventar planning/scheduling;
-- confundir tarea, procedimiento y WO;
-- crear componentes locales donde existe patrón compartido;
-- copiar físicamente componentes AssetPlan ligados a Preservation;
-- convertir CMMS en segundo maestro de ingeniería;
-- duplicar la biblioteca 3D;
-- presentar Type Illustration como CAD/BIM/modelo interactivo;
-- mostrar `UNAVAILABLE` como cero/blank válido;
-- generar YAML Power Apps contra un schema/locale no confirmado;
-- implementar Asset Detail productivo antes de runtime/Studio gates.
+Costes/contratos/facturación con perfiles responsables.
 
 ---
 
-# 5. Fuentes de verdad principales
+# 6. Próximos gates funcionales
+
+Orden recomendado:
+
+```text
+MSL-G01 — normalizar una fuente real
+→ MSL-G02 — cerrar core contracts
+→ seleccionar fixture real de standard adoption
+→ decidir superficie UX de library
+→ gate Studio incremental
+```
+
+En paralelo, el journey P-101/RCM puede continuar siguiendo sus gates propios sin esperar a completar toda la biblioteca corporativa, siempre que el runtime no hardcodee `sourceBasis = RCM` como única posibilidad.
+
+---
+
+# 7. Riesgos principales
+
+- tratar RCM como única fuente de planes;
+- confundir AMEF y RCM como procesos desconectados;
+- confundir fallo funcional con rotura física;
+- convertir cada checklist step en actividad CMMS;
+- mezclar Job Plan, procedimiento y WO sin contrato;
+- copiar planes históricos sin provenance/versionado;
+- permitir que project overrides muten el master;
+- promover aprendizajes al master sin governance;
+- hardcodear una frecuencia estándar como universal;
+- aplicar automáticamente un estándar por Equipment Type sin validación humana;
+- inventar un fixture de biblioteca antes de normalizar una fuente real;
+- convertir AS-IS de Work Management en TO-BE sin validación;
+- implementar superficies Power Apps antes de sus gates funcionales/runtime.
+
+---
+
+# 8. Fuentes de verdad principales
 
 - `ROADMAP.md`
-- `00-governance/cmms-functional-lab-incremental-protocol.md`
 - `02-functional/process-model/functional-journey.md`
 - `02-functional/process-model/human-system-decisions.md`
+- `02-functional/process-model/maintenance-standards-library.md`
 - `02-functional/process-model/work-management-discovery.md`
-- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
-- `02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md`
-- `06-ui-ux/CMMS_ASSET_EXPERIENCE_REDEFINITION_V1.md`
-- `06-ui-ux/audits/2026-08-24_AE0_ASSETS_CURRENT_STATE_AUDIT.md`
-- `06-ui-ux/CMMS_ASSET_VISUAL_SYSTEM_V1.md`
-- `06-ui-ux/CMMS_ASSET_PREMIUM_COMPONENTS_V1.md`
-- `06-ui-ux/audits/2026-08-24_AE6_COMPONENT_ADAPTATION_BASELINE.md`
-- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
-- `06-ui-ux/CMMS_ASSETPLAN_3D_CONSUMPTION_CONTRACT_V1.md`
-- `06-ui-ux/gates/AE-G5_ASSETPLAN_3D_POWER_APPS_RUNTIME_GATE.md`
-- `06-ui-ux/gates/AE-G6_ASSET_DETAIL_S01_STUDIO_GATE.md`
-- `06-ui-ux/CMMS_COMPONENT_CATALOG_V1.md`
-- `06-ui-ux/branding/README.md`
+- `05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`
+- `05-meetings/01_Analysis/ANL-004_revision-funcional-post-reunion-2026-09-11.md`
 - `06-ui-ux/functional-lab/architecture.md`
-- `06-ui-ux/functional-lab/design-system.md`
+- `06-ui-ux/functional-lab/implementation-status.md`
+- `06-ui-ux/functional-lab/maintenance-standards-extension.md`
+- `02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md`
+- `06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md`
