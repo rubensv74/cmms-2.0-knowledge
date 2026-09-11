@@ -2,6 +2,47 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [0.9.4] - 2026-09-11
+
+### Añadido
+
+- Notas de reunión `2026-09-11_revision-cmms-estandares-job-plans.md`.
+- `ANL-004` con el impacto de la reunión sobre el modelo funcional y CMMS Functional Lab.
+- `maintenance-standards-library.md` como modelo funcional v0.1 de la biblioteca corporativa de mantenimiento.
+- `maintenance-standards-extension.md` para la futura experiencia de adopción/adaptación de estándares en Functional Lab.
+- Gates `MSL-G01` a `MSL-G04` para normalización de fuentes, contratos core, adopción/versionado por proyecto y feedback corporativo.
+
+### Actualizado
+
+- `functional-journey.md` a v1.2, redefinido como RCM Engineering Route dentro de un modelo superior de Maintenance Engineering.
+- `human-system-decisions.md` a v1.2 con decisiones de adopción, override y promoción de estándares.
+- `work-management-discovery.md` a v0.2 incorporando la relación Activity → Job Plan / Procedure Checklist.
+- Arquitectura y estado de implementación de CMMS Functional Lab.
+- `PROJECT_STATUS.md`, `ROADMAP.md` y `MASTER_INDEX.md`.
+
+### Decisiones
+
+- RCM no es la única vía para crear un plan de mantenimiento. El producto debe admitir RCM específico y adopción de estándares corporativos/OEM/experiencia como fuentes gobernadas de Maintenance Engineering.
+- AMEF/FMEA forma parte del proceso RCM y no debe representarse como un proceso independiente desconectado.
+- El intervalo P–F termina en un fallo funcional; `F` no implica necesariamente rotura física.
+- El CMMS debe distinguir `Maintenance Activity`, `Job Plan` y `Procedure / Checklist`; los pasos del checklist no se convierten por defecto en actividades planificables independientes.
+- Los estándares corporativos se versionan por tipo de equipo y pueden adoptarse/adaptarse en un proyecto sin que los cambios locales muten automáticamente el master.
+- Un proyecto puede desactivar, modificar o añadir actividades/frecuencias con justificación y trazabilidad.
+- El aprendizaje de un proyecto solo puede volver al master mediante un proceso gobernado de propuesta, revisión y nueva versión.
+- P-101 continúa como caso de referencia de la ruta RCM; no se transforma en ejemplo de estándar corporativo.
+- No se crea un `WS-10` ni un fixture sintético de Maintenance Standards hasta normalizar una fuente real y cerrar los contratos mínimos.
+- Work Management debe recibir actividades ejecutables con referencias a Job Plan/checklist, no cada paso detallado como work candidate independiente.
+
+### Pendiente
+
+- `MSL-G01`: normalizar al menos una fuente real de planes históricos/OEM mostrados o compartidos por el equipo.
+- `MSL-G02`: cerrar contratos de standard plan, activity, Job Plan, procedure/checklist, resources, frequency y provenance.
+- `MSL-G03`: validar snapshot master → proyecto, overrides y versionado.
+- `MSL-G04`: definir el feedback loop proyecto → propuesta corporativa → nueva versión master.
+- Resolver la frontera definitiva entre `JobPlan` y `ProcedureChecklist`.
+- Mantener `WM-G02` abierto hasta cerrar el execution package con evidencia normalizada.
+- Continuar la implementación de Functional Lab únicamente respetando los gates funcionales/runtime activos.
+
 ## [0.9.3] - 2026-08-21
 
 ### Añadido
