@@ -50,7 +50,7 @@ Work Management
 
 ### Journey RCM
 
-El Functional Journey pasa a **v1.2**.
+El Functional Journey pasa a **v1.3**.
 
 Principios consolidados:
 
