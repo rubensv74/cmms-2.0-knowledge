@@ -1,15 +1,15 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-09-11
+**Última actualización:** 2026-09-25
 
 ## Estado general
 
 CMMS 2.0 mantiene varias líneas funcionales gobernadas en paralelo:
 
-1. **Reliability Engineering / Functional Lab** — journey RCM consolidado y revisado a v1.2.
+1. **Reliability Engineering / Functional Lab** — journey RCM consolidado y revisado a v1.3.
 2. **Maintenance Standards Library** — nuevo modelo funcional confirmado a nivel de principios; contratos detallados pendientes.
 3. **Asset Experience Redefinition** — contratos AE consolidados; implementación física sujeta a gates runtime/Studio.
-4. **Work Management Discovery** — AS-IS y frontera de ejecución documentados; todavía no es modelo TO-BE canónico.
+4. **Work Management Discovery v0.3** — rolling preventive, execution package, planner closure y feedback/data-quality ya tienen principios confirmados; contratos operativos siguen parciales.
 
 Principio general:
 
@@ -218,60 +218,63 @@ pero no modifica los contratos Asset Experience actuales hasta disponer del cont
 
 # 5. Work Management Discovery
 
-`work-management-discovery.md` pasa a discovery **v0.2**.
+**Versión:** v0.3 — revisión 2026-09-25.
 
-AS-IS inicial:
+La reunión del 25/09 corrige el handoff operacional anterior.
 
-```text
-Plan / calendario
-→ trabajo próximo
-→ Planner
-→ propuesta WO
-→ Maintenance Responsible
-→ Supervisor opcional
-→ Technician
-→ ejecución
-```
+Baseline preventivo:
 
-Nuevo principio confirmado 2026-09-11:
+~~~text
+Published Project Maintenance Plan
+→ Rolling Next Due
+→ Preventive Work Order
+→ Execution Package
+→ Operations permissive when required
+→ Execution + Findings
+→ Planner Closure
+→ Actuals / KPIs
+→ Continuous Improvement
+~~~
 
-```text
-Work Candidate / WO
-→ Scheduled Maintenance Activity
-   └── JobPlan / ProcedureChecklist
-```
+## Decisiones confirmadas
 
-No:
-
-```text
-checklist step
-→ work candidate independiente por defecto
-```
+- no materializar preventivas para toda la vida útil;
+- separar forecast anual/presupuesto de WO materializada;
+- Work Candidate no es paso universal del preventivo aprobado;
+- la no ejecución/retraso debe justificarse;
+- documentación técnica del activo debe ser accesible desde la WO;
+- si requiere parada, Operaciones debe conceder permisivo;
+- hallazgo preventivo que requiere reparación abre rama correctiva;
+- Planning asegura feedback fiable y cierre preventivo;
+- datos reales alimentan planned-vs-actual, MTBF/MTTR, reporting y mejora continua.
 
 ## Gates
 
-### WM-G01
+### WM-G01 — Process evidence
 
-Observar flujo real, actores, estados y excepciones.
+PARTIAL. Expert walkthrough consistente; contraste con herramienta/proceso real sigue pendiente.
 
-### WM-G02
+### WM-G02 — Execution Package
 
-Normalizar contenido operativo y cerrar:
+PARTIAL-ADVANCED. Activity, Job Plan, Procedure, asset documents, attachments y permit requirements identificados.
 
-```text
-Activity ↔ JobPlan ↔ ProcedureChecklist ↔ Execution Result
-```
+### WM-G03 — Planning/Scheduling
 
-La reunión 2026-09-11 aporta evidencia, pero **WM-G02 sigue abierto**.
+PARTIAL. Rolling next-due confirmado; trigger/horizon exacto, capacity, shifts, grouping, assignment y replanning siguen abiertos.
 
-### WM-G03
+### WM-G04 — Costs/Contracts
 
-Planning/scheduling: horizonte, agrupación, ventanas, reprogramación, capacidad, turnos y assignment.
+OPEN. El cierre técnico puede preceder al cierre de costes; detalle económico pendiente.
 
-### WM-G04
+### WM-G05 — Execution Feedback & Data Integrity
 
-Costes/contratos/facturación con perfiles responsables.
+PARTIAL / NEW. Debe cerrar timestamps, actual resources, findings, corrective linkage, planner validation, technical close, data-quality rules y KPI source contract.
 
+Fuentes:
+
+- 02-functional/process-model/work-management-discovery.md
+- 05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md
+- 05-meetings/01_Analysis/ANL-005_revision-funcional-post-reunion-2026-09-25.md
 ---
 
 # 6. Próximos gates funcionales
