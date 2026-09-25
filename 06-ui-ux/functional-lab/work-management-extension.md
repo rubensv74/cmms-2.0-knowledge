@@ -1,120 +1,157 @@
 # CMMS 2.0 Functional Lab — Extensión futura de Gestión del Trabajo
 
-**Fecha de revisión:** 2026-08-21  
-**Estado:** discovery / `to_validate`  
-**Fuente:** [`../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md`](../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)  
-**Modelo de discovery:** [`../../02-functional/process-model/work-management-discovery.md`](../../02-functional/process-model/work-management-discovery.md)
+**Fecha de revisión:** 2026-09-25
+**Estado:** advanced discovery / no implementation
+**Fuentes:**
+- [reunión 2026-08-21](../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)
+- [reunión 2026-09-25](../../05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md)
+- [Work Management discovery v0.3](../../02-functional/process-model/work-management-discovery.md)
 
-## 1. Decisión de alcance
+## 1. Cambio de alcance
 
-La reunión aporta suficiente conocimiento para **revisar la demo**, pero no para construir todavía un workspace operativo de órdenes de trabajo.
+La reunión 2026-09-25 aporta suficiente detalle para definir **qué debería demostrar** una futura extensión de Work Management, aunque todavía no autoriza una implementación productiva.
 
-Por tanto:
+Se mantienen P-101 como caso RCM, los nueve workspaces RCM y Work Management como extensión posterior al plan publicado.
 
-- F01 y WS-01 no cambian;
-- se mantienen los nueve workspaces AMEF + RCM actuales;
-- no se añade una simulación WO al fixture P-101;
-- se amplía conceptualmente el handoff posterior a WS-08;
-- el futuro dominio de Gestión del Trabajo queda sujeto a gates específicos.
+Se corrigen la generación anual como única mecánica y Work Candidate como paso universal del preventivo.
 
-## 2. Handoff que debe poder explicar la demo
+## 2. Handoff corregido
 
-Después de publicar el plan, el Functional Lab debe poder mostrar conceptualmente:
+La demo debe explicar:
 
-```text
-PublishedPlanVersion
-→ Annual Preventive Preparation
-→ Work Management
-```
+~~~text
+Published Project Maintenance Plan
+→ Rolling Recurrence
+→ Next Due Maintenance
+→ Preventive Work Order
+~~~
 
-En la superficie de handoff puede mostrarse un resumen del discovery:
+Forecast/año/presupuesto puede existir como vista futura de carga, pero no equivale a materializar todas las WO.
 
-```text
-Preventive schedule
-→ Work Candidate
-→ Planner proposal
-→ Maintenance Responsible validation / replanning
-→ optional Supervisor
-→ Technician / Executor
-```
+## 3. Experience WM-A — preventiva normal
 
-Todo el tramo posterior a `Annual Preventive Preparation` debe llevar una indicación visible equivalente a:
+~~~text
+Published Maintenance Activity
+→ Next Due
+→ Preventive WO generated
+→ Execution Package
+→ permits / Operations permissive when required
+→ Executor starts
+→ work completed
+→ execution result
+→ Planner validates
+→ technical close
+→ next due calculated
+~~~
 
-> Discovery funcional — pendiente de validación con proceso real.
+Objetivo pedagógico: demostrar el ciclo sin ruido de correctivos.
 
-## 3. Qué no debe simular la demo todavía
+## 4. Experience WM-B — preventiva con hallazgo
 
-No debe presentar como regla aprobada:
+~~~text
+Preventive WO
+→ execution
+→ finding
+→ preventive completion
+→ Corrective Work created/linked
+→ preventive closed by Planner
+~~~
 
-- número de días para considerar una inspección próxima;
-- algoritmo de agrupación en órdenes;
-- autorización exacta para reprogramar;
-- Supervisor como paso obligatorio;
-- asignación automática por capacidad o turno;
-- estados completos de WO;
-- checklists/procedimientos definitivos;
-- captura de ejecución;
-- costes/facturación.
+La demo debe dejar claro que el hallazgo genera un nuevo trabajo y no altera silenciosamente el scope de la preventiva.
 
-## 4. Impacto futuro en arquitectura
+## 5. Execution Package visible
 
-Cuando Gestión del Trabajo entre realmente en el Functional Lab, el runtime deberá soportar una **ruta organizativa configurable**.
+La UI futura debe poder mostrar, por referencia:
 
-No debe asumirse:
+~~~text
+Maintenance Activity
+Job Plan
+Procedure / Checklist
+Asset manuals / drawings / technical documents
+Work-order-specific attachments
+Permit / shutdown requirement
+~~~
 
-```text
-Planner → Responsible → Supervisor → Technician
-```
+Los documentos maestros del activo no se duplican necesariamente dentro de la WO.
 
-como ruta universal.
+## 6. Operations gate
 
-Debe poder representar, al menos conceptualmente:
+Cuando la actividad requiere parada:
 
-```text
-OrganizationContext
-+ RoleRoutingRules
-→ AssignmentRoute
-```
+~~~text
+Operations Permissive = pending
+→ Start Work blocked
 
-Ejemplos:
+Operations Permissive = granted
+→ execution may continue
+~~~
 
-```text
-Planner → Responsible → Supervisor → Technician
-```
+El control visual exacto y la integración con Permit to Work quedan to_validate.
 
-```text
-Planner → Responsible → Technician
-```
+## 7. Execution feedback
 
-La organización concreta del proyecto decide la ruta; la UI no debe codificarla de manera rígida.
+La futura demo debe capturar al menos conceptualmente actual start, actual finish, actual duration, execution outcome, findings, executor, feedback timestamp, close timestamp y planner close.
 
-## 5. Ejemplo pedagógico que conviene conservar
+Para correctivo, además: actual labor, actual materials/resources y engineering recommendation/attachments cuando aplique.
 
-Para el futuro WS-06, la reunión aporta un caso especialmente útil:
+## 8. Plan vs Actual
 
-```text
-Familia: bombas centrífugas
-→ BasePlan común
-→ activo A: lubricación convencional
-→ activo B: lubricación por neblina
-→ activo B necesita actividad adicional
-→ AssetPlanOverride trazado
-```
+Después del cierre, la demo debería poder mostrar:
 
-Este ejemplo debe guardarse para demostrar que una particularidad del activo no obliga a duplicar o modificar el plan común de toda la familia.
+~~~text
+Planned duration
+Actual duration
+Deviation %
+~~~
 
-## 6. Gate antes de diseñar la extensión
+y explicar que la desviación alimenta mejora continua.
 
-No debe iniciarse diseño detallado de Work Management hasta completar:
+No debe inventarse un threshold automático de alerta antes de validar la regla.
 
-1. demo del proceso actual de Los Barrios;
-2. revisión de hojas/check sheets reales;
-3. identificación de actores, estados, decisiones y excepciones;
-4. separación clara entre comportamiento AS-IS y requisito TO-BE;
-5. validación de planning/scheduling suficiente para crear contratos funcionales.
+## 9. Enlace con WS-09
 
-## 7. Resultado de la revisión
+~~~text
+Work Order Actuals
+→ WS-09 Effectiveness / Improvement
+→ review plan / Job Plan / interval / resources
+~~~
 
-La demo actual debe **anticipar la existencia del siguiente proceso**, pero no fingir que ya conocemos su diseño.
+Así se cierra el loop entre diseño del mantenimiento y realidad operacional.
 
-Ese equilibrio permite que las reuniones sigan descubriendo el modelo sin cerrar prematuramente una arquitectura que todavía no está validada.
+## 10. Qué no debe simular todavía
+
+No presentar como aprobado:
+
+- estado definitivo del lifecycle;
+- reglas exactas de generation trigger;
+- capacity/shift scheduling;
+- algoritmo de assignment;
+- Permit to Work completo;
+- financial closure;
+- cost allocation;
+- invoicing;
+- thresholds automáticos de KPI.
+
+## 11. Fixture futuro
+
+No modificar todavía P-101 con WO ficticias.
+
+Después de contratos mínimos puede construirse un fixture derivado y explícitamente sintético/controlado para demostrar:
+
+1. preventiva sin hallazgo;
+2. preventiva con hallazgo y correctiva enlazada.
+
+El fixture deberá mantener trazabilidad a la Published Activity de P-101 o a otra fuente seleccionada.
+
+## 12. Gates antes de implementación
+
+~~~text
+WM-G02 Execution Package contract
++ WM-G03 recurrence / lifecycle minimum contract
++ WM-G05 feedback/data contract
++ UX surface decision
++ versioned fixture
++ Studio gate
+~~~
+
+Solo después debe comenzar una implementación Power Apps de Work Management.
