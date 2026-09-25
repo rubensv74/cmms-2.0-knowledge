@@ -1,10 +1,11 @@
 # CMMS 2.0 Functional Lab — Arquitectura
 
-**Estado:** Foundation revisada 2026-09-11  
+**Estado:** Foundation revisada 2026-09-25  
 **Alcance:** arquitectura del laboratorio conceptual, no arquitectura productiva de CMMS 2.0.  
 **Fuentes principales:**  
 - [`../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md`](../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md)  
-- [`../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
+- [`../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)  
+- [`../../05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md`](../../05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md)
 
 ## 1. Objetivo arquitectónico
 
@@ -263,14 +264,18 @@ Puede demostrarse conceptualmente, pero la regla de duración/HH multidisciplina
 
 ### 8.9. Handoff post-publicación
 
+La materialización preventiva se modela como recurrencia rolling:
+
 ```text
 PublishedProjectPlanVersion
-+ PlanningYear
-+ BudgetContext
-+ CostCenterContext
-→ PrepareAnnualPreventiveOrders
-→ Work Management discovery
+→ PreventiveRecurrence
+→ NextDueOccurrence
+→ MaterializedPreventiveWorkOrder
 ```
+
+`PlanningYear / BudgetContext / CostCenterContext` pueden alimentar forecast y gestión económica, pero no obligan a generar físicamente todas las órdenes del año.
+
+La futura WO debe resolver referencias a Job Plan, Procedure/Checklist, documentación técnica del activo, attachments específicos y requisitos de permiso/parada.
 
 ## 9. Paneles comunes
 
@@ -387,13 +392,26 @@ Documento específico:
 
 Gestión del Trabajo consume una actividad resumida y referencias al paquete de ejecución.
 
+Para preventivo aprobado:
+
 ```text
 Scheduled Maintenance Activity
-→ Work Candidate / WO
-   └── JobPlan / ProcedureChecklist
+→ Next Due
+→ Preventive WO
+   └── Execution Package
+       ├── JobPlan / ProcedureChecklist
+       ├── Asset Technical Documents
+       ├── WO-specific attachments
+       └── permits / shutdown constraints
+→ Execution Result + Findings
+→ Planner Closure
+→ Actuals / KPIs
+→ Effectiveness feedback
 ```
 
-Planning/scheduling, execution y costes continúan gobernados por `work-management-discovery.md`.
+`Work Candidate` queda reservado como concepto posible para trabajo no comprometido/no rutinario, no como paso universal del preventivo.
+
+Planning/scheduling, execution, feedback y costes continúan gobernados por `work-management-discovery.md`.
 
 ## 16. Decisiones todavía pendientes
 
