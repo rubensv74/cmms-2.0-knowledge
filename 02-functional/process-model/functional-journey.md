@@ -1,10 +1,11 @@
 # CMMS 2.0 Functional Journey
 
-**Versión funcional:** v1.2  
-**Última revisión:** 2026-09-11  
+**Versión funcional:** v1.3  
+**Última revisión:** 2026-09-25  
 **Fuentes de revisión:**  
 - [`../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md`](../../05-meetings/2026/2026-08-14_revision-modelo-conceptual-amef-rcm.md)  
-- [`../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
+- [`../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)  
+- [`../../05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md`](../../05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md)
 
 ## 1. Propósito
 
@@ -55,7 +56,7 @@ Cada etapa debe describirse mediante:
 - evidencia / trazabilidad;
 - estado de validación de reglas.
 
-## 4. Fases y etapas canónicas — RCM route v1.2
+## 4. Fases y etapas canónicas — RCM route v1.3
 
 ### Fase 1 — Comprender el problema
 
@@ -217,24 +218,34 @@ Cada elemento utilizará, según aplique:
 
 ## 11. Handoff operacional
 
-El tramo suficientemente validado sigue siendo:
+La reunión 2026-09-25 corrige la hipótesis de materialización preventiva.
+
+Para ejecución, el baseline pasa a ser:
 
 ```text
 Published Project Maintenance Plan
-→ seleccionar ejercicio / contexto presupuestario
-→ acción explícita: preparar/generar preventivas del año
+→ Rolling Preventive Recurrence
+→ Next Due Maintenance Activity
+→ Preventive Work Order when due
+→ Execution / Feedback
+→ Planner Closure
+→ Next Due
 ```
 
-Después:
+Principios:
+
+- no se materializan todas las órdenes de la vida útil;
+- el forecast anual/presupuestario puede existir, pero no equivale a crear físicamente todas las WO;
+- para preventivo aprobado, `Work Candidate` no es una etapa universal;
+- una no ejecución/retraso debe quedar justificada;
+- un hallazgo preventivo que requiere reparación puede abrir una rama correctiva independiente;
+- los actuals de ejecución alimentan FL-27/FL-28.
 
 ```text
-Scheduled Maintenance Activity
-→ Work Candidate / Work Order
-   └── references Job Plan / Procedure Checklist
-→ planificación / programación
-→ asignación
-→ ejecución / feedback
-→ coste real
+Execution Actuals
+→ Effectiveness Review
+→ Plan / Job Plan revision proposal
+→ governed new version
 ```
 
 El detalle de Work Management continúa gobernado por `work-management-discovery.md`.
