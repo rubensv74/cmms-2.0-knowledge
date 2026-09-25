@@ -1,6 +1,10 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-09-11
+**Última revisión:** 2026-09-25
+
+## Revisión 2026-09-25 — Work Management
+
+El preventivo publicado se materializa mediante recurrencia rolling y siguiente intervención. Forecast anual/presupuesto se separa de las órdenes realmente creadas. Work Candidate no es obligatorio para preventivo aprobado. Execution feedback, cierre por Planning, planned-vs-actual y calidad del dato pasan a formar parte del discovery. Se añade WM-G05 — Execution Feedback & Data Integrity.
 
 ## 1. Cómo leer este roadmap
 
