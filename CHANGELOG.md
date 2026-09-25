@@ -2,6 +2,46 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [0.9.5] - 2026-09-25
+
+### Añadido
+
+- Notas de reunión `2026-09-25_revision-cmms-work-management-execution-feedback.md`.
+- `ANL-005` con revisión del impacto sobre Work Management, Reliability Engineering y Functional Lab.
+- Gate `WM-G05 — Execution Feedback & Data Integrity`.
+
+### Actualizado
+
+- `work-management-discovery.md` a v0.3.
+- `functional-journey.md` a v1.3.
+- Arquitectura y estado de implementación de CMMS Functional Lab.
+- `work-management-extension.md` con dos escenarios futuros de demo.
+- `PROJECT_STATUS.md` y `MASTER_INDEX.md`.
+
+### Decisiones
+
+- El preventivo publicado se modela con recurrencia rolling y siguiente intervención; no se materializan todas las futuras órdenes de la vida útil.
+- Forecast anual/presupuestario y orden materializada son conceptos diferentes.
+- `Work Candidate` no es una etapa obligatoria para el preventivo recurrente ya aprobado.
+- La no ejecución/retraso de una preventiva debe quedar justificada.
+- La WO debe resolver Job Plan/procedimiento, documentación técnica del activo y permisos.
+- Si una actividad requiere parada, Operaciones debe conceder permisivo antes de ejecución.
+- Un hallazgo preventivo que requiere reparación abre trabajo correctivo separado.
+- El ejecutor devuelve resultado/hallazgos y Planning asegura feedback fiable y cierre.
+- La comparación planificado vs real alimenta KPIs y mejora continua.
+- El cierre técnico puede preceder al cierre completo de costes.
+
+### Pendiente
+
+- Contrato de trigger/horizon de generación preventiva.
+- Lifecycle definitivo de WO.
+- Contrato de Execution Package.
+- Contrato de Execution Feedback y datos reales.
+- Reglas completas de scheduling/capacidad/turnos/assignment.
+- Contrato de permisos/Operations.
+- Catálogo definitivo de KPIs y thresholds.
+- Costes/contratos/facturación.
+
 ## [0.9.4] - 2026-09-11
 
 ### Añadido
