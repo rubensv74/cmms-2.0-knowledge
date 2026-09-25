@@ -1,8 +1,8 @@
 # Functional Lab — Implementation Status
 
-**Fecha:** 2026-09-11  
-**Estado general:** RCM foundation revisada a v1.2 + Maintenance Standards discovery incorporado  
-**Último gate documental superado:** revisión funcional posterior a reunión 2026-09-11  
+**Fecha:** 2026-09-25  
+**Estado general:** RCM foundation v1.3 + Maintenance Standards + Work Management discovery v0.3  
+**Último gate documental superado:** revisión funcional posterior a reunión 2026-09-25  
 **Validación Power Apps del journey RCM:** pendiente de los gates técnicos activos del laboratorio
 
 ## 1. Estado de incrementos documentales
@@ -13,6 +13,7 @@
 | F00-10 Revisión 2026-08-14 | completed | Riesgo configurable, RCM sin scoring, overrides y handoff anual. |
 | F00-11 Revisión 2026-08-21 | completed | Work Management discovery y routing organizativo configurable. |
 | F00-12 Revisión 2026-09-11 | completed | RCM deja de ser ruta única; biblioteca corporativa, task granularity y Job Plan/procedure incorporados. |
+| F00-13 Revisión 2026-09-25 | completed | Rolling next-due, WO preventiva directa, execution package, planner closure, actuals/KPI y feedback loop incorporados. |
 
 ## 2. Cambios confirmados 2026-09-11
 
@@ -140,17 +141,32 @@ No añadir una pantalla únicamente porque el concepto exista en documentación.
 
 ## 7. Relación con Work Management
 
-`work-management-discovery.md` avanza a v0.2.
+`work-management-discovery.md` avanza a **v0.3**.
 
-Regla nueva confirmada:
+Para preventivo aprobado:
 
 ```text
-Work Candidate / WO
-→ Maintenance Activity
-   └── references Job Plan / Procedure Checklist
+Published Plan
+→ Next Due
+→ Preventive WO
+→ Execution Package
+→ Execution + Findings
+→ Planner Close
+→ Actuals / KPI
+→ Continuous Improvement
 ```
 
-WM-G02 sigue abierto hasta normalizar fuentes y cerrar el execution package.
+Decisiones nuevas:
+
+- no lifetime materialization;
+- forecast anual separado de WO materializada;
+- Work Candidate no universal en preventivo;
+- Operations permissive cuando requiere parada;
+- hallazgo preventivo puede abrir correctiva;
+- Planning asegura feedback/cierre;
+- nuevo gate `WM-G05 Execution Feedback & Data Integrity`.
+
+WM-G02/WM-G03 avanzan a partial y WM-G05 queda abierto a consolidación contractual.
 
 ## 8. Gates de workspaces RCM
 
