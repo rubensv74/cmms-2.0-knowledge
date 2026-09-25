@@ -1,285 +1,377 @@
 # Gestión del Trabajo — Discovery funcional preliminar
 
-**Versión:** discovery v0.2  
-**Última revisión:** 2026-09-11  
-**Estado:** `to_validate`  
-**Fuentes principales:**  
-- [`../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md`](../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)  
-- [`../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md`](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
+**Versión:** discovery v0.3
+**Última revisión:** 2026-09-25
+**Estado:** principios clave confirmados; lifecycle y contratos todavía parciales
+**Fuentes principales:**
+- [2026-08-21 — Gestión de órdenes de trabajo](../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)
+- [2026-09-11 — Estándares y Job Plans](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
+- [2026-09-25 — Ejecución, feedback y calidad del dato](../../05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md)
 
 ## 1. Propósito
 
-Registrar el modelo funcional descubierto para **Gestión del Trabajo** sin confundir referencias AS-IS con diseño objetivo de CMMS 2.0.
+Registrar el modelo funcional descubierto para **Gestión del Trabajo** sin convertir referencias parciales en arquitectura productiva prematura.
 
-Distingue:
-
-- **AS-IS de referencia**;
-- **principios confirmados**;
-- **hipótesis TO-BE**;
-- **pendientes de validación**.
+El documento distingue principios confirmados, comportamiento suficientemente explicado, hipótesis TO-BE y decisiones todavía to_validate.
 
 ## 2. Frontera de entrada
 
-El dominio comienza después de disponer de un plan de mantenimiento de proyecto publicado y su calendario preventivo.
+Gestión del Trabajo comienza después de disponer de un plan de mantenimiento de proyecto publicado.
 
-```text
+La reunión del 2026-09-25 corrige el modelo anterior para el mantenimiento preventivo recurrente.
+
+~~~text
 Published Project Maintenance Plan
-→ Scheduled Maintenance Activity
-→ Work Candidate
-→ Work Order Proposal
-→ Work Order
-```
+→ Rolling Preventive Schedule
+→ Next Due Maintenance Activity
+→ Preventive Work Order
+→ Execution
+→ Planner Closure
+→ Next Due
+~~~
 
-La revisión 2026-09-11 añade una regla importante: la unidad que llega a Work Management es una **Maintenance Activity gestionable**, no cada paso del procedure/checklist.
+No deben materializarse todas las órdenes de la vida útil.
 
-## 3. Contrato conceptual upstream descubierto
+El forecast puede proyectar carga o presupuesto futuro, pero debe diferenciarse de las órdenes realmente creadas.
 
-```text
+## 3. Work Candidate — alcance corregido
+
+El modelo previo trataba Work Candidate como paso intermedio universal:
+
+~~~text
+ScheduledMaintenanceActivity
+→ WorkCandidate
+→ WorkOrderProposal
+→ WorkOrder
+~~~
+
+La reunión 2026-09-25 corrige esta hipótesis para preventivo aprobado.
+
+Una vez que el plan está aprobado con alcance, frecuencia y recursos, la actividad es obligatoria salvo desviación justificada.
+
+Por tanto:
+
+~~~text
+ScheduledMaintenanceActivity
+→ due event
+→ PreventiveWorkOrder
+~~~
+
+WorkCandidate puede seguir existiendo para trabajo todavía no comprometido, correctivos, recomendaciones, backlog o solicitudes de trabajo, pero esos usos siguen to_validate.
+
+## 4. Contrato upstream
+
+La unidad recibida desde Maintenance Engineering es una **Maintenance Activity**, no cada paso del checklist.
+
+~~~text
 Maintenance Activity
-├── frequency / schedule basis
 ├── asset / scope
-├── estimated resources
+├── strategy
+├── frequency / recurrence
+├── criticality context
+├── estimated duration/resources
 ├── Job Plan reference
-└── Procedure / Checklist reference
-```
+├── Procedure / Checklist reference
+├── shutdown / permit requirements
+└── source / provenance
+~~~
 
-La orden puede utilizar el Job Plan/checklist durante la ejecución, pero no debe multiplicar automáticamente cada subpaso en tareas planificables independientes.
+La criticidad procede del Asset Master y puede haber influido en estrategia/frecuencia antes de publicar el plan.
 
-## 4. AS-IS de referencia observado 2026-08-21
+## 5. Rolling preventive recurrence
 
-```text
-Plan / calendario preventivo
-→ inspecciones próximas a vencimiento
-→ selección por Maintenance Planner
-→ propuesta de una o varias órdenes de trabajo
-→ validación / posible cambio de fecha por Maintenance Responsible
-→ [si existe Supervisor] distribución por técnico y turno
-→ [si no existe Supervisor] asignación directa a técnico/ejecutor
-→ ejecución dentro de ventanas y restricciones
-```
+Principios confirmados:
 
-### 4.1. Maintenance Planner
+1. no generar preventivas para toda la vida útil;
+2. calcular/materializar la siguiente intervención;
+3. después de ejecución/cierre se calcula la siguiente según el plan vigente;
+4. una no ejecución o retraso debe quedar justificado;
+5. forecast presupuestario y WO materializada son conceptos diferentes.
 
-Responsabilidad observada:
+Objetos conceptuales candidatos:
 
-- consultar calendario;
-- identificar trabajo próximo;
-- seleccionar candidatos;
-- proponer conversión/agrupación en WO.
+~~~text
+PreventiveRecurrence
+ForecastOccurrence
+NextDueOccurrence
+MaterializedWorkOrder
+~~~
 
-Pendiente:
+El trigger exacto de materialización sigue to_validate.
 
-- definición de `próximo`;
-- prioridad/backlog;
-- reglas de agrupación;
-- duplicados/compromisos existentes.
+## 6. Execution Package
 
-### 4.2. Responsable de mantenimiento
+Una WO debe resolver el paquete necesario para ejecutar:
 
-Responsabilidad observada:
+~~~text
+WorkOrder
++ MaintenanceActivity
++ JobPlan
++ ProcedureChecklist
++ AssetTechnicalDocuments
++ WorkOrderAttachments
++ PermitRequirements
++ Shutdown / Operations constraints
+= ExecutionPackage
+~~~
 
-- revisar propuesta;
-- validar fecha;
-- o proponer fecha alternativa.
+### Documentos
 
-Pendiente:
+- manuales, planos y documentación técnica deben resolverse preferentemente desde el activo;
+- Job Plan/procedure aporta el detalle operativo estable;
+- una correctiva puede añadir recomendaciones técnicas/documentos específicos;
+- no debe duplicarse físicamente toda la documentación maestra en cada WO cuando pueda resolverse por referencia.
 
-- autoridad exacta;
-- motivos de reprogramación;
-- límites temporales;
-- impacto de criticidad/ventanas/permisos.
+## 7. Permisos y Operaciones
 
-### 4.3. Supervisor / mando intermedio
+Si la actividad exige sacar el equipo de servicio:
 
-Nivel condicional según organización del proyecto.
+~~~text
+requiresShutdown = true
+→ Operations permissive required
+→ execution enabled
+~~~
+
+El modelo exacto de Permit to Work / isolation / LOTO permanece fuera de contrato por ahora.
+
+## 8. Lifecycle funcional descubierto
+
+Sin cerrar todavía los nombres de estado:
+
+~~~text
+WO prepared/released
+→ executor receives
+→ work starts
+→ execution
+→ execution result + findings
+→ execution complete
+→ planner validation
+→ technical close
+~~~
+
+### Preventive finding
+
+~~~text
+Preventive Work Order
+→ finding requiring repair
+→ Corrective Work Order / corrective process
+~~~
+
+Una reparación nueva no debe ocultarse ampliando silenciosamente el scope de la preventiva.
+
+## 9. Responsabilidades
+
+### Planner / Planning
+
+Planning debe preparar/coordinar la orden, asegurar que el feedback vuelve al sistema, comprobar que la ejecución queda correctamente registrada, cerrar la orden preventiva y utilizar la información real para mejorar estimaciones.
+
+### Programmer / Scheduler
+
+Se mantiene la separación conceptual entre planificación y programación, pero la terminología final de roles sigue abierta.
+
+### Executor
+
+Debe acceder al execution package, ejecutar, registrar resultado y hallazgos e indicar finalización.
+
+### Operations
+
+Cuando existe necesidad de indisponibilidad/parada, concede el permisivo operativo necesario.
+
+### Data Capture
+
+Se registra como **opción organizativa**, sugerida para garantizar feedback fiable cuando el ejecutor no pueda cargar información inmediatamente. No se convierte en rol obligatorio del producto.
+
+## 10. Preventivo vs correctivo
+
+### Preventivo
+
+- baseline de alcance/tiempo/recursos conocido;
+- documentos/instrucciones generalmente estables;
+- resultado y hallazgos deben registrarse;
+- el planner realiza validación/cierre;
+- las desviaciones reales deben poder medirse.
+
+### Correctivo
+
+- alcance más variable;
+- actual hours/resources/materials especialmente relevantes;
+- puede incorporar recomendaciones técnicas de Ingeniería;
+- necesita discovery adicional de diagnosis/work request;
+- cierre y costes pueden requerir reglas distintas.
+
+## 11. Datos de ejecución
+
+Candidatos mínimos:
+
+~~~text
+plannedDue
+plannedDuration
+plannedResources
+actualStart
+actualFinish
+actualDuration
+actualResources
+executionResult
+findings
+correctiveReference
+executor
+feedbackCapturedAt
+technicalClosedAt
+closedBy
+~~~
+
+La obligatoriedad exacta depende del tipo de WO y sigue pendiente de contrato.
+
+## 12. Calidad del dato
 
 Principio confirmado:
 
-> El workflow de asignación no debe asumir una jerarquía fija.
+> La calidad del CMMS y de sus decisiones depende directamente de la calidad y puntualidad del feedback de ejecución.
 
-### 4.4. Técnico / ejecutor
+Problemas a evitar:
 
-La reunión 2026-08-21 solo confirmó recepción/ejecución.
+- cierre días/semanas después del trabajo real;
+- fechas de fallo/reparación falsas;
+- feedback perdido en papel;
+- actuals incompletos;
+- órdenes abiertas artificialmente.
 
-La reunión 2026-09-11 aporta una pieza adicional: durante la ejecución debe estar disponible un Job Plan/procedure/checklist detallado, pero su granularidad no debe trasladarse automáticamente al calendario o a la WO como decenas de actividades independientes.
+El sistema debe diferenciar, cuando aplique:
 
-Todavía no está validado:
-
-- aceptación/rechazo;
-- inicio/pausa/finalización;
-- mediciones;
-- evidencias/fotos;
-- uso/consumo de materiales;
-- horas reales;
-- desviaciones;
-- cierre técnico.
-
-## 5. Hipótesis TO-BE
-
-### WM-H01 — Work Candidate
-
-Representación intermedia entre calendario y WO.
-
-### WM-H02 — Regla de selección temporal
-
-Ventana configurable para identificar trabajo próximo; regla exacta pendiente.
-
-### WM-H03 — Propuesta de agrupación
-
-Sistema puede sugerir; autoridad final y reglas pendientes.
-
-### WM-H04 — Validación / reprogramación
-
-Confirmación o reprogramación trazada.
-
-### WM-H05 — Routing organizativo configurable
-
-Debe admitir distintas estructuras sin hardcodear Supervisor.
-
-### WM-H06 — Ventana de ejecución
-
-Separar ventana/restricciones de una única fecha nominal.
-
-### WM-H07 — Asignación por capacidad/turno
-
-Probable necesidad; regla pendiente.
-
-### WM-H08 — Execution Package
-
-Una WO debe poder resolver el paquete de ejecución:
-
-```text
-WorkOrder
-+ JobPlan
-+ ProcedureChecklist
-+ ResourceRequirements
-+ safety / permits
-= Execution Package
-```
-
-Estado: `to_validate`.
-
-## 6. Objetos conceptuales candidatos
-
-```text
-PreventiveScheduleItem
-ScheduledMaintenanceActivity
-WorkCandidate
-WorkOrderProposal
-WorkOrder
-ExecutionWindow
-ScheduleDecision
-AssignmentRoute
-WorkAssignment
-OrganizationContext
-ExecutionPackage
-JobPlanReference
-ProcedureChecklistReference
-```
-
-No constituyen esquema aprobado.
-
-## 7. Decisiones persona vs sistema — preliminar
-
-| Paso | Sistema | Persona | Estado |
-|---|---|---|---|
-| Detectar trabajo próximo | Puede calcular candidatos | Planner revisa/selecciona | `to_validate` |
-| Proponer agrupación | Puede sugerir | Planner/responsable confirma | `to_validate` |
-| Validar fecha | Muestra restricciones | Responsable decide | evidenciado; reglas abiertas |
-| Reprogramar | Valida consistencia | Responsable decide/justifica | `to_validate` |
-| Elegir ruta organizativa | Resuelve configuración | Proyecto/organización define | principio confirmado |
-| Asignar técnico/turno | Puede asistir | Supervisor/rol decide | `to_validate` |
-| Resolver Execution Package | Puede ensamblar referencias | Responsable valida cuando aplique | `to_validate` |
-| Ejecutar checklist | Registra datos/estado | Técnico ejecuta | `to_validate` |
-
-## 8. Evidencia 2026-09-11 y WM-G02
-
-Durante la reunión se revisaron ejemplos de documentación histórica con:
-
-- frecuencia;
-- Job Plan;
-- operations/checklist;
-- recursos/disciplinas;
-- herramientas;
-- referencia a reporte en CMMS.
-
-Esto **avanza WM-G02**, porque confirma la necesidad de separar:
-
-```text
-actividad CMMS
+~~~text
+execution completed
 ≠
-lista detallada de pasos
-```
+technical closed
+≠
+financial/cost complete
+~~~
 
-Pero WM-G02 no se considera `PASS` todavía.
+## 13. KPIs y mejora continua
 
-Falta:
+Métricas explícitamente comentadas:
 
-1. incorporar/registrar las fuentes documentales concretas;
-2. normalizar al menos un ejemplo real;
-3. cerrar el contrato `Activity ↔ JobPlan ↔ ProcedureChecklist ↔ Execution Result`.
+- MTBF;
+- MTTR;
+- planned vs actual deviation;
+- overdue recommendation aging;
+- maintenance cost trend;
+- reliability trend.
 
-## 9. Gates
+### Planning deviation
 
-### WM-G01 — Flujo AS-IS observado
+~~~text
+Deviation %
+= (Actual - Planned) / Planned
+~~~
 
-Validar mediante demo real actores, secuencia, estados, decisiones y excepciones.
+El significado exacto de signo/normalización debe estandarizarse antes de implementación.
 
-### WM-G02 — Contenido de la orden / execution package
+La repetición de desviaciones debe poder alimentar una revisión de duración estándar, recursos, Job Plan, coordinación con Operaciones y estrategia/frecuencia cuando corresponda.
 
-Revisar y normalizar fuentes para definir:
+La detección automática de patrón es candidata a system recommendation, no decisión automática.
 
-- cabecera;
-- actividad;
-- Job Plan;
-- procedure/checklist;
-- recursos;
-- criterios;
-- ventanas;
-- evidencias;
-- feedback/cierre.
+## 14. Feedback a Reliability Engineering
 
-### WM-G03 — Planning/Scheduling
+~~~text
+Execution Actuals
+→ KPI / Deviation Analysis
+→ Effectiveness Review
+→ Plan / Job Plan Change Proposal
+→ governed new version
+~~~
 
-Definir:
+Esto alimenta directamente el loop de efectividad/mejora de Reliability Engineering.
 
-- horizonte;
-- prioridades;
-- agrupación;
-- capacidad;
-- turnos;
-- reprogramación;
-- restricciones.
+## 15. Reporting
 
-### WM-G04 — Costes y contratos
+Tras el cierre técnico, el CMMS debe conservar datos suficientes y fiables para informes periódicos, auditoría, KPIs, análisis de rendimiento y comparación coste vs fiabilidad.
 
-No avanzar en imputación/facturación sin perfiles responsables.
+La tecnología de presentación —Power BI, reports nativos u otra— permanece abierta.
 
-## 10. Relación con Maintenance Standards Library
+## 16. Gates actualizados
 
-Gestión del Trabajo consume planes de proyecto publicados, independientemente de si su origen fue RCM o estándar corporativo.
+### WM-G01 — Process evidence
 
-```text
-RCM / Corporate Standard / OEM / Expert
-→ Published Project Maintenance Plan
-→ Scheduled Maintenance Activity
-→ Work Management
-```
+**Estado:** partial.
 
-Work Management no necesita volver a ejecutar el razonamiento de ingeniería; necesita conservar trazabilidad y acceso al paquete de ejecución.
+Existe expert walkthrough consistente. Sigue pendiente contrastar herramienta/proceso real cuando sea posible.
 
-## 11. Impacto sobre Functional Lab
+### WM-G02 — Execution Package
 
-La demo actual sigue terminando con handoff conceptual después de WS-08.
+**Estado:** partial-advanced.
 
-No deben simularse todavía como aprobadas reglas de:
+Ya están identificados Activity, Job Plan, Procedure, documentación del activo, attachments y permisos.
 
-- vencimiento;
-- agrupación;
-- scheduling;
-- capacidad/turnos;
-- estados de WO;
-- ejecución;
-- costes.
+Pendiente cerrar contrato y fuente documental real.
 
-Sí puede representarse conceptualmente que una futura WO referencia una actividad resumida y su Job Plan/checklist asociado.
+### WM-G03 — Planning / Scheduling
+
+**Estado:** partial.
+
+Confirmado:
+
+- rolling next due;
+- no lifetime materialization;
+- preventivo aprobado sin Work Candidate obligatorio;
+- retraso/no ejecución debe justificarse.
+
+Pendiente:
+
+- trigger/horizon exacto;
+- grouping;
+- capacity;
+- shifts;
+- assignment;
+- replanning.
+
+### WM-G04 — Costs / contracts
+
+**Estado:** open.
+
+El cierre técnico puede preceder a la llegada completa de costes. La lógica económica detallada sigue pendiente.
+
+### WM-G05 — Execution Feedback & Data Integrity
+
+**Estado:** partial / new.
+
+Debe cerrar timestamp contract, actual resource contract, finding/corrective linkage, planner validation, technical close, data-quality rules, plan-vs-actual y KPI source contract.
+
+## 17. Objetos conceptuales candidatos
+
+~~~text
+PreventiveRecurrence
+ForecastOccurrence
+NextDueOccurrence
+WorkOrder
+CorrectiveWorkOrder
+ExecutionPackage
+ExecutionResult
+ExecutionFinding
+OperationsPermissive
+WorkOrderAttachment
+AssetDocumentReference
+ExecutionActual
+PlanVsActualMetric
+WorkOrderClosure
+~~~
+
+No constituyen todavía esquema SQL/API.
+
+## 18. Impacto sobre Functional Lab
+
+La futura extensión de Work Management ya puede representar un loop funcional más concreto:
+
+~~~text
+Published Activity
+→ Next Due
+→ Preventive WO
+→ Execution Package
+→ Operations Permissive if required
+→ Execution
+→ Finding?
+→ Planner Close
+→ Plan vs Actual
+→ Effectiveness / Improvement
+~~~
+
+No se implementa todavía como comportamiento productivo hasta disponer de contratos mínimos y fixture controlado.
