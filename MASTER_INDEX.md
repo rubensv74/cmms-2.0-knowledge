@@ -14,10 +14,10 @@
 
 ## Modelo funcional
 
-- [Functional Journey — RCM Engineering Route v1.2](02-functional/process-model/functional-journey.md)
+- [Functional Journey — RCM Engineering Route v1.3](02-functional/process-model/functional-journey.md)
 - [Matriz persona vs sistema v1.2](02-functional/process-model/human-system-decisions.md)
 - [Maintenance Standards Library — Functional Model](02-functional/process-model/maintenance-standards-library.md)
-- [Gestión del Trabajo — Discovery v0.2](02-functional/process-model/work-management-discovery.md)
+- [Gestión del Trabajo — Discovery v0.3](02-functional/process-model/work-management-discovery.md)
 - [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
 - [ASSETS Functional Baseline V1](02-functional/asset-master/CMMS_ASSETS_LIST_FUNCTIONAL_BASELINE_V1.md)
 - [ASSETS List Read Contract V1](02-functional/asset-master/CMMS_ASSETS_LIST_READ_CONTRACT_V1.md)
@@ -25,6 +25,8 @@
 
 ## Reuniones y análisis
 
+- [Reunión 2026-09-25 — Work Management, ejecución y calidad del dato](05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md)
+- [ANL-005 — Impacto funcional reunión 2026-09-25](05-meetings/01_Analysis/ANL-005_revision-funcional-post-reunion-2026-09-25.md)
 - [Reunión 2026-09-11 — Estándares de mantenimiento y Job Plans](05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
 - [ANL-004 — Impacto funcional reunión 2026-09-11](05-meetings/01_Analysis/ANL-004_revision-funcional-post-reunion-2026-09-11.md)
 - [Reunión 2026-08-21 — Gestión de órdenes de trabajo](05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)
