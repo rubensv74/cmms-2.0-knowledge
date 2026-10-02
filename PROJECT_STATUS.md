@@ -1,6 +1,34 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-09-25
+**Última actualización:** 2026-10-02
+
+## Baseline canónica 2026-10-02
+
+La consolidación posterior a las reuniones establece dos nuevas fuentes de gobierno:
+
+- `00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md` — Product Truth vigente.
+- `05-meetings/decisions/DECISION_REGISTER.md` — decisiones CONFIRMED / SUPERSEDED / OPEN / HOLD.
+
+Regla de precedencia:
+
+```text
+meeting evidence
+→ post-meeting analysis
+→ Product Truth
+→ functional contract
+→ prototype / fixture / UI
+```
+
+Cambios relevantes reconciliados:
+
+- la generación preventiva anual como runtime principal queda sustituida por rolling next due;
+- WorkCandidate deja de ser paso universal del preventivo aprobado;
+- RCM deja de ser la única vía de creación de mantenimiento gobernado;
+- el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
+
+**Siguiente gate ejecutable del programa:** `MSL-G01 — Source Normalization`.
+
+---
 
 ## Estado general
 
