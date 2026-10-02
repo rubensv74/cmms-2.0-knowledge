@@ -2,6 +2,27 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [1.0.0] - 2026-10-02
+
+### Consolidación
+
+- Creada `CMMS_PRODUCT_TRUTH_BASELINE_V1.md` como baseline canónica antes de continuar implementación.
+- Creado `DECISION_REGISTER.md` con estados CONFIRMED, SUPERSEDED, OPEN y HOLD.
+- Incorporada al repositorio la reunión del 2026-07-31 a partir de la transcripción archivada.
+
+### Reconciliado
+
+- Generación preventiva anual como runtime principal → sustituida por rolling next due; año/presupuesto se conserva como forecast/contexto.
+- WorkCandidate universal en preventivo → sustituido; el preventivo aprobado puede materializar WO al vencer según política gobernada.
+- RCM como única fuente de mantenimiento → sustituido por Maintenance Engineering con RCM, Corporate Standards, OEM/Vendor y experiencia.
+- Wizard AMEF como representación del dominio → relegado a UX futura; el conocimiento persistente/versionado es independiente del wizard.
+- Activity vs Job Plan vs Procedure/Checklist vs Work Order → separación confirmada.
+
+### Gobierno
+
+- Regla de precedencia documentada: meeting evidence → analysis → Product Truth → contract → prototype/UI.
+- Siguiente gate ejecutable fijado en `MSL-G01 — Source Normalization`.
+
 ## [0.9.5] - 2026-09-25
 
 ### Añadido
