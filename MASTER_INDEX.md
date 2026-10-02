@@ -3,6 +3,7 @@
 ## Gobierno
 
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
+- [CMMS Product Truth Baseline v1.0](00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md)
 - [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
 - [Auditoría de transición 2026-08-10](00-governance/audits/2026-08-10-functional-lab-transition-audit.md)
 - [Catálogo de encargos para IA](00-governance/ai/README.md)
@@ -24,6 +25,9 @@
 - [Asset Detail Read Contract V1](02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md)
 
 ## Reuniones y análisis
+
+- [Decision Register consolidado](05-meetings/decisions/DECISION_REGISTER.md)
+- [Reunión 2026-07-31 — AMEF, RCM y mantenimiento basado en riesgo](05-meetings/2026/2026-07-31_revision-amef-rcm-mantenimiento-basado-riesgo.md)
 
 - [Reunión 2026-09-25 — Work Management, ejecución y calidad del dato](05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md)
 - [ANL-005 — Impacto funcional reunión 2026-09-25](05-meetings/01_Analysis/ANL-005_revision-funcional-post-reunion-2026-09-25.md)
