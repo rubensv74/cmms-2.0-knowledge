@@ -18,6 +18,8 @@
 - [Functional Journey — RCM Engineering Route v1.3](02-functional/process-model/functional-journey.md)
 - [Matriz persona vs sistema v1.2](02-functional/process-model/human-system-decisions.md)
 - [Maintenance Standards Library — Functional Model](02-functional/process-model/maintenance-standards-library.md)
+- [Maintenance Standards Source Normalization — TouatGaz](02-functional/process-model/maintenance-standards-source-normalization-2026-10-08.md)
+- [Maintenance Standards Core Contract v0.1](02-functional/process-model/maintenance-standards-core-contract-v0.1.md)
 - [Gestión del Trabajo — Discovery v0.3](02-functional/process-model/work-management-discovery.md)
 - [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
 - [ASSETS Functional Baseline V1](02-functional/asset-master/CMMS_ASSETS_LIST_FUNCTIONAL_BASELINE_V1.md)
