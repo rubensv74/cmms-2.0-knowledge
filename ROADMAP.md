@@ -10,9 +10,9 @@ Se crea el track transversal de modelo de datos para evitar divergencias entre A
 
 Orden de gates recomendado:
 
-1. `MSL-G01 — Source Normalization`;
-2. `MSL-G02 — Core Contracts`;
-3. `TRG-G01 — Triggering Domain Contract`;
+1. `MSL-G01 — Source Normalization` — PASS_WITH_RECORDED_AMBIGUITIES;
+2. `MSL-G02 — Core Contracts` — PASS_WITH_DEFERRED_TRIGGER_VALUES;
+3. `TRG-G01 — Triggering Domain Contract` — NEXT;
 4. `DM-G02 — Logical Model Freeze`;
 5. diseño físico SQL;
 6. contratos SP/Power Automate;
