@@ -189,3 +189,104 @@ Minimum fields already supported by discovery: actualStart, actualFinish, actual
 ## Gate
 
 This dictionary is sufficient for conceptual reconciliation only. It is not sufficient for DDL. Each domain must promote proposed attributes through its domain gate before SQL.
+
+## Planning / Scheduling logical fields
+
+### PlanningPackage
+- PlanningPackageId
+- WorkOrderId
+- RevisionNo
+- PlannedDuration
+- PlannerNotes
+- ReadinessStatusCode
+- CreatedAt / CreatedBy
+
+### WorkConstraint
+- WorkConstraintId
+- PlanningPackageId
+- CategoryCode
+- StatusCode
+- OwnerReference
+- RequiredBy
+- ResolvedAt
+- ResolutionNote
+- WaiverReason
+
+### ScheduleAssignment
+- ScheduleAssignmentId
+- WorkOrderId
+- ScheduledStart
+- ScheduledFinish
+- AssignmentTargetType
+- AssignmentTargetId
+- ShiftCode
+- StatusCode
+- ScheduledBy / ScheduledAt
+- ScheduleRevisionNo
+
+### CapacityBucket
+- CapacityBucketId
+- ResourceScopeType
+- ResourceScopeId
+- CalendarDate
+- ShiftCode
+- AvailableHours
+- CommittedHours
+- RemainingHours (derived)
+- CapacitySourceCode
+
+
+## Execution Feedback logical fields
+
+### ExecutionRecord
+- ExecutionRecordId
+- WorkOrderId
+- ActualStartAt
+- ActualFinishAt
+- ExecutionResultCode
+- PerformedBy/CrewReference
+- ExecutionSubmittedAt
+- SubmittedBy
+- ValidationStatusCode
+- ValidatedAt / ValidatedBy
+
+### LaborActual
+- LaborActualId
+- ExecutionRecordId
+- Person/CrewReference
+- Craft/DisciplineReference
+- WorkDate
+- StartAt / FinishAt
+- ActualHours
+- EntryAt / EnteredBy
+
+### MaterialActual / ToolActual / ServiceActual
+- structured resource reference
+- quantity/hours
+- unit
+- transaction timestamp
+- enteredBy/source
+- planned requirement reference when applicable
+
+### ExecutionFinding
+- ExecutionFindingId
+- WorkOrderId
+- JobPlanOperation/ChecklistReference
+- AssetId
+- FindingTypeCode
+- Description
+- Severity/Priority
+- FoundAt / FoundBy
+- RequiresFollowUp
+- StatusCode
+
+### WorkOrderClosure
+- WorkOrderClosureId
+- WorkOrderId
+- TechnicalClosedAt
+- ClosedBy
+- ClosureResultCode
+- ValidationNotes
+- DataQualityStatusCode
+- OpenFollowUpCount
+- Exception/WaiverReference
