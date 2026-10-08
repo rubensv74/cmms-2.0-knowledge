@@ -102,6 +102,15 @@
 
 - [AE6-S01 Asset Detail fixture loader](08-resources/powerfx/asset-experience/AE6_ASSET_DETAIL_S01_FIXTURE_LOAD.powerfx.txt)
 
+## SQL core
+
+- [DB-G01 Physical SQL Core Design](07-it-handoff/05-sql/DB-G01-physical-core-design.md)
+- [DB-G01 Preflight SQL](07-it-handoff/05-sql/DB-G01-preflight.sql)
+- [DB-G01 Create Core SQL](07-it-handoff/05-sql/DB-G01-create-core.sql)
+- [DB-G01 Validate Core SQL](07-it-handoff/05-sql/DB-G01-validate-core.sql)
+- [DB-G01 Static Review](07-it-handoff/05-sql/DB-G01-static-review.md)
+- [DB-G01 Gate](00-governance/audits/2026-10-08-db-g01.md)
+
 ## Handoff funcional para IT
 
 - [Paquete documental modular](07-it-handoff/functional-document-set.md)
