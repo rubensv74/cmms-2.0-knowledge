@@ -1,6 +1,24 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-09-25
+**Última revisión:** 2026-10-08
+
+## Revisión 2026-10-08 — Data Model G01
+
+Se crea el track transversal de modelo de datos para evitar divergencias entre Asset, Reliability, Maintenance Standards, Triggering y Work Management.
+
+`DM-G01 — Cross-Domain Conceptual Reconciliation` queda en `PASS_WITH_OPEN_CONTRACTS`.
+
+Orden de gates recomendado:
+
+1. `MSL-G01 — Source Normalization`;
+2. `MSL-G02 — Core Contracts`;
+3. `TRG-G01 — Triggering Domain Contract`;
+4. `DM-G02 — Logical Model Freeze`;
+5. diseño físico SQL;
+6. contratos SP/Power Automate;
+7. UI Power Apps.
+
+Regla: no congelar tablas/columnas físicas mientras las cardinalidades críticas sigan abiertas.
 
 ## Revisión 2026-09-25 — Work Management
 
