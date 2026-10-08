@@ -51,34 +51,34 @@
 
 | From | Cardinality | To | Rule |
 |---|---:|---|---|
-| MaintenanceActivity | 1:N | MaintenanceTriggerPolicy | active-policy invariant required |
+| ProjectMaintenancePlanItem | 1:N | MaintenanceTriggerPolicy | versioned policies; one effective published policy per effective period |
 | MaintenanceTriggerPolicy | 1:N | TriggerRule | simple or composite |
 | TriggerRule | 0..1 | MeasurementPoint | required for METER/CONDITION |
 | Asset | 1:N | MeasurementPoint | asset-scoped measurement source |
 | MeasurementPoint | 1:N | MeasurementReading | timestamped readings |
-| MaintenanceTriggerPolicy | 1:N | TriggerEvaluation | only if evaluations persisted |
+| MaintenanceTriggerPolicy | 1:1 | MaintenanceTriggerState | current runtime state per effective policy/item |
+| MaintenanceTriggerPolicy | 0..N | TriggerEvaluation | persist only material/audit evaluations if required |
 | MaintenanceTriggerPolicy | 0..N | ForecastOccurrence | potentially derived |
-| MaintenanceTriggerPolicy | 0..N | MaintenanceDueEvent | auditable due occurrences |
-| MaintenanceDueEvent | 0..1 | WorkOrder | exact materialization/reissue rule open |
+| MaintenanceTriggerPolicy | 0..N | MaintenanceOccurrence | persistent released occurrences |
+| MaintenanceOccurrence | 0..N | MaintenanceDueEvent | append-only due/action audit |
+| MaintenanceOccurrence | 0..1 | WorkOrder | preventive materialization with idempotency |
 
 ## Work / feedback
 
 | From | Cardinality | To | Status |
 |---|---:|---|---|
 | WorkOrder | N:1 | Asset | CONFIRMED concept |
-| WorkOrder | 0..1 | MaintenanceDueEvent | preventive origin |
+| WorkOrder | 0..1 | MaintenanceOccurrence | preventive origin |
 | WorkOrder | 0..1 | MaintenanceActivity | recommended traceability; snapshot/reference open |
 | WorkOrder | 0..1 | ExecutionPackage | logical resolved package |
-| WorkOrder | 0..N | ExecutionActual | PARTIAL |
 | WorkOrder | 0..N | ExecutionFinding | CONFIRMED concept |
-| ExecutionFinding | 0..N | WorkOrder | corrective follow-up rule OPEN |
-| WorkOrder | 0..1 | WorkOrderClosure | PARTIAL |
+| WorkOrder | 0..1 | WorkOrderClosure | CONFIRMED CONTRACT |
 
 ## Invariants
 
 1. Published plan/revision is immutable.
 2. Project override never mutates corporate standard version.
-3. One Due Event must not materialize duplicate active WOs without explicit reissue/reopen rule.
+3. One MaintenanceOccurrence must not materialize duplicate active WOs without explicit reissue/reopen rule.
 4. CONDITION/METER rules require a compatible measurement/counter source.
 5. Warning does not necessarily create a Due Event.
 6. Preventive finding requiring repair creates traceable corrective work.
