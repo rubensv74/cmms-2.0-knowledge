@@ -74,7 +74,8 @@ BEGIN TRY
     VALUES(@PlanItemId,@PolicyId,N'SPG01-EP-1',DATEADD(day,-5,sysutcdatetime()),DATEADD(day,5,sysutcdatetime()),N'RELEASED',N'TIME');
     SET @OccurrenceId=SCOPE_IDENTITY();
 
-    DECLARE @Req nvarchar(max),@R TABLE(ReadState nvarchar(20),ResultJson nvarchar(max),ErrorCode nvarchar(50),ErrorMessage nvarchar(max));
+    DECLARE @Req nvarchar(max);
+    DECLARE @R TABLE(ReadState nvarchar(20),ResultJson nvarchar(max),ErrorCode nvarchar(50),ErrorMessage nvarchar(max));
 
     SET @Req=N'{"requestId":"'+CONVERT(nvarchar(36),NEWID())+N'","actor":"SP-G01","maintenanceOccurrenceId":'+CONVERT(nvarchar(30),@OccurrenceId)+N',"workOrderNo":"SPG01-WO-1"}';
     INSERT @R EXEC cmms.usp_WorkOrder_MaterializeFromOccurrence @Req;
