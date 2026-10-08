@@ -32,6 +32,7 @@
 - [Relationships & Cardinalities v0.1](07-it-handoff/04-data/relationships.md)
 - [Logical Data Dictionary v0.1](07-it-handoff/04-data/data-dictionary.md)
 - [DM-G01 — Cross-Domain Conceptual Reconciliation](00-governance/audits/2026-10-08-data-model-g01.md)
+- [MSL-G01 Source Availability Audit](00-governance/audits/2026-10-08-msl-g01-source-availability.md)
 
 ## Reuniones y análisis
 
