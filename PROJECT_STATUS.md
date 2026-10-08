@@ -36,6 +36,18 @@ El bloqueo quedó resuelto con cuatro paquetes reales TouatGaz (Units 103, 300, 
 Fuente del gate: `00-governance/audits/2026-10-08-msl-g01-source-availability.md`.
 
 ---
+## WM-G03 — Planning & Scheduling — 2026-10-08
+
+`WM-G03` queda en **BLOCKED_EVIDENCE**.
+
+Se ha definido el límite lógico entre Triggering, Planning, Scheduling y Execution, además de entidades candidatas (`PlanningPackage`, `WorkConstraint`, `ReadinessAssessment`, `OperationalCalendar`, `OperationalWindow`, `Crew`, `CrewCapacity`, `ScheduleAssignment`, `ScheduleRevision`).
+
+No se promueven todavía a contrato físico definitivo porque faltan evidencias reales sobre grouping, capacity/shift model, assignment, replanning authority y lifecycle timestamps.
+
+Desbloqueo requerido: walkthrough real de Los Barrios o proceso operativo equivalente.
+
+---
+
 ## Triggering & Data Model — 2026-10-08
 
 - `TRG-G01 — Triggering Domain Contract` = **PASS_CONTRACT**.
@@ -79,7 +91,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `WM-G03 — Planning & Scheduling Contract`.
+**Siguiente gate ejecutable del programa:** `WM-G03 — Operational Evidence Walkthrough`.
 
 ---
 
