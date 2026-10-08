@@ -202,8 +202,10 @@ BEGIN TRY
     END CATCH;
 
     BEGIN TRY
-        INSERT cmms.ExecutionRecord(WorkOrderId,ActualStartAt,ActualFinishAt,ValidationStatusCode)
-        VALUES(-999, SYSUTCDATETIME(), DATEADD(hour,-1,SYSUTCDATETIME()), N'PENDING');
+        UPDATE cmms.ExecutionRecord
+        SET ActualStartAt = SYSUTCDATETIME(),
+            ActualFinishAt = DATEADD(hour,-1,SYSUTCDATETIME())
+        WHERE WorkOrderId = @WorkOrderId;
         THROW 51105, 'TEST FAIL: invalid execution interval was accepted.', 1;
     END TRY
     BEGIN CATCH
