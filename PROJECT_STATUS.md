@@ -27,11 +27,11 @@ Reconciliaciones principales:
 ---
 ## MSL-G01 — Source Availability
 
-Auditoría 2026-10-08: **BLOCKED_EVIDENCE**.
+Auditoría 2026-10-08: **PASS_WITH_RECORDED_AMBIGUITIES**.
 
-El repositorio/biblioteca contiene modelos conceptuales, mockups y documentación histórica suficiente para preparar la normalización, pero no se ha localizado todavía el artefacto operativo original mostrado/referenciado en la reunión del 11/09 con filas reales de mantenimiento.
+El bloqueo quedó resuelto con cuatro paquetes reales TouatGaz (Units 103, 300, 303 y 404/406). Se normalizó como piloto el caso Compressor Unit 303 y se confirmó la separación entre PM/frequency, Job Plan, operaciones, recursos y herramientas.
 
-No se declara PASS ni se congelan tablas de Standards hasta disponer de una fuente real normalizable.
+`MSL-G02 — Core Contracts` queda también en **PASS_WITH_DEFERRED_TRIGGER_VALUES**. El siguiente gate es `TRG-G01 — Triggering Domain Contract`.
 
 Fuente del gate: `00-governance/audits/2026-10-08-msl-g01-source-availability.md`.
 
@@ -60,7 +60,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `MSL-G01 — Source Normalization`.
+**Siguiente gate ejecutable del programa:** `TRG-G01 — Triggering Domain Contract`.
 
 ---
 
