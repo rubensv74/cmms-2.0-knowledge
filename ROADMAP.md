@@ -18,7 +18,8 @@ Orden de gates recomendado:
 6. `WM-G03 — Planning & Scheduling Contract` — PASS_BENCHMARKED_CONTRACT;
 7. `WM-G05 — Execution Feedback & Data Integrity` — PASS_BENCHMARKED_CONTRACT;
 8. `DM-G02 — Logical Model Freeze` — PASS_CORE_LOGICAL_MODEL;
-9. `DB-G01 — Physical SQL Core Design` — NEXT;
+9. `DB-G01 — Physical SQL Core Design` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
+10. `DB-G01-RUNTIME — Execute & Validate in db-omm-dev` — NEXT;
 7. `WM-G05 — Execution Feedback & Data Integrity`;
 8. re-evaluate `DM-G02`;
 5. diseño físico SQL;
