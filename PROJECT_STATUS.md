@@ -46,6 +46,18 @@ Al no existir un caso operativo interno disponible, el gate se ha cerrado median
 
 ---
 
+## SP-G01 — Stored Procedure Contracts — 2026-10-08
+
+`SP-G01` = **DESIGN_READY_FOR_RUNTIME_VALIDATION**.
+
+Se han definido 8 stored procedures core para Power Automate y `cmms.CommandReceipt` para idempotencia por `requestId`.
+
+Static review: PASS. Todos los caminos devuelven el mismo contrato `ReadState / ResultJson / ErrorCode / ErrorMessage`; no se crean roles/usuarios ni se usan operaciones destructivas.
+
+El siguiente gate requiere compilar y validar el paquete en `db-omm-dev`.
+
+---
+
 ## DB-G01-RUNTIME — 2026-10-08
 
 `DB-G01-RUNTIME` = **PASS_RUNTIME**.
@@ -117,7 +129,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `SP-G01 — Core Stored Procedure Contracts for Power Automate`.
+**Siguiente gate ejecutable del programa:** `SP-G01-RUNTIME — Execute & Validate Procedures in db-omm-dev`.
 
 ---
 
