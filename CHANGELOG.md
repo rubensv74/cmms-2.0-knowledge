@@ -19,8 +19,11 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 
 ### Gate
 
+- TouatGaz real-source normalization completed for Units 103, 300, 303 and 404/406; Compressor Unit 303 used as pilot.
+- `MSL-G01` = `PASS_WITH_RECORDED_AMBIGUITIES`.
+- `MSL-G02` = `PASS_WITH_DEFERRED_TRIGGER_VALUES`.
+- V1 JobPlan boundary closed as `JobPlan → JobPlanRevision → JobPlanOperation`; ProcedureChecklist remains optional when a separate governed artifact exists.
 - `DM-G01` = `PASS_WITH_OPEN_CONTRACTS`.
-- `MSL-G01 Source Availability` = `BLOCKED_EVIDENCE`; no se localizó aún la fuente operativa original necesaria para normalización real.
 - No se autoriza todavía freeze de SQL físico.
 - Siguiente evidencia real: `MSL-G01 — Source Normalization`; después `MSL-G02`, `TRG-G01` y `DM-G02`.
 
