@@ -38,13 +38,11 @@ Fuente del gate: `00-governance/audits/2026-10-08-msl-g01-source-availability.md
 ---
 ## WM-G03 — Planning & Scheduling — 2026-10-08
 
-`WM-G03` queda en **BLOCKED_EVIDENCE**.
+`WM-G03` queda en **PASS_BENCHMARKED_CONTRACT**.
 
 Se ha definido el límite lógico entre Triggering, Planning, Scheduling y Execution, además de entidades candidatas (`PlanningPackage`, `WorkConstraint`, `ReadinessAssessment`, `OperationalCalendar`, `OperationalWindow`, `Crew`, `CrewCapacity`, `ScheduleAssignment`, `ScheduleRevision`).
 
-No se promueven todavía a contrato físico definitivo porque faltan evidencias reales sobre grouping, capacity/shift model, assignment, replanning authority y lifecycle timestamps.
-
-Desbloqueo requerido: walkthrough real de Los Barrios o proceso operativo equivalente.
+Al no existir un caso operativo interno disponible, el gate se ha cerrado mediante benchmark oficial de SAP, IBM Maximo y HxGN EAM, manteniendo el diseño como target-product contract y no como copia de un AS-IS local.
 
 ---
 
@@ -91,7 +89,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `WM-G03 — Operational Evidence Walkthrough`.
+**Siguiente gate ejecutable del programa:** `DB-G01 — Physical SQL Core Design`.
 
 ---
 
