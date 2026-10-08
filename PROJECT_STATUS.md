@@ -36,6 +36,25 @@ El bloqueo quedó resuelto con cuatro paquetes reales TouatGaz (Units 103, 300, 
 Fuente del gate: `00-governance/audits/2026-10-08-msl-g01-source-availability.md`.
 
 ---
+## Triggering & Data Model — 2026-10-08
+
+- `TRG-G01 — Triggering Domain Contract` = **PASS_CONTRACT**.
+- `WM-G02 — Execution Package` = **PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY**.
+- `DM-G02 — Logical Model Freeze` = **BLOCKED_BY_WORK_MANAGEMENT_CORE**.
+
+Correcciones estructurales:
+
+- introducido `ProjectMaintenancePlanItem` para vincular actividad reutilizable + asset/contexto;
+- introducido `MaintenanceTriggerState` para recurrencia e idempotencia;
+- `ForecastOccurrence` permanece derivado;
+- `MaintenanceOccurrence` es el puente persistente Triggering → Work Management;
+- `MaintenanceDueEvent` queda como evidencia audit del cruce Due/Action;
+- una WO puede materializarse en `ReleaseAt`, antes de `DueAt`.
+
+El SQL físico continúa bloqueado hasta cerrar `WM-G03` y `WM-G05`.
+
+---
+
 ## Baseline canónica 2026-10-02
 
 La consolidación posterior a las reuniones establece dos nuevas fuentes de gobierno:
@@ -60,7 +79,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `TRG-G01 — Triggering Domain Contract`.
+**Siguiente gate ejecutable del programa:** `WM-G03 — Planning & Scheduling Contract`.
 
 ---
 
