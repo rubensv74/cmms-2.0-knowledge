@@ -45,8 +45,10 @@ This catalog promotes fragmented concepts into one cross-domain vocabulary. It i
 | ProjectStandardAdoption | Version relation | Snapshot/adoption into project | PROPOSED |
 | ProjectMaintenancePlanVersion | Versioned project master | Governed project maintenance plan | CONFIRMED CONCEPT |
 | MaintenanceActivity | Version child/master | Plan-able, schedulable, closable maintenance unit | CONFIRMED CONCEPT |
-| JobPlan | Reusable master | Reusable preparation/execution template | CONFIRMED CONCEPT |
-| ProcedureChecklist | Reusable content/master | Detailed execution steps/checklist | OPEN BOUNDARY |
+| JobPlan | Reusable master | Stable identity of reusable execution knowledge | CONFIRMED |
+| JobPlanRevision | Versioned master | Published immutable revision of JobPlan | CONFIRMED |
+| JobPlanOperation | Version child | Ordered execution/instruction step in JobPlanRevision | CONFIRMED |
+| ProcedureChecklist | Optional governed artifact | Separate controlled procedure/checksheet when source requires it | OPTIONAL V1 |
 | ResourceRequirement | Child definition | Planned labor/discipline requirement | PROPOSED |
 | ToolRequirement | Child definition | Planned tool/equipment requirement | PROPOSED |
 | MaterialRequirement | Child definition | Planned material/spare requirement | PROPOSED |
