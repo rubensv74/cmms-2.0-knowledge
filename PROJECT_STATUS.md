@@ -48,11 +48,9 @@ Al no existir un caso operativo interno disponible, el gate se ha cerrado median
 
 ## DB-G01-RUNTIME — 2026-10-08
 
-`DB-G01-RUNTIME` = **BLOCKED_EXTERNAL_ACCESS**.
+`DB-G01-RUNTIME` = **PASS_RUNTIME**.
 
-No existe en esta sesión una conexión SQL Server/MSSQL capaz de alcanzar `db-omm-dev`. El gate no se marca como PASS.
-
-Los tres scripts de preflight/create/validation están preparados y deben ejecutarse desde un entorno con acceso real a SQL Server.
+Validación ejecutada manualmente en `db-omm-dev`: 37 tablas creadas y todos los smoke tests de metadata, idempotencia, unicidad e integridad temporal han pasado. Completion time: `2026-10-08T12:27:24.9244720+02:00`.
 
 ---
 
@@ -119,7 +117,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `DB-G01-RUNTIME — BLOCKED_EXTERNAL_ACCESS`.
+**Siguiente gate ejecutable del programa:** `SP-G01 — Core Stored Procedure Contracts for Power Automate`.
 
 ---
 
