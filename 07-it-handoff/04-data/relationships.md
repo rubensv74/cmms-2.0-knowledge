@@ -91,3 +91,31 @@
 - Recommendation ↔ Activity conversion cardinality.
 - Finding ↔ corrective WorkOrder.
 - persistence vs derivation for forecast/evaluation.
+
+## Planning / Scheduling relations
+
+| From | Cardinality | To | Status |
+|---|---:|---|---|
+| WorkOrder | 1:N | PlanningPackage | revisions/history; one current effective | CONFIRMED CONTRACT |
+| PlanningPackage | 0..N | WorkConstraint | CONFIRMED CONTRACT |
+| PlanningPackage | 0..N | ReadinessAssessment | CONFIRMED CONTRACT |
+| WorkOrder | 0..N | ScheduleAssignment | revisions/history; max one current committed | CONFIRMED CONTRACT |
+| ScheduleAssignment | N:1 | ResourcePool/Crew/Person reference | target type abstraction | CONFIRMED CONTRACT |
+| ScheduleAssignment | 1:N | ScheduleRevision | history of schedule changes | CONFIRMED CONTRACT |
+| ResourcePool/Crew | 0..N | CapacityBucket | date/shift capacity | CONFIRMED CONTRACT |
+
+
+## Execution Feedback relations
+
+| From | Cardinality | To | Status |
+|---|---:|---|---|
+| WorkOrder | 1:1 | ExecutionRecord | V1 current execution header | CONFIRMED CONTRACT |
+| ExecutionRecord | 0..N | LaborActual | CONFIRMED CONTRACT |
+| ExecutionRecord | 0..N | MaterialActual | CONFIRMED CONTRACT |
+| ExecutionRecord | 0..N | ToolActual | CONFIRMED CONTRACT |
+| ExecutionRecord | 0..N | ServiceActual | CONFIRMED CONTRACT |
+| ExecutionRecord | 0..N | ChecklistResult | CONFIRMED CONTRACT |
+| WorkOrder | 0..N | ExecutionFinding | CONFIRMED CONTRACT |
+| ExecutionFinding | 0..N | FollowUpWorkOrderLink | explicit corrective linkage | CONFIRMED CONTRACT |
+| FollowUpWorkOrderLink | N:1 | WorkOrder | target corrective WO | CONFIRMED CONTRACT |
+| WorkOrder | 0..1 | WorkOrderClosure | technical close evidence | CONFIRMED CONTRACT |
