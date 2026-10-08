@@ -2,57 +2,43 @@
 
 **Gate:** MSL-G01 — Source Normalization  
 **Date:** 2026-10-08  
-**Result:** BLOCKED_EVIDENCE
+**Result:** PASS_WITH_RECORDED_AMBIGUITIES
 
-## Objective
+## Resolution
 
-Verify that a real maintenance source is available and can be normalized into Equipment Type, activities, frequency/trigger basis, Job Plan/procedure, resources, tools/materials and provenance without inventing content.
+The previous evidence blocker was resolved by four real TouatGaz maintenance packages supplied on 2026-10-08:
 
-## Evidence found
+- FAC10005-TRE-103-MAI-MAN-0001;
+- FAC10005-TRE-300-MAI-MAN-0001;
+- FAC10005-TRE-303-MAI-MAN-0001;
+- FAC10005-TRE-404-MAI-MAN-0001.
 
-Available project/library material confirms the intended concepts:
+Each package includes a Maintenance Manual, Asset Register, `06-Job Plan & PM` sources and detailed `07-Job Plan` workbooks.
 
-- historical CMMS functional documents describing Standard Task, Job Plan, revisions, PM/trigger concepts and ownership;
-- AMEF/RCM transition material confirming Maintenance Recommendation → Maintenance Activity → Job Plan/Procedure → Maintenance Plan;
-- mockups demonstrating Job Plan composition and the principle that reusable knowledge is separated from operational work;
-- meeting notes stating that real historical plans were shown for equipment types such as gas detector, gas turbine and pressure safety valve.
+## Evidence normalized
 
-## Evidence not found
+Pilot: Unit 303 Compressor (`303-KJ-003A/B`).
 
-The audit did not locate the original operational source artifact shown/referenced in the 2026-09-11 meeting containing the actual maintenance rows to normalize (equipment type, activity, frequency, operations/checklist, resources/tools and source identity).
+Real source evidence demonstrates:
 
-## Why the gate cannot PASS
+- Job Plan identity and planned duration;
+- ordered Job Plan operations;
+- planned crafts/resources;
+- tools;
+- asset/tag references;
+- PM layer fields for frequency/unit/interval and Job Plan association;
+- repeated source structure across several equipment classes and units.
 
-MSL-G01 explicitly requires normalization of a real source. A conceptual document, prototype or reconstructed example is not acceptable evidence because it would reintroduce assumptions into the corporate maintenance library.
+Detailed normalization: `02-functional/process-model/maintenance-standards-source-normalization-2026-10-08.md`.
 
-## Allowed work while blocked
+## Recorded ambiguities
 
-- keep the cross-domain entity catalog and logical model;
-- define the normalization template/fields;
-- preserve candidate entity names as PROPOSED;
-- prepare extraction rules and validation checks.
+- exact values inside legacy binary `.xls` frequency fields must be extracted by a controlled ingestion mechanism rather than guessed;
+- some optional quantity/duration/material fields are blank in source;
+- legacy Job Plan code semantics are preserved raw and not inferred solely from naming.
 
-## Prohibited work while blocked
+## Gate conclusion
 
-- create a synthetic corporate maintenance standard and call it canonical;
-- freeze StandardMaintenanceActivity / JobPlan / ProcedureChecklist SQL tables;
-- assume frequency semantics from old mockups;
-- build a production-looking Maintenance Standards Library screen with fictitious master data.
+`MSL-G01 = PASS_WITH_RECORDED_AMBIGUITIES`.
 
-## Unblock condition
-
-Provide or locate at least one real maintenance source used in practice or shown by the maintenance team, with enough evidence to extract:
-
-1. source identity and version/date if available;
-2. equipment type or applicable scope;
-3. maintenance activity/operation;
-4. frequency or trigger basis;
-5. procedure/checklist or Job Plan reference/content;
-6. labor/resources;
-7. tools/materials where present;
-8. notes/constraints;
-9. provenance and unresolved ambiguities.
-
-## Next action after evidence is available
-
-Normalize one source end-to-end, record every mapping/ambiguity, then decide MSL-G01 PASS/FAIL. Only after PASS should MSL-G02 freeze the core Maintenance Engineering contracts.
+The source is real and sufficient to proceed to MSL-G02. Missing/opaque source values remain explicit data-quality issues, not invented values.
