@@ -46,6 +46,26 @@ Al no existir un caso operativo interno disponible, el gate se ha cerrado median
 
 ---
 
+## DB-G01 — Physical SQL Core Design — 2026-10-08
+
+`DB-G01` = **DESIGN_READY_FOR_RUNTIME_VALIDATION**.
+
+Se ha creado un incremento SQL físico aditivo para `db-omm-dev` / schema `cmms` con 37 tablas del core Maintenance Engineering → Triggering → Work Management → Execution.
+
+Artefactos:
+
+- `07-it-handoff/05-sql/DB-G01-physical-core-design.md`;
+- `07-it-handoff/05-sql/DB-G01-preflight.sql`;
+- `07-it-handoff/05-sql/DB-G01-create-core.sql`;
+- `07-it-handoff/05-sql/DB-G01-validate-core.sql`;
+- `07-it-handoff/05-sql/DB-G01-static-review.md`.
+
+Static review: PASS. No roles/users, no destructive DROP, no duplicate table/index/constraint names detected.
+
+El siguiente gate requiere evidencia runtime real en SQL Server. No se deben construir SPs/Power Automate sobre el nuevo modelo antes de ese PASS.
+
+---
+
 ## Triggering & Data Model — 2026-10-08
 
 - `TRG-G01 — Triggering Domain Contract` = **PASS_CONTRACT**.
@@ -89,7 +109,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `DB-G01 — Physical SQL Core Design`.
+**Siguiente gate ejecutable del programa:** `DB-G01-RUNTIME — Execute & Validate SQL Core in db-omm-dev`.
 
 ---
 
