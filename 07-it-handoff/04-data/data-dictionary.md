@@ -30,7 +30,7 @@
 
 ## MaintenanceActivity
 
-- MaintenanceActivityId
+- ProjectMaintenancePlanItemId
 - PlanVersionId
 - ActivityCode
 - Title
@@ -66,6 +66,17 @@
 - MeasurementReference when supplied
 - Discipline/Craft when supplied
 
+## ProjectMaintenancePlanItem
+
+- ProjectMaintenancePlanItemId
+- ProjectMaintenancePlanVersionId
+- AssetId
+- MaintenanceActivityId
+- JobPlanRevisionOverrideId when applicable
+- ApplicabilityStatusCode
+- OverrideReason / provenance when applicable
+- IsActive
+
 ## MaintenanceTriggerPolicy
 
 - TriggerPolicyId
@@ -78,6 +89,18 @@
 - ReleaseLeadUnitCode
 - EffectiveFrom / EffectiveTo
 - StatusCode
+
+## MaintenanceTriggerState
+
+- TriggerStateId
+- TriggerPolicyId
+- LastEvaluationAt
+- LastCompletionAt
+- LastDueAt
+- NextDueAt (derived/cache)
+- BaselineMeasurementReadingId / BaselineValue
+- ConditionStateCode
+- OpenMaintenanceOccurrenceId
 
 ## TriggerRule
 
@@ -116,6 +139,21 @@
 - QualityStatusCode
 - SupersedesReadingId
 
+## MaintenanceOccurrence
+
+- MaintenanceOccurrenceId
+- ProjectMaintenancePlanItemId
+- TriggerPolicyId / version
+- ForecastAt
+- ReleaseAt
+- DueAt
+- ReleasedAt
+- MaterializedWorkOrderId when applicable
+- FulfilledAt when applicable
+- StatusCode
+- OriginReasonCode
+- EpisodeKey / idempotency key
+
 ## MaintenanceDueEvent
 
 - DueEventId
@@ -129,7 +167,7 @@
 - MeasurementReadingId when relevant
 - ForecastOccurrenceId if applicable
 - StatusCode
-- WorkOrderId if materialized
+- MaintenanceOccurrenceId
 
 ## WorkOrder — minimum cross-domain contract
 
@@ -137,7 +175,7 @@
 - WorkOrderTypeCode
 - AssetId
 - MaintenanceActivityId when planned
-- DueEventId when trigger-driven
+- MaintenanceOccurrenceId when trigger-driven
 - PlannedDueAt
 - PlannedDuration
 - StatusCode (OPEN CONTRACT)
