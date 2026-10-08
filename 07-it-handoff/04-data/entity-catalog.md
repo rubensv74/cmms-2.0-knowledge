@@ -70,6 +70,21 @@ This catalog promotes fragmented concepts into one cross-domain vocabulary. It i
 | MaintenanceOccurrence | Runtime transaction | Persistent released maintenance call bridging Triggering to Work Management | CONFIRMED CONTRACT |
 | MaintenanceDueEvent | Audit event | Append-only evidence that an occurrence crossed the due/action boundary | CONFIRMED CONTRACT |
 
+## Planning & Scheduling
+
+| Entity | Type | Purpose | Status |
+|---|---|---|---|
+| PlanningPackage | Transaction/versioned plan | Prepared planning state for a WorkOrder | CONFIRMED CONTRACT |
+| WorkConstraint | Transaction child | Blocking/limiting readiness constraint | CONFIRMED CONTRACT |
+| ReadinessAssessment | Assessment | Determines readiness for scheduling/release | CONFIRMED CONTRACT |
+| OperationalCalendar | Master/reference | Working/non-working periods | CONFIRMED CONTRACT |
+| ShiftCalendar | Master/reference | Shift windows used for availability | CONFIRMED CONTRACT |
+| ResourcePool | Master/reference | Schedulable discipline/work-center/team pool | CONFIRMED CONTRACT |
+| Crew | Master/reference | Concrete schedulable team | CONFIRMED CONTRACT |
+| CapacityBucket | Derived/transactional capacity | Available/committed capacity by date/shift | CONFIRMED CONTRACT |
+| ScheduleAssignment | Transaction | Current scheduled window/resource target for a WorkOrder | CONFIRMED CONTRACT |
+| ScheduleRevision | Audit transaction | History of rescheduling decisions | CONFIRMED CONTRACT |
+
 ## Work Management
 
 | Entity | Type | Purpose | Status |
@@ -79,16 +94,25 @@ This catalog promotes fragmented concepts into one cross-domain vocabulary. It i
 | ExecutionPackage | Derived/package | Resolved work package | CONFIRMED CONCEPT / PHYSICAL OPEN |
 | OperationsPermissive | Transaction/reference | Operational permission/readiness dependency | PARTIAL |
 | WorkOrderAttachment | Transaction child | WO-specific attachment/reference | PROPOSED |
-| WorkOrderClosure | Transaction child/state evidence | Closure evidence | PARTIAL |
+| WorkOrderClosure | Transaction child/state evidence | Technical closure evidence | CONFIRMED CONTRACT |
 
 ## Execution & Feedback
 
 | Entity | Type | Purpose | Status |
 |---|---|---|---|
-| ExecutionResult | Transaction | Outcome/result of execution | PARTIAL |
-| ExecutionActual | Transaction child | Actual timing/resources/duration/material values | PARTIAL |
+| ExecutionRecord | Transaction | Authoritative execution header and timestamps | CONFIRMED CONTRACT |
+| LaborActual | Transaction child | Actual labor effort | CONFIRMED CONTRACT |
+| MaterialActual | Transaction child | Actual material consumption | CONFIRMED CONTRACT |
+| ToolActual | Transaction child | Actual tool use | CONFIRMED CONTRACT |
+| ServiceActual | Transaction child | Actual service use | CONFIRMED CONTRACT |
+| ChecklistResult | Transaction child | Structured execution/checklist response | CONFIRMED CONTRACT |
+
+| Entity | Type | Purpose | Status |
+|---|---|---|---|
+| ExecutionResult | Transaction | Outcome/result of execution | CONFIRMED CONTRACT |
+| ExecutionActual | Logical umbrella | Structured actuals represented by labor/material/tool/service records | SUPERSEDED BY STRUCTURED ACTUALS |
 | ExecutionFinding | Transaction | Finding discovered during execution | CONFIRMED CONCEPT |
-| CorrectiveLink | Relation | Finding/source to corrective work | PROPOSED |
+| FollowUpWorkOrderLink | Relation | Finding/source to corrective WorkOrder | CONFIRMED CONTRACT |
 | PlanVsActualMetric | Derived | Planned vs actual metric | PARTIAL |
 | ReliabilityReviewReference | Relation | Execution evidence to reliability review | PROPOSED |
 
