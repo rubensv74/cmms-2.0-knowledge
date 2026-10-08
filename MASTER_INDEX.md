@@ -21,6 +21,8 @@
 - [Maintenance Standards Source Normalization — TouatGaz](02-functional/process-model/maintenance-standards-source-normalization-2026-10-08.md)
 - [Maintenance Standards Core Contract v0.1](02-functional/process-model/maintenance-standards-core-contract-v0.1.md)
 - [Gestión del Trabajo — Discovery v0.3](02-functional/process-model/work-management-discovery.md)
+- [Triggering & Condition Monitoring Contract v0.1](02-functional/process-model/triggering-condition-monitoring-contract-v0.1.md)
+- [Execution Package Contract v0.1](02-functional/process-model/work-management-execution-package-contract-v0.1.md)
 - [Asset Experience Contract V1](02-functional/asset-master/CMMS_ASSET_EXPERIENCE_CONTRACT_V1.md)
 - [ASSETS Functional Baseline V1](02-functional/asset-master/CMMS_ASSETS_LIST_FUNCTIONAL_BASELINE_V1.md)
 - [ASSETS List Read Contract V1](02-functional/asset-master/CMMS_ASSETS_LIST_READ_CONTRACT_V1.md)
@@ -34,6 +36,9 @@
 - [Relationships & Cardinalities v0.1](07-it-handoff/04-data/relationships.md)
 - [Logical Data Dictionary v0.1](07-it-handoff/04-data/data-dictionary.md)
 - [DM-G01 — Cross-Domain Conceptual Reconciliation](00-governance/audits/2026-10-08-data-model-g01.md)
+- [TRG-G01 Gate](00-governance/audits/2026-10-08-trg-g01.md)
+- [WM-G02 Execution Package Gate](00-governance/audits/2026-10-08-wm-g02.md)
+- [DM-G02 Logical Model Freeze](00-governance/audits/2026-10-08-data-model-g02.md)
 - [MSL-G01 Source Availability Audit](00-governance/audits/2026-10-08-msl-g01-source-availability.md)
 
 ## Reuniones y análisis
