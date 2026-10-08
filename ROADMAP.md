@@ -15,7 +15,8 @@ Orden de gates recomendado:
 3. `TRG-G01 — Triggering Domain Contract` — PASS_CONTRACT;
 4. `WM-G02 — Execution Package` — PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY;
 5. `DM-G02 — Logical Model Freeze` — BLOCKED_BY_WORK_MANAGEMENT_CORE;
-6. `WM-G03 — Planning & Scheduling Contract` — NEXT;
+6. `WM-G03 — Planning & Scheduling Contract` — BLOCKED_EVIDENCE;
+7. `WM-G03 Operational Evidence Walkthrough` — NEXT;
 7. `WM-G05 — Execution Feedback & Data Integrity`;
 8. re-evaluate `DM-G02`;
 5. diseño físico SQL;
