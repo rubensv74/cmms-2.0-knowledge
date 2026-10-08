@@ -24,6 +24,15 @@
 - [ASSETS List Read Contract V1](02-functional/asset-master/CMMS_ASSETS_LIST_READ_CONTRACT_V1.md)
 - [Asset Detail Read Contract V1](02-functional/asset-master/CMMS_ASSET_DETAIL_READ_CONTRACT_V1.md)
 
+## Modelo de datos transversal
+
+- [Domain Boundaries v0.1](07-it-handoff/04-data/domain-boundaries.md)
+- [Conceptual Data Model v0.1](07-it-handoff/04-data/conceptual-data-model.md)
+- [Entity Catalog v0.1](07-it-handoff/04-data/entity-catalog.md)
+- [Relationships & Cardinalities v0.1](07-it-handoff/04-data/relationships.md)
+- [Logical Data Dictionary v0.1](07-it-handoff/04-data/data-dictionary.md)
+- [DM-G01 — Cross-Domain Conceptual Reconciliation](00-governance/audits/2026-10-08-data-model-g01.md)
+
 ## Reuniones y análisis
 
 - [Decision Register consolidado](05-meetings/decisions/DECISION_REGISTER.md)
