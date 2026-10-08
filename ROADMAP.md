@@ -12,8 +12,12 @@ Orden de gates recomendado:
 
 1. `MSL-G01 — Source Normalization` — PASS_WITH_RECORDED_AMBIGUITIES;
 2. `MSL-G02 — Core Contracts` — PASS_WITH_DEFERRED_TRIGGER_VALUES;
-3. `TRG-G01 — Triggering Domain Contract` — NEXT;
-4. `DM-G02 — Logical Model Freeze`;
+3. `TRG-G01 — Triggering Domain Contract` — PASS_CONTRACT;
+4. `WM-G02 — Execution Package` — PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY;
+5. `DM-G02 — Logical Model Freeze` — BLOCKED_BY_WORK_MANAGEMENT_CORE;
+6. `WM-G03 — Planning & Scheduling Contract` — NEXT;
+7. `WM-G05 — Execution Feedback & Data Integrity`;
+8. re-evaluate `DM-G02`;
 5. diseño físico SQL;
 6. contratos SP/Power Automate;
 7. UI Power Apps.
