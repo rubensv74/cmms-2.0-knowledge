@@ -110,6 +110,7 @@
 - [DB-G01 Validate Core SQL](07-it-handoff/05-sql/DB-G01-validate-core.sql)
 - [DB-G01 Static Review](07-it-handoff/05-sql/DB-G01-static-review.md)
 - [DB-G01 Gate](00-governance/audits/2026-10-08-db-g01.md)
+- [DB-G01 Runtime Gate](00-governance/audits/2026-10-08-db-g01-runtime.md)
 
 ## Handoff funcional para IT
 
