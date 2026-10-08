@@ -25,7 +25,9 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 - `WM-G03` = `PASS_BENCHMARKED_CONTRACT` using official SAP, IBM Maximo and HxGN EAM planning/scheduling patterns.
 - `WM-G05` = `PASS_BENCHMARKED_CONTRACT` for execution actuals, findings, technical close and data integrity.
 - `DM-G02` = `PASS_CORE_LOGICAL_MODEL`; physical SQL design for the technical CMMS core is now authorized.
-- Next gate: `DB-G01 — Physical SQL Core Design`.
+- `DB-G01` = `DESIGN_READY_FOR_RUNTIME_VALIDATION`; physical additive DDL, preflight and validation scripts created for `db-omm-dev` / `cmms`.
+- Static SQL review: 37 tables, no duplicate object names, no roles/users, no destructive drops.
+- Next gate: `DB-G01-RUNTIME — Execute & Validate SQL Core in db-omm-dev`.
 - TouatGaz real-source normalization completed for Units 103, 300, 303 and 404/406; Compressor Unit 303 used as pilot.
 - `MSL-G01` = `PASS_WITH_RECORDED_AMBIGUITIES`.
 - `MSL-G02` = `PASS_WITH_DEFERRED_TRIGGER_VALUES`.
