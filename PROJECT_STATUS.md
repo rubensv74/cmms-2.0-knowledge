@@ -46,6 +46,16 @@ Al no existir un caso operativo interno disponible, el gate se ha cerrado median
 
 ---
 
+## PA-G01 — Power Automate — 2026-10-08
+
+`PA-G01` = **DESIGN_READY_FOR_RUNTIME_VALIDATION**.
+
+Se han definido contratos para 8 flows `CMMS_CORE_*`, con respuesta estándar `readState/resultJson/errorCode/errorMessage` e idempotencia controlada mediante `requestId`.
+
+El entorno ChatGPT no dispone de conexión Power Automate para crearlos directamente. El gate runtime mínimo será construir y validar `CMMS_CORE_WorkQueue_List` y `CMMS_CORE_WorkOrder_Materialize` antes de replicar el patrón.
+
+---
+
 ## SP-G01 — Stored Procedure Contracts — 2026-10-08
 
 `SP-G01` = **PASS_RUNTIME**.
@@ -129,7 +139,7 @@ Cambios relevantes reconciliados:
 - RCM deja de ser la única vía de creación de mantenimiento gobernado;
 - el wizard AMEF queda como experiencia futura, no como modelo persistente ni bloqueo actual.
 
-**Siguiente gate ejecutable del programa:** `PA-G01 — Power Automate Core Flow Contracts`.
+**Siguiente gate ejecutable del programa:** `PA-G01-RUNTIME-MIN — WorkQueue_List + WorkOrder_Materialize`.
 
 ---
 
