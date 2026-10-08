@@ -44,6 +44,28 @@
 
 **Not canonical here:** frequency/interval. It belongs to Trigger Policy/Rule.
 
+## JobPlanRevision
+
+- JobPlanRevisionId
+- JobPlanId
+- RevisionCode
+- Title / Description
+- PlannedTotalDuration
+- StatusCode
+- SourceReferenceId
+- PublishedAt / PublishedBy
+
+## JobPlanOperation
+
+- JobPlanOperationId
+- JobPlanRevisionId
+- Sequence
+- Title / Description
+- InstructionDetail
+- PlannedDuration when supplied
+- MeasurementReference when supplied
+- Discipline/Craft when supplied
+
 ## MaintenanceTriggerPolicy
 
 - TriggerPolicyId
