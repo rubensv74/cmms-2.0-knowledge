@@ -2,6 +2,27 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [1.1.0] - 2026-10-08
+
+### Añadido
+
+- Capa transversal `07-it-handoff/04-data/` con boundaries, conceptual model, entity catalog, relationships y logical data dictionary.
+- Auditoría/gate `DM-G01 — Cross-Domain Conceptual Reconciliation`.
+
+### Reconciliado
+
+- `ProposedMaintenanceTask` → `MaintenanceRecommendation`.
+- `PreventiveRecurrence` → `MaintenanceTriggerPolicy + TriggerRule`.
+- `NextDueOccurrence` → `ForecastOccurrence` / `MaintenanceDueEvent`.
+- `CorrectiveWorkOrder` → tipo/origen de `WorkOrder`.
+- `Frequency` → responsabilidad de Triggering, no atributo primitivo de `MaintenanceActivity`.
+
+### Gate
+
+- `DM-G01` = `PASS_WITH_OPEN_CONTRACTS`.
+- No se autoriza todavía freeze de SQL físico.
+- Siguiente evidencia real: `MSL-G01 — Source Normalization`; después `MSL-G02`, `TRG-G01` y `DM-G02`.
+
 ## [1.0.0] - 2026-10-02
 
 ### Consolidación
