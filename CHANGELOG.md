@@ -27,8 +27,8 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 - `DM-G02` = `PASS_CORE_LOGICAL_MODEL`; physical SQL design for the technical CMMS core is now authorized.
 - `DB-G01` = `DESIGN_READY_FOR_RUNTIME_VALIDATION`; physical additive DDL, preflight and validation scripts created for `db-omm-dev` / `cmms`.
 - Static SQL review: 37 tables, no duplicate object names, no roles/users, no destructive drops.
-- `DB-G01-RUNTIME` = `BLOCKED_EXTERNAL_ACCESS`; no connected SQL Server/MSSQL execution tool is available in this session.
-- Runtime PASS requires raw output from the prepared preflight/create/validate scripts executed against `db-omm-dev`.
+- `DB-G01-RUNTIME` = `PASS_RUNTIME`; 37 core tables created in `db-omm-dev` and all runtime smoke tests passed.
+- Next gate: `SP-G01 — Core Stored Procedure Contracts for Power Automate`.
 - TouatGaz real-source normalization completed for Units 103, 300, 303 and 404/406; Compressor Unit 303 used as pilot.
 - `MSL-G01` = `PASS_WITH_RECORDED_AMBIGUITIES`.
 - `MSL-G02` = `PASS_WITH_DEFERRED_TRIGGER_VALUES`.
