@@ -44,6 +44,7 @@ This catalog promotes fragmented concepts into one cross-domain vocabulary. It i
 | StandardMaintenanceActivity | Version child | Activity in corporate standard | PROPOSED |
 | ProjectStandardAdoption | Version relation | Snapshot/adoption into project | PROPOSED |
 | ProjectMaintenancePlanVersion | Versioned project master | Governed project maintenance plan | CONFIRMED CONCEPT |
+| ProjectMaintenancePlanItem | Project plan binding | Binds one MaintenanceActivity to one Asset/context in a published project plan | CONFIRMED |
 | MaintenanceActivity | Version child/master | Plan-able, schedulable, closable maintenance unit | CONFIRMED CONCEPT |
 | JobPlan | Reusable master | Stable identity of reusable execution knowledge | CONFIRMED |
 | JobPlanRevision | Versioned master | Published immutable revision of JobPlan | CONFIRMED |
@@ -59,13 +60,15 @@ This catalog promotes fragmented concepts into one cross-domain vocabulary. It i
 
 | Entity | Type | Purpose | Status |
 |---|---|---|---|
-| MaintenanceTriggerPolicy | Versioned rule set | Defines when MaintenanceActivity becomes due | NEW / PROPOSED |
-| TriggerRule | Rule child | TIME, METER, CONDITION or component rule | NEW / PROPOSED |
+| MaintenanceTriggerPolicy | Versioned rule set | Defines when ProjectMaintenancePlanItem becomes actionable/due | CONFIRMED CONTRACT |
+| TriggerRule | Rule child | Atomic TIME, METER or CONDITION rule | CONFIRMED CONTRACT |
+| MaintenanceTriggerState | Runtime state | Idempotent recurrence/evaluation state separate from published policy | CONFIRMED CONTRACT |
 | MeasurementPoint | Master/reference | Measurable characteristic/counter | NEW / PROPOSED |
 | MeasurementReading | Transaction | Timestamped measurement value | NEW / PROPOSED |
 | TriggerEvaluation | Derived/audit | Evaluation of rules against current state | NEW / OPEN PERSISTENCE |
-| ForecastOccurrence | Derived/projected | Future expected occurrence | NORMALIZED / PROPOSED |
-| MaintenanceDueEvent | Transaction/audit | Evidence that activity became due | NEW / PROPOSED |
+| ForecastOccurrence | Derived/projected | Regenerable future expected occurrence | CONFIRMED / DERIVED V1 |
+| MaintenanceOccurrence | Runtime transaction | Persistent released maintenance call bridging Triggering to Work Management | CONFIRMED CONTRACT |
+| MaintenanceDueEvent | Audit event | Append-only evidence that an occurrence crossed the due/action boundary | CONFIRMED CONTRACT |
 
 ## Work Management
 
