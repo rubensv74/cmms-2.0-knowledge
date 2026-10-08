@@ -25,6 +25,17 @@ Reconciliaciones principales:
 **Bloqueo actual:** todavía no procede congelar SQL físico. `MSL-G01` y `MSL-G02` deben estabilizar `MaintenanceActivity`, `JobPlan/ProcedureChecklist`, resources y project adoption; después puede cerrarse `TRG-G01`.
 
 ---
+## MSL-G01 — Source Availability
+
+Auditoría 2026-10-08: **BLOCKED_EVIDENCE**.
+
+El repositorio/biblioteca contiene modelos conceptuales, mockups y documentación histórica suficiente para preparar la normalización, pero no se ha localizado todavía el artefacto operativo original mostrado/referenciado en la reunión del 11/09 con filas reales de mantenimiento.
+
+No se declara PASS ni se congelan tablas de Standards hasta disponer de una fuente real normalizable.
+
+Fuente del gate: `00-governance/audits/2026-10-08-msl-g01-source-availability.md`.
+
+---
 ## Baseline canónica 2026-10-02
 
 La consolidación posterior a las reuniones establece dos nuevas fuentes de gobierno:
