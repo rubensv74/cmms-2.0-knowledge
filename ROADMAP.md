@@ -19,7 +19,8 @@ Orden de gates recomendado:
 7. `WM-G05 — Execution Feedback & Data Integrity` — PASS_BENCHMARKED_CONTRACT;
 8. `DM-G02 — Logical Model Freeze` — PASS_CORE_LOGICAL_MODEL;
 9. `DB-G01 — Physical SQL Core Design` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
-10. `DB-G01-RUNTIME — Execute & Validate in db-omm-dev` — BLOCKED_EXTERNAL_ACCESS;
+10. `DB-G01-RUNTIME — Execute & Validate in db-omm-dev` — PASS_RUNTIME;
+11. `SP-G01 — Core Stored Procedure Contracts for Power Automate` — NEXT;
 7. `WM-G05 — Execution Feedback & Data Integrity`;
 8. re-evaluate `DM-G02`;
 5. diseño físico SQL;
