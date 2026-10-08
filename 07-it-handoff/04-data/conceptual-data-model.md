@@ -46,6 +46,7 @@ Asset / Equipment Type / Context → Reliability Engineering → Maintenance Eng
 - StandardMaintenanceActivity
 - ProjectStandardAdoption
 - ProjectMaintenancePlanVersion
+- ProjectMaintenancePlanItem
 - MaintenanceActivity
 - JobPlan
 - ProcedureChecklist
@@ -59,10 +60,12 @@ Asset / Equipment Type / Context → Reliability Engineering → Maintenance Eng
 ### 4. Triggering & Condition Monitoring
 - MaintenanceTriggerPolicy
 - TriggerRule
+- MaintenanceTriggerState
 - MeasurementPoint
 - MeasurementReading
 - TriggerEvaluation
 - ForecastOccurrence
+- MaintenanceOccurrence
 - MaintenanceDueEvent
 
 ### 5. Work Management
@@ -93,7 +96,7 @@ StandardPlanVersion → ProjectStandardAdoption → ProjectMaintenancePlanVersio
 A project override does not mutate the corporate master.
 
 ### Plan to work
-ProjectMaintenancePlanVersion → MaintenanceTriggerPolicy → TriggerEvaluation → MaintenanceDueEvent → WorkOrder.
+ProjectMaintenancePlanVersion → ProjectMaintenancePlanItem → MaintenanceTriggerPolicy → TriggerEvaluation → ForecastOccurrence → MaintenanceOccurrence → WorkOrder. MaintenanceDueEvent records the due/action boundary as audit evidence.
 
 ### Condition path
 Asset → MeasurementPoint → MeasurementReading → TriggerEvaluation → warning OR MaintenanceDueEvent.
