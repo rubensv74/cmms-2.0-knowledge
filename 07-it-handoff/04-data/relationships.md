@@ -30,8 +30,10 @@
 | ProjectStandardAdoption | N:1 | StandardPlanVersion | MSL-G03 |
 | ProjectMaintenancePlanVersion | 1:N | MaintenanceActivity | MSL-G02/G03 |
 | MaintenanceActivity | 0..N | MaintenanceRecommendation | exact provenance relation MSL-G02 |
-| MaintenanceActivity | 0..1 / 0..N | JobPlan | OPEN |
-| JobPlan | 0..N | ProcedureChecklist | OPEN |
+| MaintenanceActivity | 0..1 | JobPlanRevision | V1 contract; revision reusable by many activities |
+| JobPlan | 1:N | JobPlanRevision | governed versioning |
+| JobPlanRevision | 1:N | JobPlanOperation | confirmed by real source |
+| JobPlanRevision | 0..N | ProcedureChecklist | optional external/controlled artifacts |
 | JobPlan | 0..N | ResourceRequirement | MSL-G02 |
 | JobPlan | 0..N | ToolRequirement | MSL-G02 |
 | JobPlan | 0..N | MaterialRequirement | MSL-G02 |
@@ -76,8 +78,7 @@
 
 ## Cardinalities blocking physical schema
 
-- JobPlan ↔ ProcedureChecklist.
-- MaintenanceActivity ↔ JobPlan reuse/version model.
+- Multi-JobPlan composition for one MaintenanceActivity (out of V1 unless new evidence requires it).
 - Recommendation ↔ Activity conversion cardinality.
 - DueEvent ↔ WorkOrder reissue/cancel/rematerialize behavior.
 - Finding ↔ corrective WorkOrder.
