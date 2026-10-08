@@ -2,7 +2,7 @@
 
 **Versión:** discovery v0.3
 **Última revisión:** 2026-09-25
-**Estado:** principios clave confirmados; lifecycle y contratos todavía parciales
+**Estado:** WM-G02 execution package closed; planning/scheduling and execution-feedback contracts remain partial
 **Fuentes principales:**
 - [2026-08-21 — Gestión de órdenes de trabajo](../../05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md)
 - [2026-09-11 — Estándares y Job Plans](../../05-meetings/2026/2026-09-11_revision-cmms-estandares-job-plans.md)
@@ -52,9 +52,9 @@ Una vez que el plan está aprobado con alcance, frecuencia y recursos, la activi
 Por tanto:
 
 ~~~text
-ScheduledMaintenanceActivity
-→ due event
-→ PreventiveWorkOrder
+ProjectMaintenancePlanItem
+→ Trigger Policy / MaintenanceOccurrence
+→ Preventive WorkOrder
 ~~~
 
 WorkCandidate puede seguir existiendo para trabajo todavía no comprometido, correctivos, recomendaciones, backlog o solicitudes de trabajo, pero esos usos siguen to_validate.
@@ -91,13 +91,14 @@ Principios confirmados:
 Objetos conceptuales candidatos:
 
 ~~~text
-PreventiveRecurrence
+MaintenanceTriggerPolicy
+MaintenanceTriggerState
 ForecastOccurrence
-NextDueOccurrence
+MaintenanceOccurrence
 MaterializedWorkOrder
 ~~~
 
-El trigger exacto de materialización sigue to_validate.
+El trigger/release handoff se cierra en TRG-G01: ForecastOccurrence es derivado, MaintenanceOccurrence se materializa en la release boundary y WorkOrder referencia esa occurrence.
 
 ## 6. Execution Package
 
@@ -298,11 +299,11 @@ Existe expert walkthrough consistente. Sigue pendiente contrastar herramienta/pr
 
 ### WM-G02 — Execution Package
 
-**Estado:** partial-advanced.
+**Estado:** PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY (2026-10-08).
 
-Ya están identificados Activity, Job Plan, Procedure, documentación del activo, attachments y permisos.
+Contrato: `work-management-execution-package-contract-v0.1.md`.
 
-Pendiente cerrar contrato y fuente documental real.
+Las fuentes TouatGaz aportan Job Plans reales, operaciones, recursos, herramientas y Maintenance Manuals. El paquete se resuelve por referencia/versiones gobernadas. Permit-to-Work / isolation / LOTO queda como frontera externa separada.
 
 ### WM-G03 — Planning / Scheduling
 
