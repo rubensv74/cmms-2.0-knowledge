@@ -30,7 +30,7 @@
 
 ## MaintenanceActivity
 
-- ProjectMaintenancePlanItemId
+- MaintenanceActivityId
 - PlanVersionId
 - ActivityCode
 - Title
@@ -80,7 +80,7 @@
 ## MaintenanceTriggerPolicy
 
 - TriggerPolicyId
-- MaintenanceActivityId
+- ProjectMaintenancePlanItemId
 - PolicyVersion
 - PolicyModeCode (SIMPLE / COMPOSITE)
 - RecurrenceBasisCode (FIXED_SCHEDULE / LAST_COMPLETION / TBD)
