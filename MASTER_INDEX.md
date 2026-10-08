@@ -112,6 +112,14 @@
 - [DB-G01 Gate](00-governance/audits/2026-10-08-db-g01.md)
 - [DB-G01 Runtime Gate](00-governance/audits/2026-10-08-db-g01-runtime.md)
 
+## API / Stored Procedures
+
+- [SP-G01 Core Procedure Contract](07-it-handoff/06-api/SP-G01-core-procedure-contract.md)
+- [SP-G01 Create Procedures SQL](07-it-handoff/06-api/SP-G01-create-procedures.sql)
+- [SP-G01 Validate Procedures SQL](07-it-handoff/06-api/SP-G01-validate-procedures.sql)
+- [SP-G01 Static Review](07-it-handoff/06-api/SP-G01-static-review.md)
+- [SP-G01 Gate](00-governance/audits/2026-10-08-sp-g01.md)
+
 ## Handoff funcional para IT
 
 - [Paquete documental modular](07-it-handoff/functional-document-set.md)
