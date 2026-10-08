@@ -22,6 +22,7 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 - `TRG-G01` = `PASS_CONTRACT`; Triggering now separates policy, runtime state, forecast, occurrence and due audit.
 - `WM-G02` = `PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY`.
 - `DM-G02` = `BLOCKED_BY_WORK_MANAGEMENT_CORE`; SQL freeze remains prohibited until WM-G03 and WM-G05 close.
+- `WM-G03` = `BLOCKED_EVIDENCE`; logical boundaries documented, but real grouping/capacity/assignment/replanning evidence is still required.
 - TouatGaz real-source normalization completed for Units 103, 300, 303 and 404/406; Compressor Unit 303 used as pilot.
 - `MSL-G01` = `PASS_WITH_RECORDED_AMBIGUITIES`.
 - `MSL-G02` = `PASS_WITH_DEFERRED_TRIGGER_VALUES`.
