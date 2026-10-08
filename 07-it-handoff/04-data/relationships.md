@@ -38,7 +38,16 @@
 | JobPlan | 0..N | ToolRequirement | MSL-G02 |
 | JobPlan | 0..N | MaterialRequirement | MSL-G02 |
 
-## Triggering — proposed
+## Project plan binding
+
+| From | Cardinality | To | Rule |
+|---|---:|---|---|
+| ProjectMaintenancePlanVersion | 1:N | ProjectMaintenancePlanItem | published project-plan lines |
+| ProjectMaintenancePlanItem | N:1 | Asset | concrete maintained asset/context |
+| ProjectMaintenancePlanItem | N:1 | MaintenanceActivity | reusable project activity definition |
+| ProjectMaintenancePlanItem | 0..1 | JobPlanRevision | optional project/item override |
+
+## Triggering — confirmed contract
 
 | From | Cardinality | To | Rule |
 |---|---:|---|---|
@@ -80,6 +89,5 @@
 
 - Multi-JobPlan composition for one MaintenanceActivity (out of V1 unless new evidence requires it).
 - Recommendation ↔ Activity conversion cardinality.
-- DueEvent ↔ WorkOrder reissue/cancel/rematerialize behavior.
 - Finding ↔ corrective WorkOrder.
 - persistence vs derivation for forecast/evaluation.
