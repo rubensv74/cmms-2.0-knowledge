@@ -373,7 +373,7 @@ BEGIN
         SELECT @Existing=ResultJson FROM cmms.CommandReceipt WITH(UPDLOCK,HOLDLOCK)
         WHERE RequestId=@RequestId AND StatusCode='COMPLETED';
         IF @Existing IS NOT NULL
-        BEGIN COMMIT; SELECT N'READY',@Existing,N'',N''; RETURN; END;
+        BEGIN COMMIT; SELECT N'READY' ReadState,@Existing ResultJson,N'' ErrorCode,N'' ErrorMessage; RETURN; END;
 
         IF NOT EXISTS(SELECT 1 FROM cmms.CommandReceipt WHERE RequestId=@RequestId)
             INSERT cmms.CommandReceipt(RequestId,ProcedureName,Actor,StatusCode)
@@ -459,14 +459,14 @@ BEGIN
       BEGIN TRANSACTION;
       DECLARE @Existing nvarchar(max);
       SELECT @Existing=ResultJson FROM cmms.CommandReceipt WITH(UPDLOCK,HOLDLOCK) WHERE RequestId=@RequestId AND StatusCode='COMPLETED';
-      IF @Existing IS NOT NULL BEGIN COMMIT; SELECT N'READY',@Existing,N'',N''; RETURN; END;
+      IF @Existing IS NOT NULL BEGIN COMMIT; SELECT N'READY' ReadState,@Existing ResultJson,N'' ErrorCode,N'' ErrorMessage; RETURN; END;
       IF NOT EXISTS(SELECT 1 FROM cmms.CommandReceipt WHERE RequestId=@RequestId)
         INSERT cmms.CommandReceipt(RequestId,ProcedureName,Actor,StatusCode) VALUES(@RequestId,N'cmms.usp_Execution_Start',@Actor,N'STARTED');
 
       DECLARE @Status nvarchar(30);
       SELECT @Status=StatusCode FROM cmms.WorkOrder WITH(UPDLOCK,HOLDLOCK) WHERE WorkOrderId=@WorkOrderId;
       IF @Status IS NULL THROW 53034,'WorkOrder not found.',1;
-      IF @Status NOT IN ('READY','RELEASED_TO_EXECUTION') THROW 53039,'WorkOrder cannot start execution in current state.',1;
+      IF @Status<>'RELEASED_TO_EXECUTION' THROW 53039,'WorkOrder must be RELEASED_TO_EXECUTION before physical execution can start.',1;
 
       IF EXISTS(SELECT 1 FROM cmms.ExecutionRecord WHERE WorkOrderId=@WorkOrderId)
         UPDATE cmms.ExecutionRecord SET ActualStartAt=COALESCE(ActualStartAt,@ActualStart),PerformedByReference=COALESCE(PerformedByReference,@Actor) WHERE WorkOrderId=@WorkOrderId;
@@ -483,7 +483,9 @@ BEGIN
     END TRY
     BEGIN CATCH
       IF XACT_STATE()<>0 ROLLBACK;
-      SELECT N'ERROR',NULL,CASE WHEN ERROR_NUMBER()=53034 THEN N'CMMS-404' WHEN ERROR_NUMBER()=53039 THEN N'CMMS-409' ELSE N'CMMS-500' END,ERROR_MESSAGE();
+      SELECT N'ERROR' ReadState,NULL ResultJson,
+             CASE WHEN ERROR_NUMBER()=53034 THEN N'CMMS-404' WHEN ERROR_NUMBER()=53039 THEN N'CMMS-409' ELSE N'CMMS-500' END ErrorCode,
+             ERROR_MESSAGE() ErrorMessage;
     END CATCH
 END;
 GO
@@ -507,7 +509,7 @@ BEGIN
       BEGIN TRANSACTION;
       DECLARE @Existing nvarchar(max);
       SELECT @Existing=ResultJson FROM cmms.CommandReceipt WITH(UPDLOCK,HOLDLOCK) WHERE RequestId=@RequestId AND StatusCode='COMPLETED';
-      IF @Existing IS NOT NULL BEGIN COMMIT; SELECT N'READY',@Existing,N'',N''; RETURN; END;
+      IF @Existing IS NOT NULL BEGIN COMMIT; SELECT N'READY' ReadState,@Existing ResultJson,N'' ErrorCode,N'' ErrorMessage; RETURN; END;
       IF NOT EXISTS(SELECT 1 FROM cmms.CommandReceipt WHERE RequestId=@RequestId)
         INSERT cmms.CommandReceipt(RequestId,ProcedureName,Actor,StatusCode) VALUES(@RequestId,N'cmms.usp_Execution_Complete',@Actor,N'STARTED');
 
@@ -534,9 +536,9 @@ BEGIN
     END TRY
     BEGIN CATCH
       IF XACT_STATE()<>0 ROLLBACK;
-      SELECT N'ERROR',NULL,
-             CASE WHEN ERROR_NUMBER()=53044 THEN N'CMMS-404' WHEN ERROR_NUMBER() IN (53049,53042) THEN N'CMMS-409' ELSE N'CMMS-500' END,
-             ERROR_MESSAGE();
+      SELECT N'ERROR' ReadState,NULL ResultJson,
+             CASE WHEN ERROR_NUMBER()=53044 THEN N'CMMS-404' WHEN ERROR_NUMBER() IN (53049,53042) THEN N'CMMS-409' ELSE N'CMMS-500' END ErrorCode,
+             ERROR_MESSAGE() ErrorMessage;
     END CATCH
 END;
 GO
@@ -559,7 +561,7 @@ BEGIN
       BEGIN TRANSACTION;
       DECLARE @Existing nvarchar(max);
       SELECT @Existing=ResultJson FROM cmms.CommandReceipt WITH(UPDLOCK,HOLDLOCK) WHERE RequestId=@RequestId AND StatusCode='COMPLETED';
-      IF @Existing IS NOT NULL BEGIN COMMIT; SELECT N'READY',@Existing,N'',N''; RETURN; END;
+      IF @Existing IS NOT NULL BEGIN COMMIT; SELECT N'READY' ReadState,@Existing ResultJson,N'' ErrorCode,N'' ErrorMessage; RETURN; END;
       IF NOT EXISTS(SELECT 1 FROM cmms.CommandReceipt WHERE RequestId=@RequestId)
         INSERT cmms.CommandReceipt(RequestId,ProcedureName,Actor,StatusCode) VALUES(@RequestId,N'cmms.usp_WorkOrder_TechnicalClose',@Actor,N'STARTED');
 
@@ -610,13 +612,13 @@ BEGIN
     END TRY
     BEGIN CATCH
       IF XACT_STATE()<>0 ROLLBACK;
-      SELECT N'ERROR',NULL,
+      SELECT N'ERROR' ReadState,NULL ResultJson,
              CASE WHEN ERROR_NUMBER()=53054 THEN N'CMMS-404'
                   WHEN ERROR_NUMBER() IN (53059,53052) THEN N'CMMS-409'
                   WHEN ERROR_NUMBER()=53012 THEN N'CMMS-412'
                   WHEN ERROR_NUMBER() IN (2601,2627) THEN N'CMMS-409'
-                  ELSE N'CMMS-500' END,
-             ERROR_MESSAGE();
+                  ELSE N'CMMS-500' END ErrorCode,
+             ERROR_MESSAGE() ErrorMessage;
     END CATCH
 END;
 GO
