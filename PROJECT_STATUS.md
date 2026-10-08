@@ -1,7 +1,30 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-10-02
+**Última actualización:** 2026-10-08
 
+## Data Model G01 — 2026-10-08
+
+Se ha materializado la capa transversal de datos prevista en `07-it-handoff/04-data/`:
+
+- `domain-boundaries.md`;
+- `conceptual-data-model.md`;
+- `entity-catalog.md`;
+- `relationships.md`;
+- `data-dictionary.md`.
+
+Gate: `DM-G01 — Cross-Domain Conceptual Reconciliation` = **PASS_WITH_OPEN_CONTRACTS**.
+
+Reconciliaciones principales:
+
+- `ProposedMaintenanceTask` se normaliza como `MaintenanceRecommendation` en la frontera transversal;
+- `PreventiveRecurrence` se expresa como `MaintenanceTriggerPolicy + TriggerRule`;
+- `NextDueOccurrence` se separa en `ForecastOccurrence` y `MaintenanceDueEvent`;
+- `CorrectiveWorkOrder` se trata como tipo/origen de `WorkOrder`, no como agregado obligatorio separado;
+- `Frequency` deja de pertenecer conceptualmente a `MaintenanceActivity` y pasa al dominio Triggering.
+
+**Bloqueo actual:** todavía no procede congelar SQL físico. `MSL-G01` y `MSL-G02` deben estabilizar `MaintenanceActivity`, `JobPlan/ProcedureChecklist`, resources y project adoption; después puede cerrarse `TRG-G01`.
+
+---
 ## Baseline canónica 2026-10-02
 
 La consolidación posterior a las reuniones establece dos nuevas fuentes de gobierno:
