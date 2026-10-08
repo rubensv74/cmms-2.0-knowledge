@@ -20,6 +20,7 @@ Todos los cambios relevantes del repositorio documental se registran aquí.
 ### Gate
 
 - `DM-G01` = `PASS_WITH_OPEN_CONTRACTS`.
+- `MSL-G01 Source Availability` = `BLOCKED_EVIDENCE`; no se localizó aún la fuente operativa original necesaria para normalización real.
 - No se autoriza todavía freeze de SQL físico.
 - Siguiente evidencia real: `MSL-G01 — Source Normalization`; después `MSL-G02`, `TRG-G01` y `DM-G02`.
 
