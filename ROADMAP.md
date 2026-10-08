@@ -21,7 +21,8 @@ Orden de gates recomendado:
 9. `DB-G01 — Physical SQL Core Design` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
 10. `DB-G01-RUNTIME — Execute & Validate in db-omm-dev` — PASS_RUNTIME;
 11. `SP-G01 — Core Stored Procedure Contracts for Power Automate` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
-12. `SP-G01-RUNTIME — Execute & Validate Procedures in db-omm-dev` — NEXT;
+12. `SP-G01-RUNTIME — Execute & Validate Procedures in db-omm-dev` — PASS_RUNTIME;
+13. `PA-G01 — Power Automate Core Flow Contracts` — NEXT;
 7. `WM-G05 — Execution Feedback & Data Integrity`;
 8. re-evaluate `DM-G02`;
 5. diseño físico SQL;
