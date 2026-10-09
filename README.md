@@ -24,6 +24,7 @@ El laboratorio no representa la arquitectura productiva final. Se utiliza para v
 ## Navegación rápida
 
 - [Estado actual](PROJECT_STATUS.md)
+- [Organización de hilos — dos ACTIVE y criterios CLOSED/HOLD](00-governance/CMMS_THREAD_CONSOLIDATION_2026-10-09.md)
 - [Roadmap](ROADMAP.md)
 - [Índice maestro](MASTER_INDEX.md)
 - [Historial de cambios](CHANGELOG.md)
