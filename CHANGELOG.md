@@ -2,6 +2,26 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [1.1.1] - 2026-10-09
+
+### Gobierno documental y foco
+
+- Reconciliado `PROJECT_STATUS.md` con el estado **más reciente** de los gates 2026-10-08, separando registros históricos de estado operativo. Se identifican como superados los bloqueos DM-G02/DB-G01 anteriores al PASS runtime.
+- Normalizado `ROADMAP.md` con secuencia única y siguiente gate `PA-G01-RUNTIME-MIN` (dos flows); se conserva el aprendizaje histórico sin presentarlo como prioridad actual.
+- Conciliado `DECISION_REGISTER.md`: frontera JobPlan/ProcedureChecklist V1, contrato WM-G03/WM-G05 benchmarked, separación de Trigger Policy/State/Occurrence y perímetro externo de permisos.
+- Actualizado `06-ui-ux/functional-lab/implementation-status.md` para distinguir contratos/SQL/SP validados de Power Automate y Power Apps todavía no probados.
+- Añadida nota de vigencia a la baseline del 2026-10-02 sin alterar sus principios PT-01…PT-15.
+- Creado `00-governance/CMMS_THREAD_CONSOLIDATION_2026-10-09.md`: **dos hilos ACTIVE propuestos**, CLOSED/HOLD para cinco hilos identificados, pendientes preservados y limitación explícita de inventario no exhaustivo.
+- Enlaces incorporados en `MASTER_INDEX.md` y `README.md`.
+
+### Alcance de esta actualización
+
+Solo documentación Markdown; no se modificaron SQL, SP, flows, Power Apps ni hilos de ChatGPT. Los PASS consignados corresponden a evidencias fechadas del repositorio, no a nuevas pruebas ejecutadas el 2026-10-09.
+
+**Gate runtime todavía pendiente:** `PA-G01-RUNTIME-MIN`.
+
+---
+
 ## [1.1.0] - 2026-10-08
 
 ### Añadido
