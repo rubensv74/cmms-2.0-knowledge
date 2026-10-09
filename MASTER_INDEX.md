@@ -2,6 +2,8 @@
 
 ## Gobierno
 
+- [Política de concentración de hilos — 2 ACTIVE (2026-10-09)](00-governance/CMMS_THREAD_CONSOLIDATION_2026-10-09.md)
+
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
 - [CMMS Product Truth Baseline v1.0](00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md)
 - [Protocolo incremental del Functional Lab](00-governance/cmms-functional-lab-incremental-protocol.md)
