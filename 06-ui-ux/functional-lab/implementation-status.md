@@ -1,9 +1,27 @@
 # Functional Lab — Implementation Status
 
-**Fecha:** 2026-09-25  
-**Estado general:** RCM foundation v1.3 + Maintenance Standards + Work Management discovery v0.3  
-**Último gate documental superado:** revisión funcional posterior a reunión 2026-09-25  
-**Validación Power Apps del journey RCM:** pendiente de los gates técnicos activos del laboratorio
+**Fecha del corte funcional original:** 2026-09-25  
+**Última conciliación con backend/documentación:** 2026-10-09  
+**Estado general del laboratorio:** RCM foundation v1.3 + Maintenance Standards + Work Management discovery v0.3; **no se declara runtime completo del Functional Lab**.  
+**Validación Power Apps del journey RCM:** pendiente de los gates técnicos activos del laboratorio.
+
+## 0. Separación entre laboratorio y backend — 2026-10-09
+
+| Capa | Evidencia | Estado |
+|---|---|---|
+| RCM Journey / caso P-101 | Fixture, journey y diseño documental | Baseline funcional; validación Power Apps/Studio no acreditada |
+| Maintenance Standards | TouatGaz y MSL-G01/G02 | PASS documental con ambigüedades/trigger values diferidos; no implica UI completa |
+| Triggering, Planning, Execution Feedback | TRG-G01, WM-G02/G03/G05 | Contratos PASS / BENCHMARKED; no operación local acreditada |
+| SQL core `cmms` | DB-G01-RUNTIME, 37 tablas | PASS_RUNTIME según gate registrado en `db-omm-dev` |
+| Stored procedures core | SP-G01 | PASS_RUNTIME según gate registrado en `db-omm-dev` |
+| Power Automate | PA-G01 | Diseño listo; aún sin PASS runtime |
+| Power Apps | Workspaces, AE e integración | Sin promoción automática desde contratos; requiere pruebas reales en Studio |
+
+**Próximo gate transversal:** [PA-G01-RUNTIME-MIN](../../ROADMAP.md): `CMMS_CORE_WorkQueue_List` y `CMMS_CORE_WorkOrder_Materialize`. No intentar implementar todo el laboratorio para dar por superado ese gate.
+
+**Pendientes de producto no eliminados:** MSL-G03/G04, validación operacional real de los benchmarks, gate AE/Studio, UX de estándares, AMEF wizard en HOLD, costes/contratos y arquitectura IT definitiva. Los epígrafes posteriores describen los criterios **en el corte de septiembre**, no sustituyen el estado de octubre.
+
+---
 
 ## 1. Estado de incrementos documentales
 
@@ -193,6 +211,8 @@ Contratos mínimos para:
 Output versionado con provenance y handoff hacia preventivas/work management.
 
 ## 9. Gates Maintenance Standards
+
+**Actualización 2026-10-09:** MSL-G01 = PASS_WITH_RECORDED_AMBIGUITIES y MSL-G02 = PASS_WITH_DEFERRED_TRIGGER_VALUES según auditorías del 08/10. Los textos bajo G01/G02 son los criterios originales, no tareas todavía bloqueadas. MSL-G03/G04 sí permanecen pendientes.
 
 ### MSL-G01
 
