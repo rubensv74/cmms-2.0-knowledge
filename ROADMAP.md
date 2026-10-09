@@ -1,36 +1,36 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-10-08
+**Última revisión:** 2026-10-09
 
-## Revisión 2026-10-08 — Data Model G01
+> **Estado operativo vigente.** Los apartados de aprendizaje funcional posteriores a este resumen mantienen valor como alcance e historia, pero cualquier orden de gates antiguo queda sustituido por la siguiente secuencia. Los PASS de contrato/benchmark no equivalen a runtime ni a aceptación de un proceso local.
 
-Se crea el track transversal de modelo de datos para evitar divergencias entre Asset, Reliability, Maintenance Standards, Triggering y Work Management.
+## 0. Gates alcanzados y siguiente paso
 
-`DM-G01 — Cross-Domain Conceptual Reconciliation` queda en `PASS_WITH_OPEN_CONTRACTS`.
+| Secuencia | Gate | Resultado documentado |
+|---:|---|---|
+| 1 | MSL-G01 — Source Normalization | PASS_WITH_RECORDED_AMBIGUITIES |
+| 2 | MSL-G02 — Core Contracts | PASS_WITH_DEFERRED_TRIGGER_VALUES |
+| 3 | TRG-G01 — Triggering Domain Contract | PASS_CONTRACT |
+| 4 | WM-G02 — Execution Package | PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY |
+| 5 | WM-G03 — Planning & Scheduling | PASS_BENCHMARKED_CONTRACT |
+| 6 | WM-G05 — Execution Feedback | PASS_BENCHMARKED_CONTRACT |
+| 7 | DM-G01 — Conceptual Reconciliation | PASS_WITH_OPEN_CONTRACTS; gate intermedio |
+| 8 | DM-G02 — Core Logical Freeze | PASS_CORE_LOGICAL_MODEL |
+| 9 | DB-G01 — Physical Design | Diseño y static review completados |
+| 10 | DB-G01-RUNTIME — Core SQL | PASS_RUNTIME (37 tablas en `db-omm-dev`) |
+| 11 | SP-G01 — Core Stored Procedures | PASS_RUNTIME |
+| 12 | PA-G01 — Flow Contracts | DESIGN_READY_FOR_RUNTIME_VALIDATION |
+| **13** | **PA-G01-RUNTIME-MIN — 2 flows mínimos** | **NEXT / PENDING_RUNTIME** |
 
-Orden de gates recomendado:
+**Prioridad actual:** construir y ejecutar `CMMS_CORE_WorkQueue_List` y `CMMS_CORE_WorkOrder_Materialize`. Gate PASS únicamente con evidencia real de READY/JSON, idempotencia por `requestId`, manejo de errores CMMS-404/409 y fallos técnicos CMMS-500. En caso de PASS, extender el patrón a los otros seis flows **por incrementos verificados**; después conectar la primera vertical Power Apps y validar en Studio.
 
-1. `MSL-G01 — Source Normalization` — PASS_WITH_RECORDED_AMBIGUITIES;
-2. `MSL-G02 — Core Contracts` — PASS_WITH_DEFERRED_TRIGGER_VALUES;
-3. `TRG-G01 — Triggering Domain Contract` — PASS_CONTRACT;
-4. `WM-G02 — Execution Package` — PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY;
-5. `DM-G02 — Logical Model Freeze` — BLOCKED_BY_WORK_MANAGEMENT_CORE;
-6. `WM-G03 — Planning & Scheduling Contract` — PASS_BENCHMARKED_CONTRACT;
-7. `WM-G05 — Execution Feedback & Data Integrity` — PASS_BENCHMARKED_CONTRACT;
-8. `DM-G02 — Logical Model Freeze` — PASS_CORE_LOGICAL_MODEL;
-9. `DB-G01 — Physical SQL Core Design` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
-10. `DB-G01-RUNTIME — Execute & Validate in db-omm-dev` — PASS_RUNTIME;
-11. `SP-G01 — Core Stored Procedure Contracts for Power Automate` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
-12. `SP-G01-RUNTIME — Execute & Validate Procedures in db-omm-dev` — PASS_RUNTIME;
-13. `PA-G01 — Power Automate Core Flow Contracts` — DESIGN_READY_FOR_RUNTIME_VALIDATION;
-14. `PA-G01-RUNTIME-MIN — WorkQueue_List + WorkOrder_Materialize` — NEXT;
-7. `WM-G05 — Execution Feedback & Data Integrity`;
-8. re-evaluate `DM-G02`;
-5. diseño físico SQL;
-6. contratos SP/Power Automate;
-7. UI Power Apps.
+**Paralelo / diferido:** `MSL-G03/G04` (adopción y feedback corporativo), contraste operacional real del benchmark WM-G03/WM-G05, AE/Functional Lab, permisos PTW/LOTO integrales y dominios fuera del freeze técnico (costes, inventario, compras, facturación, RCA, KPI definitivo). Ninguno queda considerado implementado por la validación SQL del núcleo.
 
-Regla: no congelar tablas/columnas físicas mientras las cardinalidades críticas sigan abiertas.
+**Referencias:** [Estado](PROJECT_STATUS.md), [DM-G02](00-governance/audits/2026-10-08-data-model-g02.md), [DB-G01 runtime](00-governance/audits/2026-10-08-db-g01-runtime.md), [SP-G01](00-governance/audits/2026-10-08-sp-g01.md), [PA-G01](00-governance/audits/2026-10-08-pa-g01.md).
+
+---
+
+## Registro anterior de descubrimiento (conservado)
 
 ## Revisión 2026-09-25 — Work Management
 
@@ -98,7 +98,7 @@ Que un dominio se estudie antes no implica necesariamente que se implemente ante
 - corporate change proposals;
 - feedback loop master ↔ project.
 
-**Madurez:** principios funcionales confirmados el 2026-09-11; contratos detallados pendientes.
+**Madurez vigente:** MSL-G01/G02 con PASS documentado el 2026-10-08; MSL-G03/G04 y validación de valores de trigger históricos pendientes.
 
 Regla central:
 
@@ -257,7 +257,7 @@ JobPlan / Procedure reference
 
 # 4. Track MSL — Maintenance Standards Library
 
-**Estado:** iniciado 2026-09-11.
+**Estado:** iniciado 2026-09-11; MSL-G01/G02 superados el 2026-10-08. Este apartado conserva objetivos, no la lista de gates actuales.
 
 ## MSL-G01 — Source normalization
 
@@ -324,7 +324,7 @@ No se añade automáticamente al mapa de pantallas.
 
 # 5. FL-9 — Work Management Discovery
 
-**Estado:** discovery v0.2.
+**Estado del descubrimiento histórico:** v0.2 (posteriormente v0.3). WM-G02/G03/G05 tienen contratos documentados en octubre; no validación de un AS-IS local.
 
 ## WM-G01 — AS-IS
 
@@ -341,7 +341,7 @@ Activity
 ↔ Execution Result
 ```
 
-La reunión 2026-09-11 aporta evidencia, pero no cierra el gate.
+**Actualización 2026-10-08:** WM-G02 = PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY; la integración total de PTW/LOTO queda fuera de ese gate.
 
 ## WM-G03 — Planning/Scheduling
 
@@ -403,21 +403,15 @@ La relación física no se incorpora a contratos Asset hasta MSL-G02.
 
 ---
 
-# 8. Orden recomendado de próximo aprendizaje
+# 8. Orden operativo vigente y continuidad de aprendizaje
 
-Para la nueva línea de mantenimiento estándar:
+1. Completar **PA-G01-RUNTIME-MIN** con evidencia de los dos flows prioritarios.
+2. Replicar el patrón validado en los otros seis flows, evitando escrituras directas de Power Apps sobre SQL.
+3. Integrar una vertical mínima en Power Apps y pasar un gate real de Studio; no asumir que los workspaces previos están desplegados.
+4. Abordar MSL-G03 (snapshot/adopción) y MSL-G04 (feedback al master) con la evidencia fuente y los contratos ya existentes.
+5. Revisar, con responsables funcionales, los aspectos WM-G03/WM-G05 basados en benchmark antes de convertirlos en reglas operativas específicas.
 
-```text
-1. MSL-G01 normalizar fuente real
-2. MSL-G02 cerrar core contracts
-3. seleccionar fixture real de standard adoption
-4. definir UX surface
-5. implementar incremento pequeño
-6. validar en Studio
-7. continuar MSL-G03/G04
-```
-
-El caso RCM P-101 puede seguir avanzando en paralelo con sus gates propios.
+El caso P-101 y el UX de la biblioteca siguen disponibles como laboratorios independientes, pero no bloquean el gate actual de integración.
 
 ---
 
