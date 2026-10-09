@@ -1,6 +1,36 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-10-08
+**Última actualización:** 2026-10-09
+
+> **Lectura vigente:** el resumen de 2026-10-09 prevalece para *estado de gates y próximos pasos*. Los apartados cronológicos conservados más abajo son registros históricos de los momentos en que se redactaron; no deben reutilizarse como bloqueos o prioridades actuales. Las decisiones de producto se gobiernan por Product Truth y el Decision Register.
+
+## Resumen operativo vigente — 2026-10-09
+
+| Gate / ámbito | Estado documentado | Evidencia y alcance |
+|---|---|---|
+| MSL-G01 | PASS_WITH_RECORDED_AMBIGUITIES | Fuentes reales TouatGaz normalizadas; algunos valores XLS no extraídos |
+| MSL-G02 | PASS_WITH_DEFERRED_TRIGGER_VALUES | Core Standards/JobPlan, ProcedureChecklist opcional V1 |
+| TRG-G01 | PASS_CONTRACT | Política, estado, previsión, ocurrencia y evento Due separados |
+| WM-G02 | PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY | Execution Package; PTW/LOTO queda fuera de este contrato |
+| WM-G03 | PASS_BENCHMARKED_CONTRACT | Planning/Scheduling V1 con benchmark; no validación AS-IS de proyecto |
+| WM-G05 | PASS_BENCHMARKED_CONTRACT | Feedback/actuals V1 con benchmark; no validación AS-IS de proyecto |
+| DM-G01 | PASS_WITH_OPEN_CONTRACTS | Reconciliación conceptual inicial; los bloqueos siguientes se resolvieron en DM-G02 |
+| DM-G02 | PASS_CORE_LOGICAL_MODEL | Freeze del **núcleo técnico**, no de los módulos futuros excluidos |
+| DB-G01-RUNTIME | PASS_RUNTIME | 37 tablas de `cmms` comprobadas en `db-omm-dev` según gate fechado 08/10 |
+| SP-G01 | PASS_RUNTIME | Stored procedures: inventario, vertical smoke y rollback documentados |
+| PA-G01 | DESIGN_READY_FOR_RUNTIME_VALIDATION | 8 contratos de flows; **no equivale a flujos ejecutados** |
+| PA-G01-RUNTIME-MIN | **PENDING_RUNTIME / NEXT** | Validación aún no documentada de los dos primeros flows en Power Automate |
+| Functional Lab / Power Apps | VALIDACIÓN STUDIO PENDIENTE | Los contratos/fixtures no acreditan implementación real de todos los workspaces |
+
+**Siguiente gate de ejecución:** `PA-G01-RUNTIME-MIN`. Construir y probar `CMMS_CORE_WorkQueue_List` y `CMMS_CORE_WorkOrder_Materialize`, verificando JSON de salida, reintento con `requestId` sin duplicidad, errores funcionales y errores de conector. No desplegar como validado ni replicar los otros seis flows antes del PASS runtime.
+
+**Trabajo posterior, no cerrado por estos gates:** `MSL-G03` (adopción por proyecto), `MSL-G04` (feedback corporativo), validación local del benchmark WM-G03/WM-G05, integración Power Apps/Studio, permiso operativo completo, costes/contratos/facturación, catálogo KPI definitivo e integración IT productiva.
+
+**Fuente de verificación:** [DB-G01 runtime](00-governance/audits/2026-10-08-db-g01-runtime.md), [SP-G01 runtime](00-governance/audits/2026-10-08-sp-g01.md), [PA-G01](00-governance/audits/2026-10-08-pa-g01.md), [DM-G02](00-governance/audits/2026-10-08-data-model-g02.md) y [Decision Register](05-meetings/decisions/DECISION_REGISTER.md).
+
+---
+
+## Registro cronológico y estado funcional previo (cortes históricos)
 
 ## Data Model G01 — 2026-10-08
 
@@ -22,7 +52,7 @@ Reconciliaciones principales:
 - `CorrectiveWorkOrder` se trata como tipo/origen de `WorkOrder`, no como agregado obligatorio separado;
 - `Frequency` deja de pertenecer conceptualmente a `MaintenanceActivity` y pasa al dominio Triggering.
 
-**Bloqueo actual:** todavía no procede congelar SQL físico. `MSL-G01` y `MSL-G02` deben estabilizar `MaintenanceActivity`, `JobPlan/ProcedureChecklist`, resources y project adoption; después puede cerrarse `TRG-G01`.
+**Bloqueo a fecha de DM-G01 (SUPERADO el 08/10):** la congelación física requería MSL-G01/G02 y TRG-G01. El núcleo lógico quedó liberado mediante DM-G02 y el SQL core fue probado en DB-G01-RUNTIME.
 
 ---
 ## MSL-G01 — Source Availability
@@ -31,7 +61,7 @@ Auditoría 2026-10-08: **PASS_WITH_RECORDED_AMBIGUITIES**.
 
 El bloqueo quedó resuelto con cuatro paquetes reales TouatGaz (Units 103, 300, 303 y 404/406). Se normalizó como piloto el caso Compressor Unit 303 y se confirmó la separación entre PM/frequency, Job Plan, operaciones, recursos y herramientas.
 
-`MSL-G02 — Core Contracts` queda también en **PASS_WITH_DEFERRED_TRIGGER_VALUES**. El siguiente gate es `TRG-G01 — Triggering Domain Contract`.
+`MSL-G02 — Core Contracts` queda también en **PASS_WITH_DEFERRED_TRIGGER_VALUES**. `TRG-G01` se superó posteriormente el 08/10; no es el siguiente gate vigente.
 
 Fuente del gate: `00-governance/audits/2026-10-08-msl-g01-source-availability.md`.
 
@@ -92,7 +122,7 @@ Artefactos:
 
 Static review: PASS. No roles/users, no destructive DROP, no duplicate table/index/constraint names detected.
 
-El siguiente gate requiere evidencia runtime real en SQL Server. No se deben construir SPs/Power Automate sobre el nuevo modelo antes de ese PASS.
+**Nota histórica:** este era el siguiente gate al terminar el diseño DB-G01. DB-G01-RUNTIME y SP-G01 fueron validados posteriormente el 08/10. La prohibición anterior ya no bloquea sus contratos.
 
 ---
 
@@ -100,7 +130,7 @@ El siguiente gate requiere evidencia runtime real en SQL Server. No se deben con
 
 - `TRG-G01 — Triggering Domain Contract` = **PASS_CONTRACT**.
 - `WM-G02 — Execution Package` = **PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY**.
-- `DM-G02 — Logical Model Freeze` = **BLOCKED_BY_WORK_MANAGEMENT_CORE**.
+- `DM-G02 — Logical Model Freeze` = **BLOCKED_BY_WORK_MANAGEMENT_CORE** *en ese corte intermedio; superado después como PASS_CORE_LOGICAL_MODEL*.
 
 Correcciones estructurales:
 
@@ -111,7 +141,7 @@ Correcciones estructurales:
 - `MaintenanceDueEvent` queda como evidencia audit del cruce Due/Action;
 - una WO puede materializarse en `ReleaseAt`, antes de `DueAt`.
 
-El SQL físico continúa bloqueado hasta cerrar `WM-G03` y `WM-G05`.
+**Nota histórica:** los contratos WM-G03 y WM-G05 se cerraron después como PASS_BENCHMARKED_CONTRACT y DM-G02 pasó. El SQL core ya dispone de un gate runtime documentado.
 
 ---
 
@@ -148,7 +178,7 @@ Cambios relevantes reconciliados:
 CMMS 2.0 mantiene varias líneas funcionales gobernadas en paralelo:
 
 1. **Reliability Engineering / Functional Lab** — journey RCM consolidado y revisado a v1.3.
-2. **Maintenance Standards Library** — nuevo modelo funcional confirmado a nivel de principios; contratos detallados pendientes.
+2. **Maintenance Standards Library** — descripción histórica: después se documentaron MSL-G01/G02 PASS; MSL-G03/G04 siguen pendientes.
 3. **Asset Experience Redefinition** — contratos AE consolidados; implementación física sujeta a gates runtime/Studio.
 4. **Work Management Discovery v0.3** — rolling preventive, execution package, planner closure y feedback/data-quality ya tienen principios confirmados; contratos operativos siguen parciales.
 
@@ -225,7 +255,7 @@ WS-05/06 deberán soportar en el futuro `sourceBasis` y provenance, sin asumir q
 
 # 2. Maintenance Standards Library
 
-**Estado:** functional model v0.1; principles confirmed; contracts `to_validate`.
+**Estado de este apartado (corte de septiembre):** functional model v0.1, contracts `to_validate`. **Actualización 08/10:** MSL-G01/G02 PASS; permanecen MSL-G03/G04 y los valores trigger heredados por validar.
 
 Fuente:
 
@@ -397,11 +427,11 @@ PARTIAL. Expert walkthrough consistente; contraste con herramienta/proceso real 
 
 ### WM-G02 — Execution Package
 
-PARTIAL-ADVANCED. Activity, Job Plan, Procedure, asset documents, attachments y permit requirements identificados.
+**Estado histórico:** PARTIAL-ADVANCED. **Actual:** WM-G02 PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY; PTW/LOTO integral pendiente fuera de alcance.
 
 ### WM-G03 — Planning/Scheduling
 
-PARTIAL. Rolling next-due confirmado; trigger/horizon exacto, capacity, shifts, grouping, assignment y replanning siguen abiertos.
+**Estado histórico:** PARTIAL. **Actual:** TRG-G01 PASS_CONTRACT y WM-G03 PASS_BENCHMARKED_CONTRACT; casuística operativa local, optimización y agrupación automática no validadas.
 
 ### WM-G04 — Costs/Contracts
 
@@ -409,7 +439,7 @@ OPEN. El cierre técnico puede preceder al cierre de costes; detalle económico 
 
 ### WM-G05 — Execution Feedback & Data Integrity
 
-PARTIAL / NEW. Debe cerrar timestamps, actual resources, findings, corrective linkage, planner validation, technical close, data-quality rules y KPI source contract.
+**Estado histórico:** PARTIAL / NEW. **Actual:** WM-G05 PASS_BENCHMARKED_CONTRACT; evidencia de procesos reales de proyecto, RCA y KPI definitivo pendientes.
 
 Fuentes:
 
@@ -418,9 +448,11 @@ Fuentes:
 - 05-meetings/01_Analysis/ANL-005_revision-funcional-post-reunion-2026-09-25.md
 ---
 
-# 6. Próximos gates funcionales
+# 6. Secuencia funcional propuesta en septiembre (histórica)
 
-Orden recomendado:
+**No representa la prioridad operativa actual.** MSL-G01/G02 ya tienen PASS documentado; consultar el resumen de 2026-10-09 para la secuencia siguiente.
+
+Orden recomendado entonces:
 
 ```text
 MSL-G01 — normalizar una fuente real
