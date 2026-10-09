@@ -1,7 +1,9 @@
 # CMMS 2.0 — Product Truth Baseline v1.0
 
 **Fecha de consolidación:** 2026-10-02  
-**Estado:** CANONICAL BASELINE
+**Estado:** CANONICAL BASELINE **de principios de producto (corte 2026-10-02)**
+
+> **Vigencia (2026-10-09):** Los principios PT-01…PT-15 y las hipótesis rechazadas siguen siendo la referencia funcional, salvo que una decisión posterior registrada los sustituya expresamente. Las secciones **4, 6 y 7** contienen pendientes y el siguiente gate *tal como se conocían el 02/10*; para estados de gates y siguiente desarrollo consultar [PROJECT_STATUS](../PROJECT_STATUS.md), [ROADMAP](../ROADMAP.md) y [Decision Register](../05-meetings/decisions/DECISION_REGISTER.md). No interpretar el antiguo `MSL-G01` de la sección 7 como bloqueo actual.
 
 > Este documento congela lo aprendido en reuniones, análisis y Functional Lab antes de continuar implementación. Cuando exista una contradicción explícitamente reconciliada aquí, esta baseline prevalece sobre hipótesis anteriores.
 
