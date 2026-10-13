@@ -2,6 +2,18 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [1.1.3] - 2026-10-13
+
+### Auditoría de consolidación — G00
+
+- Registrado el inventario de main, ramas y PR en la auditoría G00, con matriz de prioridades, hallazgos, riesgos y lista de acciones para G01.
+- Identificadas 9 ramas divergentes, PR #11 y #12 no mergeables, y candidatos PaYaml de fases históricas sin promoverlos.
+- Comprobados estáticamente los nombres de los 8 procedimientos del contrato SP, script SQL y las 8 especificaciones de flows; verificados 134 enlaces relativos de 11 documentos centrales sin roturas.
+- Incorporados enlaces de Power Automate y auditoría en MASTER_INDEX; actualizado PROJECT_STATUS para indicar auditoría iniciada, **sin alterar gates vigentes**.
+- 0 fusiones, 0 borrados, 0 cambios SQL/Power Automate/Power Apps. Próximo gate técnico: PA-G01-RUNTIME-MIN todavía pendiente.
+
+---
+
 ## [1.1.2] - 2026-10-13
 
 ### Mapa de pantallas y navegación — propuesta UX
