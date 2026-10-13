@@ -2,6 +2,8 @@
 
 ## Gobierno
 
+- [Auditoría G00 2026-10-13 — inventario, ramas, riesgos y tareas](00-governance/audits/2026-10-13-repository-consolidation-g00.md)
+
 - [Política de concentración de hilos — 2 ACTIVE (2026-10-09)](00-governance/CMMS_THREAD_CONSOLIDATION_2026-10-09.md)
 
 - [Normas documentales](00-governance/DOCUMENTATION_RULES.md)
@@ -113,6 +115,14 @@
 - [DB-G01 Static Review](07-it-handoff/05-sql/DB-G01-static-review.md)
 - [DB-G01 Gate](00-governance/audits/2026-10-08-db-g01.md)
 - [DB-G01 Runtime Gate](00-governance/audits/2026-10-08-db-g01-runtime.md)
+
+## Power Automate core — PA-G01
+
+- [Contrato general de flows](07-it-handoff/07-power-automate/PA-G01-core-flow-contract.md)
+- [Especificaciones de los 8 flows](07-it-handoff/07-power-automate/PA-G01-flow-specifications.md)
+- [Runbook de los 2 flows iniciales](07-it-handoff/07-power-automate/PA-G01-runtime-first-two-flows.md)
+- [Build pattern PA-G01](07-it-handoff/07-power-automate/PA-G01-build-pattern.md)
+- [Gate PA-G01](00-governance/audits/2026-10-08-pa-g01.md)
 
 ## API / Stored Procedures
 
