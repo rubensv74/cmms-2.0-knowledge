@@ -87,6 +87,8 @@ Reporting/KPIs, documentación, permisos PTW/LOTO, compras/costes y administraci
 
 El usuario debe poder retroceder sin pérdida, identificar qué es recomendación del sistema y qué es decisión humana, y ver la causa de cualquier bloqueo. El **wizard AMEF** sigue HOLD como opción UX, no entidad o precondición persistente.
 
+**Frontera de publicación a validar:** el Functional Lab WS-08 contempla revisión/publicación del resultado del caso RCM. En el producto objetivo, PMP-02 se propone como punto único de publicación del Plan de Mantenimiento Aprobado; REL-01 no debe crear un segundo publicador ni saltarse el gate. El handoff exacto WS-08 → PMP-02 y su contrato se someterán a revisión, sin alterar la responsabilidad funcional existente del WS-08.
+
 ### 3.3 Planes, disparos y trabajo
 
 | ID / nombre | Tipo | Actor principal (hipótesis UX) | Propósito y criterio de éxito | Entradas mínimas | Operativas / decisiones del usuario | Salida y navegación | Estado / dependencia |
@@ -181,18 +183,18 @@ Para cada pantalla o tab se debe producir una ficha con:
 
 ## 8. Fuentes autoritativas y pendientes
 
-- [Product Truth Baseline](../../../00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md): PT-01…PT-15; revisar vigencia en estado más reciente.
-- [Decision Register](../../../05-meetings/decisions/DECISION_REGISTER.md).
-- [PROJECT_STATUS](../../../PROJECT_STATUS.md) y [ROADMAP](../../../ROADMAP.md).
-- [Functional Journey RCM v1.3](../../../02-functional/process-model/functional-journey.md): WS-01…09; AMEF wizard HOLD.
-- [Maintenance Standards Core Contract](../../../02-functional/process-model/maintenance-standards-core-contract-v0.1.md).
-- [Triggering contract](../../../02-functional/process-model/triggering-condition-monitoring-contract-v0.1.md).
-- [Work Management discovery](../../../02-functional/process-model/work-management-discovery.md).
-- [Planning/Scheduling v1](../../../02-functional/process-model/work-management-planning-scheduling-contract-v1.0.md).
-- [Execution Feedback v1](../../../02-functional/process-model/work-management-execution-feedback-contract-v1.0.md).
-- [Asset Screen Architecture V1](../../../06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md): AS-01…AS-04 prevalecen en dominio Assets.
-- [Premium Screen Standard](../../../06-ui-ux/CMMS_PREMIUM_SCREEN_STANDARD_V1.md) y [Page Header Hierarchy](../../../06-ui-ux/CMMS_PAGE_HEADER_HIERARCHY_V1.md).
-- [Document set / UI requirements](../../functional-document-set.md).
+- [Product Truth Baseline](../../00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md): PT-01…PT-15; revisar vigencia en estado más reciente.
+- [Decision Register](../../05-meetings/decisions/DECISION_REGISTER.md).
+- [PROJECT_STATUS](../../PROJECT_STATUS.md) y [ROADMAP](../../ROADMAP.md).
+- [Functional Journey RCM v1.3](../../02-functional/process-model/functional-journey.md): WS-01…09; AMEF wizard HOLD.
+- [Maintenance Standards Core Contract](../../02-functional/process-model/maintenance-standards-core-contract-v0.1.md).
+- [Triggering contract](../../02-functional/process-model/triggering-condition-monitoring-contract-v0.1.md).
+- [Work Management discovery](../../02-functional/process-model/work-management-discovery.md).
+- [Planning/Scheduling v1](../../02-functional/process-model/work-management-planning-scheduling-contract-v1.0.md).
+- [Execution Feedback v1](../../02-functional/process-model/work-management-execution-feedback-contract-v1.0.md).
+- [Asset Screen Architecture V1](../../06-ui-ux/CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md): AS-01…AS-04 prevalecen en dominio Assets.
+- [Premium Screen Standard](../../06-ui-ux/CMMS_PREMIUM_SCREEN_STANDARD_V1.md) y [Page Header Hierarchy](../../06-ui-ux/CMMS_PAGE_HEADER_HIERARCHY_V1.md).
+- [Document set / UI requirements](../functional-document-set.md).
 
 **Decisiones abiertas (no inventarlas):** aceptación del menú y destinos de V1, rol/seguridad final, profundidad UX de la adopción MSL-G03, programa de inspecciones independiente, necesidades de un Trigger Monitor transversal, cobertura de inventario, KPIs, branding definitivo y arquitectura productiva.
 
