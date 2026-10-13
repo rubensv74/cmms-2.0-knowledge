@@ -124,6 +124,7 @@
 
 ## Handoff funcional para IT
 
+- [Screen Map V1 — navegación y contratos de pantallas (propuesta, no aprobada)](07-it-handoff/05-ui/screen-map.md)
 - [Paquete documental modular](07-it-handoff/functional-document-set.md)
 
 ## Recursos
