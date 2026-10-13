@@ -1,8 +1,16 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-10-09
+**Última actualización:** 2026-10-13 (auditoría documental G00; sin cambio de estado técnico)
 
 > **Lectura vigente:** el resumen de 2026-10-09 prevalece para *estado de gates y próximos pasos*. Los apartados cronológicos conservados más abajo son registros históricos de los momentos en que se redactaron; no deben reutilizarse como bloqueos o prioridades actuales. Las decisiones de producto se gobiernan por Product Truth y el Decision Register.
+
+## Auditoría documental del repositorio — 2026-10-13
+
+- [G00 Inventory & Triage](00-governance/audits/2026-10-13-repository-consolidation-g00.md): 300 archivos en main, 12 ramas y 2 PR abiertas; 9 ramas divergentes, 2 sin commits exclusivos. Inventario inicial cerrado; reconciliación archivo-a-archivo G01 pendiente.
+- Se conserva main como fuente de verdad vigente; ninguna rama/PR ha sido fusionada o borrada. Las evidencias de componentes históricos requieren comparación y pruebas reales.
+- **El gate técnico del proyecto sigue siendo PA-G01-RUNTIME-MIN pendiente**. Esta auditoría no supone nueva prueba SQL, Flow o Studio.
+
+---
 
 ## Resumen operativo vigente — 2026-10-09
 
