@@ -2,6 +2,19 @@
 
 Todos los cambios relevantes del repositorio documental se registran aquí.
 
+## [1.1.2] - 2026-10-13
+
+### Mapa de pantallas y navegación — propuesta UX
+
+- Creado 07-it-handoff/05-ui/screen-map.md: Screen Map V1 con 7 grupos de menú, 8 destinos principales incluyendo inventario futuro, pantallas secundarias, tabs/workspaces e inspectores.
+- Respetados identificadores y límites existentes AS-01…AS-04, WS-01…WS-09 y fronteras de datos de Asset, Reliability, Maintenance Engineering, Triggering, Work Management y Execution.
+- Separadas las funciones Project Maintenance Plans / Plan Studio / Trigger Forecast / Work Orders / Scheduling / Execution & Closure; inventario e inspecciones autónomas no se presentan como implementados.
+- Identificado como pendiente de aceptación el handoff WS-08 → PMP-02 para que exista una sola autoridad de publicación del Plan de Mantenimiento Aprobado.
+- Añadidos contratos de entrada/salida, navegación contextual, decisiones humanas, errores/estados y gates de diseño.
+- **Sin cambios SQL/Power Automate/Power Apps**. No se modifica el siguiente gate técnico PA-G01-RUNTIME-MIN; no hay aprobación UX ni prueba de Studio acreditada.
+
+---
+
 ## [1.1.1] - 2026-10-09
 
 ### Gobierno documental y foco
