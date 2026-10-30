@@ -27,7 +27,7 @@
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
 | Target visual exacto | Candidato | Revisar/pinar Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d y detalle blob 360ca111366f5f0e13caa051a762587715285bb2; decisión humana pendiente. |
-| D2P Phase A | Draft | Completar Phase A inspeccionando fórmulas, dependencias Power Fx, usos canónicos, bindings y contrato del host; registry de paths/SHAs/CustomProperties ya iniciado. Ver iap-component-inventory-v1.md. |
+| D2P Phase A | Draft | Completar Phase A inspeccionando fórmulas, dependencias Power Fx, usos canónicos, bindings y contrato del host; definir TextInput y pager accesibles del host, ya que los candidatos DataGrid/Filter no ofrecen búsqueda local ni paginación. Registry de paths/SHAs/CustomProperties iniciado. Ver iap-component-inventory-v1.md. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
 | D2P Phase C / v3.3 | No iniciado | Cubrir navegación ida/vuelta, selección, filtros, sort/page, estados, accesibilidad y acción inicial visible. |
 | Product PaYaml | No iniciado | Solo con evidencia de los gates funcionales, visuales, A/B/C y v3.3 para los mismos hashes de target/source. |
