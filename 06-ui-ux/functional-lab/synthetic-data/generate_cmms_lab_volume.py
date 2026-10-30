@@ -320,6 +320,15 @@ def generate(profile: str) -> dict:
                 })
             requests.append(request)
 
+    annual_work_orders = [w for w in work_orders if w["type"] == "PREVENTIVE_ANNUAL"]
+    annual_work_order_ids = {w["workOrderId"] for w in annual_work_orders}
+    annual_execution_count = sum(1 for e in execution_records if e["workOrderId"] in annual_work_order_ids)
+    annual_planned_action_count = sum(len(w["plannedActions"]) for w in annual_work_orders)
+    annual_action_state_counts = {
+        state: sum(1 for w in annual_work_orders for a in w["plannedActions"] if a["displayState"] == state)
+        for state in ["COMPLETED", "COMPLETED_WITH_DEVIATION", "SCHEDULED", "PLANNED"]
+    }
+
     data = {
         "datasetVersion": "1.1.0",
         "datasetId": f"CMMS-LAB-SYNTH-{profile.upper()}-V1",
@@ -355,7 +364,10 @@ def generate(profile: str) -> dict:
         },
         "generationSummary": {
             "assetCount": len(assets),
-            "annualOrderCount": sum(1 for w in work_orders if w["type"] == "PREVENTIVE_ANNUAL"),
+            "annualOrderCount": len(annual_work_orders),
+            "annualPlannedActionCount": annual_planned_action_count,
+            "annualExecutionRecordCount": annual_execution_count,
+            "annualPlannedActionStateCounts": annual_action_state_counts,
             "plannedActionCount": sum(len(w["plannedActions"]) for w in work_orders),
             "plannedActionStateCounts": {
                 state: sum(1 for w in work_orders for a in w["plannedActions"] if a["displayState"] == state)
