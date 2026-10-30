@@ -1,3 +1,17 @@
+## DVP v2 — estado actualizado (2026-10-30)
+
+El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual → retorno con contexto. Los targets v2 y el fixture anual están alineados con synthetic profile v1.1. La cola no incluye fila correctiva ni Export; el detalle muestra actuaciones planificadas y ejecuciones reales inline.
+
+- Scope funcional v2: candidato, revisión pendiente; no se declara FE-COVERAGE PASS.
+- Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob 9d52868acd79a8f4fbefaced1bc056ed21d77e3d; detalle blob 9f97bccf2bfa819d0f48e34b8466bc3192396d24.
+- Componentes IAP/host: inventario preliminar en 06-ui-ux/functional-lab/dvp/iap-component-inventory-v1.md; source registry pendiente.
+- Siguiente secuencia: (1) revisión baseline funcional y pin de target; (2) source registry y host; (3) region map, estados e interacción; (4) informes D2P v3.3; (5) preparar paquete Canvas solo con gates listos.
+- La ratificación TR y los contratos de runtime siguen siendo gates para implementación real; no bloquean este DVP candidato de solo lectura y datos sintéticos.
+
+Consulta el [plan de ejecución DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md). El estado PM-GROUP-G01 y sus reglas de runtime se mantienen según la sección operativa/histórica de abajo.
+
+---
+
 # Roadmap CMMS 2.0
 
 **Última revisión:** 2026-10-30
