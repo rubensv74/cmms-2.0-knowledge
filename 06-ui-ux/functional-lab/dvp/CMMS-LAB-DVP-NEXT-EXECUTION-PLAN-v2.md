@@ -14,6 +14,12 @@
 5. Se escribieron el screen contract y la First-Touch experience del recorrido mínimo.
 6. Se creó scope funcional candidato v2. baseline_review.status sigue PENDING; no se declara FE-COVERAGE aprobado.
 
+## Artefactos de preparación añadidos
+
+- Inventario IAP/host preliminar: iap-component-inventory-v1.md. Selección funcional propuesta; contratos y SHAs exactos de la mayoría aún sin cotejar.
+- Mapa regional y de estado candidato: work-queue-annual-order-region-map-v2-candidate.md. Deriva propósito/aceptación de regiones visibles del SVG; no afirma layout medido en Canvas.
+- Se retiró Refresh de ambos SVG porque no tenía contrato funcional. El detalle ahora muestra los nombres de la actividad asociada al registro seleccionado.
+
 ## Gates vigentes
 
 | Gate | Estado | Siguiente evidencia concreta |
@@ -29,7 +35,7 @@
 ## Siguiente orden de trabajo autónomo
 
 1. Inspeccionar fuentes IAP y host contra el commit canónico; resolver nombres y contratos reales.
-2. Preparar region map v2 como documento candidato con propósito, límites y estados por región.
+2. Medir en Studio el region map candidato y resolver presupuesto responsive, capacidad, scroll y paginación.
 3. Preparar matriz de interacción/estado basada en el screen contract; mantener separadas actuaciones planificadas y ExecutionRecord.
 4. Con source evidence, generar los informes D2P requeridos contra hashes fijados y registrar hallazgos.
 5. Entregar target exacto y cobertura para revisión humana; no presentar PaYaml de producto como listo antes de ese gate.
