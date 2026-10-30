@@ -1,9 +1,11 @@
 # DVP v2 — Region map y cobertura de estados (candidato)
 
-**Target Work Queue:** blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d  
-**Target Annual Order Detail:** blob 360ca111366f5f0e13caa051a762587715285bb2  
+**Target Work Queue:** blob 273a771d1f51905f27e099a18e065bbfe454bda1  
+**Target Annual Order Detail:** blob 01a23bd3cfd9b9490cae8747316aa32baab28a57  
 **Estado:** DRAFT; revisión funcional/visual pendiente  
 **Lienzo de referencia:** SVG viewBox 1440×900. Regiones visuales del SVG, no medidas ni breakpoints Canvas.
+
+**Estados de ayuda:** Work Queue open-state blob 351deb3bb57f460758c2b2c67e55e891b0522703; Annual Order Detail open-state blob e95b0a6a68c899b29b7a265d8c12f95d2a8cc89a.
 
 ## Work Queue — región → tarea y aceptación
 
@@ -11,6 +13,7 @@
 |---|---|---|---|
 | Shell y barra de contexto | Reconocer CMMS Lab, espacio Work Management y entorno sintético | Contexto fijo del demo | Aviso visible de datos sintéticos y sin escrituras; no aparentar datos productivos. |
 | Breadcrumb y encabezado con hero | Entender propósito y salir hacia el espacio de trabajo | Propósito de la cola anual; navegación de shell existente | Propósito legible; navegación externa al slice se marca como host. Fijar provenance/crop de hero antes de import. |
+| Acción How it works y modal de Work Queue | Entender uso, límites y decisiones que justifican esta cola | Contenido curado para Work Queue; referencias 21/08 AS-IS, 25/09 y DEC-025/propuesta 30/10 | Apertura/cierre conserva búsqueda, filtros, orden y página. Mostrar estados de autoridad; el baseline anual posterior sigue pendiente TR. |
 | Banda de aviso del entorno | Distinguir demostración de sistema real | SYNTHETIC LAB; no production writes | Siempre visible en vista inicial; no interpretarlo como live. |
 | KPI strip | Dimensionar la cola anual | 62 órdenes; 248 acciones; 124 ExecutionRecords; 124 acciones no completadas | Cada valor deriva de perfil v1.1 con etiqueta/definición breve; no confundir acciones con órdenes. |
 | Búsqueda y filtros | Reducir órdenes por número, activo, actividad, estado o ciclo | Colección demo; filtros combinables y limpiables | Selección y borrado producen resultado visible; conservar filtros al volver. |
@@ -23,6 +26,7 @@
 |---|---|---|---|
 | Breadcrumb/Back | Volver sin perder contexto | Selección LAB-PM-2026-00004 y filtro/orden/página previos | Restaura contexto; no crea orden ni cambia estado. |
 | Encabezado y hero | Identificar la consulta y estado de demo | Orden anual, estado In progress sintético | Conserva contexto global/sintético; sin acción Refresh. |
+| Acción How it works y modal de Detail | Entender cómo leer actuaciones y actuals y las decisiones detrás de su separación | Contenido curado del detalle; reunión 25/09, 21/08 AS-IS y DEC-025/propuesta 30/10 | Abrir/cerrar no cambia selección ni estado; diferenciar reunión, contexto AS-IS y baseline posterior no ratificado. |
 | Provenance cards | Ver activo, actividad, plan publicado y ciclo | HX-0004; ACT-HX-PM; SYN-PLAN-000004; CYCLE-2026 | Identificadores visibles; ciclo ilustrativo; no presentar regla como aprobada. |
 | Resumen del ciclo | Distinguir completado, programado y pendiente | 4 planificadas; 2 con ExecutionRecords; 1 scheduled; 1 planned | Estados disjuntos y suman 4; completed with deviation sigue dentro de completadas. |
 | Actuaciones planificadas | Revisar secuencia, fecha prevista y estado | Q1–Q4; Q3 con programación 20 Nov; Q4 planned | Separar fecha prevista, programación y fecha real; nombre de tarea alineado con actividad. |
@@ -42,11 +46,12 @@
 | Acción sin ejecución | Estado planned o scheduled | Sin ExecutionRecord | No mostrar fecha real ni resultado inventado. |
 | Acción completada | Contador y estado | ExecutionRecord enlazado, actuals, resultado y feedback | Enlace por WorkOrderPlannedActionId, no solo por orden. |
 | Acción con desviación | Cuenta como completada | Resultado completed with deviation y follow-up recomendado | No crear WO correctiva automáticamente. |
-| Navegación de retorno | Reaparece misma página/contexto | Back to Work Queue | Único trayecto de salida específico del slice. |
+| Navegación de retorno | Reaparece misma página/contexto | Back to Work Queue | Único trayecto de salida específico del slice.
+| Ayuda abierta/cerrada | Modal sobre cola, sin perder contexto | Modal sobre detalle, sin perder selección ni contexto de retorno | Cierre explícito; foco vuelve al activador; no modificar datos/estados. |
 
 ## Acción inicial visible y responsividad
 
-- Primera vista: propósito, aviso sintético, KPI strip, búsqueda/filtros y al menos una fila seleccionable visibles a 1440×900. Foco/teclado/contraste requieren verificación al componer.
+- Primera vista: propósito, aviso sintético, KPI strip, búsqueda/filtros, acción How it works y al menos una fila seleccionable visibles a 1440×900. Foco/teclado/contraste requieren verificación al componer.
 - Desktop: tabla completa y detalle con lista de acciones más panel de ejecución.
 - Tablet: propuesta de reflujo de KPI y filtros; mantener claves de orden/activo y acción primaria visibles.
 - Ancho estrecho: propuesta de filas en tarjetas y ejecución bajo actuación seleccionada; evitar scroll horizontal para identificar orden/estado.
