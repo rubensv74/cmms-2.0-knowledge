@@ -63,11 +63,11 @@ The interactions are read-only: open/close screen help, search, combine/clear fi
 |---|---|---|
 | Shared shell | GlobalContextBar, ContextBreadcrumb | Project context, app navigation and breadcrumb |
 | Page identity | cmp_IAP_PageHeaderPhotoPro | Host supplies photo and purpose; ShowAction=true, ActionText=How it works, OnAction opens the screen-specific help modal; Back is host-owned |
-| Queue | MiniMetricStrip, FilterChips, DataGridPro | Bind synthetic read collections, filter/sort/page and row navigation |
+| Queue | MiniMetricStrip, FilterChips, DataGridPro | Host composes accessible local Search TextInput and pager; FilterChips emits filter intent; DataGrid receives normalized rows and emits row-select/sort. It has no search or pagination API. |
 | Detail | EntityInspector, ActivityTimeline | Bind provenance and actual executions; compose planned-action selection in the host |
 | Loading/feedback | SkeletonLoader, ActionFeedbackBar | Present loading/read errors; no refresh/retry outcome is in scope |
 | Screen help | Canvas native overlay/container; no IAP modal candidate exists at pinned source | Version screen-specific usage, action limits and decision provenance; preserve state and implement accessible focus/close behavior |
-| Responsive | ResponsiveLayoutMetrics | Candidate for primary/detail split; inspect formulas and measure Canvas. ResponsiveScreenBudget is not suitable for this two-pane slice. |
+| Responsive | ResponsiveLayoutMetrics | Candidate only for action-list / execution-panel split inside detail. Work Queue and Detail remain separate screens; do not use ResponsiveScreenBudget for this layout. Measure in Canvas. |
 
 These are candidate sources; pin each used source SHA and host property contract during D2P Phase A. The 32-candidate IAP coverage remains an app-wide inventory, not a demand to place every component here.
 
