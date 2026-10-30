@@ -30,7 +30,7 @@
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
 | Target visual exacto | Candidato | Revisar/pinar Work Queue blob ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c, detalle blob 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5 y modal-open blobs e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208; decisión humana pendiente. |
-| D2P Phase A | Draft | Completar Phase A con fórmulas, dependencias Power Fx, usos canónicos y contrato de búsqueda/pager/overlay. Mantener PageHeaderPhotoPro como identidad visual con ShowAction=false; el host ofrece su propio botón accesible “Cómo funciona” y controla apertura/cierre. El retorno del foco se dirige a ese botón del host. Registry de 12 paths/SHAs/CustomProperties ya extraído. Ver iap-component-inventory-v1.md. |
+| D2P Phase A | Draft | Revisión estática de fórmulas/dependencias completada para los candidatos seleccionados; ver iap-component-formula-dependency-review-v1.md. Restan bindings del host, usos canónicos y contrato completo de búsqueda/pager/overlay. PageHeaderPhotoPro se conserva con ShowAction=false; “Cómo funciona” pertenece al host. Registro de 12 paths/SHAs/CustomProperties extraído. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
 | D2P Phase C / v3.3 | No iniciado | Cubrir navegación, filtros, sort/page, ayuda abierta/cerrada, retorno del foco al botón del host, estados, accesibilidad y acción inicial visible. |
 | Product PaYaml | No iniciado | Solo con evidencia de los gates funcionales, visuales, A/B/C y v3.3 para los mismos hashes de target/source. |
