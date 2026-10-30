@@ -269,5 +269,675 @@
         "automaticWorkOrder": false
       }
     ]
-  }
+  },
+  "annualOrderDetails": [
+    {
+      "workOrder": {
+        "workOrderId": "SYN-WO-ANNUAL-000004",
+        "workOrderNo": "LAB-PM-2026-00004",
+        "type": "PREVENTIVE_ANNUAL",
+        "assetId": "SYN-ASSET-000004",
+        "planVersionId": "SYN-PLAN-000004",
+        "activityId": "SYN-ACTIVITY-000004",
+        "activityName": "Heat exchanger inspection",
+        "cycleKey": "CYCLE-2026",
+        "displayState": "IN_PROGRESS_DEMO",
+        "plannedActions": [
+          {
+            "plannedActionId": "SYN-ACTION-000041",
+            "plannedActionKey": "CYCLE-2026-Q1",
+            "plannedDueAt": "2026-03-15",
+            "displayState": "COMPLETED",
+            "maintenanceOccurrenceId": "SYN-OCC-000041",
+            "crewId": null,
+            "executionRecordId": "SYN-EXEC-000041",
+            "findingId": "SYN-FINDING-000041",
+            "permitRequirementId": "SYN-PERMIT-000041"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000042",
+            "plannedActionKey": "CYCLE-2026-Q2",
+            "plannedDueAt": "2026-06-15",
+            "displayState": "COMPLETED_WITH_DEVIATION",
+            "maintenanceOccurrenceId": "SYN-OCC-000042",
+            "crewId": "SYN-CREW-000003",
+            "executionRecordId": "SYN-EXEC-000042",
+            "findingId": "SYN-FINDING-000042",
+            "permitRequirementId": "SYN-PERMIT-000042"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000043",
+            "plannedActionKey": "CYCLE-2026-Q3",
+            "plannedDueAt": "2026-09-15",
+            "displayState": "SCHEDULED",
+            "maintenanceOccurrenceId": "SYN-OCC-000043",
+            "crewId": "SYN-CREW-000001",
+            "scheduledStartAt": "2026-11-20T07:00:00Z",
+            "scheduledFinishAt": "2026-11-20T10:00:00Z"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000044",
+            "plannedActionKey": "CYCLE-2026-Q4",
+            "plannedDueAt": "2026-12-15",
+            "displayState": "PLANNED",
+            "maintenanceOccurrenceId": null,
+            "crewId": null
+          }
+        ],
+        "annualClosePolicy": "OPEN_DECISION"
+      },
+      "asset": {
+        "assetId": "SYN-ASSET-000004",
+        "assetCode": "HX-0004",
+        "description": "Synthetic heat exchanger shell tube 0004",
+        "equipmentTypeCode": "HEAT_EXCHANGER_SHELL_TUBE",
+        "locationPath": [
+          "Synthetic Plant",
+          "Area-01",
+          "HX-0004"
+        ],
+        "criticality": "A",
+        "sourceStatus": "SYNTHETIC_FIXTURE_ONLY"
+      },
+      "planVersion": {
+        "planVersionId": "SYN-PLAN-000004",
+        "assetId": "SYN-ASSET-000004",
+        "sourceId": "SYN-SOURCE-000004",
+        "strategy": "TIME_BASED",
+        "activityId": "SYN-ACTIVITY-000004",
+        "activityCode": "ACT-HX-PM",
+        "activityName": "Heat exchanger inspection",
+        "status": "PUBLISHED_DEMO",
+        "effectiveFrom": "2026-01-01",
+        "demoOnly": true
+      },
+      "plannedActions": [
+        {
+          "plannedActionId": "SYN-ACTION-000041",
+          "plannedActionKey": "CYCLE-2026-Q1",
+          "plannedDueAt": "2026-03-15",
+          "displayState": "COMPLETED",
+          "maintenanceOccurrenceId": "SYN-OCC-000041",
+          "crewId": null,
+          "executionRecordId": "SYN-EXEC-000041",
+          "findingId": "SYN-FINDING-000041",
+          "permitRequirementId": "SYN-PERMIT-000041"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000042",
+          "plannedActionKey": "CYCLE-2026-Q2",
+          "plannedDueAt": "2026-06-15",
+          "displayState": "COMPLETED_WITH_DEVIATION",
+          "maintenanceOccurrenceId": "SYN-OCC-000042",
+          "crewId": "SYN-CREW-000003",
+          "executionRecordId": "SYN-EXEC-000042",
+          "findingId": "SYN-FINDING-000042",
+          "permitRequirementId": "SYN-PERMIT-000042"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000043",
+          "plannedActionKey": "CYCLE-2026-Q3",
+          "plannedDueAt": "2026-09-15",
+          "displayState": "SCHEDULED",
+          "maintenanceOccurrenceId": "SYN-OCC-000043",
+          "crewId": "SYN-CREW-000001",
+          "scheduledStartAt": "2026-11-20T07:00:00Z",
+          "scheduledFinishAt": "2026-11-20T10:00:00Z"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000044",
+          "plannedActionKey": "CYCLE-2026-Q4",
+          "plannedDueAt": "2026-12-15",
+          "displayState": "PLANNED",
+          "maintenanceOccurrenceId": null,
+          "crewId": null
+        }
+      ],
+      "executionRecords": [
+        {
+          "executionRecordId": "SYN-EXEC-000041",
+          "workOrderPlannedActionId": "SYN-ACTION-000041",
+          "workOrderId": "SYN-WO-ANNUAL-000004",
+          "actualStartAt": "2026-03-14T07:00:00Z",
+          "actualFinishAt": "2026-03-14T09:10:00Z",
+          "result": "COMPLETED_AS_PLANNED",
+          "performedByReference": "SYN-ACTOR-000005"
+        },
+        {
+          "executionRecordId": "SYN-EXEC-000042",
+          "workOrderPlannedActionId": "SYN-ACTION-000042",
+          "workOrderId": "SYN-WO-ANNUAL-000004",
+          "actualStartAt": "2026-06-16T07:00:00Z",
+          "actualFinishAt": "2026-06-16T09:10:00Z",
+          "result": "COMPLETED_WITH_DEVIATION",
+          "performedByReference": "SYN-ACTOR-000005"
+        }
+      ],
+      "findings": [
+        {
+          "findingId": "SYN-FINDING-000041",
+          "executionRecordId": "SYN-EXEC-000041",
+          "findingType": "NO_ADVERSE_FINDING",
+          "disposition": "NO_FOLLOW_UP",
+          "syntheticOnly": true
+        },
+        {
+          "findingId": "SYN-FINDING-000042",
+          "executionRecordId": "SYN-EXEC-000042",
+          "findingType": "DEMO_INSPECTION_FINDING",
+          "disposition": "FOLLOW_UP_RECOMMENDED",
+          "syntheticOnly": true
+        }
+      ],
+      "followUps": [
+        {
+          "followUpId": "SYN-FOLLOWUP-000042",
+          "findingId": "SYN-FINDING-000042",
+          "decision": "PLANNER_REVIEW_REQUIRED",
+          "automaticWorkOrder": false
+        }
+      ]
+    },
+    {
+      "workOrder": {
+        "workOrderId": "SYN-WO-ANNUAL-000008",
+        "workOrderNo": "LAB-PM-2026-00008",
+        "type": "PREVENTIVE_ANNUAL",
+        "assetId": "SYN-ASSET-000008",
+        "planVersionId": "SYN-PLAN-000008",
+        "activityId": "SYN-ACTIVITY-000008",
+        "activityName": "Safety valve inspection",
+        "cycleKey": "CYCLE-2026",
+        "displayState": "IN_PROGRESS_DEMO",
+        "plannedActions": [
+          {
+            "plannedActionId": "SYN-ACTION-000081",
+            "plannedActionKey": "CYCLE-2026-Q1",
+            "plannedDueAt": "2026-03-15",
+            "displayState": "COMPLETED",
+            "maintenanceOccurrenceId": "SYN-OCC-000081",
+            "crewId": null,
+            "executionRecordId": "SYN-EXEC-000081",
+            "findingId": "SYN-FINDING-000081",
+            "permitRequirementId": "SYN-PERMIT-000081"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000082",
+            "plannedActionKey": "CYCLE-2026-Q2",
+            "plannedDueAt": "2026-06-15",
+            "displayState": "COMPLETED_WITH_DEVIATION",
+            "maintenanceOccurrenceId": "SYN-OCC-000082",
+            "crewId": "SYN-CREW-000001",
+            "executionRecordId": "SYN-EXEC-000082",
+            "findingId": "SYN-FINDING-000082",
+            "permitRequirementId": "SYN-PERMIT-000082"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000083",
+            "plannedActionKey": "CYCLE-2026-Q3",
+            "plannedDueAt": "2026-09-15",
+            "displayState": "SCHEDULED",
+            "maintenanceOccurrenceId": "SYN-OCC-000083",
+            "crewId": "SYN-CREW-000002",
+            "scheduledStartAt": "2026-11-20T07:00:00Z",
+            "scheduledFinishAt": "2026-11-20T10:00:00Z"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000084",
+            "plannedActionKey": "CYCLE-2026-Q4",
+            "plannedDueAt": "2026-12-15",
+            "displayState": "PLANNED",
+            "maintenanceOccurrenceId": null,
+            "crewId": null
+          }
+        ],
+        "annualClosePolicy": "OPEN_DECISION"
+      },
+      "asset": {
+        "assetId": "SYN-ASSET-000008",
+        "assetCode": "PSV-0008",
+        "description": "Synthetic pressure safety valve 0008",
+        "equipmentTypeCode": "PRESSURE_SAFETY_VALVE",
+        "locationPath": [
+          "Synthetic Plant",
+          "Area-01",
+          "PSV-0008"
+        ],
+        "criticality": "B",
+        "sourceStatus": "SYNTHETIC_FIXTURE_ONLY"
+      },
+      "planVersion": {
+        "planVersionId": "SYN-PLAN-000008",
+        "assetId": "SYN-ASSET-000008",
+        "sourceId": "SYN-SOURCE-000008",
+        "strategy": "TIME_BASED",
+        "activityId": "SYN-ACTIVITY-000008",
+        "activityCode": "ACT-PSV-PM",
+        "activityName": "Safety valve inspection",
+        "status": "PUBLISHED_DEMO",
+        "effectiveFrom": "2026-01-01",
+        "demoOnly": true
+      },
+      "plannedActions": [
+        {
+          "plannedActionId": "SYN-ACTION-000081",
+          "plannedActionKey": "CYCLE-2026-Q1",
+          "plannedDueAt": "2026-03-15",
+          "displayState": "COMPLETED",
+          "maintenanceOccurrenceId": "SYN-OCC-000081",
+          "crewId": null,
+          "executionRecordId": "SYN-EXEC-000081",
+          "findingId": "SYN-FINDING-000081",
+          "permitRequirementId": "SYN-PERMIT-000081"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000082",
+          "plannedActionKey": "CYCLE-2026-Q2",
+          "plannedDueAt": "2026-06-15",
+          "displayState": "COMPLETED_WITH_DEVIATION",
+          "maintenanceOccurrenceId": "SYN-OCC-000082",
+          "crewId": "SYN-CREW-000001",
+          "executionRecordId": "SYN-EXEC-000082",
+          "findingId": "SYN-FINDING-000082",
+          "permitRequirementId": "SYN-PERMIT-000082"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000083",
+          "plannedActionKey": "CYCLE-2026-Q3",
+          "plannedDueAt": "2026-09-15",
+          "displayState": "SCHEDULED",
+          "maintenanceOccurrenceId": "SYN-OCC-000083",
+          "crewId": "SYN-CREW-000002",
+          "scheduledStartAt": "2026-11-20T07:00:00Z",
+          "scheduledFinishAt": "2026-11-20T10:00:00Z"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000084",
+          "plannedActionKey": "CYCLE-2026-Q4",
+          "plannedDueAt": "2026-12-15",
+          "displayState": "PLANNED",
+          "maintenanceOccurrenceId": null,
+          "crewId": null
+        }
+      ],
+      "executionRecords": [
+        {
+          "executionRecordId": "SYN-EXEC-000081",
+          "workOrderPlannedActionId": "SYN-ACTION-000081",
+          "workOrderId": "SYN-WO-ANNUAL-000008",
+          "actualStartAt": "2026-03-14T07:00:00Z",
+          "actualFinishAt": "2026-03-14T09:10:00Z",
+          "result": "COMPLETED_AS_PLANNED",
+          "performedByReference": "SYN-ACTOR-000002"
+        },
+        {
+          "executionRecordId": "SYN-EXEC-000082",
+          "workOrderPlannedActionId": "SYN-ACTION-000082",
+          "workOrderId": "SYN-WO-ANNUAL-000008",
+          "actualStartAt": "2026-06-16T07:00:00Z",
+          "actualFinishAt": "2026-06-16T09:10:00Z",
+          "result": "COMPLETED_WITH_DEVIATION",
+          "performedByReference": "SYN-ACTOR-000002"
+        }
+      ],
+      "findings": [
+        {
+          "findingId": "SYN-FINDING-000081",
+          "executionRecordId": "SYN-EXEC-000081",
+          "findingType": "NO_ADVERSE_FINDING",
+          "disposition": "NO_FOLLOW_UP",
+          "syntheticOnly": true
+        },
+        {
+          "findingId": "SYN-FINDING-000082",
+          "executionRecordId": "SYN-EXEC-000082",
+          "findingType": "DEMO_INSPECTION_FINDING",
+          "disposition": "FOLLOW_UP_RECOMMENDED",
+          "syntheticOnly": true
+        }
+      ],
+      "followUps": [
+        {
+          "followUpId": "SYN-FOLLOWUP-000082",
+          "findingId": "SYN-FINDING-000082",
+          "decision": "PLANNER_REVIEW_REQUIRED",
+          "automaticWorkOrder": false
+        }
+      ]
+    },
+    {
+      "workOrder": {
+        "workOrderId": "SYN-WO-ANNUAL-000012",
+        "workOrderNo": "LAB-PM-2026-00012",
+        "type": "PREVENTIVE_ANNUAL",
+        "assetId": "SYN-ASSET-000012",
+        "planVersionId": "SYN-PLAN-000012",
+        "activityId": "SYN-ACTIVITY-000012",
+        "activityName": "Compressor filter inspection",
+        "cycleKey": "CYCLE-2026",
+        "displayState": "IN_PROGRESS_DEMO",
+        "plannedActions": [
+          {
+            "plannedActionId": "SYN-ACTION-000121",
+            "plannedActionKey": "CYCLE-2026-Q1",
+            "plannedDueAt": "2026-03-15",
+            "displayState": "COMPLETED",
+            "maintenanceOccurrenceId": "SYN-OCC-000121",
+            "crewId": null,
+            "executionRecordId": "SYN-EXEC-000121",
+            "findingId": "SYN-FINDING-000121",
+            "permitRequirementId": "SYN-PERMIT-000121"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000122",
+            "plannedActionKey": "CYCLE-2026-Q2",
+            "plannedDueAt": "2026-06-15",
+            "displayState": "COMPLETED_WITH_DEVIATION",
+            "maintenanceOccurrenceId": "SYN-OCC-000122",
+            "crewId": "SYN-CREW-000002",
+            "executionRecordId": "SYN-EXEC-000122",
+            "findingId": "SYN-FINDING-000122",
+            "permitRequirementId": "SYN-PERMIT-000122"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000123",
+            "plannedActionKey": "CYCLE-2026-Q3",
+            "plannedDueAt": "2026-09-15",
+            "displayState": "SCHEDULED",
+            "maintenanceOccurrenceId": "SYN-OCC-000123",
+            "crewId": "SYN-CREW-000003",
+            "scheduledStartAt": "2026-11-20T07:00:00Z",
+            "scheduledFinishAt": "2026-11-20T10:00:00Z"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000124",
+            "plannedActionKey": "CYCLE-2026-Q4",
+            "plannedDueAt": "2026-12-15",
+            "displayState": "PLANNED",
+            "maintenanceOccurrenceId": null,
+            "crewId": null
+          }
+        ],
+        "annualClosePolicy": "OPEN_DECISION"
+      },
+      "asset": {
+        "assetId": "SYN-ASSET-000012",
+        "assetCode": "COMPRESSOR-0012",
+        "description": "Synthetic compressor reciprocating 0012",
+        "equipmentTypeCode": "COMPRESSOR_RECIPROCATING",
+        "locationPath": [
+          "Synthetic Plant",
+          "Area-01",
+          "COMPRESSOR-0012"
+        ],
+        "criticality": "C",
+        "sourceStatus": "SYNTHETIC_FIXTURE_ONLY"
+      },
+      "planVersion": {
+        "planVersionId": "SYN-PLAN-000012",
+        "assetId": "SYN-ASSET-000012",
+        "sourceId": "SYN-SOURCE-000012",
+        "strategy": "TIME_BASED",
+        "activityId": "SYN-ACTIVITY-000012",
+        "activityCode": "ACT-COMP-PM",
+        "activityName": "Compressor filter inspection",
+        "status": "PUBLISHED_DEMO",
+        "effectiveFrom": "2026-01-01",
+        "demoOnly": true
+      },
+      "plannedActions": [
+        {
+          "plannedActionId": "SYN-ACTION-000121",
+          "plannedActionKey": "CYCLE-2026-Q1",
+          "plannedDueAt": "2026-03-15",
+          "displayState": "COMPLETED",
+          "maintenanceOccurrenceId": "SYN-OCC-000121",
+          "crewId": null,
+          "executionRecordId": "SYN-EXEC-000121",
+          "findingId": "SYN-FINDING-000121",
+          "permitRequirementId": "SYN-PERMIT-000121"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000122",
+          "plannedActionKey": "CYCLE-2026-Q2",
+          "plannedDueAt": "2026-06-15",
+          "displayState": "COMPLETED_WITH_DEVIATION",
+          "maintenanceOccurrenceId": "SYN-OCC-000122",
+          "crewId": "SYN-CREW-000002",
+          "executionRecordId": "SYN-EXEC-000122",
+          "findingId": "SYN-FINDING-000122",
+          "permitRequirementId": "SYN-PERMIT-000122"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000123",
+          "plannedActionKey": "CYCLE-2026-Q3",
+          "plannedDueAt": "2026-09-15",
+          "displayState": "SCHEDULED",
+          "maintenanceOccurrenceId": "SYN-OCC-000123",
+          "crewId": "SYN-CREW-000003",
+          "scheduledStartAt": "2026-11-20T07:00:00Z",
+          "scheduledFinishAt": "2026-11-20T10:00:00Z"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000124",
+          "plannedActionKey": "CYCLE-2026-Q4",
+          "plannedDueAt": "2026-12-15",
+          "displayState": "PLANNED",
+          "maintenanceOccurrenceId": null,
+          "crewId": null
+        }
+      ],
+      "executionRecords": [
+        {
+          "executionRecordId": "SYN-EXEC-000121",
+          "workOrderPlannedActionId": "SYN-ACTION-000121",
+          "workOrderId": "SYN-WO-ANNUAL-000012",
+          "actualStartAt": "2026-03-14T07:00:00Z",
+          "actualFinishAt": "2026-03-14T09:10:00Z",
+          "result": "COMPLETED_AS_PLANNED",
+          "performedByReference": "SYN-ACTOR-000006"
+        },
+        {
+          "executionRecordId": "SYN-EXEC-000122",
+          "workOrderPlannedActionId": "SYN-ACTION-000122",
+          "workOrderId": "SYN-WO-ANNUAL-000012",
+          "actualStartAt": "2026-06-16T07:00:00Z",
+          "actualFinishAt": "2026-06-16T09:10:00Z",
+          "result": "COMPLETED_WITH_DEVIATION",
+          "performedByReference": "SYN-ACTOR-000006"
+        }
+      ],
+      "findings": [
+        {
+          "findingId": "SYN-FINDING-000121",
+          "executionRecordId": "SYN-EXEC-000121",
+          "findingType": "NO_ADVERSE_FINDING",
+          "disposition": "NO_FOLLOW_UP",
+          "syntheticOnly": true
+        },
+        {
+          "findingId": "SYN-FINDING-000122",
+          "executionRecordId": "SYN-EXEC-000122",
+          "findingType": "DEMO_INSPECTION_FINDING",
+          "disposition": "FOLLOW_UP_RECOMMENDED",
+          "syntheticOnly": true
+        }
+      ],
+      "followUps": [
+        {
+          "followUpId": "SYN-FOLLOWUP-000122",
+          "findingId": "SYN-FINDING-000122",
+          "decision": "PLANNER_REVIEW_REQUIRED",
+          "automaticWorkOrder": false
+        }
+      ]
+    },
+    {
+      "workOrder": {
+        "workOrderId": "SYN-WO-ANNUAL-000016",
+        "workOrderNo": "LAB-PM-2026-00016",
+        "type": "PREVENTIVE_ANNUAL",
+        "assetId": "SYN-ASSET-000016",
+        "planVersionId": "SYN-PLAN-000016",
+        "activityId": "SYN-ACTIVITY-000016",
+        "activityName": "Pump lubrication and inspection",
+        "cycleKey": "CYCLE-2026",
+        "displayState": "IN_PROGRESS_DEMO",
+        "plannedActions": [
+          {
+            "plannedActionId": "SYN-ACTION-000161",
+            "plannedActionKey": "CYCLE-2026-Q1",
+            "plannedDueAt": "2026-03-15",
+            "displayState": "COMPLETED",
+            "maintenanceOccurrenceId": "SYN-OCC-000161",
+            "crewId": null,
+            "executionRecordId": "SYN-EXEC-000161",
+            "findingId": "SYN-FINDING-000161",
+            "permitRequirementId": "SYN-PERMIT-000161"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000162",
+            "plannedActionKey": "CYCLE-2026-Q2",
+            "plannedDueAt": "2026-06-15",
+            "displayState": "COMPLETED_WITH_DEVIATION",
+            "maintenanceOccurrenceId": "SYN-OCC-000162",
+            "crewId": "SYN-CREW-000003",
+            "executionRecordId": "SYN-EXEC-000162",
+            "findingId": "SYN-FINDING-000162",
+            "permitRequirementId": "SYN-PERMIT-000162"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000163",
+            "plannedActionKey": "CYCLE-2026-Q3",
+            "plannedDueAt": "2026-09-15",
+            "displayState": "SCHEDULED",
+            "maintenanceOccurrenceId": "SYN-OCC-000163",
+            "crewId": "SYN-CREW-000001",
+            "scheduledStartAt": "2026-11-20T07:00:00Z",
+            "scheduledFinishAt": "2026-11-20T10:00:00Z"
+          },
+          {
+            "plannedActionId": "SYN-ACTION-000164",
+            "plannedActionKey": "CYCLE-2026-Q4",
+            "plannedDueAt": "2026-12-15",
+            "displayState": "PLANNED",
+            "maintenanceOccurrenceId": null,
+            "crewId": null
+          }
+        ],
+        "annualClosePolicy": "OPEN_DECISION"
+      },
+      "asset": {
+        "assetId": "SYN-ASSET-000016",
+        "assetCode": "PUMP-0016",
+        "description": "Synthetic pump centrifugal horizontal 0016",
+        "equipmentTypeCode": "PUMP_CENTRIFUGAL_HORIZONTAL",
+        "locationPath": [
+          "Synthetic Plant",
+          "Area-01",
+          "PUMP-0016"
+        ],
+        "criticality": "A",
+        "sourceStatus": "SYNTHETIC_FIXTURE_ONLY"
+      },
+      "planVersion": {
+        "planVersionId": "SYN-PLAN-000016",
+        "assetId": "SYN-ASSET-000016",
+        "sourceId": "SYN-SOURCE-000016",
+        "strategy": "TIME_BASED",
+        "activityId": "SYN-ACTIVITY-000016",
+        "activityCode": "ACT-PUMP-PM",
+        "activityName": "Pump lubrication and inspection",
+        "status": "PUBLISHED_DEMO",
+        "effectiveFrom": "2026-01-01",
+        "demoOnly": true
+      },
+      "plannedActions": [
+        {
+          "plannedActionId": "SYN-ACTION-000161",
+          "plannedActionKey": "CYCLE-2026-Q1",
+          "plannedDueAt": "2026-03-15",
+          "displayState": "COMPLETED",
+          "maintenanceOccurrenceId": "SYN-OCC-000161",
+          "crewId": null,
+          "executionRecordId": "SYN-EXEC-000161",
+          "findingId": "SYN-FINDING-000161",
+          "permitRequirementId": "SYN-PERMIT-000161"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000162",
+          "plannedActionKey": "CYCLE-2026-Q2",
+          "plannedDueAt": "2026-06-15",
+          "displayState": "COMPLETED_WITH_DEVIATION",
+          "maintenanceOccurrenceId": "SYN-OCC-000162",
+          "crewId": "SYN-CREW-000003",
+          "executionRecordId": "SYN-EXEC-000162",
+          "findingId": "SYN-FINDING-000162",
+          "permitRequirementId": "SYN-PERMIT-000162"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000163",
+          "plannedActionKey": "CYCLE-2026-Q3",
+          "plannedDueAt": "2026-09-15",
+          "displayState": "SCHEDULED",
+          "maintenanceOccurrenceId": "SYN-OCC-000163",
+          "crewId": "SYN-CREW-000001",
+          "scheduledStartAt": "2026-11-20T07:00:00Z",
+          "scheduledFinishAt": "2026-11-20T10:00:00Z"
+        },
+        {
+          "plannedActionId": "SYN-ACTION-000164",
+          "plannedActionKey": "CYCLE-2026-Q4",
+          "plannedDueAt": "2026-12-15",
+          "displayState": "PLANNED",
+          "maintenanceOccurrenceId": null,
+          "crewId": null
+        }
+      ],
+      "executionRecords": [
+        {
+          "executionRecordId": "SYN-EXEC-000161",
+          "workOrderPlannedActionId": "SYN-ACTION-000161",
+          "workOrderId": "SYN-WO-ANNUAL-000016",
+          "actualStartAt": "2026-03-14T07:00:00Z",
+          "actualFinishAt": "2026-03-14T09:10:00Z",
+          "result": "COMPLETED_AS_PLANNED",
+          "performedByReference": "SYN-ACTOR-000003"
+        },
+        {
+          "executionRecordId": "SYN-EXEC-000162",
+          "workOrderPlannedActionId": "SYN-ACTION-000162",
+          "workOrderId": "SYN-WO-ANNUAL-000016",
+          "actualStartAt": "2026-06-16T07:00:00Z",
+          "actualFinishAt": "2026-06-16T09:10:00Z",
+          "result": "COMPLETED_WITH_DEVIATION",
+          "performedByReference": "SYN-ACTOR-000003"
+        }
+      ],
+      "findings": [
+        {
+          "findingId": "SYN-FINDING-000161",
+          "executionRecordId": "SYN-EXEC-000161",
+          "findingType": "NO_ADVERSE_FINDING",
+          "disposition": "NO_FOLLOW_UP",
+          "syntheticOnly": true
+        },
+        {
+          "findingId": "SYN-FINDING-000162",
+          "executionRecordId": "SYN-EXEC-000162",
+          "findingType": "DEMO_INSPECTION_FINDING",
+          "disposition": "FOLLOW_UP_RECOMMENDED",
+          "syntheticOnly": true
+        }
+      ],
+      "followUps": [
+        {
+          "followUpId": "SYN-FOLLOWUP-000162",
+          "findingId": "SYN-FINDING-000162",
+          "decision": "PLANNER_REVIEW_REQUIRED",
+          "automaticWorkOrder": false
+        }
+      ]
+    }
+  ]
 }
