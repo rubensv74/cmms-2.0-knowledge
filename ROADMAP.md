@@ -5,6 +5,7 @@ El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual �
 - Scope funcional v2: candidato, revisión pendiente; no se declara FE-COVERAGE PASS.
 - Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d; detalle blob 360ca111366f5f0e13caa051a762587715285bb2.
 - Componentes IAP/host: inventario preliminar en 06-ui-ux/functional-lab/dvp/iap-component-inventory-v1.md; source registry pendiente.
+- Region map y matriz de estados candidatos redactados en 06-ui-ux/functional-lab/dvp/work-queue-annual-order-region-map-v2-candidate.md; falta medición Canvas y confirmación de contratos source.
 - Siguiente secuencia: (1) revisión baseline funcional y pin de target; (2) source registry y host; (3) region map, estados e interacción; (4) informes D2P v3.3; (5) preparar paquete Canvas solo con gates listos.
 - La ratificación TR y los contratos de runtime siguen siendo gates para implementación real; no bloquean este DVP candidato de solo lectura y datos sintéticos.
 
