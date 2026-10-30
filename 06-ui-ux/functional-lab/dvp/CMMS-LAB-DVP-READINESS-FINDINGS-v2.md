@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-30  
 **Status:** candidate scope corrected; human review, canonical source inventory, target approval and Studio evidence pending  
-**Target blobs:** Work Queue 273a771d1f51905f27e099a18e065bbfe454bda1; Annual Order Detail 01a23bd3cfd9b9490cae8747316aa32baab28a57; help-open states 351deb3bb57f460758c2b2c67e55e891b0522703 / e95b0a6a68c899b29b7a265d8c12f95d2a8cc89a  
+**Target blobs:** Work Queue ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c; Annual Order Detail 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5; help-open states e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208  
 **Scope:** read-only annual PM queue → annual order detail → return with context.
 
 ## Findings from the v1 trace
