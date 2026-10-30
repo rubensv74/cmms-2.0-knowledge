@@ -69,7 +69,7 @@
       "steps": [
         {
           "view": "WORK_QUEUE",
-          "action": "Open the screen help modal, review the queue purpose, available actions and meeting/decision rationale, then close it without losing queue state.",
+          "action": "Open the screen help modal, review queue purpose, available actions and meeting/decision rationale, then close it without losing queue state.",
           "next_view": "WORK_QUEUE"
         },
         {
@@ -79,12 +79,12 @@
         },
         {
           "view": "ANNUAL_ORDER_DETAIL",
-          "action": "Open the screen help modal, review how planned actions and actual executions are represented and the supporting decisions, then close it.",
+          "action": "Inspect plan provenance, cycle, planned actions and inline execution evidence for a selected action.",
           "next_view": "ANNUAL_ORDER_DETAIL"
         },
         {
           "view": "ANNUAL_ORDER_DETAIL",
-          "action": "Inspect plan provenance, cycle, planned actions and inline execution evidence for a selected action.",
+          "action": "Open the screen help modal, review how planned actions and actual executions are represented and their decision rationale, then close it without changing context.",
           "next_view": "ANNUAL_ORDER_DETAIL"
         },
         {
