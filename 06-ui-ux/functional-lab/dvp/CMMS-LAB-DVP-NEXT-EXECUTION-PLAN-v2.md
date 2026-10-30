@@ -18,6 +18,7 @@
 ## Artefactos de preparación añadidos
 
 - Revisión estática de fórmulas y dependencias de los candidatos seleccionados: iap-component-formula-dependency-review-v1.md. Aclara responsabilidades de componentes vs. host; no es validación Studio.
+- Contrato candidato de interacciones del host: work-queue-annual-order-host-interaction-contract-v1.md. Fija la adaptación de la proyección v1.1, el estado de cola, los eventos IAP y la ruta de retorno. El fixture contiene ahora detalle enlazado para las cuatro filas visibles.
 - Contrato candidato implementable para el modal reutilizable por pantalla, con binding de PageHeaderPhotoPro, contenido trazable, cierre y preservación del contexto: screen-help-modal-implementation-contract-v1.md.
 
 - Inventario IAP/host: iap-component-inventory-v1.md. Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos; la revisión estática de fórmulas/dependencias de los candidatos elegidos está en iap-component-formula-dependency-review-v1.md. Usos canónicos y bindings completos del host siguen pendientes.
@@ -31,7 +32,7 @@
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
 | Target visual exacto | Candidato | Revisar/pinar Work Queue blob ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c, detalle blob 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5 y modal-open blobs e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208; decisión humana pendiente. |
-| D2P Phase A | Draft | Revisión estática de fórmulas/dependencias completada para los candidatos seleccionados; ver iap-component-formula-dependency-review-v1.md. Restan bindings del host, usos canónicos y contrato completo de búsqueda/pager/overlay. PageHeaderPhotoPro muestra su acción integrada “How it works”, cuyo evento abre el overlay host. Registro de 12 paths/SHAs/CustomProperties extraído. |
+| D2P Phase A | Draft | Revisión estática de fórmulas/dependencias completada; el contrato work-queue-annual-order-host-interaction-contract-v1.md fija la adaptación de datos, eventos, filtros, orden, página, selección, navegación y overlay. Restan usos canónicos y verificación de bindings/eventos en Studio. PageHeaderPhotoPro abre el overlay desde su acción integrada. El fixture v1.1 aporta detalle enlazado para sus cuatro filas. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
 | D2P Phase C / v3.3 | No iniciado | Cubrir navegación, filtros, sort/page, ayuda abierta/cerrada desde PageHeaderPhotoPro.Action, retorno de foco, estados, accesibilidad y acción inicial visible. |
 | Product PaYaml | No iniciado | Solo con evidencia de los gates funcionales, visuales, A/B/C y v3.3 para los mismos hashes de target/source. |
@@ -39,7 +40,7 @@
 
 ## Siguiente orden de trabajo autónomo
 
-1. Cerrar los bindings candidatos del host (búsqueda local, filtros, orden/página, selección, navegación y overlay), con fórmulas y estado explícitos; conectar la acción integrada del encabezado con el overlay y completar revisión de usos canónicos.
+1. Completar revisión de usos canónicos de los componentes seleccionados y contrastar los bindings del host documentados con sus instancias reales; mantener el modal conectado a la acción integrada del encabezado.
 2. Medir en Studio el region map candidato y resolver presupuesto responsive, capacidad, scroll y paginación.
 3. Medir modal y reflow con el shell en Studio; comprobar apertura/cierre desde la acción integrada, foco/retorno, teclado, lector de pantalla, scroll interno y persistencia de contexto. La incertidumbre sobre acceso explícito al botón interno no bloquea el diseño ni la construcción del modal.
 4. Actualizar matriz de estados/interacción con evidencia Studio; mantener separadas actuaciones planificadas y ExecutionRecord.
