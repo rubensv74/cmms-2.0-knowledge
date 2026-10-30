@@ -16,6 +16,10 @@ A first-time user should understand the relationship between the Approved Mainte
 
 The queue no longer presents a corrective row that cannot be opened in this slice. Export and the separate execution-record button are removed. Corrective and CBM cases remain in the synthetic pack for later DVP capabilities.
 
+## Ayuda contextual y decisiones
+
+Cada pantalla ofrece un modal **How it works** con el propósito, los controles y límites disponibles y las decisiones que explican el diseño. La ayuda distingue la descripción AS-IS de la reunión del 21/08, los principios confirmados el 25/09 y el baseline posterior de DEC-025/propuesta 30/10, que sigue pendiente de ratificación TR. Abrir o cerrar el modal no cambia ni pierde el contexto. Véase el [contrato del modal](screen-help-and-decision-rationale-modal-v1.md).
+
 ## Scenarios
 
 - Primary order: `LAB-PM-2026-00004`, four planned actions; two executions recorded; one action scheduled for 20 November 2026; one remains planned.
@@ -26,6 +30,8 @@ The queue no longer presents a corrective row that cannot be opened in this slic
 
 - [Work Queue v2](targets/work-queue-v2-candidate.svg)
 - [Annual Order Detail v2](targets/annual-order-detail-v2-candidate.svg)
+- [Work Queue help-open state](targets/work-queue-help-open-v1-candidate.svg)
+- [Annual Order Detail help-open state](targets/annual-order-detail-help-open-v1-candidate.svg)
 
 Both retain the accepted visual direction: premium industrial photo header, shared shell, clear screen purpose, compact queue and HERO detail. These are candidate target assets, not Canvas renders. The exact v2 target revisions need to be pinned in the readiness ledger before PaYaml.
 
