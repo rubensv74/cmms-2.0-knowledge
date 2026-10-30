@@ -7,7 +7,7 @@ El primer recorrido queda acotado a Work Queue PM anual → Annual Order Detail 
 | Perfil sintético funcional v1.1 | PREPARADO | 250 activos; 62 órdenes anuales; 248 actuaciones planificadas; 124 ExecutionRecords anuales; 265 actuaciones totales. Sin datos de planta ni reglas aprobadas. |
 | Alcance funcional | CANDIDATO; revisión pendiente | Scope v2 con baseline_review.status=PENDING. No se declara FE-COVERAGE aprobado. |
 | Targets Work Queue, Detail y estados de modal | CANDIDATOS | Work Queue ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c; Detail 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5; modal-open e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208. Revisión visual humana pendiente. |
-| Componentes IAP / host | SOURCE REGISTRY PARCIAL | Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos; fórmulas, dependencias, host y validación Studio pendientes. |
+| Componentes IAP / host | SOURCE REGISTRY PARCIAL | Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos. La firma de PageHeader TMS adjunto coincide; su body distinto se conserva como autoridad de instancia. Fórmulas, dependencias, host y validación Studio pendientes. |
 | Modal de ayuda por pantalla | REQUISITO AÑADIDO; CANDIDATO DVP | Estándar y scope incluyen contenido de uso/límites/decisiones; targets muestran acceso y estados abiertos. Overlay Canvas accesible aún no implementado ni validado. |
 | Product PaYaml / D2P v3.3 | NO INICIADO | Requiere baseline revisado, target aprobado, source registry, region map y gates D2P. |
 | Studio / runtime | PENDIENTE | Sin aplicación Canvas ni evidencia Studio, SQL o Power Automate para este slice. |
