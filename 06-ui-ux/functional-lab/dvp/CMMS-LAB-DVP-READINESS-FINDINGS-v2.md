@@ -23,7 +23,7 @@
 - Target and screen contract agree on no corrective/CBM rows, no Export/Refresh, and inline execution evidence.
 - Annual completion/pending states are visible. Cycle-end disposition stays OPEN_DECISION; this detail screen does not resolve it.
 - Functional scope candidate is v2 and still has baseline_review.status PENDING. FE-COVERAGE is not reported as PASS.
-- IAP inventory and region map are drafts. Component property contracts and canonical source SHAs are not fully extracted or reviewed.
+- IAP inventory now pins 12 source blob SHAs and extracts primary CustomProperties at commit 377a6b3c. Formula internals, dependency graph, canonical usage, host contract and Studio rendering remain unreviewed; the inventory and region map are still drafts.
 - SVG dimensions and visual regions do not constitute Canvas layout measurements. Responsive capacity, navigation focus, keyboard behavior and initial-view action remain unverified.
 - No product PaYaml, Studio import/render, SQL or Power Automate work is claimed.
 
