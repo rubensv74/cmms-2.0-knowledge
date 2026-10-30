@@ -21,7 +21,7 @@
 
 **CMMS Lab en paralelo:** fixture funcional sintético enlazado (250 activos; PM anual, CBM, correctivo, hallazgos, actuals y límites de permisos/inventario), bajo autoridad demostrativa. No representa valores ni estándares aprobados. El generador ofrece perfil de carga separado.
 
-**DVP / Power Apps:** el brief y el screen contract candidato permiten componer el flujo visual con datos sintéticos. La composición candidata avanza en paralelo. El paso a Studio y runtime exige los artefactos DVP de origen, contracts de lectura/write coherentes y ratificación de las reglas de negocio que afecten transiciones y autoridad; no se afirma implementación/validación Studio.
+**DVP / Power Apps:** el brief, screen contract y dos targets SVG candidatos permiten revisar el flujo visual con datos sintéticos. La composición candidata avanza en paralelo; las imágenes aún no son targets aprobados. El paso a Studio y runtime exige los artefactos DVP de origen, contracts de lectura/write coherentes y ratificación de las reglas de negocio que afecten transiciones y autoridad; no se afirma implementación/validación Studio.
 
 **Después del gate:** migración aditiva con backfill, procedures y flows idempotentes, runtime validation manual en el entorno de desarrollo, primer vertical slice Power Apps y handoff funcional-técnico para IT.
 

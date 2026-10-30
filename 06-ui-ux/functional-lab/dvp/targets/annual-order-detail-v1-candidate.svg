@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">PlantWise CMMS Lab — Annual Work Order Detail candidate</title>
+<desc id="desc">Provisional desktop detail for a synthetic annual preventive work order and its planned actions.</desc>
+<defs>
+  <linearGradient id="navy" x1="0" x2="1"><stop stop-color="#102033"/><stop offset="1" stop-color="#172B43"/></linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="#1D3553" flood-opacity=".08"/></filter>
+  <style>text{font-family:Inter,Arial,sans-serif}.muted{fill:#718096}.small{font-size:12px}.tiny{font-size:10px}.label{font-size:11px;font-weight:700;letter-spacing:.08em}.body{font-size:13px}.title{font-size:25px;font-weight:700;fill:#132238}.head{font-size:14px;font-weight:700;fill:#18263B}.nav{font-size:13px;fill:#B8C5D6}</style>
+</defs>
+<rect width="1440" height="900" fill="#F3F6FA"/>
+<rect width="228" height="900" fill="url(#navy)"/>
+<circle cx="34" cy="34" r="17" fill="#2F6BFF"/><path d="M26 38l8-15 8 15h-4l-4-7-4 7z" fill="#fff"/>
+<text x="61" y="31" fill="#FFFFFF" font-size="17" font-weight="700">PlantWise</text><text x="61" y="48" fill="#8FA5BE" font-size="10" letter-spacing="1">CMMS LAB</text>
+<text x="24" y="100" class="label" fill="#7890AA">WORK MANAGEMENT</text>
+<rect x="13" y="116" width="202" height="42" rx="9" fill="#234267"/><rect x="13" y="116" width="3" height="42" rx="2" fill="#52B6FF"/><text x="45" y="142" fill="#FFFFFF" font-size="13" font-weight="600">Work Queue</text>
+<text x="24" y="192" class="nav">Work Orders</text><text x="24" y="231" class="nav">Planning &amp; Schedule</text><text x="24" y="270" class="nav">Execution History</text>
+<text x="24" y="330" class="label" fill="#7890AA">MAINTENANCE MODEL</text><text x="24" y="362" class="nav">Assets</text><text x="24" y="401" class="nav">Approved Plans</text><text x="24" y="440" class="nav">Condition Monitoring</text>
+<rect x="16" y="817" width="196" height="60" rx="10" fill="#1A304A"/><circle cx="39" cy="847" r="15" fill="#294B70"/><text x="34" y="851" fill="#DCE8F5" font-size="10" font-weight="700">LAB</text><text x="63" y="843" fill="#E7EEF7" font-size="12" font-weight="600">Synthetic environment</text><text x="63" y="861" fill="#91A5BB" font-size="10">Demo data · no production writes</text>
+<rect x="228" width="1212" height="68" fill="#FFFFFF"/><line x1="228" y1="68" x2="1440" y2="68" stroke="#E5EAF0"/>
+<text x="260" y="28" fill="#63738A" font-size="11" font-weight="600">PROJECT</text><text x="260" y="49" fill="#1B2A3E" font-size="13" font-weight="600">TR Demo Plant</text><path d="M365 43l5 5 5-5" fill="none" stroke="#63738A" stroke-width="1.5"/>
+<rect x="1170" y="20" width="131" height="28" rx="14" fill="#EAF3FF"/><circle cx="1187" cy="34" r="4" fill="#2980EF"/><text x="1198" y="38" fill="#2861A4" font-size="10" font-weight="700">SYNTHETIC LAB</text><circle cx="1342" cy="34" r="16" fill="#E8EDF4"/><text x="1334" y="38" fill="#42536A" font-size="10" font-weight="700">LAB</text>
+<!-- Breadcrumb and header -->
+<text x="260" y="105" fill="#8A98AA" font-size="11">Work Queue  /  LAB-PM-2026-001</text>
+<path d="M260 136l-6 6 6 6" fill="none" stroke="#52657D" stroke-width="1.7"/><text x="278" y="146" fill="#52657D" font-size="12">Back to queue</text>
+<text x="260" y="187" class="title">Annual preventive work order</text>
+<text x="260" y="212" fill="#2F6BFF" font-size="13" font-weight="700">LAB-PM-2026-001</text>
+<rect x="416" y="194" width="92" height="23" rx="11" fill="#EAF3FF"/><circle cx="430" cy="205" r="3" fill="#2F6BFF"/><text x="440" y="209" fill="#255DA5" font-size="10" font-weight="600">In progress</text>
+<text x="1335" y="202" class="small muted" text-anchor="end">Synthetic demonstration · 30 Oct 2026</text>
+<!-- Asset / plan context -->
+<rect x="260" y="235" width="1103" height="107" rx="12" fill="#FFFFFF" filter="url(#shadow)"/>
+<rect x="279" y="255" width="67" height="67" rx="10" fill="#EAF1F8"/><path d="M291 296c0-16 10-25 22-25 11 0 19 8 19 18v7h-41z" fill="#8CA3BC"/><circle cx="313" cy="276" r="7" fill="#4C6B89"/><rect x="299" y="299" width="30" height="5" rx="2" fill="#4C6B89"/>
+<text x="365" y="263" class="label muted">ASSET</text><text x="365" y="286" fill="#1D2B40" font-size="15" font-weight="700">P-102 · Cooling water pump B</text><text x="365" y="307" fill="#728095" font-size="11">Unit A / Cooling Water</text>
+<line x1="704" y1="255" x2="704" y2="322" stroke="#E8EDF3"/>
+<text x="728" y="263" class="label muted">APPROVED MAINTENANCE PLAN</text><text x="728" y="286" fill="#1D2B40" font-size="14" font-weight="700">PM-P102 · Lubrication &amp; inspection</text><text x="728" y="307" fill="#728095" font-size="11">Demo revision 1.2 · time-based</text>
+<line x1="1112" y1="255" x2="1112" y2="322" stroke="#E8EDF3"/>
+<text x="1134" y="263" class="label muted">PLAN CYCLE</text><text x="1134" y="288" fill="#1D2B40" font-size="14" font-weight="700">CYCLE-2026</text><text x="1134" y="308" fill="#8A98AA" font-size="10">Illustrative label</text>
+<!-- Summary strip -->
+<g filter="url(#shadow)"><rect x="260" y="358" width="260" height="78" rx="11" fill="#FFFFFF"/><rect x="535" y="358" width="260" height="78" rx="11" fill="#FFFFFF"/><rect x="810" y="358" width="260" height="78" rx="11" fill="#FFFFFF"/><rect x="1085" y="358" width="278" height="78" rx="11" fill="#FFFFFF"/></g>
+<text x="280" y="384" class="label muted">PLANNED ACTIONS</text><text x="280" y="416" fill="#1D2B40" font-size="24" font-weight="700">4</text><text x="309" y="415" class="small muted">in this order</text>
+<text x="555" y="384" class="label muted">COMPLETED</text><text x="555" y="416" fill="#27845D" font-size="24" font-weight="700">2</text><text x="585" y="415" class="small muted">with execution records</text>
+<text x="830" y="384" class="label muted">SCHEDULED</text><text x="830" y="416" fill="#A87316" font-size="24" font-weight="700">1</text><text x="859" y="415" class="small muted">planned slot confirmed</text>
+<text x="1105" y="384" class="label muted">PENDING / PLANNED</text><text x="1105" y="416" fill="#52657D" font-size="24" font-weight="700">1</text><text x="1134" y="415" class="small muted">no disposition selected</text>
+<!-- left timeline -->
+<rect x="260" y="454" width="574" height="374" rx="12" fill="#FFFFFF" filter="url(#shadow)"/>
+<text x="282" y="485" class="head">Actuaciones programadas</text><text x="282" y="505" class="tiny muted">4 planned actions · sorted by planned date</text>
+<rect x="278" y="521" width="538" height="65" rx="9" fill="#F5F9FF" stroke="#D8E7FA"/>
+<circle cx="301" cy="547" r="8" fill="#2DA875"/><path d="M297 547l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.5"/>
+<text x="322" y="544" fill="#28394F" font-size="12" font-weight="700">Quarter 1 · Lubrication inspection</text><text x="322" y="565" class="tiny muted">Due 15 Mar 2026 · completed 14 Mar</text>
+<rect x="721" y="535" width="77" height="22" rx="11" fill="#E8F6EF"/><text x="736" y="550" fill="#24825A" font-size="9" font-weight="700">COMPLETED</text>
+<rect x="278" y="594" width="538" height="65" rx="9" fill="#FFFFFF" stroke="#E7ECF2"/>
+<circle cx="301" cy="620" r="8" fill="#2DA875"/><path d="M297 620l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.5"/>
+<text x="322" y="617" fill="#28394F" font-size="12" font-weight="700">Quarter 2 · Lubrication inspection</text><text x="322" y="638" class="tiny muted">Due 15 Jun 2026 · completed 16 Jun</text>
+<rect x="699" y="608" width="99" height="22" rx="11" fill="#FFF4DF"/><text x="712" y="623" fill="#986911" font-size="9" font-weight="700">WITH DEVIATION</text>
+<rect x="278" y="667" width="538" height="65" rx="9" fill="#FFFFFF" stroke="#E7ECF2"/>
+<circle cx="301" cy="693" r="8" fill="#E3A33A"/><text x="298" y="697" fill="#fff" font-size="10" font-weight="700">↗</text>
+<text x="322" y="690" fill="#28394F" font-size="12" font-weight="700">Quarter 3 · Lubrication inspection</text><text x="322" y="711" class="tiny muted">Due 15 Sep 2026 · scheduled 20 Oct</text>
+<rect x="727" y="681" width="71" height="22" rx="11" fill="#FFF4DF"/><text x="742" y="696" fill="#986911" font-size="9" font-weight="700">SCHEDULED</text>
+<rect x="278" y="740" width="538" height="65" rx="9" fill="#FFFFFF" stroke="#E7ECF2"/>
+<circle cx="301" cy="766" r="8" fill="#9AA7B6"/><text x="298" y="770" fill="#fff" font-size="10" font-weight="700">4</text>
+<text x="322" y="763" fill="#28394F" font-size="12" font-weight="700">Quarter 4 · Lubrication inspection</text><text x="322" y="784" class="tiny muted">Planned date 15 Dec 2026</text>
+<rect x="727" y="754" width="71" height="22" rx="11" fill="#F0F2F5"/><text x="743" y="769" fill="#59687B" font-size="9" font-weight="700">PLANNED</text>
+<!-- right execution detail -->
+<rect x="850" y="454" width="513" height="374" rx="12" fill="#FFFFFF" filter="url(#shadow)"/>
+<text x="875" y="485" class="head">Execution detail</text><text x="875" y="505" class="tiny muted">Selected action · Quarter 2</text>
+<rect x="875" y="522" width="463" height="58" rx="9" fill="#F8FAFC"/>
+<text x="893" y="545" class="label muted">EXECUTION RECORD</text><text x="893" y="566" fill="#2F6BFF" font-size="12" font-weight="700">SYN-EXEC-002</text>
+<text x="875" y="610" class="label muted">ACTUAL START / FINISH</text><text x="875" y="633" fill="#25364D" font-size="12">16 Jun 2026 · 07:00 – 09:10</text>
+<text x="875" y="667" class="label muted">RESULT</text><rect x="875" y="680" width="188" height="25" rx="12" fill="#FFF4DF"/><circle cx="890" cy="692" r="3" fill="#E3A33A"/><text x="900" y="696" fill="#986911" font-size="10" font-weight="700">COMPLETED WITH DEVIATION</text>
+<text x="875" y="732" class="label muted">PLANNER FOLLOW-UP</text><text x="875" y="754" fill="#25364D" font-size="12">Inspection finding recorded</text><text x="875" y="773" fill="#718096" font-size="11">Review recommendation · no repair order auto-created</text>
+<rect x="875" y="789" width="142" height="26" rx="7" fill="#FFFFFF" stroke="#DDE4EC"/><text x="893" y="806" fill="#415168" font-size="10" font-weight="600">Open execution record</text>
+<text x="260" y="860" fill="#8492A4" font-size="10">Candidate screen · Synthetic data · Cycle label and dates are illustrative, not approved operating rules</text>
+</svg>

@@ -7,7 +7,7 @@
 
 ## 1. DVP objective
 
-Detailed layout/data contract: [Work Queue and Annual Order screen contract](work-queue-annual-order-screen-contract-v1.md).
+Detailed layout/data contract: [Work Queue and Annual Order screen contract](work-queue-annual-order-screen-contract-v1.md). Candidate visuals: [Work Queue](targets/work-queue-v1-candidate.svg) and [Annual Work Order Detail](targets/annual-order-detail-v1-candidate.svg).
 
 Prove that a first-time user can follow the narrative from approved plan to annual preventive order, understand the execution outcome attached to each planned action and identify pending work without confusing parent order state with planned action state.
 
@@ -124,3 +124,8 @@ Record confusion points by step, screen, fixture record and viewport. A successf
 ## User-facing terminology
 
 In the Spanish walkthrough, label the child records **Actuaciones programadas**. The detail shows the planned date/state and, when performed, the linked execution record with actual dates, result and evidence. Do not label these records as visits.
+
+
+## 8. Provisional target visuals
+
+Two neutral desktop SVG targets were prepared from the synthetic fixture. They are design candidates for review, not approved product targets and not Studio renders. The cycle label, values and work states are demonstrative. Use stakeholder feedback to refine the visual direction; keep business-rule ratification separate from this visual review.

@@ -112,3 +112,11 @@ This contract supports provisional visual composition. A Studio-ready DVP packag
 - Studio parse/render evidence and current-to-target visual QA.
 
 Until those inputs are pinned, the deliverable is a functional screen contract candidate; it must not be labelled Studio-ready.
+
+
+## 8. Provisional visual references
+
+- [Work Queue target candidate](targets/work-queue-v1-candidate.svg)
+- [Annual Work Order Detail target candidate](targets/annual-order-detail-v1-candidate.svg)
+
+Both SVGs are synthetic design drafts, not approved target images or Power Apps renders. They are enough to conduct a visual review and update the candidate layout while the business rules remain provisional.
