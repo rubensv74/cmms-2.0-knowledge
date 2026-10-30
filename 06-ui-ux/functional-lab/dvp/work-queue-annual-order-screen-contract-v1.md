@@ -13,7 +13,7 @@ This screen contract is not runtime authorization, a final data schema, or a cla
 
 ## 2. First-touch journey
 
-The walkthrough has two screens. Users can find an order, understand what it covers, inspect the planned actions and see each recorded execution result. No mutation command is included in this slice.
+The walkthrough has two screens. Users can find an order, understand what it covers, inspect the planned actions and see each recorded execution result. Each shared page header includes the hero image, a plain-language purpose and the actions available on that screen. No mutation command is included in this slice.
 
 ### Screen A — Work Queue
 
@@ -22,7 +22,7 @@ The walkthrough has two screens. Users can find an order, understand what it cov
 | Region | Content | Interaction |
 |---|---|---|
 | Global context | CMMS Lab identity, project selector/context, breadcrumb, current data freshness | Change project context; no role choice is inferred |
-| Page header | “Work Queue”; one-sentence purpose; refresh timestamp | Refresh data with visible loading/complete/error feedback |
+| Shared PageHeaderPro hero | Industrial hero image with readable overlay, screen title, one-sentence purpose, refresh timestamp and refresh action | Refresh the read model with visible loading/complete/error feedback; image is decorative and has accessible text alternative |
 | Attention summary | Total open orders, due/upcoming planned actions, incomplete annual orders, orders with findings | Open the matching filtered queue; counts are synthetic |
 | Filters and views | Work type, order state, plan provenance, asset, cycle label, planned-action state; saved views as a candidate | Combine filters; clear filters; preserve the current view |
 | Work grid | Order number, asset, activity, plan/version, cycle label, completed/total actions, next planned date, aggregate order state | Sort, page, open a row without losing the current queue context |
@@ -35,7 +35,8 @@ Cycle values are read from the explicit CycleKey/display label. The interface do
 
 | Region | Content | Interaction |
 |---|---|---|
-| Order header | Order number, asset, approved plan/version, activity, cycle label, aggregate status | Return to queue with filters and page retained |
+| Shared PageHeaderPro hero | Industrial hero image, order identity/status, one-sentence explanation, return-to-queue and refresh actions | Return with filters/page retained; refresh read data with visible feedback |
+| Order context | Asset, approved plan/version, activity, explicit cycle label and aggregate status | Follow plan provenance; cycle label is displayed as supplied |
 | Summary strip | Planned-action count, completed count, scheduled count, pending count | Selecting a count filters the action list |
 | Planned-action timeline | Chronological “Actuaciones programadas” with planned date, state, schedule/resource summary | Select an action; timeline selection does not mutate the order |
 | Execution detail | Linked ExecutionRecord, actual start/finish, outcome, labor/material actuals, checklist/evidence and findings where available | Open linked finding or evidence in context |
@@ -44,6 +45,10 @@ Cycle values are read from the explicit CycleKey/display label. The interface do
 The 2026 synthetic scenario shows four planned actions: two completed, one scheduled and one still planned. The separate cycle-end scenario shows three completed and one pending; it carries no selected disposition. Neither dataset defines TR policy.
 
 ## 3. Screen states
+
+The hero image remains decorative: it must not carry instructions or status information, and overlay contrast must preserve readable text.
+
+The screen-level actions are read-only in this slice: refresh, search, combine/clear filters, choose a saved view, sort/page, open an order, return to the queue, select a planned action and follow an existing relationship. Each action must produce an understandable result; no write behavior is implied.
 
 Both screens must represent these states explicitly:
 
@@ -62,7 +67,7 @@ Use only components whose task fits the surface. The 32-component inventory rema
 
 | Surface | IAP candidates | Intended use |
 |---|---|---|
-| Shared shell | PageHeaderPro, GlobalContextBar, ContextBreadcrumb | Identity, project context, location in the app |
+| Shared shell | PageHeaderPro with hero image, GlobalContextBar, ContextBreadcrumb | Identity, project context, location in the app; provide a readable title/purpose and screen-level refresh or return actions |
 | Work Queue | MiniMetricStrip, FilterChips, SavedViews, DataGridPro, NeedsAttentionInbox, ActionFeedbackBar | Orient, narrow, inspect and open work |
 | Annual detail | EntityInspector, ActivityTimeline, RelationshipsExplorer, SmartDrawer | Explain order context, sequence, links and selected action details |
 | Responsive behavior | ResponsiveLayoutMetrics, ResponsiveScreenBudget | Check tablet density and narrow layouts |
