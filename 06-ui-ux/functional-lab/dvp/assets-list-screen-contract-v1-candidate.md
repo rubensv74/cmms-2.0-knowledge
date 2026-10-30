@@ -3,7 +3,7 @@
 **Status:** DVP target candidate; not approved, not Studio-validated.  
 **Screen ID:** AS-01.  
 **Target:** [assets-list-v1-candidate.svg](targets/assets-list-v1-candidate.svg).  
-**Authority:** [ASSETS UX Contract V1](../../../CMMS_ASSETS_LIST_UX_CONTRACT_V1.md), [Asset Screen Architecture V1](../../../CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md), [Asset Premium Components V1](../../../CMMS_ASSET_PREMIUM_COMPONENTS_V1.md), [Asset Visual System V1](../../../CMMS_ASSET_VISUAL_SYSTEM_V1.md), [Screen Map V1](../../../../07-it-handoff/05-ui/screen-map.md).
+**Authority:** [ASSETS UX Contract V1](../../CMMS_ASSETS_LIST_UX_CONTRACT_V1.md), [Asset Screen Architecture V1](../../CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md), [Asset Premium Components V1](../../CMMS_ASSET_PREMIUM_COMPONENTS_V1.md), [Asset Visual System V1](../../CMMS_ASSET_VISUAL_SYSTEM_V1.md), [Screen Map V1](../../../07-it-handoff/05-ui/screen-map.md).
 
 ## 1. Functional baseline
 
