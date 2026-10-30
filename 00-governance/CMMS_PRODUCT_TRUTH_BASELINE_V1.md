@@ -1,6 +1,6 @@
 # CMMS 2.0 — Product Truth Baseline v1.0
 
-**Fecha de consolidación:** 2026-10-02  
+**Fecha de consolidación:** 2026-10-30  
 **Estado:** CANONICAL BASELINE **de principios de producto (corte 2026-10-02)**
 
 > **Vigencia (2026-10-09):** Los principios PT-01…PT-15 y las hipótesis rechazadas siguen siendo la referencia funcional, salvo que una decisión posterior registrada los sustituya expresamente. Las secciones **4, 6 y 7** contienen pendientes y el siguiente gate *tal como se conocían el 02/10*; para estados de gates y siguiente desarrollo consultar [PROJECT_STATUS](../PROJECT_STATUS.md), [ROADMAP](../ROADMAP.md) y [Decision Register](../05-meetings/decisions/DECISION_REGISTER.md). No interpretar el antiguo `MSL-G01` de la sección 7 como bloqueo actual.
@@ -40,8 +40,8 @@ Maintenance Activity es unidad planificable/programable/cerrable; Job Plan es pl
 ### PT-09 — Publicación y versionado
 Las revisiones publicadas son inmutables. Los cambios generan nueva revisión o versión y conservan provenance y motivo.
 
-### PT-10 — Preventivo rolling, no materialización masiva
-La hipótesis de generar preventivas por ejercicio/año como mecanismo runtime principal queda sustituida. El modelo es Published Plan → recurrence/next due → materialize WO according to governed horizon → execute → next due. Año y presupuesto quedan como forecast/contexto.
+### PT-10 — Recurrencia rolling y agrupación anual selectiva
+No se materializan preventivas para toda la vida útil. El plan publicado gobierna la recurrencia y el horizonte de trabajo. Para las actividades por tiempo que se definan con ciclo anual, una única Work Order preventiva puede agrupar varias ejecuciones periódicas de ese ciclo; cada ejecución conserva fecha, resultado y feedback propios. La agrupación anual no habilita órdenes para ciclos futuros sin límite. El horizonte de materialización, el momento de creación de la orden y el tratamiento de visitas pendientes al cierre anual requieren contrato específico.
 
 ### PT-11 — Work Candidate no es universal
 El preventivo recurrente ya aprobado no necesita atravesar obligatoriamente WorkCandidate. Puede conservarse para correctivos, solicitudes, backlog u otros trabajos aún no comprometidos.
@@ -122,3 +122,9 @@ Hasta cerrar MSL-G01 no debe construirse una biblioteca corporativa ficticia.
 Evidence → Decision → Product Truth → Contract → Gate → Implementation → Runtime Validation.
 
 La existencia de mockup, HTML, YAML, Power Fx o SQL no equivale a validación funcional.
+
+## 9. Enmienda funcional 2026-10-30 — orden preventiva anual agrupada
+
+La propuesta distribuida el 30 de octubre confirma que determinadas tareas preventivas por tiempo se organizan en una orden anual con varias ejecuciones periódicas (por ejemplo, trimestrales), en lugar de una Work Order independiente por visita. La ejecución mantiene fecha y resultado individual. Esta regla se limita a las actividades configuradas para ese patrón; no sustituye la recurrencia rolling como principio general ni implica materialización de toda la vida del activo.
+
+Esta enmienda prevalece sobre las formulaciones anteriores de PT-10 y se desarrolla en la decisión DEC-025 y el contrato de agregación anual. Permanecen abiertos: elegibilidad de las actividades, definición del ciclo, momento de crear la orden, granularidad de programación/recursos y resolución de ejecuciones pendientes al cierre.
