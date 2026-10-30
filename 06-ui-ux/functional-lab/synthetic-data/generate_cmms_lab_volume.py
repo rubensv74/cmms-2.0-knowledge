@@ -26,6 +26,14 @@ EQUIPMENT_TYPES = [
     ("ELECTRIC_MOTOR", "MOTOR"),
 ]
 
+ACTIVITY_BY_EQUIPMENT = {
+    "PUMP_CENTRIFUGAL_HORIZONTAL": ("ACT-PUMP-PM", "Pump lubrication and inspection"),
+    "COMPRESSOR_RECIPROCATING": ("ACT-COMP-PM", "Compressor filter inspection"),
+    "PRESSURE_SAFETY_VALVE": ("ACT-PSV-PM", "Safety valve inspection"),
+    "HEAT_EXCHANGER_SHELL_TUBE": ("ACT-HX-PM", "Heat exchanger inspection"),
+    "ELECTRIC_MOTOR": ("ACT-MOTOR-PM", "Motor alignment and bearing inspection"),
+}
+
 SOURCE_BASES = ["RCM", "CORPORATE_STANDARD_REFERENCE", "OEM", "EXPERT"]
 
 
@@ -56,6 +64,8 @@ def generate(profile: str) -> dict:
 
     for i in range(1, n + 1):
         equipment_type, prefix = EQUIPMENT_TYPES[(i - 1) % len(EQUIPMENT_TYPES)]
+        activity_code, activity_name = ACTIVITY_BY_EQUIPMENT[equipment_type]
+        activity_id = stable("SYN-ACTIVITY", i)
         asset_id = stable("SYN-ASSET", i)
         asset_code = f"{prefix}-{i:04d}"
         source_id = stable("SYN-SOURCE", i)
@@ -84,6 +94,9 @@ def generate(profile: str) -> dict:
             "assetId": asset_id,
             "sourceId": source_id,
             "strategy": "CONDITION_BASED" if i % 5 == 0 else "TIME_BASED",
+            "activityId": activity_id,
+            "activityCode": activity_code,
+            "activityName": activity_name,
             "status": "PUBLISHED_DEMO",
             "effectiveFrom": "2026-01-01",
             "demoOnly": True,
@@ -167,6 +180,9 @@ def generate(profile: str) -> dict:
                         "reservationStatus": "NOT_CONNECTED",
                         "inventoryAuthority": "EXTERNAL_SYSTEM",
                     })
+                if q == 2:
+                    planned_action["scheduledStartAt"] = "2026-11-20T07:00:00Z"
+                    planned_action["scheduledFinishAt"] = "2026-11-20T10:00:00Z"
                 planned_actions.append(planned_action)
             work_orders.append({
                 "workOrderId": wo_id,
@@ -174,6 +190,8 @@ def generate(profile: str) -> dict:
                 "type": "PREVENTIVE_ANNUAL",
                 "assetId": asset_id,
                 "planVersionId": plan_id,
+                "activityId": activity_id,
+                "activityName": activity_name,
                 "cycleKey": "CYCLE-2026",
                 "displayState": "IN_PROGRESS_DEMO",
                 "plannedActions": planned_actions,
@@ -303,7 +321,7 @@ def generate(profile: str) -> dict:
             requests.append(request)
 
     data = {
-        "datasetVersion": "1.0.0",
+        "datasetVersion": "1.1.0",
         "datasetId": f"CMMS-LAB-SYNTH-{profile.upper()}-V1",
         "profile": profile,
         "generatedAt": "2026-10-30T00:00:00Z",
@@ -339,6 +357,10 @@ def generate(profile: str) -> dict:
             "assetCount": len(assets),
             "annualOrderCount": sum(1 for w in work_orders if w["type"] == "PREVENTIVE_ANNUAL"),
             "plannedActionCount": sum(len(w["plannedActions"]) for w in work_orders),
+            "plannedActionStateCounts": {
+                state: sum(1 for w in work_orders for a in w["plannedActions"] if a["displayState"] == state)
+                for state in ["COMPLETED", "COMPLETED_WITH_DEVIATION", "SCHEDULED", "PLANNED"]
+            },
             "conditionCaseCount": len(condition_cases),
             "measurementReadingCount": sum(len(c["readings"]) for c in condition_cases),
             "observationCount": len(observations),
