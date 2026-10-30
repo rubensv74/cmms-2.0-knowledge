@@ -3,15 +3,15 @@
 **Estado:** propuesta de trabajo; no aprobada por negocio ni validada en Power Apps Studio.  
 **Ámbito:** ordenar el diseño visual de pantallas del producto usando el mapa funcional CMMS, el estándar premium, el catálogo IAP y el protocolo DVP.
 
-Fuentes: [Screen Map V1](../../07-it-handoff/05-ui/screen-map.md), [Premium Screen Standard V1](../CMMS_PREMIUM_SCREEN_STANDARD_V1.md), [Page Header Hierarchy V1](../CMMS_PAGE_HEADER_HIERARCHY_V1.md), [CMMS Component Catalog V1](../CMMS_COMPONENT_CATALOG_V1.md), [Design System](design-system.md), [Architecture](architecture.md).
+Fuentes: [Screen Map V1](../../07-it-handoff/05-ui/screen-map.md), [AS-01 UX Contract](../CMMS_ASSETS_LIST_UX_CONTRACT_V1.md), [Asset Screen Architecture](../CMMS_ASSET_SCREEN_ARCHITECTURE_V1.md), [Asset Premium Components](../CMMS_ASSET_PREMIUM_COMPONENTS_V1.md), [Premium Screen Standard V1](../CMMS_PREMIUM_SCREEN_STANDARD_V1.md), [Page Header Hierarchy V1](../CMMS_PAGE_HEADER_HIERARCHY_V1.md), [CMMS Component Catalog V1](../CMMS_COMPONENT_CATALOG_V1.md), [Design System](design-system.md), [Architecture](architecture.md).
 
 ## 1. Decisión de alcance
 
-El repositorio ya contiene un **mapa de pantallas de producto**, pero está marcado como propuesta, no aprobado y no validado en runtime. No encontré un backlog operativo que ordene su generación visual pantalla por pantalla. Este catálogo cubre ese hueco sin reemplazar ni aprobar el mapa.
+El repositorio contiene un **mapa general de pantallas de producto**, marcado como propuesta, no aprobado y no validado en runtime, además de contratos de pantalla para dominios concretos como Activos. No encontré un backlog operativo que ordene la generación visual de todo el producto pantalla por pantalla. Este catálogo cubre ese hueco sin reemplazar ni aprobar los contratos existentes.
 
 Hay que mantener separadas estas superficies:
 
-- **AS-01 Assets List / Hierarchy Explorer:** localizar activos y explorar FLH.
+- **AS-01 Assets List:** localizar activos; el contrato UX define un Data Explorer con filtros de ubicación/alcance FLH. La frase “Hierarchy Explorer” del mapa general no autoriza por sí sola un árbol visual independiente.
 - **AS-04 Equipment Type Library:** administrar tipos de equipo, campos técnicos y mapeos visuales.
 - **MSL-01 Maintenance Standards Library:** encontrar estándares corporativos trazables.
 
@@ -28,7 +28,7 @@ El PR está en draft. Sus targets no están aprobados; la revisión del scope fu
 | Orden | Superficie | Motivo | Salida DVP esperada |
 |---|---|---|---|
 | 0 | **App Shell / Foundation** (base compartida, no pantalla de dominio) | Fija navegación, identidad, contexto y gramática visual. La geometría exacta depende del gate de Foundation en Studio. | Baseline de shell, inventario de componentes instalados y evidencia Studio antes de congelar geometría. |
-| 1 | **AS-01 — Assets List / Hierarchy Explorer** | Entrada operativa para localizar activos y comprobar que FLH, taxonomía y ADR físico no se confunden en el árbol. | Contrato, referencia candidata, mapa de regiones, estados de búsqueda/árbol/lista/detalle y mapeo de componentes. |
+| 1 | **AS-01 — Assets List** | Su UX Contract está ACCEPTED / READY_FOR_INCREMENTAL_BUILD y AE-G4 está en PASS_CONTRACT. El contrato define un Data Explorer con búsqueda, filtros —incluido alcance FLH— y data surface; no especifica un árbol separado. | Target DVP candidato basado en sus contratos, estados y mapa de componentes. La referencia seguirá provisional mientras falten baseline YAML/render real y evidencia Studio. |
 | 2 | **MSL-01 — Maintenance Standards Library** | Da superficie propia a la biblioteca corporativa y la separa de la administración de Equipment Types. MSL-G01/G02 tienen evidencia contractual; MSL-G03 sigue pendiente. | DVP de biblioteca, filtros, provenance y estados; adopción permanece gobernada por su gate. |
 | 3 | **REL-01 — Reliability Engineering Workbench** | Es la experiencia principal de ingeniería, con WS-01…WS-09 como navegación interna. | Diseñar REL-01 y avanzar workspace por workspace; empezar por WS-01 cuando contrato y Foundation lo permitan. |
 | 4 | **PMP-01 — Project Maintenance Plans** | Conecta biblioteca, activos y planes versionados; forecast no debe parecer una orden real. | Referencia de lista/seguimiento; PMP-02 queda como estudio separado de edición/publicación. |
@@ -72,9 +72,9 @@ El [catálogo de fuentes IAP](https://github.com/rubensv74/industrial-applicatio
 
 | Necesidad | Candidatos a investigar | Límite actual |
 |---|---|---|
-| Shell, navegación y encabezado | Page Header / Navigation de PULSE o IAP | Confirmar contrato CMMS e instalación; no asumir equivalencia ni geometría aprobada. |
-| Lista de activos | IAP DataGridPro y FilterChips | Validar estados, accesibilidad y bindings; búsqueda local/paginación pueden pertenecer al host. |
-| Exploración jerárquica | IAP GroupedCardExplorer como referencia para inspección | No asumir que representa FLH. Si no cubre el árbol requerido, documentar un gap compartido. |
+| Shell, navegación y encabezado | Priorizar los componentes CMMS de reuse ya descritos en AS-01; contrastar PULSE/IAP para gaps concretos | Confirmar fuente, instalación y contrato en la app activa; no asumir equivalencia ni geometría aprobada. |
+| Lista de activos | cmp_CMMS_PageHeaderPro_RC0, ProjectContextPro_RC0 y StatePanelPro_RC0 están clasificados como REUSE en el contrato AS-01; FilterBarPro/DataGridPro son candidatos CMMS para más adelante | No materializar FilterBar/DataGrid en el primer incremento AS-01. IAP DataGridPro/FilterChips se comparan solo si aparece un gap; validar host, bindings y accesibilidad. |
+| Jerarquía de activos | El contrato AS-01 define un filtro FLH Location / hierarchy scope; la navegación estructural requiere confirmar el contrato correspondiente | No sustituir el data grid por GroupedCardExplorer ni inferir un árbol FLH aprobado. Si se confirma la necesidad de árbol, resolver su semántica y componente compartido antes del target definitivo. |
 | Biblioteca y revisión de estándares | DataGridPro, FilterChips y, si encajan, DiffViewer/SideBySideComparison | Comparación y provenance vienen de contratos de estándares, no del estilo visual. |
 | REL-01 / decisión RCM | Componentes compartidos de navegación, contexto y estado; composición propia gobernada | No hay evidencia de un árbol RCM compartido aprobado. No inventar scoring. |
 | Estados de pantalla | State Surface / Skeleton Loader | Un estado visual no acredita consulta, permisos ni datos conectados. |
@@ -100,8 +100,8 @@ Si falta baseline YAML, render real o referencia aprobada, el trabajo será prep
 
 ## 7. Próximas acciones
 
-1. **Preparar AS-01:** reconciliar su baseline funcional y referencias; definir el caso visual de árbol/lista y comprobar qué componentes IAP aplican.
-2. **Cerrar el DVP AS-01 como candidato:** target, contrato, region map y estados; dejar visibles datos/permisos pendientes y no presentar el target como aprobado.
+1. **Preparar AS-01:** usar el UX Contract ACCEPTED y AE-G4 PASS_CONTRACT; confirmar el baseline real de la app, YAML/render actual, inventario de componentes instalados y evidencia App Checker/Studio. El contrato permite el Shell, pero los componentes de datos siguen siendo candidatos.
+2. **Cerrar el DVP AS-01 como candidato:** target basado en Data Explorer (búsqueda, filtros y grid, con FLH como alcance); no dibujar un árbol independiente sin decisión funcional. Mantener provisional el target mientras falte baseline YAML/render y no presentarlo como aprobado.
 3. **Preparar MSL-01** con los contratos MSL-G01/G02 y el gate de adopción separado; no mezclarlo con Equipment Type Library.
 4. **Diseñar REL-01 por etapas** y abrir cada workspace según su gate; AMEF queda en HOLD hasta decisión propia.
 5. **Completar los gates del PR #13 en su rama actual** sin ampliar su slice: revisión funcional, pin de targets, usos canónicos/host, evidencia Studio y PaYaml solo cuando readiness lo habilite.
