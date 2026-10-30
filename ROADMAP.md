@@ -1,9 +1,9 @@
 ## DVP v2 — estado actualizado (2026-10-30)
 
-El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual → retorno con contexto. Los targets v2 y el fixture anual están alineados con synthetic profile v1.1. La cola no incluye fila correctiva ni Export; el detalle muestra actuaciones planificadas y ejecuciones reales inline.
+El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual → retorno con contexto. Los targets v2 y el fixture anual están alineados con synthetic profile v1.1. La cola no incluye fila correctiva, Export ni Refresh; el detalle muestra actuaciones planificadas y ejecuciones reales inline. Los cuatro nombres del detalle coinciden con la actividad del registro seleccionado.
 
 - Scope funcional v2: candidato, revisión pendiente; no se declara FE-COVERAGE PASS.
-- Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob 9d52868acd79a8f4fbefaced1bc056ed21d77e3d; detalle blob 9f97bccf2bfa819d0f48e34b8466bc3192396d24.
+- Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d; detalle blob 360ca111366f5f0e13caa051a762587715285bb2.
 - Componentes IAP/host: inventario preliminar en 06-ui-ux/functional-lab/dvp/iap-component-inventory-v1.md; source registry pendiente.
 - Siguiente secuencia: (1) revisión baseline funcional y pin de target; (2) source registry y host; (3) region map, estados e interacción; (4) informes D2P v3.3; (5) preparar paquete Canvas solo con gates listos.
 - La ratificación TR y los contratos de runtime siguen siendo gates para implementación real; no bloquean este DVP candidato de solo lectura y datos sintéticos.
