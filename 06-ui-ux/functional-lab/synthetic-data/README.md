@@ -33,9 +33,9 @@
 | Profile | Intended use | Volume status |
 |---|---|---|
 | walkthrough | User-led DVP and full-cycle demonstration | Fixed, curated records |
-| functional | Multiple assets, plans, visits and mixed states for screen/flow behavior | Provisional; tune after first data contracts |
-| load | Large repeatable records for delegation/query/performance checks | Counts are not acceptance targets until real read paths and limits are known |
+| functional | 250 synthetic assets, 62 annual PM orders / 248 visits, 50 condition cases / 400 readings, 35 observation-event cases, 17 corrective orders and 141 execution records; also findings, follow-ups, permit references, crews and material requirements | Generated deterministically; demonstration only |
+| load | 2,000 assets and proportionally expanded linked lifecycle records | Generator profile only; no performance acceptance target until real read paths and limits are known |
 
-Initial fixture: cases/cmms-full-cycle-v1.json. Later expansions must retain its scenario IDs and stable keys.
+Curated walkthrough fixture: `cases/cmms-full-cycle-v1.json`. Functional volume fixture: `cmms-lab-synthetic-functional-v1.json`. Reproducible generator: `generate_cmms_lab_volume.py` (`--profile functional` or `--profile load`). Later expansions must retain the curated scenario IDs and stable keys.
 
 For each DVP screen, identify the fixture scenario, selected record, synthetic persona, state, viewport, expected action/result and relevant contract. Use the current DVP/D2P method and CMMS premium design/component catalog; a generated mockup is not a runtime screenshot.
