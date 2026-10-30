@@ -20,7 +20,7 @@ The annual grouping is selected per approved activity. Condition measurement cad
 | Entity | Owns | Proposed relation |
 |---|---|---|
 | WorkOrder | Annual work identity, plan/version provenance, shared scope and lifecycle | 1:N WorkOrderVisit |
-| WorkOrderVisit | One independently plannable/executable slot under a WorkOrder; multiple for annual PM, exactly one for a single-instance corrective order in V1 | 0..1 MaintenanceOccurrence; 0..1 accepted ExecutionRecord |
+| WorkOrderVisit | One execution slot under a WorkOrder; several are confirmed for selected annual PM tasks. Cardinality for other work types remains to be confirmed | 0..1 MaintenanceOccurrence; 0..1 accepted ExecutionRecord |
 | MaintenanceOccurrence | Triggering release/due evidence for one periodic visit | 0..1 WorkOrderVisit |
 | ExecutionRecord | Actual start/finish, performed-by, result and validation for one visit | 1:1 WorkOrderVisit for V1 candidate |
 | LaborActual / MaterialActual / ToolActual / ServiceActual / ChecklistResult | Actuals captured for one visit | N:1 ExecutionRecord |
@@ -29,7 +29,7 @@ The annual grouping is selected per approved activity. Condition measurement cad
 | ScheduleAssignment / ScheduleRevision | Date/resource commitment and its revisions | Candidate: N:1 WorkOrderVisit; retain a parent summary only if an approved use case requires it |
 | WorkOrderClosure | Final technical closure evidence for the annual order | 0..1 WorkOrder |
 
-For V1, every WorkOrder has one or more WorkOrderVisit rows. A corrective order normally has one visit; an annual preventive order may have several. Execution timestamps, results and actuals belong to the visit's ExecutionRecord. WorkOrder carries shared scope and aggregate lifecycle only.
+The candidate model represents the confirmed annual preventive order through several WorkOrderVisit rows. Each periodic visit keeps its own date and result; the parent distinguishes completed and pending work. The distributed proposal explicitly leaves pending-visit disposition open. Cardinality for non-annual work, including corrective orders, is not specified in that proposal and remains a contract decision. The synthetic corrective example has one visit for demonstration only. Execution timestamps, results and actuals belong to the visit's ExecutionRecord; the WorkOrder carries shared scope and aggregate lifecycle.
 
 ## Natural keys and idempotency
 
