@@ -25,6 +25,9 @@
 6. Operational observation/logbook → event/request triage → corrective WorkOrder.
 7. Readiness, constraints, calendar/capacity, scheduling and crew assignment.
 8. Visit-level execution dates, results, labor/material actuals, checklist evidence and findings.
+9. Demonstration of major repair resetting selected time-based cadence from repair finish while condition-monitoring cadence stays unchanged.
+10. Corrective follow-up and plan/reliability feedback.
+11. Open decisions: annual-cycle boundaries, year-end visits, major-repair scope, PTW/inventory source, roles and authority, cost/KPI policy.
 9. Corrective follow-up and plan/reliability feedback.
 10. Open decisions: year-end visits, PTW/inventory source, roles and authority, cost/KPI policy.
 
