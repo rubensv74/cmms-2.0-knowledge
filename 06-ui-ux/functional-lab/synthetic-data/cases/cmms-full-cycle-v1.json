@@ -388,5 +388,65 @@
       "status": "OPEN_DECISION",
       "scope": "requirements/status/reference only until confirmed"
     }
+  },
+  "annualYearEndReviewScenario": {
+    "scenarioId": "SCN-ANNUAL-YEAR-END-PENDING",
+    "status": "SYNTHETIC_FIXTURE_ONLY",
+    "workOrder": {
+      "workOrderId": "SYN-WO-ANNUAL-2025-YEAREND-001",
+      "workOrderNo": "LAB-PM-2025-YE-001",
+      "assetId": "SYN-ASSET-P102",
+      "planVersionId": "PLAN-P102-TIME-V1",
+      "cycleKey": "DEMO-CYCLE-END-2025",
+      "cycleEndAt": "2025-12-31T23:59:59Z",
+      "parentDisplayState": "PENDING_ANNUAL_REVIEW_DEMO",
+      "selectedDisposition": null,
+      "dispositionDecision": "OPEN_DECISION",
+      "candidateOptions": [
+        "KEEP_OPEN",
+        "TRANSFER_TO_NEXT_CYCLE",
+        "REQUIRE_NEW_ORDER"
+      ],
+      "authority": "NO_OUTCOME_SELECTED"
+    },
+    "visits": [
+      {
+        "visitId": "SYN-VISIT-2025-01",
+        "visitKey": "2025-PERIOD-01",
+        "plannedDueAt": "2025-03-15",
+        "visitState": "COMPLETED",
+        "actualStartAt": "2025-03-14T07:00:00Z",
+        "actualFinishAt": "2025-03-14T09:10:00Z",
+        "result": "COMPLETED_AS_PLANNED"
+      },
+      {
+        "visitId": "SYN-VISIT-2025-02",
+        "visitKey": "2025-PERIOD-02",
+        "plannedDueAt": "2025-06-15",
+        "visitState": "COMPLETED_WITH_DEVIATION",
+        "actualStartAt": "2025-06-16T07:00:00Z",
+        "actualFinishAt": "2025-06-16T09:40:00Z",
+        "result": "COMPLETED_WITH_DEVIATION"
+      },
+      {
+        "visitId": "SYN-VISIT-2025-03",
+        "visitKey": "2025-PERIOD-03",
+        "plannedDueAt": "2025-09-15",
+        "visitState": "COMPLETED",
+        "actualStartAt": "2025-09-15T07:00:00Z",
+        "actualFinishAt": "2025-09-15T08:55:00Z",
+        "result": "COMPLETED_AS_PLANNED"
+      },
+      {
+        "visitId": "SYN-VISIT-2025-04",
+        "visitKey": "2025-PERIOD-04",
+        "plannedDueAt": "2025-12-15",
+        "visitState": "PENDING_DISPOSITION_DEMO",
+        "actualStartAt": null,
+        "actualFinishAt": null,
+        "result": null
+      }
+    ],
+    "disclaimer": "The cycle label and outcomes are illustrative. No cycle-boundary or year-end disposition policy is approved by this fixture."
   }
 }
