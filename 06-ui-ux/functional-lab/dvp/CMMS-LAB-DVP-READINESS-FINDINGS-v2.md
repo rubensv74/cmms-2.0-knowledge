@@ -23,7 +23,7 @@
 - Target and screen contract agree on no corrective/CBM rows, no Export/Refresh, and inline execution evidence.
 - Annual completion/pending states are visible. Cycle-end disposition stays OPEN_DECISION; this detail screen does not resolve it.
 - Functional scope candidate is v2 and still has baseline_review.status PENDING. FE-COVERAGE is not reported as PASS.
-- IAP inventory now pins 12 source blob SHAs and extracts primary CustomProperties at commit 377a6b3c. Formula internals, dependency graph, canonical usage, host contract and Studio rendering remain unreviewed; the inventory and region map are still drafts.
+- IAP inventory now pins 12 source blob SHAs and extracts primary CustomProperties at commit 377a6b3c. Formula internals, dependency graph, canonical usage, host contract and Studio rendering remain unreviewed; the inventory and region map are still drafts. The pinned candidate tree has no local search or pager component: the host must define accessible search/pagination controls and their state contract.
 - SVG dimensions and visual regions do not constitute Canvas layout measurements. Responsive capacity, navigation focus, keyboard behavior and initial-view action remain unverified.
 - No product PaYaml, Studio import/render, SQL or Power Automate work is claimed.
 
@@ -31,7 +31,7 @@
 
 1. Record functional baseline review for the v2 scope.
 2. Review and approve the exact two target blobs.
-3. Complete IAP source registry and host contract against a pinned source revision.
+3. Complete IAP formula/dependency review and host contract, including local search and pagination, against the pinned source revision.
 4. Complete measured region/budget, responsive, state and interaction evidence.
 5. Run D2P v3.3 coverage reports, including the separate initial-view action gate, on a single coherent source/target set.
 6. Prepare candidate PaYaml only when readiness is complete; then conduct First-Touch in Studio and preserve evidence.
