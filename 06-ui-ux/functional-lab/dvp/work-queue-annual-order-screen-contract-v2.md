@@ -26,7 +26,7 @@ All values come from a deterministic synthetic profile. No SQL, Power Automate, 
 
 **Question answered:** Which annual preventive orders are in the demo, and what is their current shape?
 
-- Shared page header: hero photo on the right, title/purpose on the left, freshness and read-only refresh.
+- Shared page header: hero photo on the right, title/purpose on the left, freshness metadata; no refresh control.
 - Active view marker: Annual PM.
 - Four synthetic profile summaries with definitions: 62 annual orders; 248 planned actions; 124 annual execution records; 124 not-completed actions (62 scheduled + 62 planned).
 - Search and filters: order state, asset, activity and explicit cycle.
@@ -39,7 +39,7 @@ These profile totals describe the generated fixture, not operational KPIs. The q
 
 **Question answered:** What does this annual order cover, what is planned, and what execution evidence is recorded?
 
-- HERO page header with photo on the right; host-owned Back to Work Queue and read-only refresh.
+- HERO page header with photo on the right; host-owned Back to Work Queue; no refresh control.
 - Asset identity/location; synthetic published plan version and activity; explicit CycleKey and demo disclaimer.
 - Summary: total actions, completed, scheduled, and planned.
 - Chronological **Actuaciones programadas** with planned due date and state. ScheduledAt and DueAt remain separate.
@@ -52,17 +52,17 @@ The default example is `LAB-PM-2026-00004`: two completed actions with records, 
 
 Both screens show stable loading, populated, empty, no-results, partial-data, stale and read-error states. Retry retains the current context. Synthetic labels remain visible. A missing ExecutionRecord does not receive invented dates/results. The parent state is not used to infer child completion.
 
-The interactions are read-only: refresh, search, combine/clear filters, sort, page, open an annual row, select an action, inspect inline evidence, and return. Every visible interaction must have an observable result in the demo.
+The interactions are read-only: search, combine/clear filters, sort, page, open an annual row, select an action, inspect inline evidence, and return. Every visible interaction must have an observable result in the demo.
 
 ## 4. Candidate component placement
 
 | Region | IAP candidates | Host responsibility |
 |---|---|---|
 | Shared shell | GlobalContextBar, ContextBreadcrumb | Project context, app navigation and breadcrumb |
-| Page identity | cmp_IAP_PageHeaderPhotoPro | Host supplies photo, purpose, refresh/back actions and state |
+| Page identity | cmp_IAP_PageHeaderPhotoPro | Host supplies photo, purpose, back action and state |
 | Queue | MiniMetricStrip, FilterChips, DataGridPro | Bind synthetic read collections, filter/sort/page and row navigation |
 | Detail | EntityInspector, ActivityTimeline, RelationshipsExplorer | Bind order, planned actions and selected execution inline |
-| Loading/feedback | SkeletonLoader, ActionFeedbackBar | Present read-only loading, refresh outcome and errors |
+| Loading/feedback | SkeletonLoader, ActionFeedbackBar | Present loading and query errors; no refresh outcome is in scope |
 | Responsive | ResponsiveLayoutMetrics, ResponsiveScreenBudget | Report/compare responsive layout; source presence is not Studio certification |
 
 These are candidate sources; pin each used source SHA and host property contract during D2P Phase A. The 32-candidate IAP coverage remains an app-wide inventory, not a demand to place every component here.
