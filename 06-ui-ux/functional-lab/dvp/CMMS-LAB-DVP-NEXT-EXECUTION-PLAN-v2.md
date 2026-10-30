@@ -19,6 +19,7 @@
 - Inventario IAP/host preliminar: iap-component-inventory-v1.md. Selección funcional propuesta; contratos y SHAs exactos de la mayoría aún sin cotejar.
 - Mapa regional y de estado candidato: work-queue-annual-order-region-map-v2-candidate.md. Deriva propósito/aceptación de regiones visibles del SVG; no afirma layout medido en Canvas.
 - Se retiró Refresh de ambos SVG porque no tenía contrato funcional. El detalle ahora muestra los nombres de la actividad asociada al registro seleccionado.
+- Readiness findings v2 registra hallazgos corregidos y gates pendientes; no declara screen readiness.
 
 ## Gates vigentes
 
