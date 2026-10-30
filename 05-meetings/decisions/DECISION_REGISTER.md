@@ -1,6 +1,6 @@
 # CMMS 2.0 — Decision Register
 
-**Última consolidación:** 2026-10-09
+**Última consolidación:** 2026-10-30
 
 > Este registro gobierna **decisiones funcionales**. Un gate contractual, un benchmark y un PASS de pruebas SQL tienen alcances distintos. La sección de gates de abajo es evidencia técnica documentada, **no** aprobación de todos los procesos operativos locales. El Product Truth del 2026-10-02 conserva su valor de principios; las etapas posteriores se consultan en [PROJECT_STATUS](../../PROJECT_STATUS.md).  
 **Fuente canónica:** [Product Truth Baseline v1.0](../../00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md)
@@ -27,7 +27,7 @@
 | DEC-008 | CONFIRMED | Maintenance Activity, Job Plan, Procedure/Checklist y WO son conceptos distintos. | 2026-09-11 |
 | DEC-009 | CONFIRMED | Revisiones publicadas son inmutables; cambios generan nueva versión. | especificación AMEF/RCM |
 | DEC-010 | SUPERSEDED | Generar preventivas por ejercicio/año como mecánica runtime principal. | sustituida 2026-09-25 |
-| DEC-011 | CONFIRMED | Preventivo runtime usa rolling next due; forecast se separa de WO materializada. | 2026-09-25 / ANL-005 |
+| DEC-011 | CONFIRMED (SCOPE CLARIFIED) | La recurrencia preventiva mantiene rolling next due; para actividades definidas con ciclo anual, una Work Order puede agrupar varias ejecuciones con fecha/resultado propios. Forecast y WO materializada siguen diferenciados. | 2026-09-25 / ANL-005 / DEC-025 2026-10-30 |
 | DEC-012 | SUPERSEDED | WorkCandidate como etapa universal de toda WO preventiva. | sustituida 2026-09-25 |
 | DEC-013 | CONFIRMED | Hallazgo preventivo que exige reparación abre rama correctiva. | 2026-09-25 |
 | DEC-014 | CONFIRMED | Execution feedback alimenta KPI, efectividad y revisión de planes. | 2026-09-25 |
@@ -41,6 +41,20 @@
 | DEC-022 | CONFIRMED | ReleaseAt y DueAt son conceptos distintos; la materialización de la WO no debe sobrescribir el vencimiento. | TRG-G01 / DM-G02 2026-10-08 |
 | DEC-023 | CONFIRMED | PM/frecuencia pertenece a policy/plan y no se incrusta en JobPlan; las operaciones y recursos planificados pertenecen a su revisión. | MSL-G01/G02 2026-10-08 |
 | DEC-024 | CONFIRMED | Permisivos operativos son dependencia externa del paquete de ejecución; no equivale a haber implementado el dominio PTW/LOTO completo. | WM-G02 2026-10-08 |
+| DEC-025 | CONFIRMED — CONTRACT DESIGN REQUIRED | Algunas actividades preventivas por tiempo se gestionan en una Work Order anual que agrupa varias ejecuciones periódicas; cada ejecución conserva fecha y resultado. El tratamiento de pendientes al cierre anual sigue OPEN. | Propuesta distribuida 2026-10-30, pp. 3–6; confirmación de Rubén 2026-10-30 |
+
+## DEC-025 — Agrupación anual de ejecuciones preventivas
+
+- Aplica a actividades preventivas por tiempo seleccionadas; no se asume como patrón universal.
+- La Work Order anual es la orden operativa que agrupa las visitas periódicas del ciclo.
+- Cada visita conserva su fecha, resultado y feedback individual.
+- No se crea una Work Order distinta por cada visita en este patrón.
+- La periodicidad de mediciones basadas en condición sigue independiente.
+- No se altera automáticamente el Plan de Mantenimiento Aprobado.
+- Se requiere modificar el modelo físico y los contratos actuales, que enlazan una occurrence con una WO y un único execution record por WO.
+- Permanecen OPEN el criterio de elegibilidad, ciclo/calendario, momento de materialización, programación por visita y tratamiento de pendientes al cierre.
+
+La DEC-025 prevalece sobre cualquier interpretación de DEC-010/DEC-011 que impida esta agrupación selectiva. La regla general contra materialización ilimitada se mantiene.
 
 ## Evidencia de gates — referencia, no decisiones nuevas
 
