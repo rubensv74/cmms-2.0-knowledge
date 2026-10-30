@@ -3,7 +3,7 @@
 **Estado:** propuesta de trabajo; no aprobada por negocio ni validada en Power Apps Studio.  
 **Ámbito:** ordenar el diseño visual de pantallas del producto usando el mapa funcional CMMS, el estándar premium, el catálogo IAP y el protocolo DVP.
 
-Fuentes: [Screen Map V1](../../../07-it-handoff/05-ui/screen-map.md), [Premium Screen Standard V1](../../CMMS_PREMIUM_SCREEN_STANDARD_V1.md), [Page Header Hierarchy V1](../../CMMS_PAGE_HEADER_HIERARCHY_V1.md), [CMMS Component Catalog V1](../../CMMS_COMPONENT_CATALOG_V1.md), [Design System](design-system.md), [Architecture](architecture.md).
+Fuentes: [Screen Map V1](../../07-it-handoff/05-ui/screen-map.md), [Premium Screen Standard V1](../CMMS_PREMIUM_SCREEN_STANDARD_V1.md), [Page Header Hierarchy V1](../CMMS_PAGE_HEADER_HIERARCHY_V1.md), [CMMS Component Catalog V1](../CMMS_COMPONENT_CATALOG_V1.md), [Design System](design-system.md), [Architecture](architecture.md).
 
 ## 1. Decisión de alcance
 
@@ -19,7 +19,7 @@ No son tres nombres para la misma biblioteca. WS-01…WS-09 tampoco se convertir
 
 ## 2. DVP ya abierto
 
-El [PR #13 — DEC-025: modelo de orden preventiva anual](https://github.com/rubensv74/cmms-2.0-knowledge/pull/13) trabaja el recorrido candidato **Work Queue → Annual Order Detail → volver conservando contexto**, con datos sintéticos y solo lectura. Incluye targets SVG, contrato de pantalla, inventario de componentes y readiness findings.
+El [PR #13 — DEC-025: modelo de orden preventiva anual](https://github.com/rubensv74/cmms-2.0-knowledge/pull/13), con su [plan DVP v2](https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md), trabaja el recorrido candidato **Work Queue → Annual Order Detail → volver conservando contexto**, con datos sintéticos y solo lectura. Incluye targets SVG, contrato de pantalla, inventario de componentes y readiness findings.
 
 El PR está en draft. Sus targets no están aprobados; la revisión del scope funcional está pendiente; no hay PaYaml de producto ni evidencia de Studio. Se conserva como un slice DVP activo y acotado. **No define el orden del catálogo completo ni sustituye AS-01, MSL-01 o REL-01.**
 
@@ -68,7 +68,7 @@ La secuencia ordena la **generación visual**. No aprueba prioridades de product
 
 ## 5. Componentes y evidencias
 
-El inventario IAP localiza **fuentes candidatas**; no demuestra que estén instaladas o validadas en CMMS. El catálogo IAP registra Studio como NOT_RUN para varias fuentes; el catálogo CMMS también clasifica capacidades de activos como TO_VALIDATE.
+El [catálogo de fuentes IAP](https://github.com/rubensv74/industrial-application-platform/blob/main/docs/ui/IAP_COMPONENT_SOURCE_CATALOG_2026-10-11.md) localiza **fuentes candidatas**; no demuestra que estén instaladas o validadas en CMMS. El catálogo IAP registra Studio como NOT_RUN para varias fuentes; el catálogo CMMS también clasifica capacidades de activos como TO_VALIDATE.
 
 | Necesidad | Candidatos a investigar | Límite actual |
 |---|---|---|
