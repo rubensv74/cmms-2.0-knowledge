@@ -76,7 +76,7 @@ La ayuda se versiona junto con screen contract, scope y target. Si cambia una de
 - Modal con título programático y sección enfocada al abrir; controles de cierre etiquetados; retorno del foco al botón que lo abrió.
 - Cierre explícito; no depender únicamente de clic fuera. El contenido puede desplazarse dentro del modal.
 - La ayuda no debe borrar ni reinicializar filtros, selección, paginación ni foco de la pantalla subyacente.
-- La implementación Canvas debe demostrar teclado, lector de pantalla, contraste y reflow en Studio. El patrón visual SVG no es evidencia de accesibilidad ni de implementación.
+- La implementación Canvas debe demostrar teclado, lector de pantalla, contraste y reflow en Studio. El patrón visual SVG no es evidencia de accesibilidad ni de implementación. La definición TMS de PageHeaderPhotoPro solo expone OnAction, no una referencia pública al botón interno; devolverle el foco al activador es un gate técnico. Si no puede hacerse desde el host, actualizar el contrato compartido del componente antes de declarar accesible el modal.
 
 ## Contrato de implementación pendiente
 
