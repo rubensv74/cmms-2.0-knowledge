@@ -27,9 +27,7 @@
 
 <path d="M288 103l-5 5 5 5" fill="none" stroke="#64748B" stroke-width="1.6"/><text x="300" y="111" fill="#64748B" font-size="10">Back to Work Queue</text>
 <text x="1338" y="108" fill="#64748B" font-size="10" text-anchor="end">Updated 30 Oct 2026 · 09:42</text>
-<rect x="1268" y="136" width="74" height="29" rx="7" fill="#FFFFFF" stroke="#D9E4EE"/>
-<path d="M1282 150a6 6 0 1 1 2 4" fill="none" stroke="#2E5FAE" stroke-width="1.5"/><path d="M1282 146v4h4" fill="none" stroke="#2E5FAE" stroke-width="1.5"/>
-<text x="1292" y="155" fill="#2E5FAE" font-size="10" font-weight="700">Refresh</text>
+
 <text x="282" y="151" fill="#0D1B2A" font-size="25" font-weight="700">Annual preventive work order</text>
 <text x="282" y="174" fill="#64748B" font-size="11">See planned work for this cycle and review the execution evidence already recorded.</text>
 <text x="282" y="202" fill="#2563EB" font-size="12" font-weight="700">LAB-PM-2026-00004</text>
@@ -54,19 +52,19 @@
 <text x="282" y="485" class="head">Actuaciones programadas</text><text x="282" y="505" class="tiny muted">Select an action to review its planned date and linked execution record.</text>
 <rect x="278" y="521" width="538" height="65" rx="9" fill="#F5F9FF" stroke="#D8E7FA"/>
 <circle cx="301" cy="547" r="8" fill="#2DA875"/><path d="M297 547l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.5"/>
-<text x="322" y="544" fill="#28394F" font-size="12" font-weight="700">Quarter 1 · Lubrication inspection</text><text x="322" y="565" class="tiny muted">Due 15 Mar 2026 · completed 14 Mar</text>
+<text x="322" y="544" fill="#28394F" font-size="12" font-weight="700">Quarter 1 · Heat exchanger inspection</text><text x="322" y="565" class="tiny muted">Due 15 Mar 2026 · completed 14 Mar</text>
 <rect x="721" y="535" width="77" height="22" rx="11" fill="#E8F6EF"/><text x="736" y="550" fill="#24825A" font-size="9" font-weight="700">COMPLETED</text>
 <rect x="278" y="594" width="538" height="65" rx="9" fill="#FFFFFF" stroke="#E7ECF2"/>
 <circle cx="301" cy="620" r="8" fill="#2DA875"/><path d="M297 620l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.5"/>
-<text x="322" y="617" fill="#28394F" font-size="12" font-weight="700">Quarter 2 · Lubrication inspection</text><text x="322" y="638" class="tiny muted">Due 15 Jun 2026 · completed 16 Jun</text>
+<text x="322" y="617" fill="#28394F" font-size="12" font-weight="700">Quarter 2 · Heat exchanger inspection</text><text x="322" y="638" class="tiny muted">Due 15 Jun 2026 · completed 16 Jun</text>
 <rect x="699" y="608" width="99" height="22" rx="11" fill="#FFF4DF"/><text x="712" y="623" fill="#986911" font-size="9" font-weight="700">WITH DEVIATION</text>
 <rect x="278" y="667" width="538" height="65" rx="9" fill="#FFFFFF" stroke="#E7ECF2"/>
 <circle cx="301" cy="693" r="8" fill="#E3A33A"/><text x="298" y="697" fill="#fff" font-size="10" font-weight="700">↗</text>
-<text x="322" y="690" fill="#28394F" font-size="12" font-weight="700">Quarter 3 · Lubrication inspection</text><text x="322" y="711" class="tiny muted">Due 15 Sep · scheduled 20 Nov</text>
+<text x="322" y="690" fill="#28394F" font-size="12" font-weight="700">Quarter 3 · Heat exchanger inspection</text><text x="322" y="711" class="tiny muted">Due 15 Sep · scheduled 20 Nov</text>
 <rect x="727" y="681" width="71" height="22" rx="11" fill="#FFF4DF"/><text x="742" y="696" fill="#986911" font-size="9" font-weight="700">SCHEDULED</text>
 <rect x="278" y="740" width="538" height="65" rx="9" fill="#FFFFFF" stroke="#E7ECF2"/>
 <circle cx="301" cy="766" r="8" fill="#9AA7B6"/><text x="298" y="770" fill="#fff" font-size="10" font-weight="700">4</text>
-<text x="322" y="763" fill="#28394F" font-size="12" font-weight="700">Quarter 4 · Lubrication inspection</text><text x="322" y="784" class="tiny muted">Planned date 15 Dec 2026</text>
+<text x="322" y="763" fill="#28394F" font-size="12" font-weight="700">Quarter 4 · Heat exchanger inspection</text><text x="322" y="784" class="tiny muted">Planned date 15 Dec 2026</text>
 <rect x="727" y="754" width="71" height="22" rx="11" fill="#F0F2F5"/><text x="743" y="769" fill="#59687B" font-size="9" font-weight="700">PLANNED</text>
 <!-- right execution detail -->
 <rect x="850" y="454" width="513" height="374" rx="12" fill="#FFFFFF" filter="url(#shadow)"/>
