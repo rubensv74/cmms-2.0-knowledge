@@ -16,7 +16,7 @@
 
 ## Artefactos de preparación añadidos
 
-- Inventario IAP/host preliminar: iap-component-inventory-v1.md. Selección funcional propuesta; contratos y SHAs exactos de la mayoría aún sin cotejar.
+- Inventario IAP/host: iap-component-inventory-v1.md. Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos; fórmulas internas, grafo Power Fx, usos y host siguen pendientes.
 - Mapa regional y de estado candidato: work-queue-annual-order-region-map-v2-candidate.md. Deriva propósito/aceptación de regiones visibles del SVG; no afirma layout medido en Canvas.
 - Se retiró Refresh de ambos SVG porque no tenía contrato funcional. El detalle ahora muestra los nombres de la actividad asociada al registro seleccionado.
 - Readiness findings v2 registra hallazgos corregidos y gates pendientes; no declara screen readiness.
@@ -27,7 +27,7 @@
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
 | Target visual exacto | Candidato | Revisar/pinar Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d y detalle blob 360ca111366f5f0e13caa051a762587715285bb2; decisión humana pendiente. |
-| D2P Phase A | Draft | Completar source registry con paths, SHAs, props/eventos, dependencias Power Fx y contrato del host. Ver iap-component-inventory-v1.md. |
+| D2P Phase A | Draft | Completar Phase A inspeccionando fórmulas, dependencias Power Fx, usos canónicos, bindings y contrato del host; registry de paths/SHAs/CustomProperties ya iniciado. Ver iap-component-inventory-v1.md. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
 | D2P Phase C / v3.3 | No iniciado | Cubrir navegación ida/vuelta, selección, filtros, sort/page, estados, accesibilidad y acción inicial visible. |
 | Product PaYaml | No iniciado | Solo con evidencia de los gates funcionales, visuales, A/B/C y v3.3 para los mismos hashes de target/source. |
