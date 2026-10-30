@@ -1,3 +1,22 @@
+# Estado del proyecto — actualización DVP v2 (2026-10-30)
+
+El primer recorrido queda acotado a Work Queue PM anual → Annual Order Detail → retorno con contexto, en modo consulta y con datos sintéticos. La ratificación TR continúa pendiente para las reglas de runtime, pero no bloquea esta composición DVP demostrativa.
+
+| Gate | Estado | Evidencia / límite |
+|---|---|---|
+| Perfil sintético funcional v1.1 | PREPARADO | 250 activos; 62 órdenes anuales; 248 actuaciones planificadas; 124 ExecutionRecords anuales; 265 actuaciones totales. Sin datos de planta ni reglas aprobadas. |
+| Alcance funcional | CANDIDATO; revisión pendiente | Scope v2 con baseline_review.status=PENDING. No se declara FE-COVERAGE aprobado. |
+| Targets Work Queue y Annual Order Detail v2 | CANDIDATOS | Hashes blob: Work Queue 9d52868acd79a8f4fbefaced1bc056ed21d77e3d; detalle 9f97bccf2bfa819d0f48e34b8466bc3192396d24. Revisión visual humana pendiente. |
+| Componentes IAP / host | INVENTARIO DRAFT | Ver iap-component-inventory-v1.md. Contratos/source hashes por verificar; no hay validación Studio. |
+| Product PaYaml / D2P v3.3 | NO INICIADO | Requiere baseline revisado, target aprobado, source registry, region map y gates D2P. |
+| Studio / runtime | PENDIENTE | Sin aplicación Canvas ni evidencia Studio, SQL o Power Automate para este slice. |
+
+**Siguiente trabajo:** cerrar revisión funcional y pin visual; completar source registry IAP y host; preparar region map responsive; cerrar los informes D2P contra un mismo conjunto de hashes. Ver [plan DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md).
+
+**Lectura histórica:** la sección anterior del estado operativo corresponde a la revisión inicial del 30/10 y contiene referencias v1. Para DVP vigente, esta tabla y el plan v2 prevalecen.
+
+---
+
 # Estado del proyecto
 
 **Última actualización:** 2026-10-30 — baseline de DEC-025 aceptado por el analista; ratificación TR pendiente.
