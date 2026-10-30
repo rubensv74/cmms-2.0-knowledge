@@ -75,7 +75,7 @@ This is a design sequence, not an executed migration.
 
 ## Open contract items
 
-Before executable SQL is accepted, decide and document eligible task/time trigger policy; CycleKey boundaries and effective plan-version changes within a cycle; order creation timing vs occurrence release timing; forecast vs persisted visit schedule; schedule/crew/resource ownership at order and visit levels; order/visit state vocabulary and aggregate transition rules; annual closure and pending-visit outcomes; duplicate/reopen/cancel/reissue behavior; identity of the actor/authority for each transition.
+Before executable SQL is accepted, decide and document eligible task/time trigger policy; CycleKey boundaries and effective plan-version changes within a cycle; order creation timing vs occurrence release timing; forecast vs persisted visit schedule; schedule/crew/resource ownership at order and visit levels; order/visit state vocabulary and aggregate transition rules; annual closure and pending-visit outcomes; criteria for a major repair, affected time-based plan items and reset timing; preserve independent condition cadence; duplicate/reopen/cancel/reissue behavior; identity of the actor/authority for each transition.
 
 ## Acceptance for PM-GROUP-G01
 
