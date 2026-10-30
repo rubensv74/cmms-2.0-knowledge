@@ -16,7 +16,7 @@
 | GAP-05 | Shell destinations exceeded the two-view slice | BOUNDED: destinations remain host shell; only queue/detail/back are in-slice | Source/host integration and navigation ownership still need Phase A evidence. |
 | GAP-06 | Refresh control had no read/query contract | CLOSED IN CANDIDATE: removed from both target SVGs and screen contract | If later added, specify source, observable result, loading/error and permission behavior. |
 | GAP-07 | Detail action titles did not align to selected activity | CLOSED IN TARGET: all four action titles now use Heat exchanger inspection | Validate binding from selected plan/action in PaYaml; current SVG is a design artifact. |
-| GAP-08 | No on-screen explanation linked behavior to meeting decisions | CONTRACTED IN DVP: each screen has a How it works modal and separate open-state SVG | No IAP modal candidate exists; accessible Canvas overlay, focus, close and source linking remain to implement/verify. |
+| GAP-08 | No on-screen explanation linked behavior to meeting decisions | CONTRACTED IN DVP: each screen has a How it works modal and separate open-state SVG | No IAP modal candidate exists; accessible Canvas overlay, focus, close and source linking remain to implement/verify. The TMS PageHeader signature exposes OnAction but no public reference to its internal trigger, so focus restoration may require a shared-component contract change. |
 
 ## Readiness assessment
 
@@ -24,7 +24,7 @@
 - Target and screen contract agree on no corrective/CBM rows, no Export/Refresh, inline execution evidence, and a per-screen How it works action. Separate modal-open targets display usage, limits and dated decision rationale.
 - Annual completion/pending states are visible. Cycle-end disposition stays OPEN_DECISION; this detail screen does not resolve it.
 - Functional scope candidate is v2 and still has baseline_review.status PENDING. FE-COVERAGE is not reported as PASS.
-- IAP inventory now pins 12 source blob SHAs and extracts primary CustomProperties at commit 377a6b3c. Formula internals, dependency graph, canonical usage, host contract and Studio rendering remain unreviewed; the inventory and region map are still drafts. The pinned candidate tree has no local search or pager component: the host must define accessible search/pagination controls and their state contract.
+- IAP inventory now pins 12 source blob SHAs and extracts primary CustomProperties at commit 377a6b3c. The attached TMS PageHeader has the same 32 public names/types, though its body differs; preserve that imported body as instance authority. Formula internals, dependency graph, canonical usage, host contract and Studio rendering remain unreviewed; the inventory and region map are still drafts. The pinned candidate tree has no local search or pager component: the host must define accessible search/pagination controls and their state contract.
 - SVG dimensions and visual regions do not constitute Canvas layout measurements. Responsive capacity, navigation focus, modal keyboard/focus behavior, keyboard behavior and initial-view action remain unverified.
 - No product PaYaml, Studio import/render, SQL or Power Automate work is claimed.
 
