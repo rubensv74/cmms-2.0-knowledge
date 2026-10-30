@@ -25,7 +25,7 @@ Los SHA de abajo son blob SHA de los archivos en el commit citado. Se revisaron 
 
 ## Host, shell y controles sin contrato resuelto
 
-- No hay componente de modal/dialog en el catálogo IAP fijado. El target usa PageHeaderPhotoPro.Action como activador; el host deberá proveer un overlay Canvas reutilizable y contenido por pantalla. Apertura/cierre y foco aún deben demostrarse en Studio.
+- No hay componente de modal/dialog en el catálogo IAP fijado. PageHeaderPhotoPro se conserva como encabezado con ShowAction=false; el host deberá proveer un overlay Canvas reutilizable, contenido por pantalla y su propio botón etiquetado de apertura. Apertura/cierre y foco aún deben demostrarse en Studio.
 - La barra global del target contiene destinos de shell fuera del primer recorrido. Su navegación y retención no se atribuyen a esta capacidad; identificar el host real y sus bindings en Phase A.
 - DataGridPro no ofrece paginación ni búsqueda textual. En el árbol candidato del commit fijado tampoco aparece un pager ni un componente de búsqueda local; GlobalSearch es de workspace y no se asigna a la búsqueda de cola. El host deberá componer input/pager nativos y orden estable, con su contrato y accesibilidad documentados.
 - La selección de fila debe persistir como RowKey; el evento de detalle navega/selecciona en el host. El retorno debe restaurar filtros, sort y page.
