@@ -1,5 +1,28 @@
 # Estado del proyecto
 
+**Última actualización:** 2026-10-30 — DEC-025 confirmado; revisión de impacto del CMMS Lab.
+
+> **Lectura vigente:** DEC-025 actualiza el alcance preventivo para las actividades temporales seleccionadas: una orden anual puede agrupar varias visitas con fecha y resultado independientes. La política de cierre de visitas pendientes al final del ciclo continúa abierta. El diseño existente de una ocurrencia por orden y una ejecución por orden no implementa esta decisión.
+
+## Resumen operativo vigente — 2026-10-30
+
+| Gate / ámbito | Estado actual | Evidencia y alcance |
+|---|---|---|
+| DEC-025 — Orden preventiva anual | CONFIRMED | Confirmación del usuario y propuesta CMMS emitida el 30/10 |
+| PM-GROUP-G01 — contrato lógico anual | EN DISEÑO | Contrato candidato en `07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md`; aún no aprobado/validado en runtime |
+| DB-G01-RUNTIME / SP-G01 históricos | PASS para el modelo anterior | 37 tablas y procedimientos comprobados en `db-omm-dev`; no prueban agrupación anual |
+| PA-G01-RUNTIME-MIN histórico | **BLOQUEADO / SUPERADO PARA LA ORDEN ANUAL** | El flow de materialización basado en una ocurrencia crea otra semántica; no ejecutar el paquete antiguo como validación del nuevo modelo |
+| CMMS Lab — datos sintéticos | PREPARADO EN RAMA | Perfil funcional enlazado y generador reproducible; solo datos de demostración |
+| Power Apps / DVP | PENDIENTE DE BASELINE | No se declara ninguna pantalla/runtime Studio validado |
+
+**Siguiente gate real:** `PM-GROUP-G01` — revisión y aprobación del contrato lógico, ciclo anual, cardinalidades, transiciones y migración aditiva. Una vez superado, preparar SQL/procedimientos/flows revisados y obtener evidencia manual en SQL Server/Power Automate. La implementación Canvas y la generación DVP de pantallas vendrán después de fijar el contrato y disponer de baseline de runtime.
+
+**Decisiones aún abiertas:** elegibilidad por actividad, `CycleKey` y cambio de versión de plan dentro del ciclo, momento de creación de la orden/visitas, programación y asignación por visita, vocabulario de estado, anulación/reapertura/reemisión, cierre técnico anual y disposición de visitas pendientes. Ninguna de estas políticas se presume por los datos sintéticos.
+
+**Alcance de la afirmación:** esta rama contiene diseño y fixtures. No se han ejecutado cambios en SQL, Power Automate ni Power Apps y no existe evidencia de validación Studio/runtime para esta capacidad.
+
+---
+
 **Última actualización:** 2026-10-13 (auditoría documental G00; sin cambio de estado técnico)
 
 > **Lectura vigente:** el resumen de 2026-10-09 prevalece para *estado de gates y próximos pasos*. Los apartados cronológicos conservados más abajo son registros históricos de los momentos en que se redactaron; no deben reutilizarse como bloqueos o prioridades actuales. Las decisiones de producto se gobiernan por Product Truth y el Decision Register.
