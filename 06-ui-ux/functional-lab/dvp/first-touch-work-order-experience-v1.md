@@ -1,11 +1,13 @@
 # CMMS Lab — First-touch DVP brief: Work Queue and Annual Order
 
-**Status:** interaction brief candidate; not a screen design or Studio-ready package  
+**Status:** interaction brief and functional screen contract candidate; not a Studio-ready package  
 **Business source:** CMMS Solution Proposal, 2026-10-30  
 **Technical dependency:** DEC-025 / PM-GROUP-G01 candidate contract  
 **Primary users for walkthrough:** Hernando and Eduardo; operational roles/permissions not inferred here
 
 ## 1. DVP objective
+
+Detailed layout/data contract: [Work Queue and Annual Order screen contract](work-queue-annual-order-screen-contract-v1.md).
 
 Prove that a first-time user can follow the narrative from approved plan to annual preventive order, understand the execution outcome attached to each planned action and identify pending work without confusing parent order state with planned action state.
 
