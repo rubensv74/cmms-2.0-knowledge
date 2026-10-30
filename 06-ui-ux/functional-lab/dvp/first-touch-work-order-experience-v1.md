@@ -78,6 +78,22 @@ Current IAP source records show candidate/source states; they do not establish C
 
 Use components where the interaction fits, and map remaining applicable IAP capabilities to their proper CMMS workspace. Maintain a coverage ledger with exact source, host inputs/outputs, events, states and validation gate; do not force unrelated components into WQ-01.
 
+### 4A. App-wide IAP candidate coverage target
+
+Inventory checked against IAP main commit 377a6b3c00c7bef7a8d9e1cfdb5eeb968fbdfe2c (32 Canvas candidate sources). This is a coverage plan across the CMMS experience, not a claim that any candidate is CMMS-certified or belongs on WQ-01.
+
+| CMMS experience | IAP candidate identities |
+|---|---|
+| App shell and navigation | PageHeaderPro, GlobalContextBar, ContextBreadcrumb, GlobalSearch, RecentFavorites, NotificationCenter, CommandPalette, ContextualAssistant |
+| Work queue and actions | FilterChips, DataGridPro, SavedViews, NeedsAttentionInbox, MiniMetricStrip, BulkActionBar, ContextualCommandBar, ActionFeedbackBar, SkeletonLoader |
+| Work Order and visit detail | EntityInspector, ActivityTimeline, RelationshipsExplorer, SmartDrawer |
+| Planning, standards and choices | AvailabilityMatrix, GroupedCardExplorer, OptionPicker |
+| Asset context and evidence | HierarchyTreePro, MediaGallery, PageHeaderPhotoPro, PhotographicStage |
+| Governed plan comparison | DiffViewer, SideBySideComparison |
+| Responsive design and capacity | ResponsiveLayoutMetrics, ResponsiveScreenBudget |
+
+Before adoption, pin each candidate source SHA and prove its host inputs, outputs, events and states. For each source, record consumer screen, reuse/adapt decision, source caveat and Studio gate. A component with no credible CMMS task remains deferred with a reason; the coverage target does not justify adding UI without user value.
+
 ## 5. DVP/D2P 3.3 production inputs
 
 Before producing a final PaYaml screen:
