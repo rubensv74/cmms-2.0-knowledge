@@ -13,7 +13,7 @@
           → visit-specific schedule and execution feedback
     → annual technical review/closure
 
-The annual grouping is selected per approved activity. Condition measurement cadence remains separate from any intervention WorkOrder.
+The annual grouping is selected per approved activity. Condition measurement cadence remains separate from any intervention WorkOrder. A major repair may reset affected time-based frequencies from its effective repair date while condition-monitoring rounds retain their own cadence; the criteria for a major repair and the affected plan items remain to be defined.
 
 ## Recommended entity ownership
 
