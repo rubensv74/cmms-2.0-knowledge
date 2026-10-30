@@ -65,7 +65,7 @@ Este slice no permite modificar fechas, asignar personal, ejecutar, cerrar, canc
 - Mostrar el estado de cada referencia: decisión confirmada en reunión, descripción AS-IS, abierto, baseline posterior aceptado por analista o ratificación pendiente.
 - Una decisión de una reunión no debe presentarse como aprobada para el producto cuando las propias notas la registran como AS-IS o pendiente.
 - Para cada afirmación, guardar el source ID, path/revisión documental y pantalla a la que aplica. En UI mostrar identificador, fecha y resumen; el detalle de fuente puede abrir un documento solo si existe destino interno estable y accesible.
-- El componente cmp_IAP_PageHeaderPhotoPro se conserva como encabezado, pero ShowAction=false en este DVP. El activador “Cómo funciona” es un botón etiquetado del host, alineado en la región visual prevista; el host controla el estado local del overlay y puede dirigir el retorno del foco al mismo botón. Se evita depender de una referencia pública al botón interno. La variante importada TMS prevalece como autoridad del encabezado porque su firma coincide con IAP, aunque el cuerpo difiere de la revisión pública fijada.
+- cmp_IAP_PageHeaderPhotoPro conserva su acción integrada “How it works”. Su evento OnAction abre el overlay contextual del host mediante un estado local por pantalla; no se añade un segundo botón. El source no expone públicamente el control interno para devolverle el foco de forma explícita, así que ese detalle se comprobará en Studio. La variante importada TMS prevalece como autoridad del encabezado porque su firma coincide con IAP, aunque el cuerpo difiere de la revisión pública fijada.
 
 La ayuda se versiona junto con screen contract, scope y target. Si cambia una decisión, revisar el copy y su vinculación antes de liberar la pantalla.
 - Mantener el badge sintético y la ausencia de writes también dentro del modal.
@@ -73,10 +73,10 @@ La ayuda se versiona junto con screen contract, scope y target. Si cambia una de
 ## Comportamiento accesible requerido
 
 - Botón persistente por pantalla, con etiqueta visible “Cómo funciona”; el icono informativo solo no basta.
-- Modal con título programático y sección enfocada al abrir; controles de cierre etiquetados; retorno del foco al botón del host que lo abrió.
+- Modal con título programático y sección enfocada al abrir; controles de cierre etiquetados; retorno del foco al botón integrado que lo abrió, sujeto a comprobar el comportamiento posible desde el host.
 - Cierre explícito; no depender únicamente de clic fuera. El contenido puede desplazarse dentro del modal.
 - La ayuda no debe borrar ni reinicializar filtros, selección, paginación ni foco de la pantalla subyacente.
-- La implementación Canvas debe demostrar teclado, lector de pantalla, contraste y reflow en Studio. El patrón visual SVG no es evidencia de accesibilidad ni de implementación. Al usar un botón propiedad del host, el contrato candidato puede devolverle el foco directamente sin cambiar PageHeaderPhotoPro; este comportamiento aún debe comprobarse en Studio.
+- La implementación Canvas debe demostrar teclado, lector de pantalla, contraste y reflow en Studio. El patrón visual SVG no es evidencia de accesibilidad ni de implementación. Aunque la referencia pública no expone el botón interno, esa duda no bloquea el modal ni la construcción del resto del slice; comprobar apertura/cierre y foco en Studio, y resolver cualquier limitación accesible con evidencia.
 
 ## Contrato de implementación pendiente
 
