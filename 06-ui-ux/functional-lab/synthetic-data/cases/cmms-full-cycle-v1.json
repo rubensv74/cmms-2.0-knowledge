@@ -1,0 +1,392 @@
+{
+  "fixtureVersion": "1.0.0",
+  "datasetId": "CMMS-LAB-SYNTH-FULL-CYCLE-01",
+  "scenarioAsOf": "2026-10-30",
+  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "disclaimer": "Valores ficticios para validación funcional/UI; no son instrucciones aprobadas ni datos de producción. Las reglas pendientes se conservan como OPEN_DECISION.",
+  "project": {
+    "projectId": "SYN-PROJECT-001",
+    "projectCode": "CMMS-LAB-01",
+    "name": "Demo Plant — Functional Lab",
+    "timezone": "Europe/Madrid"
+  },
+  "personas": [
+    {
+      "actorId": "ACTOR-PLANNER-01",
+      "roleCode": "SYNTHETIC_PLANNER",
+      "displayName": "Planner Demo 01",
+      "authorityStatus": "DEMO_ONLY"
+    },
+    {
+      "actorId": "ACTOR-INSPECTOR-01",
+      "roleCode": "SYNTHETIC_CONDITION_SPECIALIST",
+      "displayName": "Inspector Demo 01",
+      "authorityStatus": "DEMO_ONLY"
+    },
+    {
+      "actorId": "ACTOR-OPERATOR-01",
+      "roleCode": "SYNTHETIC_OPERATOR",
+      "displayName": "Operator Demo 01",
+      "authorityStatus": "DEMO_ONLY"
+    },
+    {
+      "actorId": "ACTOR-EXECUTOR-01",
+      "roleCode": "SYNTHETIC_EXECUTOR",
+      "displayName": "Crew Demo 01",
+      "authorityStatus": "DEMO_ONLY"
+    }
+  ],
+  "assets": [
+    {
+      "assetId": "SYN-ASSET-P101",
+      "assetCode": "P-101",
+      "description": "Cooling water pump A",
+      "equipmentTypeCode": "PUMP_CENTRIFUGAL_HORIZONTAL",
+      "locationPath": [
+        "Demo Plant",
+        "Unit A",
+        "Cooling Water",
+        "P-101"
+      ],
+      "sourceStatus": "CONCEPTUAL_P101_FIXTURE"
+    },
+    {
+      "assetId": "SYN-ASSET-P102",
+      "assetCode": "P-102",
+      "description": "Cooling water pump B",
+      "equipmentTypeCode": "PUMP_CENTRIFUGAL_HORIZONTAL",
+      "locationPath": [
+        "Demo Plant",
+        "Unit A",
+        "Cooling Water",
+        "P-102"
+      ],
+      "sourceStatus": "SYNTHETIC"
+    },
+    {
+      "assetId": "SYN-ASSET-C301",
+      "assetCode": "C-301",
+      "description": "Instrument air compressor",
+      "equipmentTypeCode": "COMPRESSOR_RECIPROCATING",
+      "locationPath": [
+        "Demo Plant",
+        "Unit A",
+        "Utilities",
+        "C-301"
+      ],
+      "sourceStatus": "SYNTHETIC"
+    },
+    {
+      "assetId": "SYN-ASSET-PSV401",
+      "assetCode": "PSV-401",
+      "description": "Vessel relief valve",
+      "equipmentTypeCode": "PRESSURE_SAFETY_VALVE",
+      "locationPath": [
+        "Demo Plant",
+        "Unit A",
+        "V-401",
+        "PSV-401"
+      ],
+      "sourceStatus": "SYNTHETIC"
+    }
+  ],
+  "engineeringSources": [
+    {
+      "sourceId": "SRC-RCM-P101",
+      "sourceBasis": "RCM",
+      "reference": "P101-AMEF-RCM-001",
+      "version": "1.1.0",
+      "status": "CONCEPTUAL_FIXTURE"
+    },
+    {
+      "sourceId": "SRC-OEM-P102",
+      "sourceBasis": "OEM",
+      "reference": "DEMO-OEM-P102-MANUAL",
+      "version": "DEMO-REV-A",
+      "status": "SYNTHETIC_REFERENCE_ONLY"
+    },
+    {
+      "sourceId": "SRC-EXPERT-PSV401",
+      "sourceBasis": "EXPERT",
+      "reference": "DEMO-ENGINEERING-ASSESSMENT-PSV401",
+      "version": "DEMO-1",
+      "status": "SYNTHETIC_REFERENCE_ONLY"
+    }
+  ],
+  "planVersions": [
+    {
+      "planVersionId": "PLAN-P101-CBM-V1",
+      "assetId": "SYN-ASSET-P101",
+      "sourceId": "SRC-RCM-P101",
+      "strategy": "CONDITION_BASED",
+      "status": "PUBLISHED_DEMO",
+      "effectiveFrom": "2026-01-01",
+      "note": "Measurement cadence is independent of any intervention order."
+    },
+    {
+      "planVersionId": "PLAN-P102-TIME-V1",
+      "assetId": "SYN-ASSET-P102",
+      "sourceId": "SRC-OEM-P102",
+      "strategy": "TIME_BASED",
+      "status": "PUBLISHED_DEMO",
+      "effectiveFrom": "2026-01-01",
+      "annualGrouping": "DEMO_ONLY",
+      "cycleKey": "CYCLE-2026",
+      "note": "Four visits demonstrate one annual WorkOrder; eligibility and cycle rules are not product defaults."
+    },
+    {
+      "planVersionId": "PLAN-PSV401-TIME-V1",
+      "assetId": "SYN-ASSET-PSV401",
+      "sourceId": "SRC-EXPERT-PSV401",
+      "strategy": "TIME_BASED",
+      "status": "DRAFT_DEMO",
+      "effectiveFrom": "2026-04-01",
+      "note": "Demonstrates draft/published provenance; not a corporate standard."
+    }
+  ],
+  "annualPreventiveWorkOrder": {
+    "workOrderId": "SYN-WO-ANNUAL-2026-001",
+    "workOrderNo": "LAB-PM-2026-001",
+    "assetId": "SYN-ASSET-P102",
+    "planVersionId": "PLAN-P102-TIME-V1",
+    "cycleKey": "CYCLE-2026",
+    "lifecycleMapping": "DEMO_ONLY_PENDING_SQL_CONTRACT",
+    "visits": [
+      {
+        "visitId": "SYN-VISIT-001",
+        "visitKey": "VISIT-01",
+        "label": "Quarter 1",
+        "plannedDueAt": "2026-03-15",
+        "visitState": "COMPLETED",
+        "actualStartAt": "2026-03-14T07:00:00Z",
+        "actualFinishAt": "2026-03-14T09:10:00Z",
+        "result": "COMPLETED_AS_PLANNED",
+        "executionRecordId": "SYN-EXEC-001",
+        "maintenanceOccurrenceId": "SYN-OCC-001"
+      },
+      {
+        "visitId": "SYN-VISIT-002",
+        "visitKey": "VISIT-02",
+        "label": "Quarter 2",
+        "plannedDueAt": "2026-06-15",
+        "visitState": "COMPLETED",
+        "actualStartAt": "2026-06-16T07:00:00Z",
+        "actualFinishAt": "2026-06-16T09:40:00Z",
+        "result": "COMPLETED_WITH_DEVIATION",
+        "executionRecordId": "SYN-EXEC-002",
+        "maintenanceOccurrenceId": "SYN-OCC-002",
+        "deviationReason": "Restricted access delayed the visit by one day."
+      },
+      {
+        "visitId": "SYN-VISIT-003",
+        "visitKey": "VISIT-03",
+        "label": "Quarter 3",
+        "plannedDueAt": "2026-09-15",
+        "visitState": "SCHEDULED",
+        "scheduledStartAt": "2026-10-20T07:00:00Z",
+        "scheduledFinishAt": "2026-10-20T10:00:00Z",
+        "crewId": "SYN-CREW-MECH-01",
+        "maintenanceOccurrenceId": "SYN-OCC-003"
+      },
+      {
+        "visitId": "SYN-VISIT-004",
+        "visitKey": "VISIT-04",
+        "label": "Quarter 4",
+        "plannedDueAt": "2026-12-15",
+        "visitState": "PLANNED",
+        "maintenanceOccurrenceId": null
+      }
+    ],
+    "annualCloseDecision": "OPEN_DECISION — no carry-forward, closure or replacement outcome is selected."
+  },
+  "conditionScenario": {
+    "scenarioId": "SCN-CONDITION-TO-PLANNER",
+    "assetId": "SYN-ASSET-P101",
+    "measurementPoint": {
+      "measurementPointId": "SYN-MP-P101-BRG-DE",
+      "label": "Drive-end bearing vibration",
+      "unit": "mm/s RMS",
+      "thresholdProfile": "DEMO_ONLY"
+    },
+    "readings": [
+      {
+        "readingId": "SYN-READ-001",
+        "measuredAt": "2026-09-01T08:00:00Z",
+        "value": 3.2,
+        "condition": "NORMAL"
+      },
+      {
+        "readingId": "SYN-READ-002",
+        "measuredAt": "2026-09-15T08:00:00Z",
+        "value": 4.1,
+        "condition": "NORMAL"
+      },
+      {
+        "readingId": "SYN-READ-003",
+        "measuredAt": "2026-10-01T08:00:00Z",
+        "value": 5.6,
+        "condition": "WARNING"
+      },
+      {
+        "readingId": "SYN-READ-004",
+        "measuredAt": "2026-10-15T08:00:00Z",
+        "value": 6.8,
+        "condition": "ACTION"
+      }
+    ],
+    "demoThresholds": {
+      "warningAt": 5,
+      "actionAt": 6.5,
+      "authority": "ILLUSTRATIVE_ONLY"
+    },
+    "recommendation": {
+      "recommendationId": "SYN-REC-P101-001",
+      "assetId": "SYN-ASSET-P101",
+      "failureMode": "Bearing degradation",
+      "evidenceReadingIds": [
+        "SYN-READ-003",
+        "SYN-READ-004"
+      ],
+      "action": "Plan bearing inspection/replacement within advised window.",
+      "status": "TECHNICAL_RECOMMENDATION_DEMO"
+    },
+    "plannerAction": {
+      "actorId": "ACTOR-PLANNER-01",
+      "action": "Create intervention WorkOrder after recommendation review.",
+      "workOrderId": "SYN-WO-CBM-2026-001",
+      "automaticFromAlarm": false
+    }
+  },
+  "correctiveScenario": {
+    "scenarioId": "SCN-LOGBOOK-TO-CORRECTIVE",
+    "observation": {
+      "observationId": "SYN-OBS-001",
+      "assetId": "SYN-ASSET-P102",
+      "observedAt": "2026-10-05T06:45:00Z",
+      "shiftId": "SYN-SHIFT-2026-10-05-A",
+      "text": "Intermittent seal leakage observed on operator round.",
+      "classification": "OBSERVATION_ONLY"
+    },
+    "event": {
+      "eventId": "SYN-EVENT-001",
+      "category": "EQUIPMENT_CONDITION",
+      "severity": "DEMO_MEDIUM",
+      "status": "OPEN_DEMO",
+      "observationId": "SYN-OBS-001"
+    },
+    "request": {
+      "requestId": "SYN-REQUEST-001",
+      "assetId": "SYN-ASSET-P102",
+      "eventId": "SYN-EVENT-001",
+      "status": "ASSESSED_DEMO",
+      "priority": "DEMO_HIGH"
+    },
+    "workOrder": {
+      "workOrderId": "SYN-WO-CORR-2026-001",
+      "workOrderNo": "LAB-CM-2026-001",
+      "type": "CORRECTIVE",
+      "sourceRequestId": "SYN-REQUEST-001",
+      "status": "TECHNICALLY_CLOSED_DEMO",
+      "visitId": "SYN-VISIT-CORR-001"
+    },
+    "execution": {
+      "executionRecordId": "SYN-EXEC-CORR-001",
+      "visitId": "SYN-VISIT-CORR-001",
+      "actualStartAt": "2026-10-12T07:00:00Z",
+      "actualFinishAt": "2026-10-12T10:15:00Z",
+      "result": "COMPLETED_WITH_DEVIATION",
+      "findingId": "SYN-FIND-001"
+    },
+    "finding": {
+      "findingId": "SYN-FIND-001",
+      "description": "Seal wear exceeded illustrative acceptance criterion.",
+      "followUpWorkOrderId": "SYN-WO-CORR-2026-002",
+      "status": "FOLLOW_UP_OPEN_DEMO"
+    }
+  },
+  "planningExecution": {
+    "planningPackageId": "SYN-PLANPKG-001",
+    "workOrderId": "SYN-WO-ANNUAL-2026-001",
+    "readiness": "READY_WITH_WARNINGS",
+    "constraints": [
+      {
+        "constraintId": "SYN-CONSTRAINT-001",
+        "type": "OPERATIONS_WINDOW",
+        "status": "CLEARED_DEMO"
+      },
+      {
+        "constraintId": "SYN-CONSTRAINT-002",
+        "type": "PERMIT_REQUIREMENT",
+        "status": "EXTERNAL_PROCESS_PENDING"
+      }
+    ],
+    "crew": {
+      "crewId": "SYN-CREW-MECH-01",
+      "discipline": "MECHANICAL",
+      "shiftId": "SYN-SHIFT-A",
+      "availability": "DEMO_AVAILABLE"
+    },
+    "visitActuals": [
+      {
+        "visitId": "SYN-VISIT-001",
+        "executionRecordId": "SYN-EXEC-001",
+        "laborHours": 2.17,
+        "materials": []
+      },
+      {
+        "visitId": "SYN-VISIT-002",
+        "executionRecordId": "SYN-EXEC-002",
+        "laborHours": 2.67,
+        "materials": [
+          {
+            "itemReference": "DEMO-SEAL-KIT",
+            "quantity": 1,
+            "inventoryAuthority": "NOT_CONNECTED"
+          }
+        ]
+      }
+    ],
+    "permitBoundary": "Requirement/status reference only; the fixture does not assert CMMS issues or integrates the corporate permit."
+  },
+  "governance": {
+    "planVersions": [
+      {
+        "planVersionId": "PLAN-P102-TIME-V1",
+        "version": 1,
+        "status": "PUBLISHED_DEMO",
+        "publishedAt": "2026-01-01T00:00:00Z"
+      },
+      {
+        "planVersionId": "PLAN-P102-TIME-V2",
+        "version": 2,
+        "status": "DRAFT_DEMO",
+        "supersedes": "PLAN-P102-TIME-V1",
+        "changeReason": "Illustrative frequency review; no published effect."
+      }
+    ],
+    "invariant": "Published versions remain immutable; the draft does not rewrite visits created from the prior version."
+  },
+  "openDecisionBranches": {
+    "annualCycleClose": {
+      "status": "OPEN_DECISION",
+      "alternatives": [
+        "KEEP_OPEN",
+        "TRANSFER_TO_NEXT_CYCLE",
+        "REQUIRE_NEW_ORDER"
+      ],
+      "selected": null
+    },
+    "roleAuthority": {
+      "status": "OPEN_DECISION",
+      "assignedToNamedUsers": false
+    },
+    "inventorySource": {
+      "status": "OPEN_DECISION",
+      "systemOfRecord": null
+    },
+    "permitBoundary": {
+      "status": "OPEN_DECISION",
+      "scope": "requirements/status/reference only until confirmed"
+    }
+  }
+}
