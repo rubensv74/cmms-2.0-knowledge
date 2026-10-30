@@ -1,11 +1,11 @@
 # DVP v2 — Region map y cobertura de estados (candidato)
 
-**Target Work Queue:** blob 273a771d1f51905f27e099a18e065bbfe454bda1  
-**Target Annual Order Detail:** blob 01a23bd3cfd9b9490cae8747316aa32baab28a57  
+**Target Work Queue:** blob ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c  
+**Target Annual Order Detail:** blob 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5  
 **Estado:** DRAFT; revisión funcional/visual pendiente  
 **Lienzo de referencia:** SVG viewBox 1440×900. Regiones visuales del SVG, no medidas ni breakpoints Canvas.
 
-**Estados de ayuda:** Work Queue open-state blob 351deb3bb57f460758c2b2c67e55e891b0522703; Annual Order Detail open-state blob e95b0a6a68c899b29b7a265d8c12f95d2a8cc89a.
+**Estados de ayuda:** Work Queue open-state blob e92600690ef25dddcbd5442f5f7b0378c3871c8c; Annual Order Detail open-state blob 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208.
 
 ## Work Queue — región → tarea y aceptación
 
