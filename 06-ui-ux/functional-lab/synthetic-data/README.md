@@ -33,7 +33,7 @@
 
 | Profile | Intended use | Volume status |
 |---|---|---|
-| walkthrough | User-led DVP and full-cycle demonstration | Fixed, curated records |
+| walkthrough | User-led DVP and full-cycle demonstration | Fixed curated records, including an annual parent with end-of-cycle pending disposition left OPEN |
 | functional | 250 synthetic assets, 62 annual PM orders / 248 visits, 50 condition cases / 400 readings, 35 observation-event cases, 17 corrective orders, 141 execution records and 14 major-repair cadence-reset examples; also findings, follow-ups, permit references, crews and material requirements | Generated deterministically; demonstration only |
 | load | 2,000 assets and proportionally expanded linked lifecycle records | Generator profile only; no performance acceptance target until real read paths and limits are known |
 
