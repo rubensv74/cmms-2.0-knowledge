@@ -1,0 +1,452 @@
+ComponentDefinitions:
+  cmp_IAP_PageHeaderPhotoPro:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      AccentHex:
+        PropertyKind: Input
+        DisplayName: AccentHex
+        DataType: Text
+        Default: ="#52657A"
+      ActionBusy:
+        PropertyKind: Input
+        DisplayName: ActionBusy
+        Description: Host-owned busy state.
+        DataType: Boolean
+        Default: =false
+      ActionBusyText:
+        PropertyKind: Input
+        DisplayName: ActionBusyText
+        Description: Label shown while the host reports the action as busy.
+        DataType: Text
+        Default: ="Processing..."
+      ActionEnabled:
+        PropertyKind: Input
+        DisplayName: ActionEnabled
+        Description: Host-owned enabled state.
+        DataType: Boolean
+        Default: =true
+      ActionHoverHex:
+        PropertyKind: Input
+        DisplayName: ActionHoverHex
+        DataType: Text
+        Default: ="#F6F9FC"
+      ActionPressedHex:
+        PropertyKind: Input
+        DisplayName: ActionPressedHex
+        DataType: Text
+        Default: ="#EAF0F6"
+      ActionText:
+        PropertyKind: Input
+        DisplayName: ActionText
+        Description: Normal action label.
+        DataType: Text
+        Default: ="Refresh"
+      BorderHex:
+        PropertyKind: Input
+        DisplayName: BorderHex
+        DataType: Text
+        Default: ="#D9E4EE"
+      BrandMessage:
+        PropertyKind: Input
+        DisplayName: BrandMessage
+        Description: Contextual application message displayed over the hero.
+        DataType: Text
+        Default: =""
+      ContextItems:
+        PropertyKind: Input
+        DisplayName: ContextItems
+        Description: Compact governed context chips shown below the page subtitle. Table with Order, Label and ValueText.
+        DataType: Table
+        Default: |-
+          =Table(
+              {Order:10,Label:"Project",ValueText:""},
+              {Order:20,Label:"Scope",ValueText:""}
+          )
+      Density:
+        PropertyKind: Input
+        DisplayName: Density
+        Description: Header density mode. COMPACT for dense workspaces, HERO for more expressive page identity.
+        DataType: Text
+        Default: ="COMPACT"
+      Eyebrow:
+        PropertyKind: Input
+        DisplayName: Eyebrow
+        Description: Small contextual label displayed above the page title.
+        DataType: Text
+        Default: =""
+      HeroFocusY:
+        PropertyKind: Input
+        DisplayName: HeroFocusY
+        Description: Vertical focus for the 3:1 photo; 0.37 is the measured laboratory candidate.
+        DataType: Number
+        Default: =0.37
+      HeroImage:
+        PropertyKind: Input
+        DisplayName: HeroImage
+        Description: Optimized contextual application page-header illustration.
+        DataType: Image
+        Default: =Blank()
+      IconAccessibleLabel:
+        PropertyKind: Input
+        DisplayName: IconAccessibleLabel
+        DataType: Text
+        Default: =cmp_IAP_PageHeaderPhotoPro.Title
+      IconBorderHex:
+        PropertyKind: Input
+        DisplayName: IconBorderHex
+        DataType: Text
+        Default: ="#D9E4EE"
+      IconImage:
+        PropertyKind: Input
+        DisplayName: IconImage
+        Description: Host-owned semantic icon; no application media dependency.
+        DataType: Image
+        Default: =Blank()
+      IconSurfaceHex:
+        PropertyKind: Input
+        DisplayName: IconSurfaceHex
+        DataType: Text
+        Default: ="#F6F9FC"
+      OnAction:
+        PropertyKind: Event
+        DisplayName: OnAction
+        Description: Emits page-level action intent. The host owns execution, confirmation, concurrency and terminal feedback.
+        ReturnType: None
+        Default: =If(false,Notify("",NotificationType.Information))
+      ShowAction:
+        PropertyKind: Input
+        DisplayName: ShowAction
+        Description: Shows one optional page-level action.
+        DataType: Boolean
+        Default: =false
+      ShowBrandMessage:
+        PropertyKind: Input
+        DisplayName: ShowBrandMessage
+        Description: Shows the contextual application message over the hero.
+        DataType: Boolean
+        Default: =false
+      ShowContextItems:
+        PropertyKind: Input
+        DisplayName: ShowContextItems
+        Description: Shows compact context chips under the page subtitle.
+        DataType: Boolean
+        Default: =false
+      ShowEyebrow:
+        PropertyKind: Input
+        DisplayName: ShowEyebrow
+        Description: Shows the small contextual label above the page title.
+        DataType: Boolean
+        Default: =false
+      ShowHero:
+        PropertyKind: Input
+        DisplayName: ShowHero
+        Description: Shows the contextual application hero image.
+        DataType: Boolean
+        Default: =false
+      ShowIcon:
+        PropertyKind: Input
+        DisplayName: ShowIcon
+        Description: Shows the governed application semantic icon container.
+        DataType: Boolean
+        Default: =true
+      ShowStatus:
+        PropertyKind: Input
+        DisplayName: ShowStatus
+        Description: Shows a host-owned display status.
+        DataType: Boolean
+        Default: =false
+      StatusText:
+        PropertyKind: Input
+        DisplayName: StatusText
+        Description: Display-only status text supplied by the host.
+        DataType: Text
+        Default: ="READY"
+      StatusTone:
+        PropertyKind: Input
+        DisplayName: StatusTone
+        Description: SUCCESS, WARNING, DANGER, INFO or NEUTRAL.
+        DataType: Text
+        Default: ="NEUTRAL"
+      Subtitle:
+        PropertyKind: Input
+        DisplayName: Subtitle
+        Description: One-line description of the page job.
+        DataType: Text
+        Default: =""
+      TextPrimaryHex:
+        PropertyKind: Input
+        DisplayName: TextPrimaryHex
+        DataType: Text
+        Default: ="#10243E"
+      TextSecondaryHex:
+        PropertyKind: Input
+        DisplayName: TextSecondaryHex
+        DataType: Text
+        Default: ="#5C7088"
+      Title:
+        PropertyKind: Input
+        DisplayName: Title
+        Description: Canonical application page title.
+        DataType: Text
+        Default: ="Workspace"
+    Properties:
+      Fill: =Color.Transparent
+      Height: =If(cmp_IAP_PageHeaderPhotoPro.ShowHero,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",112,158),80)
+      Width: =1120
+    Children:
+      - conIAPPageHeaderPhoto_Root_1:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(0,0,0,0)
+            DropShadow: =DropShadow.None
+            Fill: =Color.Transparent
+            Height: =Parent.Height
+            Width: =Parent.Width
+          Children:
+            - conIAPPageHeaderPhoto_HeroSurface_1:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  DropShadow: =DropShadow.None
+                  Fill: =Color.White
+                  Height: =Parent.Height
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowHero
+                  Width: =Parent.Width
+                Children:
+                  - imgIAPPageHeaderPhoto_Hero_1:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        BorderStyle: =BorderStyle.None
+                        Height: =Max(Parent.Height,Parent.Width/3)
+                        Image: =cmp_IAP_PageHeaderPhotoPro.HeroImage
+                        ImagePosition: =ImagePosition.Fill
+                        Width: =Parent.Width
+                        Y: =Parent.Height/2-Self.Height*cmp_IAP_PageHeaderPhotoPro.HeroFocusY
+                  - imgIAPPageHeaderPhoto_ContinuousVeil:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Height: =Parent.Height
+                        Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'><defs><linearGradient id='v'><stop offset='0%' stop-color='white'/><stop offset='40%' stop-color='white'/><stop offset='52%' stop-color='white' stop-opacity='.94'/><stop offset='68%' stop-color='white' stop-opacity='.45'/><stop offset='85%' stop-color='white' stop-opacity='.10'/><stop offset='100%' stop-color='white' stop-opacity='0'/></linearGradient></defs><rect width='1000' height='100' fill='url(#v)'/></svg>")
+                        ImagePosition: =ImagePosition.Stretch
+                        Visible: =cmp_IAP_PageHeaderPhotoPro.ShowHero
+                        Width: =Parent.Width
+                  - recIAPPageHeaderPhoto_TopAccent_1:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderColor: =RGBA(0,0,0,0)
+                        Fill: =ColorValue(cmp_IAP_PageHeaderPhotoPro.AccentHex)
+                        Height: =2
+                        Width: =Parent.Width
+            - btnIAPPageHeaderPhoto_IconContainer_1:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorValue(cmp_IAP_PageHeaderPhotoPro.IconBorderHex)
+                  BorderThickness: =1
+                  Color: =Color.Transparent
+                  DisabledBorderColor: =ColorValue(cmp_IAP_PageHeaderPhotoPro.IconBorderHex)
+                  DisabledColor: =Color.Transparent
+                  DisabledFill: =ColorValue(cmp_IAP_PageHeaderPhotoPro.IconSurfaceHex)
+                  DisplayMode: =DisplayMode.Disabled
+                  Fill: =ColorValue(cmp_IAP_PageHeaderPhotoPro.IconSurfaceHex)
+                  Height: =If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",48,58)
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Text: =""
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowIcon
+                  Width: =If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",48,58)
+                  Y: =If(cmp_IAP_PageHeaderPhotoPro.ShowHero,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",32,45),11)
+            - imgIAPPageHeaderPhoto_Icon_1:
+                Control: Image@2.2.3
+                Properties:
+                  AccessibleLabel: =cmp_IAP_PageHeaderPhotoPro.IconAccessibleLabel
+                  BorderColor: =RGBA(0,0,0,0)
+                  BorderStyle: =BorderStyle.None
+                  Height: =26
+                  Image: =cmp_IAP_PageHeaderPhotoPro.IconImage
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowIcon
+                  Width: =If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",26,30)
+                  X: =If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",11,14)
+                  Y: =If(cmp_IAP_PageHeaderPhotoPro.ShowHero,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",44,59),25)
+            - lblIAPPageHeaderPhoto_Eyebrow_1:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =ColorValue(cmp_IAP_PageHeaderPhotoPro.AccentHex)
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =18
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =8.5
+                  Text: =Upper(cmp_IAP_PageHeaderPhotoPro.Eyebrow)
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowEyebrow
+                  Width: =If(cmp_IAP_PageHeaderPhotoPro.ShowHero,Max(320,Min(760,Parent.Width*0.52)-Self.X),Parent.Width-Self.X)
+                  Wrap: =false
+                  X: =If(cmp_IAP_PageHeaderPhotoPro.ShowIcon,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",60,72),0)
+                  Y: =If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",10,18)
+            - lblIAPPageHeaderPhoto_Title_1:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =ColorValue(cmp_IAP_PageHeaderPhotoPro.TextPrimaryHex)
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =38
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =If(cmp_IAP_PageHeaderPhotoPro.ShowHero,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",24,27),26)
+                  Text: =cmp_IAP_PageHeaderPhotoPro.Title
+                  Width: =Max(0,If(cmp_IAP_PageHeaderPhotoPro.ShowHero,Min(760,Parent.Width*0.52),Parent.Width)-Self.X-16)
+                  Wrap: =false
+                  X: =If(cmp_IAP_PageHeaderPhotoPro.ShowIcon,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",60,72),0)
+                  Y: =If(cmp_IAP_PageHeaderPhotoPro.ShowEyebrow,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",26,36),If(cmp_IAP_PageHeaderPhotoPro.ShowHero,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",20,28),8))
+            - lblIAPPageHeaderPhoto_Subtitle_1:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =ColorValue(cmp_IAP_PageHeaderPhotoPro.TextSecondaryHex)
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  Height: =24
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =11
+                  Text: =cmp_IAP_PageHeaderPhotoPro.Subtitle
+                  Tooltip: =cmp_IAP_PageHeaderPhotoPro.Subtitle
+                  Width: =Max(0,If(cmp_IAP_PageHeaderPhotoPro.ShowHero,Min(760,Parent.Width*0.52),Parent.Width)-Self.X-16)
+                  Wrap: =false
+                  X: =If(cmp_IAP_PageHeaderPhotoPro.ShowIcon,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",60,72),0)
+                  Y: =If(cmp_IAP_PageHeaderPhotoPro.ShowEyebrow,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",59,74),If(cmp_IAP_PageHeaderPhotoPro.ShowHero,If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",55,70),48))
+            - galIAPPageHeaderPhoto_Context_1:
+                Control: Gallery@2.15.0
+                Variant: Horizontal
+                Properties:
+                  Height: =30
+                  Items: =SortByColumns(Filter(cmp_IAP_PageHeaderPhotoPro.ContextItems,!IsBlank(Trim(Text(ValueText)))),"Order",SortOrder.Ascending)
+                  ShowScrollbar: =false
+                  TemplatePadding: =2
+                  TemplateSize: =148
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowHero && cmp_IAP_PageHeaderPhotoPro.ShowContextItems
+                  Width: =Min(500,Parent.Width*0.44)
+                  X: =If(cmp_IAP_PageHeaderPhotoPro.ShowIcon,70,0)
+                  Y: =If(Upper(cmp_IAP_PageHeaderPhotoPro.Density)="COMPACT",82,118)
+                Children:
+                  - btnIAPPageHeaderPhoto_ContextChip_1:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =ColorValue("#C9DBED")
+                        BorderThickness: =1
+                        Color: =ColorValue("#28516F")
+                        DisabledBorderColor: =ColorValue("#C9DBED")
+                        DisabledColor: =ColorValue("#28516F")
+                        DisabledFill: =RGBA(255,255,255,0.82)
+                        DisplayMode: =DisplayMode.Disabled
+                        Fill: =RGBA(255,255,255,0.82)
+                        Font: =Font.'Segoe UI'
+                        Height: =22
+                        RadiusBottomLeft: =11
+                        RadiusBottomRight: =11
+                        RadiusTopLeft: =11
+                        RadiusTopRight: =11
+                        Size: =7.5
+                        Text: =Text(ThisItem.Label) & " · " & Text(ThisItem.ValueText)
+                        Width: =142
+                        X: =2
+                        Y: =2
+            - lblIAPPageHeaderPhoto_BrandMessage_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Right
+                  BorderColor: =RGBA(0,0,0,0)
+                  Color: =ColorValue(cmp_IAP_PageHeaderPhotoPro.TextPrimaryHex)
+                  Fill: =Color.Transparent
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =58
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =9
+                  Text: =cmp_IAP_PageHeaderPhotoPro.BrandMessage
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowHero && cmp_IAP_PageHeaderPhotoPro.ShowBrandMessage
+                  Width: =190
+                  X: =Parent.Width-Self.Width-20
+                  Y: =14
+            - recIAPPageHeaderPhoto_BrandAccent_1:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0,0,0,0)
+                  Fill: =ColorValue(cmp_IAP_PageHeaderPhotoPro.AccentHex)
+                  Height: =3
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowHero && cmp_IAP_PageHeaderPhotoPro.ShowBrandMessage
+                  Width: =42
+                  X: =Parent.Width-Self.Width-20
+                  Y: =82
+            - btnIAPPageHeaderPhoto_Status:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =Switch(Upper(cmp_IAP_PageHeaderPhotoPro.StatusTone),"SUCCESS",ColorValue("#A7D7B7"),"WARNING",ColorValue("#F0D49A"),"DANGER",ColorValue("#F1B4B4"),"INFO",ColorValue("#BCD2FF"),ColorValue("#D9E4EE"))
+                  BorderThickness: =1
+                  Color: =Color.Transparent
+                  DisabledBorderColor: =Self.BorderColor
+                  DisabledColor: =Switch(Upper(cmp_IAP_PageHeaderPhotoPro.StatusTone),"SUCCESS",ColorValue("#15803D"),"WARNING",ColorValue("#B45309"),"DANGER",ColorValue("#B91C1C"),"INFO",ColorValue(cmp_IAP_PageHeaderPhotoPro.AccentHex),ColorValue(cmp_IAP_PageHeaderPhotoPro.TextSecondaryHex))
+                  DisabledFill: =Switch(Upper(cmp_IAP_PageHeaderPhotoPro.StatusTone),"SUCCESS",ColorValue("#EFF9F2"),"WARNING",ColorValue("#FFF8E8"),"DANGER",ColorValue("#FFF1F1"),"INFO",ColorValue("#EEF4FF"),ColorValue("#F5F8FC"))
+                  DisplayMode: =DisplayMode.Disabled
+                  Fill: =Self.DisabledFill
+                  Font: =Font.'Segoe UI'
+                  Height: =32
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Size: =10
+                  Text: =Upper(cmp_IAP_PageHeaderPhotoPro.StatusText)
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowStatus
+                  Width: =164
+                  X: =Parent.Width-Self.Width-If(cmp_IAP_PageHeaderPhotoPro.ShowAction,146,16)
+                  Y: =12
+            - btnIAPPageHeaderPhoto_Action:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorValue(cmp_IAP_PageHeaderPhotoPro.BorderHex)
+                  BorderThickness: =1
+                  Color: =ColorValue(cmp_IAP_PageHeaderPhotoPro.AccentHex)
+                  DisabledBorderColor: =ColorValue(cmp_IAP_PageHeaderPhotoPro.BorderHex)
+                  DisabledColor: =ColorValue("#7B8EA3")
+                  DisabledFill: =ColorValue("#F5F8FC")
+                  DisplayMode: =If(cmp_IAP_PageHeaderPhotoPro.ActionEnabled && !cmp_IAP_PageHeaderPhotoPro.ActionBusy,DisplayMode.Edit,DisplayMode.Disabled)
+                  Fill: =Color.White
+                  Font: =Font.'Segoe UI'
+                  Height: =32
+                  HoverFill: =ColorValue(cmp_IAP_PageHeaderPhotoPro.ActionHoverHex)
+                  OnSelect: =cmp_IAP_PageHeaderPhotoPro.OnAction()
+                  PressedFill: =ColorValue(cmp_IAP_PageHeaderPhotoPro.ActionPressedHex)
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Size: =10
+                  Text: =If(cmp_IAP_PageHeaderPhotoPro.ActionBusy,cmp_IAP_PageHeaderPhotoPro.ActionBusyText,cmp_IAP_PageHeaderPhotoPro.ActionText)
+                  Visible: =cmp_IAP_PageHeaderPhotoPro.ShowAction
+                  Width: =120
+                  X: =Parent.Width-Self.Width-16
+                  Y: =12
