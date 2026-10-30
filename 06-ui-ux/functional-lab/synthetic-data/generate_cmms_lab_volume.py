@@ -44,6 +44,7 @@ def generate(profile: str) -> dict:
     work_orders, condition_cases, observations, events, requests = [], [], [], [], []
     execution_records, actuals, occurrences, crews = [], [], [], []
     findings, follow_ups, permits, material_requirements = [], [], [], []
+    recurrence_adjustments = []
 
     for crew_ix, discipline in enumerate(["MECHANICAL", "ELECTRICAL", "INSTRUMENT"], 1):
         crews.append({
@@ -240,11 +241,13 @@ def generate(profile: str) -> dict:
                 wo_id = stable("SYN-WO-CORR", i)
                 visit_id = stable("SYN-VISIT-CORR", i)
                 exec_id = stable("SYN-EXEC-CORR", i)
+                major_repair = i % 14 == 0 and i % 5 != 0
                 request["workOrderId"] = wo_id
                 work_orders.append({
                     "workOrderId": wo_id,
                     "workOrderNo": f"LAB-CM-2026-{i:05d}",
                     "type": "CORRECTIVE",
+                    "repairScopeCode": "MAJOR_REPAIR_DEMO" if major_repair else "ROUTINE_REPAIR_DEMO",
                     "assetId": asset_id,
                     "sourceRequestId": request_id,
                     "displayState": "TECHNICALLY_CLOSED_DEMO",
@@ -277,6 +280,19 @@ def generate(profile: str) -> dict:
                     "decision": "PLANNER_REVIEW_REQUIRED",
                     "automaticWorkOrder": False,
                 })
+                if major_repair:
+                    recurrence_adjustments.append({
+                        "adjustmentId": stable("SYN-REC-RESET", i),
+                        "workOrderId": wo_id,
+                        "executionRecordId": exec_id,
+                        "planVersionId": plan_id,
+                        "effectiveAt": "2026-10-12T10:15:00Z",
+                        "affectedCadence": "TIME_BASED_ONLY",
+                        "previousNextDueAt": "2026-12-15",
+                        "recalculatedNextDueAt": "2027-01-10",
+                        "conditionMonitoringCadenceChanged": False,
+                        "authorityState": "DEMO_ONLY_REQUIRES_APPROVED_SCOPE_RULE",
+                    })
                 permits.append({
                     "permitRequirementId": stable("SYN-PERMIT-CORR", i),
                     "workOrderVisitId": visit_id,
@@ -311,6 +327,7 @@ def generate(profile: str) -> dict:
             "followUps": follow_ups,
             "permitRequirements": permits,
             "materialRequirements": material_requirements,
+            "recurrenceAdjustments": recurrence_adjustments,
         },
         "openDecisions": {
             "yearEndVisitDisposition": ["KEEP_OPEN", "TRANSFER_TO_NEXT_CYCLE", "REQUIRE_NEW_ORDER"],
@@ -328,6 +345,7 @@ def generate(profile: str) -> dict:
             "eventCount": len(events),
             "correctiveWorkOrderCount": sum(1 for w in work_orders if w["type"] == "CORRECTIVE"),
             "executionRecordCount": len(execution_records),
+            "majorRepairFrequencyResetExampleCount": len(recurrence_adjustments),
         },
     }
 
@@ -346,6 +364,7 @@ def generate(profile: str) -> dict:
     assert all(f["findingId"] in finding_ids for f in follow_ups)
     assert all(p["workOrderVisitId"] in visit_ids for p in permits)
     assert all(m["workOrderVisitId"] in visit_ids for m in material_requirements)
+    assert all(a["workOrderId"] in work_ids and a["executionRecordId"] in {e["executionRecordId"] for e in execution_records} and a["planVersionId"] in plan_ids for a in recurrence_adjustments)
     return data
 
 
