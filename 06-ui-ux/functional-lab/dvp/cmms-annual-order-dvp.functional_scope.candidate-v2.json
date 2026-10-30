@@ -19,6 +19,24 @@
       "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/06-ui-ux/functional-lab/synthetic-data/cases/cmms-work-queue-annual-detail-v1.1.json",
       "revision": "CMMS-LAB-SYNTH-FUNCTIONAL-V1, dataset 1.1.0, generated with functional profile",
       "authority": "DEMO_ONLY"
+    },
+    {
+      "id": "SRC_MEETING_2026_08_21",
+      "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/05-meetings/2026/2026-08-21_revision-cmms-gestion-ordenes-trabajo.md",
+      "revision": "Meeting notes 21-Aug-2026; workflow described as AS-IS; organization/routing not approved as target",
+      "authority": "MEETING_RECORD_AS_IS"
+    },
+    {
+      "id": "SRC_MEETING_2026_09_25",
+      "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/05-meetings/2026/2026-09-25_revision-cmms-work-management-execution-feedback.md",
+      "revision": "Meeting notes 25-Sep-2026; confirmed principles with remaining open decisions",
+      "authority": "MEETING_RECORD"
+    },
+    {
+      "id": "SRC_SCREEN_HELP_MODAL_V1",
+      "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/06-ui-ux/functional-lab/dvp/screen-help-and-decision-rationale-modal-v1.md",
+      "revision": "Contextual help modal contract v1; includes per-screen decision provenance",
+      "authority": "PRODUCT_REQUIREMENT"
     }
   ],
   "baseline_review": {
@@ -51,7 +69,17 @@
       "steps": [
         {
           "view": "WORK_QUEUE",
+          "action": "Open the screen help modal, review the queue purpose, available actions and meeting/decision rationale, then close it without losing queue state.",
+          "next_view": "WORK_QUEUE"
+        },
+        {
+          "view": "WORK_QUEUE",
           "action": "Search or filter the annual preventive view, inspect a row and open an annual preventive order.",
+          "next_view": "ANNUAL_ORDER_DETAIL"
+        },
+        {
+          "view": "ANNUAL_ORDER_DETAIL",
+          "action": "Open the screen help modal, review how planned actions and actual executions are represented and the supporting decisions, then close it.",
           "next_view": "ANNUAL_ORDER_DETAIL"
         },
         {
@@ -184,6 +212,66 @@
         "ERROR"
       ],
       "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_WORK_QUEUE_HELP_MODAL",
+      "source_id": "SRC_SCREEN_HELP_MODAL_V1",
+      "supporting_source_ids": [
+        "SRC_MEETING_2026_08_21",
+        "SRC_MEETING_2026_09_25",
+        "SRC_DEC_025",
+        "SRC_CMMS_PROPOSAL_2026_10_30"
+      ],
+      "essential": true,
+      "actor": "Any user of the Work Queue screen.",
+      "goal": "Understand how the annual PM queue works and why its boundaries and interactions were chosen.",
+      "trigger": "Select the visible How it works action in Work Queue.",
+      "information": "Screen purpose; meaning and synthetic origin of queue data; available and excluded actions; decision summaries with date, source and authority status.",
+      "decision": "Choose the supported queue interaction with a clear understanding of its rationale and limits.",
+      "action": "Open/read/close the modal; use any listed search/filter/sort/page/open-order interaction only when implemented.",
+      "validation": "The modal distinguishes the 21-Aug AS-IS flow, 25-Sep meeting decisions, and later DEC-025/proposal baseline; it does not attribute annual grouping to the earlier meeting or present pending TR policy as ratified.",
+      "result": "The user understands why the queue is annual-only, synthetic, and read-only.",
+      "feedback": "Modal opens and closes without changing queue data or context.",
+      "next_state": "WORK_QUEUE",
+      "view_id": "WORK_QUEUE",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "READY",
+        "HELP_OPEN",
+        "HELP_CLOSED",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_ANNUAL_DETAIL_HELP_MODAL",
+      "source_id": "SRC_SCREEN_HELP_MODAL_V1",
+      "supporting_source_ids": [
+        "SRC_MEETING_2026_08_21",
+        "SRC_MEETING_2026_09_25",
+        "SRC_DEC_025",
+        "SRC_CMMS_PROPOSAL_2026_10_30"
+      ],
+      "essential": true,
+      "actor": "Any user of the Annual Order Detail screen.",
+      "goal": "Understand how to read the annual order, planned actions and actual execution evidence, and why they are separated.",
+      "trigger": "Select the visible How it works action in Annual Order Detail.",
+      "information": "Screen purpose; meanings of plan/cycle/action/ExecutionRecord; available and excluded actions; decision summaries with date, source and authority status.",
+      "decision": "Interpret completed, scheduled, planned and with-deviation states without assuming unapproved authority or policy.",
+      "action": "Open/read/close the modal; inspect an action and its inline execution evidence when present.",
+      "validation": "The modal traces separate planned and actual data to the 25-Sep meeting and DEC-025/proposal baseline; it identifies the latter as a post-meeting candidate awaiting TR ratification.",
+      "result": "The user understands the detail interaction and does not confuse a planned action with an execution.",
+      "feedback": "Modal opens and closes without changing the selected action or queue return context.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "READY",
+        "HELP_OPEN",
+        "HELP_CLOSED",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
     }
   ],
   "expected_requirement_ids": [
@@ -191,6 +279,8 @@
     "REQ_ANNUAL_ORDER_PLAN_PROVENANCE",
     "REQ_PLANNED_ACTION_EXECUTION_SEPARATION",
     "REQ_CYCLE_END_PENDING_VISIBILITY",
-    "REQ_READ_CONTEXT_RETURN"
+    "REQ_READ_CONTEXT_RETURN",
+    "REQ_WORK_QUEUE_HELP_MODAL",
+    "REQ_ANNUAL_DETAIL_HELP_MODAL"
   ]
 }
