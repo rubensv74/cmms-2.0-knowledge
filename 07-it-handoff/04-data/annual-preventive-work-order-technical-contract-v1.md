@@ -25,6 +25,17 @@ The existing DB-G01/SP-G01 runtime remains valid evidence for its October model 
 
 ## 3. Confirmed behavior versus open decisions
 
+### Recommended business baseline accepted by the functional analyst
+
+The following is a candidate for review, not a stakeholder-approved operating rule:
+
+- Eligibility is declared on the approved plan item; grouping key is asset + plan item + explicit cycle.
+- Cycle start/end and CycleKey are plan-defined; no implicit calendar-year default.
+- Pending actions remain pending at cycle end; no automatic carry/close/replacement. Closure requires execution evidence or an authorized, reasoned disposition for every action.
+- Reset only expressly approved time-based policies affected by a completed major repair, from its agreed effective date; audit scope and before/after due dates; keep condition cadence independent.
+- Exact “major repair” qualification and affected-item selection remain open for TR stakeholder ratification.
+
+
 ### Confirmed by the proposal
 
 - Annual grouping applies only to selected time-based tasks.

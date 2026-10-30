@@ -128,3 +128,8 @@ La existencia de mockup, HTML, YAML, Power Fx o SQL no equivale a validación fu
 La propuesta distribuida el 30 de octubre confirma que determinadas tareas preventivas por tiempo se organizan en una orden anual con varias ejecuciones periódicas (por ejemplo, trimestrales), en lugar de una Work Order independiente por actuación programada. La ejecución mantiene fecha y resultado individual. Esta regla se limita a las actividades configuradas para ese patrón; no sustituye la recurrencia rolling como principio general ni implica materialización de toda la vida del activo.
 
 Esta enmienda prevalece sobre las formulaciones anteriores de PT-10 y se desarrolla en la decisión DEC-025 y el contrato de agregación anual. Permanecen abiertos: elegibilidad de las actividades, definición del ciclo, momento de crear la orden, granularidad de programación/recursos y resolución de ejecuciones pendientes al cierre.
+
+
+### Aplicación de las recomendaciones de DEC-025 (2026-10-30)
+
+Rubén acepta como baseline candidato que la elegibilidad se declare en el Plan de Mantenimiento Aprobado, que el ciclo use límites explícitos del plan y no un año natural implícito, que las actuaciones pendientes no se cierren ni reemplacen automáticamente y que una reparación mayor solo reinicie cadencias por tiempo expresamente afectadas. Estos detalles requieren ratificación de Responsables de TR Mantenimiento y TR Servicios antes de convertirse en reglas empresariales. La definición exacta de reparación mayor y su alcance permanece abierta.

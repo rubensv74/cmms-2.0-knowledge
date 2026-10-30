@@ -31,6 +31,15 @@ The annual grouping is selected per approved activity. Condition measurement cad
 
 The candidate model represents the confirmed annual preventive order through several WorkOrderPlannedAction rows. Each periodic planned action has its own planned date and state; its linked ExecutionRecord stores actual dates and result. The parent distinguishes completed and pending work. The distributed proposal explicitly leaves pending action disposition open. Cardinality for non-annual work, including corrective orders, is not specified in that proposal and remains a contract decision. The synthetic corrective example has one planned action for demonstration only. Execution timestamps, results and actuals belong to its linked ExecutionRecord; the WorkOrder carries shared scope and aggregate lifecycle.
 
+## Recommended operational baseline — pending stakeholder ratification
+
+The functional analyst accepts this candidate baseline for review with TR Maintenance and TR Services. It is not yet an approved operating policy:
+
+- Eligibility is explicit on the Approved Maintenance Plan; group by asset, plan activity and governed cycle. Keep condition rounds outside this annual time-based grouping.
+- The cycle has explicit plan-approved start/end boundaries and a CycleKey; do not default the key to a calendar year.
+- At cycle end, do not automatically close, carry forward or replace pending planned actions. Keep them pending until an authorized, reasoned disposition is recorded; technical closure must evaluate every action.
+- A major repair resets only the time-based activities explicitly reviewed and approved as affected, from the agreed effective date. Preserve before/after due dates and authority; never change condition-monitoring cadence. The classification criteria for “major repair” remain open.
+
 ## Natural keys and idempotency
 
 Proposed identifiers, not yet physical keys:

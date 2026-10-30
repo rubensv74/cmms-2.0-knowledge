@@ -11,13 +11,13 @@
 | 1–8 | MSL-G01/02, TRG-G01, WM-G02/03/05, DM-G01/02 | PASS de contrato/benchmark/lógico según el alcance registrado |
 | 9 | DB-G01-RUNTIME / SP-G01 | PASS_RUNTIME para el modelo previo (37 tablas y procedimientos) |
 | 10 | DEC-025 | CONFIRMED: una orden preventiva anual seleccionada, varias actuaciones programadas, fechas/resultados separados |
-| **11** | **PM-GROUP-G01 — Contrato anual** | **NEXT / EN DISEÑO; riesgo C** |
+| **11** | **PM-GROUP-G01 — Contrato anual** | **NEXT / baseline candidato listo; ratificación TR pendiente; riesgo C** |
 | 12 | DB/SP/PA incremental | Bloqueado hasta aprobar el contrato y la migración |
 | 13 | PA runtime + primer slice Canvas/DVP | Después de la revisión SQL/flow; requiere evidencia en herramientas reales |
 
-**Siguiente acción:** cerrar `PM-GROUP-G01`: cardinalidades, `CycleKey`, elegibilidad, materialización/idempotencia, agenda y recursos por actuación programada, estados, hallazgos, cierres, regla de reparación mayor y migración/backfill. Revisar [contrato lógico](07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md) y [contrato técnico candidato](07-it-handoff/04-data/annual-preventive-work-order-technical-contract-v1.md).
+**Siguiente acción:** presentar en `PM-GROUP-G01` el baseline recomendado que Rubén acepta y obtener ratificación o corrección de Responsables de TR Mantenimiento y TR Servicios. Brief: [PM-GROUP-G01 functional decision brief](07-it-handoff/04-data/PM-GROUP-G01-functional-decision-brief-v1.md). Después cerrar cardinalidades, materialización/idempotencia, agenda/recursos, estados, hallazgos, cierres y migración/backfill. Revisar [contrato lógico](07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md) y [contrato técnico candidato](07-it-handoff/04-data/annual-preventive-work-order-technical-contract-v1.md).
 
-**No ejecutar todavía:** el Flow 2 del paquete histórico materializa una WO por `MaintenanceOccurrence`, lo que contradice el agrupamiento anual. También queda suspendido el Flow 1 como prueba de la nueva vertical hasta que el contrato de lectura incorpore actuaciones programadas y estados agregados. El paquete se actualizará tras la aprobación del contrato.
+**No ejecutar todavía:** el Flow 2 del paquete histórico materializa una WO por `MaintenanceOccurrence`, lo que contradice el agrupamiento anual. También queda suspendido el Flow 1 como prueba de la nueva vertical hasta que el contrato de lectura incorpore actuaciones programadas y estados agregados. El paquete se actualizará tras la ratificación empresarial del baseline y la aprobación del contrato.
 
 **CMMS Lab en paralelo:** fixture funcional sintético enlazado (250 activos; PM anual, CBM, correctivo, hallazgos, actuals y límites de permisos/inventario), bajo autoridad demostrativa. No representa valores ni estándares aprobados. El generador ofrece perfil de carga separado.
 

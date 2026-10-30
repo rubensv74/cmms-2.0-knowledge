@@ -1,6 +1,6 @@
 # DEC-025 — Agrupación anual de ejecuciones preventivas
 
-**Estado:** CONFIRMED — comportamiento funcional; contrato técnico pendiente  
+**Estado:** CONFIRMED — agrupación anual; baseline operativo recomendado aceptado por el analista funcional, ratificación empresarial pendiente  
 **Fecha:** 2026-10-30  
 **Dominio:** Triggering / Work Management / Execution  
 **Fuente:** CMMS Propuesta de solución, versión 2026-10-30, pp. 3–6; confirmación de Rubén en esta sesión.
@@ -19,7 +19,6 @@ La regla es selectiva. No se asume que toda actividad preventiva debe agruparse 
 4. El calendario de la orden no sobrescribe el vencimiento que determina Triggering.
 5. La orden anual no autoriza materializar preventivas para toda la vida del activo.
 6. Un reintento no debe duplicar la orden anual ni una actuación programada, incluso si llega con un RequestId distinto.
-7. Al cierre del ciclo, las actuaciones programadas pendientes siguen pendientes de decisión: no se trasladan, cierran ni reemplazan automáticamente.
 
 ## Diseño técnico recomendado — candidate
 
@@ -68,3 +67,16 @@ Riesgo C. Requiere contrato lógico revisado, migración aditiva, rollback revis
 ## Terminología funcional
 
 La interfaz llamará **actuación preventiva programada** a cada elemento previsto dentro de la orden del ciclo; no se denominará «visita». El `ExecutionRecord` registrará lo realmente ejecutado, con sus fechas, resultado y feedback. `MaintenanceOccurrence` seguirá siendo la evidencia de vencimiento/liberación de Triggering, no el nombre de la actuación. `WorkOrderPlannedAction` es el identificador técnico candidato para el elemento planificado; la entidad física aún no está aprobada.
+
+## Baseline recomendado para validación empresarial
+
+Rubén acepta estas recomendaciones como baseline funcional candidato (2026-10-30). No se registran como política operativa aprobada hasta que los Responsables de TR Mantenimiento y TR Servicios las ratifiquen.
+
+| Tema | Baseline recomendado | Estado |
+|---|---|---|
+| Elegibilidad | Agrupar solo actividades preventivas por tiempo que el Plan de Mantenimiento Aprobado marque expresamente para ese patrón. Resolver una orden por activo, actividad y ciclo; las rondas de condición quedan fuera. | Pendiente de ratificación |
+| Ciclo | Usar fechas de inicio/fin del ciclo definido en el plan aprobado y un CycleKey explícito. No imponer año natural como valor por defecto. | Pendiente de ratificación |
+| Pendientes | No cerrar, trasladar ni sustituir automáticamente una actuación pendiente al fin del ciclo. Mantenerla pendiente hasta que un responsable autorizado registre una decisión y su motivo; no cerrar técnicamente la orden con actuaciones sin ejecución ni disposición registrada. | Pendiente de ratificación |
+| Reparación mayor | No reiniciar todas las frecuencias por defecto. Tras reparación completada, aplicar el reinicio solo a las actividades por tiempo que Mantenimiento identifique y apruebe como afectadas, desde la fecha efectiva acordada; registrar orden fuente, actividades, vencimientos anterior/nuevo y aprobación. Mantener independiente la cadencia de condición. | Criterio exacto de reparación mayor y alcance pendientes |
+
+La propuesta emitida confirma la agrupación anual selectiva, el registro individual de cada ejecución y la independencia de la cadencia de condición. La tabla añade una recomendación concreta para los puntos que la propia propuesta deja abiertos; requiere ratificación de los destinatarios antes de convertirse en regla empresarial.

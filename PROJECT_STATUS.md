@@ -1,23 +1,23 @@
 # Estado del proyecto
 
-**Última actualización:** 2026-10-30 — DEC-025 confirmado; revisión de impacto del CMMS Lab.
+**Última actualización:** 2026-10-30 — baseline de DEC-025 aceptado por el analista; ratificación TR pendiente.
 
-> **Lectura vigente:** DEC-025 actualiza el alcance preventivo para las actividades temporales seleccionadas: una orden anual puede agrupar varias actuaciones programadas con fecha y resultado independientes. La política de cierre de actuaciones programadas pendientes al final del ciclo continúa abierta. El diseño existente de una ocurrencia por orden y una ejecución por orden no implementa esta decisión.
+> **Lectura vigente:** DEC-025 actualiza el alcance preventivo para las actividades temporales seleccionadas: una orden anual puede agrupar varias actuaciones programadas; cada una conserva su fecha prevista y estado, y cada ExecutionRecord conserva las fechas reales y el resultado. Rubén aceptó recomendaciones para elegibilidad, ciclo, pendientes y reinicio de frecuencias; se registran como baseline candidato, no como política TR ratificada. El criterio exacto de reparación mayor sigue abierto. El diseño existente de una ocurrencia por orden y una ejecución por orden no implementa esta decisión.
 
 ## Resumen operativo vigente — 2026-10-30
 
 | Gate / ámbito | Estado actual | Evidencia y alcance |
 |---|---|---|
 | DEC-025 — Orden preventiva anual | CONFIRMED | Confirmación del usuario y propuesta CMMS emitida el 30/10 |
-| PM-GROUP-G01 — contrato funcional/técnico anual | EN DISEÑO | Contrato lógico y técnico candidato en `07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md` y `annual-preventive-work-order-technical-contract-v1.md`; open decisions remain |
+| PM-GROUP-G01 — contrato funcional/técnico anual | EN DISEÑO; baseline candidato preparado | Contrato lógico y técnico candidato en `07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md` y `annual-preventive-work-order-technical-contract-v1.md`; baseline funcional aceptado por analista; ratificación empresarial y open decisions restantes |
 | DB-G01-RUNTIME / SP-G01 históricos | PASS para el modelo anterior | 37 tablas y procedimientos comprobados en `db-omm-dev`; no prueban agrupación anual |
 | PA-G01-RUNTIME-MIN histórico | **BLOQUEADO / SUPERADO PARA LA ORDEN ANUAL** | El flow de materialización basado en una ocurrencia crea otra semántica; no ejecutar el paquete antiguo como validación del nuevo modelo |
 | CMMS Lab — datos sintéticos | PREPARADO EN RAMA | Perfil funcional enlazado, 14 ejemplos de reinicio sintético y generador reproducible; solo demostración |
 | Power Apps / DVP | PREFLIGHT DOCUMENTADO; STUDIO PENDIENTE | Brief de primera experiencia preparado; falta target aprobado, baseline YAML/render y evidencia Studio |
 
-**Siguiente gate real:** `PM-GROUP-G01` — revisión y aprobación del contrato lógico, ciclo anual, cardinalidades, transiciones y migración aditiva. Una vez superado, preparar SQL/procedimientos/flows revisados y obtener evidencia manual en SQL Server/Power Automate. La implementación Canvas y la generación DVP de pantallas vendrán después de fijar el contrato y disponer de baseline de runtime.
+**Siguiente gate real:** `PM-GROUP-G01` — ratificación por Responsables de TR Mantenimiento y TR Servicios del brief `07-it-handoff/04-data/PM-GROUP-G01-functional-decision-brief-v1.md`, más revisión de cardinalidades, transiciones y migración aditiva. Una vez superado, preparar SQL/procedimientos/flows revisados y obtener evidencia manual en SQL Server/Power Automate. La implementación Canvas y la generación DVP de pantallas vendrán después de fijar el contrato y disponer de baseline de runtime.
 
-**Decisiones aún abiertas:** elegibilidad por actividad, `CycleKey` y cambio de versión de plan dentro del ciclo, momento de creación de la orden/actuaciones programadas, programación y asignación por actuación programada, vocabulario de estado, anulación/reapertura/reemisión, cierre técnico anual, disposición de actuaciones programadas pendientes y criterio/alcance del reinicio por reparación mayor. Ninguna de estas políticas se presume por los datos sintéticos.
+**Pendiente de ratificación/definición:** elegibilidad concreta, ciclo aplicable y cambios de versión del plan, momento de materialización, autoridad y opciones para pendientes, criterio exacto de reparación mayor, cardinalidad de trabajo no anual, programación/recursos y transiciones de estado. El brief registra el baseline aceptado por el analista; los datos sintéticos no lo convierten en regla.
 
 **Alcance de la afirmación:** esta rama contiene diseño y fixtures. No se han ejecutado cambios en SQL, Power Automate ni Power Apps y no existe evidencia de validación Studio/runtime para esta capacidad.
 
