@@ -376,3 +376,35 @@ Published Activity
 ~~~
 
 No se implementa todavía como comportamiento productivo hasta disponer de contratos mínimos y fixture controlado.
+
+
+## 13. Enmienda 2026-10-30 — Work Order anual con ejecuciones periódicas
+
+La propuesta funcional confirma para determinadas tareas por tiempo una Work Order anual que agrupa varias ejecuciones periódicas. Cada ejecución conserva fecha y resultado. Esta excepción no convierte toda recurrencia en una WO anual ni modifica la cadencia propia de las mediciones basadas en condición.
+
+### Implicación para el modelo
+
+El contrato vigente de Triggering→Work Management, donde una MaintenanceOccurrence materializa como máximo una WorkOrder y una WorkOrder tiene un único ExecutionRecord, no representa esta decisión. Se requiere una entidad de visita/ejecución hija de WorkOrder:
+
+```text
+Project Plan Item + Trigger Policy
+→ periodic visit schedule
+→ Annual Preventive WorkOrder
+   ├── Visit 1 → due occurrence → execution result
+   ├── Visit 2 → due occurrence → execution result
+   ├── Visit 3 → due occurrence → execution result
+   └── Visit 4 → due occurrence → execution result
+```
+
+La cardinalidad y momento exactos de generación de cada occurrence, la clave de agrupación/ciclo, la asignación de fecha/cuadrilla por visita y el estado agregado de la Work Order requieren contrato específico antes de alterar SQL o Power Automate.
+
+### Decisiones que siguen abiertas
+
+- Qué actividades son elegibles para orden anual agrupada.
+- Si el ciclo sigue año natural, fiscal o fechas de vigencia del plan.
+- Cuándo se crea la Work Order y cuándo se liberan/materializan las visitas.
+- Si preparación/recursos son comunes a la orden y la programación/asignación se gobierna por visita.
+- Qué ocurre con las visitas pendientes al concluir el ciclo.
+- Cómo se mantiene la idempotencia al asociar ocurrencias posteriores a una Work Order anual ya existente.
+
+No validar el flujo anterior `WorkOrder_MaterializeFromOccurrence` como contrato vigente para esta ruta. La nueva versión deberá ser consistente con DEC-025 y con la migración aditiva del modelo.
