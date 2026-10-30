@@ -44,7 +44,7 @@ The candidate FilterChips source is [cmp_IAP_FilterChips_WC_Candidate.pa.yaml](h
 
 ## 4. Host-to-grid data and event contract
 
-When an approved Asset read adapter is available, map its records to the grid without adding domain formulas to the shared component:
+The accepted AS-01 logical read contract explicitly permits a controlled fixture in the Functional Lab. The current increment maps that fixture to the grid; a physical adapter can replace the fixture later without changing the screen contract:
 
 | Grid property | Host mapping |
 |---|---|
@@ -59,7 +59,7 @@ When an approved Asset read adapter is available, map its records to the grid wi
 | OnRowSelect(p_key) | Host resolves the row by RowKey, obtains AssetCode and navigates to AS-02 with that identity. |
 | OnSort(p_sortKey) | Host applies a stable sort to the data; component does not own the domain query. |
 
-Search, filters, permissions, data retrieval, paging, empty/error decisions and navigation remain host responsibilities. The source of the Asset read data and the exact adapter/action name must be resolved from the current CMMS data contract before creating Power Fx bindings. This DVP does not guess a flow or stored procedure.
+Search, filters, data retrieval, sorting, page strategy, empty/error decisions and navigation remain host responsibilities. The accepted logical contract defines request and response fields, while the physical source remains deliberately deferred. The fixture formulas are in [AS-01 Power Fx fixture candidate](assets-list-powerfx-fixture-v1-candidate.md). This DVP does not guess a flow, stored procedure or physical adapter.
 
 ## 5. Current readiness
 
@@ -69,18 +69,17 @@ Search, filters, permissions, data retrieval, paging, empty/error decisions and 
 | Target visual | CANDIDATE — this SVG; not human-approved. |
 | Installed IAP components | NONE — user-confirmed. |
 | IAP DataGridPro source | CANDIDATE — main source pinned above; held alternate-source conflict remains in IAP PR #10. |
-| Host/data bindings | GATED — exact Asset read adapter and current app schema not provided. |
+| Host/data bindings | PASS_CONTRACT / CANDIDATE — accepted logical read contract permits a controlled fixture; fixture and grid binding formulas are prepared. Physical source remains deferred. |
 | Power Apps composition | GATED — no AS-01 screen exists in the app; installed FL component signatures/source are not in the provided snapshots. |
 | Studio render, App Checker, Save/Reopen | NOT_RUN — no runtime evidence in the supplied capture/YAML. |
 | Geometry/tokens | CANDIDATE — use current Studio Foundation baseline before fixing measurements or promoting colors. |
 
 ## 6. Next implementable increment
 
-1. Refresh the current First-Touch baseline for DesignSystemLab and ComponentLab in Studio; record full renders and current YAML because the supplied exports are about two months old.
-2. Inspect current public properties and source/version for cmp_FL_SidebarPro and cmp_FL_PageHeaderPro. Reconcile Component1 and cmp_FL_RiskMatrixPro_1 before changing either.
-3. Resolve whether CMMS DataGridPro or IAP DataGridPro is the intended shared grid. If IAP is selected, use only the pinned main candidate and keep PR #10’s alternate on hold.
-4. Resolve the Asset read contract, exact output fields and source/host operation before writing screen formulas.
-5. Import only the selected component into the app; verify import, save/reopen, App Checker, row selection, sorting, filter state and responsive behavior in Studio.
-6. Build the AS-01 Canvas screen against this target only after the above inputs are fixed.
+1. Refresh the current First-Touch baseline for DesignSystemLab and ComponentLab in Studio; capture full renders, current YAML, component source/version and App Checker because the supplied exports are about two months old.
+2. Import only the pinned IAP DataGridPro main candidate into the lab and verify its public properties/events; keep PR #10’s alternate on hold.
+3. Create a disposable AS-01 lab screen using the fixture and host formulas in [AS-01 Power Fx fixture candidate](assets-list-powerfx-fixture-v1-candidate.md). Keep the FL shell until its live public contracts are confirmed.
+4. Verify search, four filters, sort direction, row selection, EMPTY, ERROR/UNAVAILABLE states, responsive behavior and Save/Reopen in Studio.
+5. Record the Studio render, App Checker, component SHA and save evidence. Then align the screen to the target and decide whether to promote/adapt the selected grid.
 
-Do not create product PaYaml from this reference alone. It is a DVP target, not proof of an installed component or working Asset screen.
+The logical contract and fixture are sufficient for this isolated UI increment; no physical source, flow or product PaYaml is implied. The artifact remains a formula candidate until checked in Studio.
