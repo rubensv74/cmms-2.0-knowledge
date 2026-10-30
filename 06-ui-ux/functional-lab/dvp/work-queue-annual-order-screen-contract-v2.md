@@ -69,6 +69,19 @@ The interactions are read-only: open/close screen help, search, combine/clear fi
 | Screen help | Canvas native overlay/container; no IAP modal candidate exists at pinned source | Version screen-specific usage, action limits and decision provenance; preserve state and implement accessible focus/close behavior |
 | Responsive | ResponsiveLayoutMetrics | Candidate only for action-list / execution-panel split inside detail. Work Queue and Detail remain separate screens; do not use ResponsiveScreenBudget for this layout. Measure in Canvas. |
 
+### PageHeaderPhotoPro — host binding candidate
+
+| Property | Work Queue | Annual Order Detail | Contract |
+|---|---|---|---|
+| Density / ShowHero | COMPACT / true | HERO / true | Retain the approved compact vs. expressive hierarchy. |
+| HeroImage / HeroFocusY | Queue-specific approved media / image crop value | Detail-specific approved media / image crop value | Media provenance/crop are still to be pinned. |
+| ShowAction / ActionText | true / How it works | true / How it works | Uses the component's built-in 120 px action button; do not add a parallel header control. |
+| ActionEnabled / ActionBusy | true / false | true / false | Help opens locally; no asynchronous operation or fake progress. |
+| ShowStatus | false | false | State remains in the order content; do not duplicate it in the header. |
+| OnAction | UpdateContext({locScreenHelpOpen:true}) | UpdateContext({locScreenHelpOpen:true}) | Candidate host event formula; close action sets false. Confirm component-instance syntax and overlay behavior in Studio. |
+
+The user-supplied TMS definition has the same 32 public property names, PropertyKinds and DataTypes as IAP source blob ee19e10cf66b2648f5b91433e990cf988f64fcad; the YAML body is not byte-identical. Use the imported TMS component body as the instance authority and do not replace it with another IAP revision.
+
 These are candidate sources; pin each used source SHA and host property contract during D2P Phase A. The 32-candidate IAP coverage remains an app-wide inventory, not a demand to place every component here.
 
 The imported TMS component definition supplied by the user is the instance authority; its 32-property signature was compared with IAP main commit `377a6b3c00c7bef7a8d9e1cfdb5eeb968fbdfe2c`, blob `ee19e10cf66b2648f5b91433e990cf988f64fcad`. Names, PropertyKind and DataType match; bodies differ. Work Queue uses COMPACT; detail uses HERO. The target action aligns to the source button width (120 px); Studio import, binding and interaction remain unverified.
