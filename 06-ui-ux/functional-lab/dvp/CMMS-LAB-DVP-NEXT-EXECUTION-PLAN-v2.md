@@ -19,7 +19,7 @@
 | Gate | Estado | Siguiente evidencia concreta |
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
-| Target visual exacto | Candidato | Revisar/pinar Work Queue blob 9d52868acd79a8f4fbefaced1bc056ed21d77e3d y detalle blob 9f97bccf2bfa819d0f48e34b8466bc3192396d24; decisión humana pendiente. |
+| Target visual exacto | Candidato | Revisar/pinar Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d y detalle blob 360ca111366f5f0e13caa051a762587715285bb2; decisión humana pendiente. |
 | D2P Phase A | Draft | Completar source registry con paths, SHAs, props/eventos, dependencias Power Fx y contrato del host. Ver iap-component-inventory-v1.md. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
 | D2P Phase C / v3.3 | No iniciado | Cubrir navegación ida/vuelta, selección, filtros, sort/page, estados, accesibilidad y acción inicial visible. |
