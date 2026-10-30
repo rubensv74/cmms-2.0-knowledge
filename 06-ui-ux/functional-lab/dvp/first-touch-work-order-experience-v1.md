@@ -32,12 +32,13 @@ No real asset, person, corporate standard or production inventory is represented
 
 Candidate regions:
 - CMMS app shell and project context;
-- page header and compact action/search area;
-- attention summary for overdue, pending decision, blocked readiness and due soon;
+- shared CMMS page header (`cmp_CMMS_PageHeaderPro` adaptation candidate) with integrated industrial hero image, page purpose and refresh action;
+- attention summary for open work orders, actions due soon, orders needing attention (findings or overdue), and annual PM orders;
 - filter chips for work type, planned action state, asset and plan provenance;
 - paged work grid with stable parent identity, asset, activity, cycle label, completed planned-action count, next planned action date and aggregate state.
 
 Required interactions:
+- Refresh the queue with visible loading, completion, stale and error feedback.
 - Apply/remove filters without losing project context.
 - Open parent detail from a row.
 - Show loading, empty, error, blocked and stale-data states explicitly.
@@ -49,7 +50,8 @@ Required interactions:
 **User question:** What does this order cover, and what is planned for each action? What execution result is recorded when it is performed?
 
 Candidate regions:
-- parent identity, asset and approved plan/version provenance;
+- shared CMMS page header with integrated hero image, parent identity/status, task-oriented purpose, return-to-queue and refresh actions;
+- asset and approved plan/version provenance;
 - cycle label as supplied by the approved contract;
 - summary of completed, pending and upcoming planned actions;
 - ordered planned action list/timeline, with date, status and result per planned action;
