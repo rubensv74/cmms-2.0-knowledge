@@ -50,9 +50,9 @@
 <text x="282" y="139" fill="#0D1B2A" font-size="27" font-weight="700">Work Queue</text>
 <text x="282" y="163" fill="#64748B" font-size="12">Find annual preventive orders, inspect their planned actions, and review recorded execution evidence.</text>
 <text x="1338" y="104" fill="#64748B" font-size="10" text-anchor="end">Updated 30 Oct 2026 · 09:42</text>
-<rect x="1208" y="132" width="134" height="30" rx="7" fill="#FFFFFF" stroke="#2E5FAE"/>
-<circle cx="1227" cy="147" r="7" fill="none" stroke="#2E5FAE" stroke-width="1.2"/><text x="1227" y="150.5" fill="#2E5FAE" font-size="10" font-weight="700" text-anchor="middle">i</text>
-<text x="1240" y="151" fill="#2E5FAE" font-size="10" font-weight="700">How it works</text>
+<rect x="1204" y="132" width="120" height="30" rx="7" fill="#FFFFFF" stroke="#2E5FAE"/>
+<circle cx="1220" cy="147" r="7" fill="none" stroke="#2E5FAE" stroke-width="1.2"/><text x="1220" y="150.5" fill="#2E5FAE" font-size="10" font-weight="700" text-anchor="middle">i</text>
+<text x="1233" y="151" fill="#2E5FAE" font-size="10" font-weight="700">How it works</text>
 
 <!-- KPI cards -->
 <g filter="url(#shadow)">
