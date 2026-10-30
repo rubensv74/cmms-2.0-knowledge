@@ -88,12 +88,12 @@ The imported TMS component definition supplied by the user is the instance autho
 
 ## 5. Data contract for the DVP projection
 
-Source: `synthetic-data/cases/cmms-work-queue-annual-detail-v1.1.json`.
+Source: `06-ui-ux/functional-lab/synthetic-data/cases/cmms-work-queue-annual-detail-v1.1.json`.
 
 - Queue rows are filtered to `PREVENTIVE_ANNUAL` in the demo data mode.
 - Each row carries WorkOrderId/No, asset identity, activity/plan/version, CycleKey, action-state counts, parent state and next scheduled time.
 - Detail carries the ordered WorkOrderPlannedAction set and linked ExecutionRecords/findings. DueAt, ScheduledAt and actual dates are distinct fields.
-- The projection exposes only the selected annual order and its relationships; corrective and condition cases remain separate.
+- The projection provides a full detail object for each of the four visible queue rows in `annualOrderDetails`, keyed through `workOrder.workOrderId`. The existing `selectedOrderDetail` remains the default walkthrough alias for the first row. Corrective and condition cases remain separate.
 - The 2026 cycle and all activity names/records in this profile are illustrative. The generator does not approve cycle rules or plan content.
 
 This is a UI read-model requirement, not a physical SQL schema or a runtime flow contract.
