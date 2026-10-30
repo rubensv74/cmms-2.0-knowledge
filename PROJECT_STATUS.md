@@ -1,4 +1,47 @@
+# Estado del proyecto — actualización DVP v2 (2026-10-30)
+
+El primer recorrido queda acotado a Work Queue PM anual → Annual Order Detail → retorno con contexto, en modo consulta y con datos sintéticos. La ratificación TR continúa pendiente para las reglas de runtime, pero no bloquea esta composición DVP demostrativa.
+
+| Gate | Estado | Evidencia / límite |
+|---|---|---|
+| Perfil sintético funcional v1.1 | PREPARADO | 250 activos; 62 órdenes anuales; 248 actuaciones planificadas; 124 ExecutionRecords anuales; 265 actuaciones totales. Sin datos de planta ni reglas aprobadas. |
+| Alcance funcional | CANDIDATO; revisión pendiente | Scope v2 con baseline_review.status=PENDING. No se declara FE-COVERAGE aprobado. |
+| Targets Work Queue, Detail y estados de modal | CANDIDATOS | Work Queue ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c; Detail 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5; modal-open e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208. Revisión visual humana pendiente. |
+| Componentes IAP / host | SOURCE REGISTRY PARCIAL | Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos. La firma de PageHeader TMS adjunto coincide; su body distinto se conserva como autoridad de instancia. Revisión estática de fórmulas/dependencias completada; contrato candidato del host y mapping fixture documentados. Revisión de uso canónico e importación/validación Studio pendientes. |
+| Modal de ayuda por pantalla | REQUISITO AÑADIDO; CONTRATO IMPLEMENTABLE CANDIDATO | PageHeaderPhotoPro mantiene ShowAction=true y su botón “How it works” abre el overlay definido en screen-help-modal-implementation-contract-v1.md. El modal incluye funcionamiento, acciones/límites y decisiones fuente para ambas pantallas. Canvas aún no implementado ni validado. |
+| Product PaYaml / D2P v3.3 | NO INICIADO | Requiere baseline revisado, target aprobado, source registry, region map y gates D2P. |
+| Studio / runtime | PENDIENTE | Sin aplicación Canvas ni evidencia Studio, SQL o Power Automate para este slice. |
+
+**Preparación ya redactada:** contrato de modal de ayuda/decisiones, contrato implementable del modal, contrato de interacción del host, inventario IAP y mapa de regiones/estados. El fixture ahora enlaza las cuatro filas de cola con sus cuatro detalles; modal y mapa siguen pendientes de composición y medición Canvas. **Siguiente trabajo:** cerrar revisión funcional y pin visual; completar source registry IAP y host; medir el mapa en Studio; cerrar los informes D2P contra un mismo conjunto de hashes. La acción integrada del encabezado abre el modal por pantalla; la duda sobre el retorno del foco queda como verificación de accesibilidad en Studio y no bloquea el resto del DVP. Ver [plan DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md).
+
+**Lectura histórica:** la sección anterior del estado operativo corresponde a la revisión inicial del 30/10 y contiene referencias v1. Para DVP vigente, esta tabla y el plan v2 prevalecen.
+
+---
+
 # Estado del proyecto
+
+**Última actualización:** 2026-10-30 — baseline de DEC-025 aceptado por el analista; ratificación TR pendiente.
+
+> **Lectura vigente:** DEC-025 actualiza el alcance preventivo para las actividades temporales seleccionadas: una orden anual puede agrupar varias actuaciones programadas; cada una conserva su fecha prevista y estado, y cada ExecutionRecord conserva las fechas reales y el resultado. Rubén aceptó recomendaciones para elegibilidad, ciclo, pendientes y reinicio de frecuencias; se registran como baseline candidato, no como política TR ratificada. El criterio exacto de reparación mayor sigue abierto. El diseño existente de una ocurrencia por orden y una ejecución por orden no implementa esta decisión.
+
+## Resumen operativo vigente — 2026-10-30
+
+| Gate / ámbito | Estado actual | Evidencia y alcance |
+|---|---|---|
+| DEC-025 — Orden preventiva anual | CONFIRMED | Confirmación del usuario y propuesta CMMS emitida el 30/10 |
+| PM-GROUP-G01 — contrato funcional/técnico anual | EN DISEÑO; baseline candidato preparado | Contrato lógico y técnico candidato en `07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md` y `annual-preventive-work-order-technical-contract-v1.md`; baseline funcional aceptado por analista; ratificación empresarial y open decisions restantes |
+| DB-G01-RUNTIME / SP-G01 históricos | PASS para el modelo anterior | 37 tablas y procedimientos comprobados en `db-omm-dev`; no prueban agrupación anual |
+| PA-G01-RUNTIME-MIN histórico | **BLOQUEADO / SUPERADO PARA LA ORDEN ANUAL** | El flow de materialización basado en una ocurrencia crea otra semántica; no ejecutar el paquete antiguo como validación del nuevo modelo |
+| CMMS Lab — datos sintéticos | PREPARADO EN RAMA | Perfil funcional enlazado, 14 ejemplos de reinicio sintético y generador reproducible; solo demostración |
+| Power Apps / DVP | SCREEN CONTRACT + 2 TARGETS CANDIDATOS; STUDIO PENDIENTE | Work Queue y Annual Order Detail tienen layout y target SVG sintético. Targets aún no aprobados; faltan source PaYaml/host evidence y verificación Studio |
+
+**Siguiente gate real:** `PM-GROUP-G01` — ratificación por Responsables de TR Mantenimiento y TR Servicios del brief `07-it-handoff/04-data/PM-GROUP-G01-functional-decision-brief-v1.md`; DVP screen contract `06-ui-ux/functional-lab/dvp/work-queue-annual-order-screen-contract-v1.md`, más revisión de cardinalidades, transiciones y migración aditiva. Una vez superado, preparar SQL/procedimientos/flows revisados y obtener evidencia manual en SQL Server/Power Automate. En paralelo, continuar el DVP candidato con escenarios sintéticos y reglas provisionales visibles; hay dos targets SVG candidatos listos para revisión. La ratificación TR condiciona la aprobación de políticas para runtime; el target visual y la evidencia Studio siguen siendo requisitos separados.
+
+**Trabajo que puede avanzar en paralelo:** composición DVP candidata, estados de pantalla y lectura con datos sintéticos. **Pendiente de ratificación/definición para contrato de runtime:** elegibilidad concreta, ciclo aplicable y cambios de versión del plan, momento de materialización, autoridad y opciones para pendientes, criterio exacto de reparación mayor, cardinalidad de trabajo no anual, programación/recursos y transiciones de estado. El brief registra el baseline aceptado por el analista; los datos sintéticos no lo convierten en regla.
+
+**Alcance de la afirmación:** esta rama contiene diseño y fixtures. No se han ejecutado cambios en SQL, Power Automate ni Power Apps y no existe evidencia de validación Studio/runtime para esta capacidad.
+
+---
 
 **Última actualización:** 2026-10-13 (auditoría documental G00; sin cambio de estado técnico)
 

@@ -56,6 +56,20 @@ Orden obligatorio:
 
 Todo gap reusable se convierte en componente compartido. Antes de adoptarlo como canónico debe tener contrato, origen/provenance y estado de validación real.
 
+## Ayuda contextual y trazabilidad de decisiones — obligatorio
+
+Toda pantalla implementada en Power Apps debe incluir un modal contextual, accesible desde la pantalla, que explique:
+
+- el propósito y funcionamiento de esa pantalla;
+- qué puede hacer el usuario, qué resultado visible produce cada acción y qué queda fuera de alcance;
+- las decisiones de reuniones y documentos de gobierno que justifican la información, navegación, estados y límites de la interacción.
+
+El bloque de decisiones mostrará identificador o nombre de la fuente, fecha y estado de autoridad. Debe diferenciar una decisión confirmada en reunión de una descripción AS-IS, una hipótesis, un tema abierto o un baseline posterior aún pendiente de ratificación. No se atribuirán decisiones retrospectivas a reuniones que no las acordaron.
+
+La ayuda se versiona junto al contrato funcional de la pantalla. Si cambia el proceso o una decisión que afecta a la interacción, el contenido, las referencias y los criterios de aceptación se revisan antes del siguiente release. Las fuentes visibles deben tener una ubicación accesible y estable; no depender de que el usuario final tenga permisos de repositorio.
+
+El modal es informativo y no altera permisos, datos ni estados de negocio. Debe tener activador con etiqueta, título programático, cierre accesible, foco de apertura y retorno, navegación por teclado y lectura usable en móvil/tablet. La validación de estas condiciones requiere la app en Power Apps Studio; el mockup no constituye evidencia.
+
 ## Visual Gate
 
 Una pantalla no pasa por sintaxis/App Checker únicamente. Revisar además jerarquía, clipping/scroll accidental, contenido realista, estados, foco, geometría, densidad, componente compartido correcto y captura completa en Studio.

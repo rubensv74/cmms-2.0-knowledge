@@ -1,6 +1,6 @@
 # CMMS 2.0 — Decision Register
 
-**Última consolidación:** 2026-10-09
+**Última consolidación:** 2026-10-30
 
 > Este registro gobierna **decisiones funcionales**. Un gate contractual, un benchmark y un PASS de pruebas SQL tienen alcances distintos. La sección de gates de abajo es evidencia técnica documentada, **no** aprobación de todos los procesos operativos locales. El Product Truth del 2026-10-02 conserva su valor de principios; las etapas posteriores se consultan en [PROJECT_STATUS](../../PROJECT_STATUS.md).  
 **Fuente canónica:** [Product Truth Baseline v1.0](../../00-governance/CMMS_PRODUCT_TRUTH_BASELINE_V1.md)
@@ -27,7 +27,7 @@
 | DEC-008 | CONFIRMED | Maintenance Activity, Job Plan, Procedure/Checklist y WO son conceptos distintos. | 2026-09-11 |
 | DEC-009 | CONFIRMED | Revisiones publicadas son inmutables; cambios generan nueva versión. | especificación AMEF/RCM |
 | DEC-010 | SUPERSEDED | Generar preventivas por ejercicio/año como mecánica runtime principal. | sustituida 2026-09-25 |
-| DEC-011 | CONFIRMED | Preventivo runtime usa rolling next due; forecast se separa de WO materializada. | 2026-09-25 / ANL-005 |
+| DEC-011 | CONFIRMED (SCOPE CLARIFIED) | La recurrencia preventiva mantiene rolling next due; para actividades definidas con ciclo anual, una Work Order puede agrupar varias ejecuciones con fecha/resultado propios. Forecast y WO materializada siguen diferenciados. | 2026-09-25 / ANL-005 / DEC-025 2026-10-30 |
 | DEC-012 | SUPERSEDED | WorkCandidate como etapa universal de toda WO preventiva. | sustituida 2026-09-25 |
 | DEC-013 | CONFIRMED | Hallazgo preventivo que exige reparación abre rama correctiva. | 2026-09-25 |
 | DEC-014 | CONFIRMED | Execution feedback alimenta KPI, efectividad y revisión de planes. | 2026-09-25 |
@@ -41,6 +41,20 @@
 | DEC-022 | CONFIRMED | ReleaseAt y DueAt son conceptos distintos; la materialización de la WO no debe sobrescribir el vencimiento. | TRG-G01 / DM-G02 2026-10-08 |
 | DEC-023 | CONFIRMED | PM/frecuencia pertenece a policy/plan y no se incrusta en JobPlan; las operaciones y recursos planificados pertenecen a su revisión. | MSL-G01/G02 2026-10-08 |
 | DEC-024 | CONFIRMED | Permisivos operativos son dependencia externa del paquete de ejecución; no equivale a haber implementado el dominio PTW/LOTO completo. | WM-G02 2026-10-08 |
+| DEC-025 | CONFIRMED — CONTRACT DESIGN REQUIRED | La agrupación anual selectiva y el registro individual de cada ejecución están confirmados. Rubén acepta un baseline para elegibilidad, ciclo, pendientes y reparación mayor; ratificación de Responsables TR Mantenimiento/Servicios pendiente. | Propuesta distribuida 2026-10-30, pp. 3–6, 8; confirmación de Rubén 2026-10-30 |
+
+## DEC-025 — Agrupación anual de ejecuciones preventivas
+
+- Aplica a actividades preventivas por tiempo seleccionadas; no se asume como patrón universal.
+- La Work Order anual es la orden operativa que agrupa las actuaciones programadas periódicas del ciclo.
+- Cada actuación programada conserva identidad, fecha prevista y estado; su ExecutionRecord conserva fecha real, resultado y feedback.
+- No se crea una Work Order distinta por cada actuación programada en este patrón.
+- La periodicidad de mediciones basadas en condición sigue independiente.
+- No se altera automáticamente el Plan de Mantenimiento Aprobado.
+- Se requiere modificar el modelo físico y los contratos actuales, que enlazan una occurrence con una WO y un único execution record por WO.
+- Siguen OPEN hasta ratificación: elegibilidad concreta, ciclo aplicable, autoridad/disposiciones de pendientes, criterio/alcance de reparación mayor, momento de materialización, programación por actuación y reglas de estado.
+
+La DEC-025 prevalece sobre cualquier interpretación de DEC-010/DEC-011 que impida esta agrupación selectiva. La regla general contra materialización ilimitada se mantiene.
 
 ## Evidencia de gates — referencia, no decisiones nuevas
 
@@ -61,3 +75,12 @@ Fuentes: [índice maestro](../../MASTER_INDEX.md), [DM-G02](../../00-governance/
 Cuando dos artefactos discrepen: reunión más reciente → análisis post-reunión → Product Truth Baseline → contrato funcional vigente → prototipo/fixture/UI.
 
 Un prototipo nunca prevalece sobre una decisión posterior confirmada.
+
+### DEC-025 — baseline recomendado aceptado por el analista
+
+Estas recomendaciones orientan el contrato candidato; no se consideran política empresarial hasta ratificación de los responsables destinatarios de la propuesta:
+
+- Elegibilidad: solo actividades por tiempo marcadas expresamente en el Plan de Mantenimiento Aprobado; agrupación por activo, actividad y ciclo.
+- Ciclo: periodo y CycleKey definidos por el plan, sin asumir año natural.
+- Pendientes: sin cierre/traslado/sustitución automáticos; conservar estado pendiente hasta una decisión autorizada, motivada y registrada.
+- Reparación mayor: reinicio limitado a actividades por tiempo identificadas y aprobadas como afectadas; fecha efectiva, alcance y auditoría explícitos; cadencia de condición independiente. La definición exacta de “reparación mayor” sigue abierta.

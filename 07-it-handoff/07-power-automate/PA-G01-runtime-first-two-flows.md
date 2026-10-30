@@ -1,5 +1,8 @@
 # CMMS 2.0 — PA-G01 Runtime Build — First Two Flows
 
+> **BLOQUEADO PARA DEC-025 (2026-10-30):** este procedimiento describe el contrato anterior (una WorkOrder por ocurrencia). No ejecutar el Flow 2 ni registrar sus pruebas como validación de la orden preventiva anual. El Flow 1 tampoco valida la nueva work queue, que tendrá que resumir orden/actuaciones programadas según el contrato aprobado. Este documento es histórico y se reemplazará después de PM-GROUP-G01 y del incremento SQL/SP. Ningún runtime nuevo se ha ejecutado.
+
+
 ## Flow 1 — CMMS_CORE_WorkQueue_List
 
 ### Trigger

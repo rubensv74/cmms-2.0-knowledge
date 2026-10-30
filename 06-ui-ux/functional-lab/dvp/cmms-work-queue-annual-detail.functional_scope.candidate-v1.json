@@ -1,0 +1,215 @@
+{
+  "schema": "iap-functional-scope-v1",
+  "screen": "CMMS_LAB_WORK_QUEUE_AND_ANNUAL_ORDER_DETAIL",
+  "sources": [
+    {
+      "id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "reference": "https://chatgpt.com/library?file_id=libfile_f5251d0722e88191a6c495330180b566&account_id=personal",
+      "revision": "Library version 12; CMMS Propuesta de Solución, 30 October 2026, pages 3, 6 and 7",
+      "authority": "CANONICAL"
+    },
+    {
+      "id": "SRC_DEC_025",
+      "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/00-governance/decisions/DEC-025-annual-preventive-work-order.md",
+      "revision": "branch head 94aab551f792041407f5c4260422cd40348a69ab; candidate decision",
+      "authority": "SUPPORTING_CANDIDATE"
+    }
+  ],
+  "baseline_review": {
+    "status": "PENDING",
+    "reviewer": "",
+    "evidence_ref": "Independent requirement inventory drafted from SRC_CMMS_PROPOSAL_2026_10_30; functional analyst review of this inventory has not yet been recorded."
+  },
+  "views": [
+    {
+      "id": "WORK_QUEUE",
+      "kind": "PRIMARY"
+    },
+    {
+      "id": "ANNUAL_ORDER_DETAIL",
+      "kind": "SECONDARY",
+      "back_to": "WORK_QUEUE",
+      "breadcrumb": "CMMS Lab / Work Queue / Annual Work Order",
+      "retains_context": [
+        "project",
+        "filters",
+        "sort",
+        "page",
+        "selection"
+      ]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "steps": [
+        {
+          "view": "WORK_QUEUE",
+          "action": "Search, filter, sort or page the synthetic read-only work queue; select an annual preventive order.",
+          "next_view": "ANNUAL_ORDER_DETAIL"
+        },
+        {
+          "view": "ANNUAL_ORDER_DETAIL",
+          "action": "Inspect approved-plan provenance, cycle context, planned preventive actions and linked execution records.",
+          "next_view": "ANNUAL_ORDER_DETAIL"
+        },
+        {
+          "view": "ANNUAL_ORDER_DETAIL",
+          "action": "Return to the work queue.",
+          "next_view": "WORK_QUEUE"
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ_PM_ANNUAL_GROUPING",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough user; Hernando and Eduardo are named stakeholders, but no business role or authorization is inferred.",
+      "goal": "Find the preventive work represented by an annual order.",
+      "trigger": "Open the Work Queue.",
+      "information": "Order identity, asset, approved plan/activity provenance, available cycle label and summary of its periodic planned actions.",
+      "decision": "Understand which planned preventive actions belong to the selected order.",
+      "action": "Open an annual preventive order from the read-only queue.",
+      "validation": "The order and its actions are linked to the selected synthetic asset and plan activity; unrelated activities are not combined in the demonstration.",
+      "result": "The user can identify the scope of the selected annual order.",
+      "feedback": "The selected order, asset, activity and action counts are visible.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "WORK_QUEUE",
+      "journey_id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "states": [
+        "LOADING",
+        "READY",
+        "EMPTY",
+        "NO_RESULTS",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_PM_ACTION_AND_EXECUTION_SEPARATION",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough user; no execution or approval authority is inferred.",
+      "goal": "Distinguish work planned for the cycle from work actually performed.",
+      "trigger": "Inspect an annual preventive order.",
+      "information": "Each actuación preventiva programada, its planned date/state, and a separate linked ExecutionRecord when execution evidence exists.",
+      "decision": "Determine which actions are completed and which remain planned or pending.",
+      "action": "Inspect the action list and open its linked execution evidence where available.",
+      "validation": "Planned dates never appear as actual dates; an action is displayed as executed only when its linked ExecutionRecord provides evidence.",
+      "result": "Completed and pending actions are distinguishable without fabricating execution.",
+      "feedback": "The detail shows planned state separately from actual date, result and feedback.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "EMPTY",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_PLAN_VERSION_PROVENANCE",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough user; no plan-approval authority is inferred.",
+      "goal": "Understand the approved maintenance instruction behind the order.",
+      "trigger": "Review the selected order detail.",
+      "information": "Approved Maintenance Plan identity/version and the activity applied to the order.",
+      "decision": "Recognize the plan version that the synthetic order represents.",
+      "action": "Inspect the plan provenance shown in the detail.",
+      "validation": "The UI shows the fixture's plan identity/version as demo data and does not imply that a new plan is approved.",
+      "result": "The order can be traced to its approved-plan source in the demonstration.",
+      "feedback": "Plan identity and version are visible in the order context.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_CYCLE_END_COMPLETED_PENDING",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough user; no disposition authority is inferred.",
+      "goal": "Recognize completed and pending actions at the end of a cycle.",
+      "trigger": "Inspect a synthetic cycle-end order.",
+      "information": "Counts and states for completed and pending planned preventive actions.",
+      "decision": "Identify that a pending action has no execution result and has no selected disposition in this scenario.",
+      "action": "Review the cycle-end summary and the pending action.",
+      "validation": "The demonstration does not auto-close, carry forward or cancel the pending action and does not select a disposition.",
+      "result": "The pending item remains visible as pending in the demo.",
+      "feedback": "The detail explains that the scenario is synthetic and its operating disposition remains unratified.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_ORDER_EXECUTION_TRACEABILITY",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough user; no technical-closure authority is inferred.",
+      "goal": "Understand what was recorded after a periodic preventive execution.",
+      "trigger": "Open a completed planned action.",
+      "information": "Actual date, work performed, result and feedback available in the linked execution record.",
+      "decision": "Determine what the synthetic example says was actually done.",
+      "action": "Inspect the linked execution summary and available evidence.",
+      "validation": "Only values present in the synthetic ExecutionRecord are shown as actuals; missing linked detail is identified as partial data.",
+      "result": "The user can follow planned work to its recorded result.",
+      "feedback": "The execution summary remains attached to its planned action and parent order.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_STATUS_AND_PROCESS_STAGE_VISIBLE",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough user; ownership/authorization is not inferred from the displayed state.",
+      "goal": "Understand the current stage represented by an order.",
+      "trigger": "Review an order in the queue or detail.",
+      "information": "Synthetic order status and available preparation, scheduling or execution context.",
+      "decision": "Recognize what has and has not occurred in the demonstrated process.",
+      "action": "Inspect the status and linked information; no state-changing command is available.",
+      "validation": "The UI does not infer preparation or scheduling completion from a planned date or parent status alone.",
+      "result": "The screen presents process status without implying that the user can authorize a transition.",
+      "feedback": "The status and data source are visibly labelled as demonstration where synthetic.",
+      "next_state": "WORK_QUEUE",
+      "view_id": "WORK_QUEUE",
+      "journey_id": "J_WORK_QUEUE_TO_ANNUAL_DETAIL",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    }
+  ],
+  "expected_requirement_ids": [
+    "REQ_PM_ANNUAL_GROUPING",
+    "REQ_PM_ACTION_AND_EXECUTION_SEPARATION",
+    "REQ_PLAN_VERSION_PROVENANCE",
+    "REQ_CYCLE_END_COMPLETED_PENDING",
+    "REQ_ORDER_EXECUTION_TRACEABILITY",
+    "REQ_STATUS_AND_PROCESS_STAGE_VISIBLE"
+  ]
+}

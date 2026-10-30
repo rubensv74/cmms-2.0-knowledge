@@ -1,32 +1,45 @@
+## DVP v2 — estado actualizado (2026-10-30)
+
+El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual → retorno con contexto. Los targets v2 y el fixture anual están alineados con synthetic profile v1.1. La cola no incluye fila correctiva, Export ni Refresh; el detalle muestra actuaciones planificadas y ejecuciones reales inline. Cada screen target incluye un acceso How it works y un estado modal-open con uso, límites y decisiones trazables.
+
+- Scope funcional v2: candidato, revisión pendiente; no se declara FE-COVERAGE PASS.
+- Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c; detalle blob 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5; modal-open blobs e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208.
+- Componentes IAP/host: IAP commit 377a6b3c y 12 source blob SHAs/CustomProperties registrados. La revisión estática de fórmulas/dependencias está en 06-ui-ux/functional-lab/dvp/iap-component-formula-dependency-review-v1.md; quedan usos canónicos y comprobación de bindings en Studio. La firma TMS de PageHeader coincide, pero su body importado es la autoridad; su acción integrada abre el modal por pantalla. El retorno del foco se verificará en Studio.
+- Region map y matriz de estados candidatos redactados en 06-ui-ux/functional-lab/dvp/work-queue-annual-order-region-map-v2-candidate.md; readiness findings v2 registra cierres de candidato y gates pendientes. Falta medición Canvas y confirmación de contratos source.
+- Estándar común actualizado: toda pantalla Power Apps necesita modal contextual sobre función, acciones/límites y decisiones fuente, diferenciando reunión, AS-IS y baseline pendiente. Para este slice el contrato está en screen-help-and-decision-rationale-modal-v1.md; el overlay Canvas accesible sigue pendiente.
+- Siguiente secuencia: (1) revisión baseline funcional y pin de targets/modal states; (2) source graph y host overlay/búsqueda/pager, conectando el overlay a la acción integrada del encabezado; (3) medir region map y modal en Studio; (4) informes D2P v3.3; (5) preparar paquete Canvas solo con gates listos.
+- La ratificación TR y los contratos de runtime siguen siendo gates para implementación real; no bloquean este DVP candidato de solo lectura y datos sintéticos.
+
+Consulta el [plan de ejecución DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md). El estado PM-GROUP-G01 y sus reglas de runtime se mantienen según la sección operativa/histórica de abajo.
+
+---
+
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-10-09
+**Última revisión:** 2026-10-30
 
-> **Estado operativo vigente.** Los apartados de aprendizaje funcional posteriores a este resumen mantienen valor como alcance e historia, pero cualquier orden de gates antiguo queda sustituido por la siguiente secuencia. Los PASS de contrato/benchmark no equivalen a runtime ni a aceptación de un proceso local.
+> **Estado operativo vigente.** DEC-025 confirma la orden preventiva anual con varias actuaciones programadas independientes para las actividades elegibles. El SQL/SP/PA validado en octubre representa el modelo previo y no valida esta semántica. Las secciones históricas permanecen para contexto.
 
 ## 0. Gates alcanzados y siguiente paso
 
 | Secuencia | Gate | Resultado documentado |
 |---:|---|---|
-| 1 | MSL-G01 — Source Normalization | PASS_WITH_RECORDED_AMBIGUITIES |
-| 2 | MSL-G02 — Core Contracts | PASS_WITH_DEFERRED_TRIGGER_VALUES |
-| 3 | TRG-G01 — Triggering Domain Contract | PASS_CONTRACT |
-| 4 | WM-G02 — Execution Package | PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY |
-| 5 | WM-G03 — Planning & Scheduling | PASS_BENCHMARKED_CONTRACT |
-| 6 | WM-G05 — Execution Feedback | PASS_BENCHMARKED_CONTRACT |
-| 7 | DM-G01 — Conceptual Reconciliation | PASS_WITH_OPEN_CONTRACTS; gate intermedio |
-| 8 | DM-G02 — Core Logical Freeze | PASS_CORE_LOGICAL_MODEL |
-| 9 | DB-G01 — Physical Design | Diseño y static review completados |
-| 10 | DB-G01-RUNTIME — Core SQL | PASS_RUNTIME (37 tablas en `db-omm-dev`) |
-| 11 | SP-G01 — Core Stored Procedures | PASS_RUNTIME |
-| 12 | PA-G01 — Flow Contracts | DESIGN_READY_FOR_RUNTIME_VALIDATION |
-| **13** | **PA-G01-RUNTIME-MIN — 2 flows mínimos** | **NEXT / PENDING_RUNTIME** |
+| 1–8 | MSL-G01/02, TRG-G01, WM-G02/03/05, DM-G01/02 | PASS de contrato/benchmark/lógico según el alcance registrado |
+| 9 | DB-G01-RUNTIME / SP-G01 | PASS_RUNTIME para el modelo previo (37 tablas y procedimientos) |
+| 10 | DEC-025 | CONFIRMED: una orden preventiva anual seleccionada, varias actuaciones programadas, fechas/resultados separados |
+| **11** | **PM-GROUP-G01 — Contrato anual** | **NEXT / baseline candidato listo; ratificación TR pendiente; riesgo C** |
+| 12 | DB/SP/PA incremental | Bloqueado hasta aprobar el contrato y la migración |
+| 13 | PA runtime + primer slice Canvas/DVP | Después de la revisión SQL/flow; requiere evidencia en herramientas reales |
 
-**Prioridad actual:** construir y ejecutar `CMMS_CORE_WorkQueue_List` y `CMMS_CORE_WorkOrder_Materialize`. Gate PASS únicamente con evidencia real de READY/JSON, idempotencia por `requestId`, manejo de errores CMMS-404/409 y fallos técnicos CMMS-500. En caso de PASS, extender el patrón a los otros seis flows **por incrementos verificados**; después conectar la primera vertical Power Apps y validar en Studio.
+**En paralelo:** avanzar el DVP de Work Queue → Annual Work Order Detail usando el [screen contract candidato](06-ui-ux/functional-lab/dvp/work-queue-annual-order-screen-contract-v1.md) y escenarios sintéticos. El gate PM-GROUP-G01 ratifica reglas antes de runtime. Brief de decisión: [PM-GROUP-G01 functional decision brief](07-it-handoff/04-data/PM-GROUP-G01-functional-decision-brief-v1.md). Después cerrar cardinalidades, materialización/idempotencia, agenda/recursos, estados, hallazgos, cierres y migración/backfill. Revisar [contrato lógico](07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md) y [contrato técnico candidato](07-it-handoff/04-data/annual-preventive-work-order-technical-contract-v1.md).
 
-**Paralelo / diferido:** `MSL-G03/G04` (adopción y feedback corporativo), contraste operacional real del benchmark WM-G03/WM-G05, AE/Functional Lab, permisos PTW/LOTO integrales y dominios fuera del freeze técnico (costes, inventario, compras, facturación, RCA, KPI definitivo). Ninguno queda considerado implementado por la validación SQL del núcleo.
+**No ejecutar todavía:** el Flow 2 del paquete histórico materializa una WO por `MaintenanceOccurrence`, lo que contradice el agrupamiento anual. También queda suspendido el Flow 1 como prueba de la nueva vertical hasta que el contrato de lectura incorpore actuaciones programadas y estados agregados. El paquete se actualizará tras la ratificación empresarial del baseline y la aprobación del contrato.
 
-**Referencias:** [Estado](PROJECT_STATUS.md), [DM-G02](00-governance/audits/2026-10-08-data-model-g02.md), [DB-G01 runtime](00-governance/audits/2026-10-08-db-g01-runtime.md), [SP-G01](00-governance/audits/2026-10-08-sp-g01.md), [PA-G01](00-governance/audits/2026-10-08-pa-g01.md).
+**CMMS Lab en paralelo:** fixture funcional sintético enlazado (250 activos; PM anual, CBM, correctivo, hallazgos, actuals y límites de permisos/inventario), bajo autoridad demostrativa. No representa valores ni estándares aprobados. El generador ofrece perfil de carga separado.
+
+**DVP / Power Apps:** el brief, screen contract y dos targets SVG candidatos permiten revisar el flujo visual con datos sintéticos. La composición candidata avanza en paralelo; las imágenes aún no son targets aprobados. El paso a Studio y runtime exige los artefactos DVP de origen, contracts de lectura/write coherentes y ratificación de las reglas de negocio que afecten transiciones y autoridad; no se afirma implementación/validación Studio.
+
+**Después del gate:** migración aditiva con backfill, procedures y flows idempotentes, runtime validation manual en el entorno de desarrollo, primer vertical slice Power Apps y handoff funcional-técnico para IT.
 
 ---
 
