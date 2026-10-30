@@ -1,6 +1,6 @@
 # CMMS 2.0 — SP-G01 Core Stored Procedure Contract
 
-> **Addendum 2026-10-30 — DEC-025 / PM-GROUP-G01:** el PASS runtime registrado aplica a los procedimientos del modelo previo. `usp_WorkOrder_MaterializeFromOccurrence` no implementa el agrupamiento anual confirmado y no debe ser la base del nuevo flow. El candidato deberá resolver la orden por ciclo natural y upsert de visita, adjuntar la ocurrencia con idempotencia de RequestId y clave natural, y devolver ambas identidades. No es contrato final ni está probado. Revisar además consultas y comandos de planificación/ejecución/cierre para aceptar `WorkOrderVisit`.
+> **Addendum 2026-10-30 — DEC-025 / PM-GROUP-G01:** el PASS runtime registrado aplica a los procedimientos del modelo previo. `usp_WorkOrder_MaterializeFromOccurrence` no implementa el agrupamiento anual confirmado y no debe ser la base del nuevo flow. El candidato deberá resolver la orden por ciclo natural y upsert de actuación programada, adjuntar la ocurrencia con idempotencia de RequestId y clave natural, y devolver ambas identidades. No es contrato final ni está probado. Revisar además consultas y comandos de planificación/ejecución/cierre para aceptar `WorkOrderPlannedAction`.
 
 
 **Date:** 2026-10-08  

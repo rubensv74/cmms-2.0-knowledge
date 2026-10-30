@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-10-30 — DEC-025 confirmado; revisión de impacto del CMMS Lab.
 
-> **Lectura vigente:** DEC-025 actualiza el alcance preventivo para las actividades temporales seleccionadas: una orden anual puede agrupar varias visitas con fecha y resultado independientes. La política de cierre de visitas pendientes al final del ciclo continúa abierta. El diseño existente de una ocurrencia por orden y una ejecución por orden no implementa esta decisión.
+> **Lectura vigente:** DEC-025 actualiza el alcance preventivo para las actividades temporales seleccionadas: una orden anual puede agrupar varias actuaciones programadas con fecha y resultado independientes. La política de cierre de actuaciones programadas pendientes al final del ciclo continúa abierta. El diseño existente de una ocurrencia por orden y una ejecución por orden no implementa esta decisión.
 
 ## Resumen operativo vigente — 2026-10-30
 
@@ -17,7 +17,7 @@
 
 **Siguiente gate real:** `PM-GROUP-G01` — revisión y aprobación del contrato lógico, ciclo anual, cardinalidades, transiciones y migración aditiva. Una vez superado, preparar SQL/procedimientos/flows revisados y obtener evidencia manual en SQL Server/Power Automate. La implementación Canvas y la generación DVP de pantallas vendrán después de fijar el contrato y disponer de baseline de runtime.
 
-**Decisiones aún abiertas:** elegibilidad por actividad, `CycleKey` y cambio de versión de plan dentro del ciclo, momento de creación de la orden/visitas, programación y asignación por visita, vocabulario de estado, anulación/reapertura/reemisión, cierre técnico anual, disposición de visitas pendientes y criterio/alcance del reinicio por reparación mayor. Ninguna de estas políticas se presume por los datos sintéticos.
+**Decisiones aún abiertas:** elegibilidad por actividad, `CycleKey` y cambio de versión de plan dentro del ciclo, momento de creación de la orden/actuaciones programadas, programación y asignación por actuación programada, vocabulario de estado, anulación/reapertura/reemisión, cierre técnico anual, disposición de actuaciones programadas pendientes y criterio/alcance del reinicio por reparación mayor. Ninguna de estas políticas se presume por los datos sintéticos.
 
 **Alcance de la afirmación:** esta rama contiene diseño y fixtures. No se han ejecutado cambios en SQL, Power Automate ni Power Apps y no existe evidencia de validación Studio/runtime para esta capacidad.
 

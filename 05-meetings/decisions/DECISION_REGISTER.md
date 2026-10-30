@@ -46,13 +46,13 @@
 ## DEC-025 — Agrupación anual de ejecuciones preventivas
 
 - Aplica a actividades preventivas por tiempo seleccionadas; no se asume como patrón universal.
-- La Work Order anual es la orden operativa que agrupa las visitas periódicas del ciclo.
-- Cada visita conserva su fecha, resultado y feedback individual.
-- No se crea una Work Order distinta por cada visita en este patrón.
+- La Work Order anual es la orden operativa que agrupa las actuaciones programadas periódicas del ciclo.
+- Cada actuación programada conserva su fecha, resultado y feedback individual.
+- No se crea una Work Order distinta por cada actuación programada en este patrón.
 - La periodicidad de mediciones basadas en condición sigue independiente.
 - No se altera automáticamente el Plan de Mantenimiento Aprobado.
 - Se requiere modificar el modelo físico y los contratos actuales, que enlazan una occurrence con una WO y un único execution record por WO.
-- Permanecen OPEN el criterio de elegibilidad, ciclo/calendario, momento de materialización, programación por visita y tratamiento de pendientes al cierre.
+- Permanecen OPEN el criterio de elegibilidad, ciclo/calendario, momento de materialización, programación por actuación programada y tratamiento de pendientes al cierre.
 
 La DEC-025 prevalece sobre cualquier interpretación de DEC-010/DEC-011 que impida esta agrupación selectiva. La regla general contra materialización ilimitada se mantiene.
 

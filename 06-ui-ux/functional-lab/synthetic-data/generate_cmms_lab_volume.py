@@ -89,44 +89,44 @@ def generate(profile: str) -> dict:
             "demoOnly": True,
         })
 
-        # A single annual parent order contains four independent visit records.
+        # A single annual parent order contains four independent planned-action records.
         if i % 4 == 0:
             wo_id = stable("SYN-WO-ANNUAL", i)
-            visits = []
+            planned_actions = []
             for q in range(4):
-                visit_no = (i * 10) + q + 1
-                visit_id = stable("SYN-VISIT", visit_no)
-                visit_state = ["COMPLETED", "COMPLETED_WITH_DEVIATION", "SCHEDULED", "PLANNED"][q]
-                visit = {
-                    "visitId": visit_id,
-                    "visitKey": f"CYCLE-2026-Q{q + 1}",
+                action_no = (i * 10) + q + 1
+                action_id = stable("SYN-ACTION", action_no)
+                action_state = ["COMPLETED", "COMPLETED_WITH_DEVIATION", "SCHEDULED", "PLANNED"][q]
+                planned_action = {
+                    "plannedActionId": action_id,
+                    "plannedActionKey": f"CYCLE-2026-Q{q + 1}",
                     "plannedDueAt": due_date(q),
-                    "displayState": visit_state,
-                    "maintenanceOccurrenceId": stable("SYN-OCC", visit_no) if q < 3 else None,
+                    "displayState": action_state,
+                    "maintenanceOccurrenceId": stable("SYN-OCC", action_no) if q < 3 else None,
                     "crewId": stable("SYN-CREW", ((i + q) % 3) + 1) if q in (1, 2) else None,
                 }
                 occurrences.append({
-                        "maintenanceOccurrenceId": visit["maintenanceOccurrenceId"],
-                        "workOrderVisitId": visit_id,
+                        "maintenanceOccurrenceId": planned_action["maintenanceOccurrenceId"],
+                        "workOrderPlannedActionId": action_id,
                         "assetId": asset_id,
                         "episodeKey": f"{plan_id}:2026:Q{q + 1}",
                         "dueAt": due_date(q),
                         "status": "FULFILLED" if q < 2 else "RELEASED" if q == 2 else "PLANNED",
                     })
                 if q < 2:
-                    exec_id = stable("SYN-EXEC", visit_no)
-                    visit["executionRecordId"] = exec_id
+                    exec_id = stable("SYN-EXEC", action_no)
+                    planned_action["executionRecordId"] = exec_id
                     month, day = [("03", "14"), ("06", "16")][q]
-                    visit["actualStartAt"] = f"2026-{month}-{day}T07:00:00Z"
-                    visit["actualFinishAt"] = f"2026-{month}-{day}T09:10:00Z"
-                    visit["result"] = "COMPLETED_AS_PLANNED" if q == 0 else "COMPLETED_WITH_DEVIATION"
+                    actual_start_at = f"2026-{month}-{day}T07:00:00Z"
+                    actual_finish_at = f"2026-{month}-{day}T09:10:00Z"
+                    execution_result = "COMPLETED_AS_PLANNED" if q == 0 else "COMPLETED_WITH_DEVIATION"
                     execution_records.append({
                         "executionRecordId": exec_id,
-                        "workOrderVisitId": visit_id,
+                        "workOrderPlannedActionId": action_id,
                         "workOrderId": wo_id,
-                        "actualStartAt": visit["actualStartAt"],
-                        "actualFinishAt": visit["actualFinishAt"],
-                        "result": visit["result"],
+                        "actualStartAt": actual_start_at,
+                        "actualFinishAt": actual_finish_at,
+                        "result": execution_result,
                         "performedByReference": stable("SYN-ACTOR", (i % 7) + 1),
                     })
                     actuals.append({
@@ -135,8 +135,8 @@ def generate(profile: str) -> dict:
                         "materialActuals": [],
                         "inventoryAuthority": "NOT_CONNECTED",
                     })
-                    finding_id = stable("SYN-FINDING", visit_no)
-                    visit["findingId"] = finding_id
+                    finding_id = stable("SYN-FINDING", action_no)
+                    planned_action["findingId"] = finding_id
                     findings.append({
                         "findingId": finding_id,
                         "executionRecordId": exec_id,
@@ -146,28 +146,28 @@ def generate(profile: str) -> dict:
                     })
                     if q == 1:
                         follow_ups.append({
-                            "followUpId": stable("SYN-FOLLOWUP", visit_no),
+                            "followUpId": stable("SYN-FOLLOWUP", action_no),
                             "findingId": finding_id,
                             "decision": "PLANNER_REVIEW_REQUIRED",
                             "automaticWorkOrder": False,
                         })
-                    permit_id = stable("SYN-PERMIT", visit_no)
-                    visit["permitRequirementId"] = permit_id
+                    permit_id = stable("SYN-PERMIT", action_no)
+                    planned_action["permitRequirementId"] = permit_id
                     permits.append({
                         "permitRequirementId": permit_id,
-                        "workOrderVisitId": visit_id,
+                        "workOrderPlannedActionId": action_id,
                         "permitType": "DEMO_HOT_WORK" if q == 1 else "DEMO_GENERAL_WORK",
                         "status": "REFERENCE_ONLY_NOT_ISSUED",
                         "externalAuthority": "NOT_CONNECTED",
                     })
                     material_requirements.append({
-                        "workOrderVisitId": visit_id,
+                        "workOrderPlannedActionId": action_id,
                         "materialCode": f"DEMO-SEAL-{prefix}",
                         "quantity": 1,
                         "reservationStatus": "NOT_CONNECTED",
                         "inventoryAuthority": "EXTERNAL_SYSTEM",
                     })
-                visits.append(visit)
+                planned_actions.append(planned_action)
             work_orders.append({
                 "workOrderId": wo_id,
                 "workOrderNo": f"LAB-PM-2026-{i:05d}",
@@ -176,11 +176,11 @@ def generate(profile: str) -> dict:
                 "planVersionId": plan_id,
                 "cycleKey": "CYCLE-2026",
                 "displayState": "IN_PROGRESS_DEMO",
-                "visits": visits,
+                "plannedActions": planned_actions,
                 "annualClosePolicy": "OPEN_DECISION",
             })
 
-        # Condition data are independent from annual visit cadence.
+        # Condition data are independent from annual planned-action cadence.
         if i % 5 == 0:
             point_id = stable("SYN-MP", i)
             readings = []
@@ -239,7 +239,7 @@ def generate(profile: str) -> dict:
             request = {"requestId": request_id, "eventId": event_id, "assetId": asset_id, "status": "ASSESSED_DEMO"}
             if i % 2 == 0:
                 wo_id = stable("SYN-WO-CORR", i)
-                visit_id = stable("SYN-VISIT-CORR", i)
+                action_id = stable("SYN-ACTION-CORR", i)
                 exec_id = stable("SYN-EXEC-CORR", i)
                 major_repair = i % 14 == 0 and i % 5 != 0
                 request["workOrderId"] = wo_id
@@ -251,16 +251,16 @@ def generate(profile: str) -> dict:
                     "assetId": asset_id,
                     "sourceRequestId": request_id,
                     "displayState": "TECHNICALLY_CLOSED_DEMO",
-                    "visits": [{
-                        "visitId": visit_id,
-                        "visitKey": "SINGLE-EXECUTION",
+                    "plannedActions": [{
+                        "plannedActionId": action_id,
+                        "plannedActionKey": "SINGLE-EXECUTION",
                         "displayState": "COMPLETED_WITH_DEVIATION",
                         "executionRecordId": exec_id,
                     }],
                 })
                 execution_records.append({
                     "executionRecordId": exec_id,
-                    "workOrderVisitId": visit_id,
+                    "workOrderPlannedActionId": action_id,
                     "workOrderId": wo_id,
                     "actualStartAt": "2026-10-12T07:00:00Z",
                     "actualFinishAt": "2026-10-12T10:15:00Z",
@@ -295,7 +295,7 @@ def generate(profile: str) -> dict:
                     })
                 permits.append({
                     "permitRequirementId": stable("SYN-PERMIT-CORR", i),
-                    "workOrderVisitId": visit_id,
+                    "workOrderPlannedActionId": action_id,
                     "permitType": "DEMO_GENERAL_WORK",
                     "status": "REFERENCE_ONLY_NOT_ISSUED",
                     "externalAuthority": "NOT_CONNECTED",
@@ -330,7 +330,7 @@ def generate(profile: str) -> dict:
             "recurrenceAdjustments": recurrence_adjustments,
         },
         "openDecisions": {
-            "yearEndVisitDisposition": ["KEEP_OPEN", "TRANSFER_TO_NEXT_CYCLE", "REQUIRE_NEW_ORDER"],
+            "yearEndPlannedActionDisposition": ["KEEP_OPEN", "TRANSFER_TO_NEXT_CYCLE", "REQUIRE_NEW_ORDER"],
             "sourceOfInventory": None,
             "permitBoundary": "requirements/status/reference only until confirmed",
             "roleAuthority": "not assigned to named people",
@@ -338,7 +338,7 @@ def generate(profile: str) -> dict:
         "generationSummary": {
             "assetCount": len(assets),
             "annualOrderCount": sum(1 for w in work_orders if w["type"] == "PREVENTIVE_ANNUAL"),
-            "visitCount": sum(len(w["visits"]) for w in work_orders),
+            "plannedActionCount": sum(len(w["plannedActions"]) for w in work_orders),
             "conditionCaseCount": len(condition_cases),
             "measurementReadingCount": sum(len(c["readings"]) for c in condition_cases),
             "observationCount": len(observations),
@@ -352,18 +352,18 @@ def generate(profile: str) -> dict:
     asset_ids = {x["assetId"] for x in assets}
     plan_ids = {x["planVersionId"] for x in plans}
     work_ids = {x["workOrderId"] for x in work_orders}
-    visit_ids = {v["visitId"] for w in work_orders for v in w["visits"]}
+    action_ids = {v["plannedActionId"] for w in work_orders for v in w["plannedActions"]}
     assert len(asset_ids) == len(assets)
     assert all(p["assetId"] in asset_ids and p["sourceId"] in {s["sourceId"] for s in sources} for p in plans)
     assert all(w["assetId"] in asset_ids and ("planVersionId" not in w or w["planVersionId"] in plan_ids) for w in work_orders)
-    assert all(e["workOrderId"] in work_ids and e["workOrderVisitId"] in visit_ids for e in execution_records)
+    assert all(e["workOrderId"] in work_ids and e["workOrderPlannedActionId"] in action_ids for e in execution_records)
     assert all(a["executionRecordId"] in {e["executionRecordId"] for e in execution_records} for a in actuals)
     assert all(event["observationId"] in {o["observationId"] for o in observations} for event in events)
     finding_ids = {f["findingId"] for f in findings}
     assert all(f["executionRecordId"] in {e["executionRecordId"] for e in execution_records} for f in findings)
     assert all(f["findingId"] in finding_ids for f in follow_ups)
-    assert all(p["workOrderVisitId"] in visit_ids for p in permits)
-    assert all(m["workOrderVisitId"] in visit_ids for m in material_requirements)
+    assert all(p["workOrderPlannedActionId"] in action_ids for p in permits)
+    assert all(m["workOrderPlannedActionId"] in action_ids for m in material_requirements)
     assert all(a["workOrderId"] in work_ids and a["executionRecordId"] in {e["executionRecordId"] for e in execution_records} and a["planVersionId"] in plan_ids for a in recurrence_adjustments)
     return data
 

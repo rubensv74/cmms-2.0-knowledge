@@ -132,7 +132,7 @@
       "effectiveFrom": "2026-01-01",
       "annualGrouping": "DEMO_ONLY",
       "cycleKey": "CYCLE-2026",
-      "note": "Four visits demonstrate one annual WorkOrder; eligibility and cycle rules are not product defaults."
+      "note": "Four planned actions demonstrate one annual WorkOrder; eligibility and cycle rules are not product defaults."
     },
     {
       "planVersionId": "PLAN-PSV401-TIME-V1",
@@ -151,13 +151,13 @@
     "planVersionId": "PLAN-P102-TIME-V1",
     "cycleKey": "CYCLE-2026",
     "lifecycleMapping": "DEMO_ONLY_PENDING_SQL_CONTRACT",
-    "visits": [
+    "plannedActions": [
       {
-        "visitId": "SYN-VISIT-001",
-        "visitKey": "VISIT-01",
+        "plannedActionId": "SYN-ACTION-001",
+        "plannedActionKey": "ACTION-01",
         "label": "Quarter 1",
         "plannedDueAt": "2026-03-15",
-        "visitState": "COMPLETED",
+        "plannedActionState": "COMPLETED",
         "actualStartAt": "2026-03-14T07:00:00Z",
         "actualFinishAt": "2026-03-14T09:10:00Z",
         "result": "COMPLETED_AS_PLANNED",
@@ -165,35 +165,35 @@
         "maintenanceOccurrenceId": "SYN-OCC-001"
       },
       {
-        "visitId": "SYN-VISIT-002",
-        "visitKey": "VISIT-02",
+        "plannedActionId": "SYN-ACTION-002",
+        "plannedActionKey": "ACTION-02",
         "label": "Quarter 2",
         "plannedDueAt": "2026-06-15",
-        "visitState": "COMPLETED",
+        "plannedActionState": "COMPLETED",
         "actualStartAt": "2026-06-16T07:00:00Z",
         "actualFinishAt": "2026-06-16T09:40:00Z",
         "result": "COMPLETED_WITH_DEVIATION",
         "executionRecordId": "SYN-EXEC-002",
         "maintenanceOccurrenceId": "SYN-OCC-002",
-        "deviationReason": "Restricted access delayed the visit by one day."
+        "deviationReason": "Restricted access delayed the planned action by one day."
       },
       {
-        "visitId": "SYN-VISIT-003",
-        "visitKey": "VISIT-03",
+        "plannedActionId": "SYN-ACTION-003",
+        "plannedActionKey": "ACTION-03",
         "label": "Quarter 3",
         "plannedDueAt": "2026-09-15",
-        "visitState": "SCHEDULED",
+        "plannedActionState": "SCHEDULED",
         "scheduledStartAt": "2026-10-20T07:00:00Z",
         "scheduledFinishAt": "2026-10-20T10:00:00Z",
         "crewId": "SYN-CREW-MECH-01",
         "maintenanceOccurrenceId": "SYN-OCC-003"
       },
       {
-        "visitId": "SYN-VISIT-004",
-        "visitKey": "VISIT-04",
+        "plannedActionId": "SYN-ACTION-004",
+        "plannedActionKey": "ACTION-04",
         "label": "Quarter 4",
         "plannedDueAt": "2026-12-15",
-        "visitState": "PLANNED",
+        "plannedActionState": "PLANNED",
         "maintenanceOccurrenceId": null
       }
     ],
@@ -287,11 +287,11 @@
       "type": "CORRECTIVE",
       "sourceRequestId": "SYN-REQUEST-001",
       "status": "TECHNICALLY_CLOSED_DEMO",
-      "visitId": "SYN-VISIT-CORR-001"
+      "plannedActionId": "SYN-ACTION-CORR-001"
     },
     "execution": {
       "executionRecordId": "SYN-EXEC-CORR-001",
-      "visitId": "SYN-VISIT-CORR-001",
+      "plannedActionId": "SYN-ACTION-CORR-001",
       "actualStartAt": "2026-10-12T07:00:00Z",
       "actualFinishAt": "2026-10-12T10:15:00Z",
       "result": "COMPLETED_WITH_DEVIATION",
@@ -326,15 +326,15 @@
       "shiftId": "SYN-SHIFT-A",
       "availability": "DEMO_AVAILABLE"
     },
-    "visitActuals": [
+    "plannedActionExecutionRecords": [
       {
-        "visitId": "SYN-VISIT-001",
+        "plannedActionId": "SYN-ACTION-001",
         "executionRecordId": "SYN-EXEC-001",
         "laborHours": 2.17,
         "materials": []
       },
       {
-        "visitId": "SYN-VISIT-002",
+        "plannedActionId": "SYN-ACTION-002",
         "executionRecordId": "SYN-EXEC-002",
         "laborHours": 2.67,
         "materials": [
@@ -364,7 +364,7 @@
         "changeReason": "Illustrative frequency review; no published effect."
       }
     ],
-    "invariant": "Published versions remain immutable; the draft does not rewrite visits created from the prior version."
+    "invariant": "Published versions remain immutable; the draft does not rewrite planned actions created from the prior version."
   },
   "openDecisionBranches": {
     "annualCycleClose": {
@@ -409,39 +409,39 @@
       ],
       "authority": "NO_OUTCOME_SELECTED"
     },
-    "visits": [
+    "plannedActions": [
       {
-        "visitId": "SYN-VISIT-2025-01",
-        "visitKey": "2025-PERIOD-01",
+        "plannedActionId": "SYN-ACTION-2025-01",
+        "plannedActionKey": "2025-PERIOD-01",
         "plannedDueAt": "2025-03-15",
-        "visitState": "COMPLETED",
+        "plannedActionState": "COMPLETED",
         "actualStartAt": "2025-03-14T07:00:00Z",
         "actualFinishAt": "2025-03-14T09:10:00Z",
         "result": "COMPLETED_AS_PLANNED"
       },
       {
-        "visitId": "SYN-VISIT-2025-02",
-        "visitKey": "2025-PERIOD-02",
+        "plannedActionId": "SYN-ACTION-2025-02",
+        "plannedActionKey": "2025-PERIOD-02",
         "plannedDueAt": "2025-06-15",
-        "visitState": "COMPLETED_WITH_DEVIATION",
+        "plannedActionState": "COMPLETED_WITH_DEVIATION",
         "actualStartAt": "2025-06-16T07:00:00Z",
         "actualFinishAt": "2025-06-16T09:40:00Z",
         "result": "COMPLETED_WITH_DEVIATION"
       },
       {
-        "visitId": "SYN-VISIT-2025-03",
-        "visitKey": "2025-PERIOD-03",
+        "plannedActionId": "SYN-ACTION-2025-03",
+        "plannedActionKey": "2025-PERIOD-03",
         "plannedDueAt": "2025-09-15",
-        "visitState": "COMPLETED",
+        "plannedActionState": "COMPLETED",
         "actualStartAt": "2025-09-15T07:00:00Z",
         "actualFinishAt": "2025-09-15T08:55:00Z",
         "result": "COMPLETED_AS_PLANNED"
       },
       {
-        "visitId": "SYN-VISIT-2025-04",
-        "visitKey": "2025-PERIOD-04",
+        "plannedActionId": "SYN-ACTION-2025-04",
+        "plannedActionKey": "2025-PERIOD-04",
         "plannedDueAt": "2025-12-15",
-        "visitState": "PENDING_DISPOSITION_DEMO",
+        "plannedActionState": "PENDING_DISPOSITION_DEMO",
         "actualStartAt": null,
         "actualFinishAt": null,
         "result": null

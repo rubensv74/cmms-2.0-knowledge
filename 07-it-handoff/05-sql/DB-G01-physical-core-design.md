@@ -1,6 +1,6 @@
 # CMMS 2.0 — DB-G01 Physical SQL Core Design
 
-> **Addendum 2026-10-30 — DEC-025 / PM-GROUP-G01:** DB-G01-RUNTIME permanece PASS solo para el esquema anterior. El invariante “at most one WorkOrder may materialize one MaintenanceOccurrence” junto con las relaciones existentes no representa una orden anual con varias visitas. No reutilizar esta especificación como target de la capacidad anual. La migración de `WorkOrderVisit`, las relaciones de occurrence/execution/schedule y el backfill son diseño candidato, no SQL aprobado ni ejecutado. Riesgo C. Gate previo a cambios de BD: aprobar el contrato lógico y revisar migración, idempotencia, concurrencia y rollback en PM-GROUP-G01.
+> **Addendum 2026-10-30 — DEC-025 / PM-GROUP-G01:** DB-G01-RUNTIME permanece PASS solo para el esquema anterior. El invariante “at most one WorkOrder may materialize one MaintenanceOccurrence” junto con las relaciones existentes no representa una orden anual con varias actuaciones programadas. No reutilizar esta especificación como target de la capacidad anual. La migración de `WorkOrderPlannedAction`, las relaciones de occurrence/execution/schedule y el backfill son diseño candidato, no SQL aprobado ni ejecutado. Riesgo C. Gate previo a cambios de BD: aprobar el contrato lógico y revisar migración, idempotencia, concurrencia y rollback en PM-GROUP-G01.
 
 
 **Date:** 2026-10-08  
