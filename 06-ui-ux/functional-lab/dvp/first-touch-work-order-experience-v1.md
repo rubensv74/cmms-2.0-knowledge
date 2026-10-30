@@ -16,13 +16,13 @@ The initial walkthrough is a two-surface journey:
 1. Work Queue — identify and open the correct work.
 2. Annual Work Order Detail — understand the order and its planned actions; open one planned action to inspect its execution record.
 
-The initial slice is not the full CMMS product, and it does not assign a named role to either stakeholder.
+The initial slice is not the full CMMS product, and it does not assign a named role to either stakeholder. The visual direction has been updated from Rubén’s feedback; these exact targets remain candidates until their approval is recorded.
 
 ## 2. Scenario source
 
 Use the 2026 annual PM parent in the versioned functional fixture for completed, scheduled and upcoming planned action states. Use the separate SCN-ANNUAL-YEAR-END-PENDING scenario in the curated walkthrough fixture to show three completed planned actions and one pending at cycle end; its cycle boundary and disposition options are illustrative and no outcome is selected. Use the major-repair cadence-reset records only as a separate scenario; they are DEMO-only and do not assert an approved scope rule.
 
-No real asset, person, corporate standard or production inventory is represented.
+No real asset, person, corporate standard or production inventory is represented. The IAP photo-header source is a candidate only; its source pin and Studio boundary are recorded in the screen contract.
 
 ## 3. Screen contract
 
@@ -32,7 +32,7 @@ No real asset, person, corporate standard or production inventory is represented
 
 Candidate regions:
 - CMMS app shell and project context;
-- shared CMMS page header (`cmp_CMMS_PageHeaderPro` adaptation candidate) with integrated industrial hero image, page purpose and refresh action;
+- shared CMMS page header (`cmp_IAP_PageHeaderPhotoPro` source candidate) with `cmp_IAP_PageHeaderPhotoPro` in COMPACT density, a right-aligned industrial hero image, page purpose and host-owned refresh action;
 - attention summary for open work orders, actions due soon, orders needing attention (findings or overdue), and annual PM orders;
 - filter chips for work type, planned action state, asset and plan provenance;
 - paged work grid with stable parent identity, asset, activity, cycle label, completed planned-action count, next planned action date and aggregate state.
@@ -50,7 +50,7 @@ Required interactions:
 **User question:** What does this order cover, and what is planned for each action? What execution result is recorded when it is performed?
 
 Candidate regions:
-- shared CMMS page header with integrated hero image, parent identity/status, task-oriented purpose, return-to-queue and refresh actions;
+- shared `cmp_IAP_PageHeaderPhotoPro` in HERO density with right-aligned hero image, parent identity/status and task-oriented purpose; separate host-owned return-to-queue and refresh actions;
 - asset and approved plan/version provenance;
 - cycle label as supplied by the approved contract;
 - summary of completed, pending and upcoming planned actions;

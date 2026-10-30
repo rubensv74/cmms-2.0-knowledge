@@ -22,8 +22,8 @@ The walkthrough has two screens. Users can find an order, understand what it cov
 | Region | Content | Interaction |
 |---|---|---|
 | Global context | CMMS Lab identity, project selector/context, breadcrumb, current data freshness | Change project context; no role choice is inferred |
-| Shared CMMS page header (`cmp_CMMS_PageHeaderPro` adaptation candidate) with integrated hero | Industrial hero image with readable overlay, screen title, one-sentence purpose, refresh timestamp and refresh action | Refresh the read model with visible loading/complete/error feedback; image is decorative and has accessible text alternative |
-| Attention summary | Total open orders, due/upcoming planned actions, incomplete annual orders, orders with findings | Open the matching filtered queue; counts are synthetic |
+| Shared CMMS page header (`cmp_IAP_PageHeaderPhotoPro` source candidate) with integrated hero | Compact IAP photo header with a right-aligned industrial image, left-aligned title and one-sentence purpose, refresh timestamp and refresh action | Refresh the read model with visible loading/complete/error feedback; image is decorative and excluded from screen-reader reading |
+| Attention summary | Total open orders, due/upcoming planned actions, annual PM orders, orders needing attention (findings or overdue) | Open the matching filtered queue; counts are synthetic |
 | Filters and views | Work type, order state, plan provenance, asset, cycle label, planned-action state; saved views as a candidate | Combine filters; clear filters; preserve the current view |
 | Work grid | Order number, asset, activity, plan/version, cycle label, completed/total actions, next planned date, aggregate order state | Sort, page, open a row without losing the current queue context |
 
@@ -35,7 +35,7 @@ Cycle values are read from the explicit CycleKey/display label. The interface do
 
 | Region | Content | Interaction |
 |---|---|---|
-| Shared CMMS page header (`cmp_CMMS_PageHeaderPro` adaptation candidate) with integrated hero | Industrial hero image, order identity/status, one-sentence explanation, return-to-queue and refresh actions | Return with filters/page retained; refresh read data with visible feedback |
+| Shared CMMS page header (`cmp_IAP_PageHeaderPhotoPro` source candidate) with integrated hero | IAP photo header in HERO density with right-aligned image, order identity/status and task-oriented purpose; host-owned back-to-queue link and refresh action | Return with filters/page retained; refresh read data with visible feedback |
 | Order context | Asset, approved plan/version, activity, explicit cycle label and aggregate status | Follow plan provenance; cycle label is displayed as supplied |
 | Summary strip | Planned-action count, completed count, scheduled count, pending count | Selecting a count filters the action list |
 | Planned-action timeline | Chronological “Actuaciones programadas” with planned date, state, schedule/resource summary | Select an action; timeline selection does not mutate the order |
@@ -46,7 +46,7 @@ The 2026 synthetic scenario shows four planned actions: two completed, one sched
 
 ## 3. Screen states
 
-The hero image is integrated within N1 Page Identity as Rubén requested; it remains decorative and carries no instructions or status information. Preserve overlay contrast. The current CMMS catalog classifies `cmp_CMMS_PageHeaderPro` as an adaptation candidate, not a Studio-validated component; pin the actual source and confirm the hero-image input before composing the Canvas screen.
+The hero image is integrated within N1 Page Identity and remains decorative, with no instructions or status information. This DVP uses IAP `cmp_IAP_PageHeaderPhotoPro` as a source candidate to meet the image requirement. CMMS also documents a separate `cmp_CMMS_PageHeaderPro` adaptation candidate whose current contract does not define a hero-image input; reconcile that host mapping before Canvas composition. Neither mapping is CMMS Studio-validated.
 
 The screen-level actions are read-only in this slice: refresh, search, combine/clear filters, choose a saved view, sort/page, open an order, return to the queue, select a planned action and follow an existing relationship. Each action must produce an understandable result; no write behavior is implied.
 
@@ -67,13 +67,19 @@ Use only components whose task fits the surface. The 32-component inventory rema
 
 | Surface | IAP candidates | Intended use |
 |---|---|---|
-| Shared shell | `cmp_CMMS_PageHeaderPro` adaptation candidate with hero image, GlobalContextBar, ContextBreadcrumb | Identity, project context, location in the app; provide a readable title/purpose and screen-level refresh or return actions |
+| Shared shell | `cmp_IAP_PageHeaderPhotoPro` source candidate with hero image, GlobalContextBar, ContextBreadcrumb | Identity, project context, location in the app; provide a readable title/purpose and screen-level refresh or return actions |
 | Work Queue | MiniMetricStrip, FilterChips, SavedViews, DataGridPro, NeedsAttentionInbox, ActionFeedbackBar | Orient, narrow, inspect and open work |
 | Annual detail | EntityInspector, ActivityTimeline, RelationshipsExplorer, SmartDrawer | Explain order context, sequence, links and selected action details |
 | Responsive behavior | ResponsiveLayoutMetrics, ResponsiveScreenBudget | Check tablet density and narrow layouts |
 | User feedback | SkeletonLoader, ActionFeedbackBar | Loading and refresh states; no write-action assumptions |
 
 Component names are candidate identities from the CMMS/IAP inventories. Before screen generation, pin exact source revisions and host contracts in the DVP evidence package.
+
+### Exact IAP header source pin
+
+`cmp_IAP_PageHeaderPhotoPro` is a source candidate, not a CMMS Studio-validated component. The source is present in `rubensv74/industrial-application-platform` `main` at commit `377a6b3c00c7bef7a8d9e1cfdb5eeb968fbdfe2c`, path `components/canvas/candidates/cmp_IAP_PageHeaderPhotoPro.pa.yaml`, blob SHA `ee19e10cf66b2648f5b91433e990cf988f64fcad`. The source catalog contains an older note saying PR #10 is not on main while its manifest lists this file; the current main tree and blob pin take precedence for this DVP candidate. Studio import/render/interaction remains unverified.
+
+Use `Density=COMPACT` for Work Queue and `Density=HERO` for Annual Work Order Detail. The host supplies `HeroImage`, sets `ShowHero=true`, uses `HeroFocusY=0.37` as the initial candidate, and owns refresh through `OnAction`. The header is presentation-only. The back-to-queue link is a separate host navigation control.
 
 ## 5. Candidate data read contract
 
@@ -109,10 +115,11 @@ When later screens add asynchronous commands, apply the CMMS Async Action Guard,
 
 This contract supports provisional visual composition. A Studio-ready DVP package still requires:
 
-- Approved target visual or explicit product-design approval.
+- An approved, retrievable visual target pinned by path/revision and approval evidence. Current SVGs remain candidates; they are not a substitute for this gate.
 - Canonical source PaYaml for an existing host screen, or a governed new-screen baseline.
 - Current render when revising an implemented screen.
-- Exact IAP component source revisions and host inputs/outputs/events/states.
+- Exact source revisions and host inputs/outputs/events/states for each IAP component used, with Phase A registry and Power Fx dependency evidence.
+- D2P v3.3 functional-scope and region-correspondence contracts, responsive and content-capacity evidence, and Phase C interaction/state/readiness reports for the exact same source snapshot.
 - Desktop and tablet viewport budgets.
 - Studio parse/render evidence and current-to-target visual QA.
 
