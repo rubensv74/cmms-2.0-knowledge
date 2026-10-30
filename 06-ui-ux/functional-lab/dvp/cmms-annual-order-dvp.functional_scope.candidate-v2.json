@@ -216,12 +216,6 @@
     {
       "id": "REQ_WORK_QUEUE_HELP_MODAL",
       "source_id": "SRC_SCREEN_HELP_MODAL_V1",
-      "supporting_source_ids": [
-        "SRC_MEETING_2026_08_21",
-        "SRC_MEETING_2026_09_25",
-        "SRC_DEC_025",
-        "SRC_CMMS_PROPOSAL_2026_10_30"
-      ],
       "essential": true,
       "actor": "Any user of the Work Queue screen.",
       "goal": "Understand how the annual PM queue works and why its boundaries and interactions were chosen.",
@@ -246,12 +240,6 @@
     {
       "id": "REQ_ANNUAL_DETAIL_HELP_MODAL",
       "source_id": "SRC_SCREEN_HELP_MODAL_V1",
-      "supporting_source_ids": [
-        "SRC_MEETING_2026_08_21",
-        "SRC_MEETING_2026_09_25",
-        "SRC_DEC_025",
-        "SRC_CMMS_PROPOSAL_2026_10_30"
-      ],
       "essential": true,
       "actor": "Any user of the Annual Order Detail screen.",
       "goal": "Understand how to read the annual order, planned actions and actual execution evidence, and why they are separated.",
