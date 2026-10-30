@@ -1,12 +1,13 @@
 ## DVP v2 — estado actualizado (2026-10-30)
 
-El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual → retorno con contexto. Los targets v2 y el fixture anual están alineados con synthetic profile v1.1. La cola no incluye fila correctiva, Export ni Refresh; el detalle muestra actuaciones planificadas y ejecuciones reales inline. Los cuatro nombres del detalle coinciden con la actividad del registro seleccionado.
+El primer recorrido se acotó a Work Queue PM anual → detalle de orden anual → retorno con contexto. Los targets v2 y el fixture anual están alineados con synthetic profile v1.1. La cola no incluye fila correctiva, Export ni Refresh; el detalle muestra actuaciones planificadas y ejecuciones reales inline. Cada screen target incluye un acceso How it works y un estado modal-open con uso, límites y decisiones trazables.
 
 - Scope funcional v2: candidato, revisión pendiente; no se declara FE-COVERAGE PASS.
-- Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d; detalle blob 360ca111366f5f0e13caa051a762587715285bb2.
+- Targets SVG: candidatos, revisión humana y pin exacto pendientes. Work Queue blob 273a771d1f51905f27e099a18e065bbfe454bda1; detalle blob 01a23bd3cfd9b9490cae8747316aa32baab28a57; modal-open blobs 351deb3bb57f460758c2b2c67e55e891b0522703 / e95b0a6a68c899b29b7a265d8c12f95d2a8cc89a.
 - Componentes IAP/host: IAP commit 377a6b3c y 12 source blob SHAs/CustomProperties principales ya registrados; fórmulas, dependency graph, usos y contrato de host siguen pendientes en 06-ui-ux/functional-lab/dvp/iap-component-inventory-v1.md.
 - Region map y matriz de estados candidatos redactados en 06-ui-ux/functional-lab/dvp/work-queue-annual-order-region-map-v2-candidate.md; readiness findings v2 registra cierres de candidato y gates pendientes. Falta medición Canvas y confirmación de contratos source.
-- Siguiente secuencia: (1) revisión baseline funcional y pin de target; (2) source registry y host; (3) region map, estados e interacción; (4) informes D2P v3.3; (5) preparar paquete Canvas solo con gates listos.
+- Estándar común actualizado: toda pantalla Power Apps necesita modal contextual sobre función, acciones/límites y decisiones fuente, diferenciando reunión, AS-IS y baseline pendiente. Para este slice el contrato está en screen-help-and-decision-rationale-modal-v1.md; el overlay Canvas accesible sigue pendiente.
+- Siguiente secuencia: (1) revisión baseline funcional y pin de targets/modal states; (2) source graph y host overlay/búsqueda/pager; (3) medir region map y modal en Studio; (4) informes D2P v3.3; (5) preparar paquete Canvas solo con gates listos.
 - La ratificación TR y los contratos de runtime siguen siendo gates para implementación real; no bloquean este DVP candidato de solo lectura y datos sintéticos.
 
 Consulta el [plan de ejecución DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md). El estado PM-GROUP-G01 y sus reglas de runtime se mantienen según la sección operativa/histórica de abajo.
