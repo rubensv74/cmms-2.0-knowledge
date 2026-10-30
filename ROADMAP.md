@@ -15,13 +15,13 @@
 | 12 | DB/SP/PA incremental | Bloqueado hasta aprobar el contrato y la migración |
 | 13 | PA runtime + primer slice Canvas/DVP | Después de la revisión SQL/flow; requiere evidencia en herramientas reales |
 
-**Siguiente acción:** cerrar `PM-GROUP-G01`: cardinalidades, `CycleKey`, elegibilidad, materialización/idempotencia, agenda y recursos por visita, estados, hallazgos, cierres y migración/backfill. El contrato candidato está en [annual preventive work order aggregation](07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md).
+**Siguiente acción:** cerrar `PM-GROUP-G01`: cardinalidades, `CycleKey`, elegibilidad, materialización/idempotencia, agenda y recursos por visita, estados, hallazgos, cierres, regla de reparación mayor y migración/backfill. Revisar [contrato lógico](07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md) y [contrato técnico candidato](07-it-handoff/04-data/annual-preventive-work-order-technical-contract-v1.md).
 
 **No ejecutar todavía:** el Flow 2 del paquete histórico materializa una WO por `MaintenanceOccurrence`, lo que contradice el agrupamiento anual. También queda suspendido el Flow 1 como prueba de la nueva vertical hasta que el contrato de lectura incorpore visitas y estados agregados. El paquete se actualizará tras la aprobación del contrato.
 
 **CMMS Lab en paralelo:** fixture funcional sintético enlazado (250 activos; PM anual, CBM, correctivo, hallazgos, actuals y límites de permisos/inventario), bajo autoridad demostrativa. No representa valores ni estándares aprobados. El generador ofrece perfil de carga separado.
 
-**DVP / Power Apps:** iniciar generación de pantallas cuando estén fijados el contrato de esta capacidad y el first-touch runtime baseline requerido; no se afirma implementación/validación Studio en este corte.
+**DVP / Power Apps:** existe un brief preflight para Work Queue → Annual Work Order Detail (`06-ui-ux/functional-lab/dvp/first-touch-work-order-experience-v1.md`). La generación final espera el contrato cerrado, el target visual aprobado y el baseline YAML/render; no se afirma implementación/validación Studio.
 
 **Después del gate:** migración aditiva con backfill, procedures y flows idempotentes, runtime validation manual en el entorno de desarrollo, primer vertical slice Power Apps y handoff funcional-técnico para IT.
 
