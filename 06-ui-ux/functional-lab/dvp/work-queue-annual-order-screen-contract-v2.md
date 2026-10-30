@@ -20,7 +20,8 @@ All values come from a deterministic synthetic profile. No SQL, Power Automate, 
 2. Search or filter annual orders by state, asset, activity, or cycle; inspect the plan and child-action counts in the row.
 3. Open an annual order.
 4. See asset, plan/activity provenance, cycle label, each planned action and its distinct execution evidence.
-5. Use **How it works** in Annual Order Detail to review screen guidance and decision rationale. Close it without changing the selected action.\n6. Return to the same queue with project, filters, sort, page, and selection retained.
+5. Use **How it works** in Annual Order Detail to review screen guidance and decision rationale. Close it without changing the selected action.
+6. Return to the same queue with project, filters, sort, page, and selection retained.
 
 ### Screen A — Work Queue
 
@@ -31,7 +32,8 @@ All values come from a deterministic synthetic profile. No SQL, Power Automate, 
 - Four synthetic profile summaries with definitions: 62 annual orders; 248 planned actions; 124 annual execution records; 124 not-completed actions (62 scheduled + 62 planned).
 - Search and filters: order state, asset, activity and explicit cycle.
 - Grid: order number, asset, activity, CycleKey, completed/total action count, next scheduled date, and parent display state.
-- Page and sort controls preserve the active filter context.\n- The visible **How it works** header action opens a screen-specific modal with purpose, available actions/limits, and meeting/decision rationale with dates and authority status.
+- Page and sort controls preserve the active filter context.
+- The visible **How it works** header action opens a screen-specific modal with purpose, available actions/limits, and meeting/decision rationale with dates and authority status.
 
 These profile totals describe the generated fixture, not operational KPIs. The queue has no export control and does not mix in corrective or CBM orders.
 
@@ -44,7 +46,8 @@ These profile totals describe the generated fixture, not operational KPIs. The q
 - Summary: total actions, completed, scheduled, and planned.
 - Chronological **Actuaciones programadas** with planned due date and state. ScheduledAt and DueAt remain separate.
 - Selecting a completed action shows its ExecutionRecord inline: actual start/finish, result, performer reference and any linked finding/follow-up when available.
-- No separate “Open execution record” route is implied.\n- The visible **How it works** header action opens the detail-specific modal; close retains the selected order/action and return context.
+- No separate “Open execution record” route is implied.
+- The visible **How it works** header action opens the detail-specific modal; close retains the selected order/action and return context.
 
 The default example is `LAB-PM-2026-00004`: two completed actions with records, one scheduled action, and one planned action. A separate cycle-end scenario retains one pending action with no selected disposition; it is a different fixture record and does not authorize carry-forward, closure, or cancellation.
 
@@ -62,7 +65,8 @@ The interactions are read-only: open/close screen help, search, combine/clear fi
 | Page identity | cmp_IAP_PageHeaderPhotoPro | Host supplies photo and purpose; ShowAction=true, ActionText=How it works, OnAction opens the screen-specific help modal; Back is host-owned |
 | Queue | MiniMetricStrip, FilterChips, DataGridPro | Bind synthetic read collections, filter/sort/page and row navigation |
 | Detail | EntityInspector, ActivityTimeline | Bind provenance and actual executions; compose planned-action selection in the host |
-| Loading/feedback | SkeletonLoader, ActionFeedbackBar | Present loading/read errors; no refresh/retry outcome is in scope |\n| Screen help | Canvas native overlay/container; no IAP modal candidate exists at pinned source | Version screen-specific usage, action limits and decision provenance; preserve state and implement accessible focus/close behavior |
+| Loading/feedback | SkeletonLoader, ActionFeedbackBar | Present loading/read errors; no refresh/retry outcome is in scope |
+| Screen help | Canvas native overlay/container; no IAP modal candidate exists at pinned source | Version screen-specific usage, action limits and decision provenance; preserve state and implement accessible focus/close behavior |
 | Responsive | ResponsiveLayoutMetrics | Candidate for primary/detail split; inspect formulas and measure Canvas. ResponsiveScreenBudget is not suitable for this two-pane slice. |
 
 These are candidate sources; pin each used source SHA and host property contract during D2P Phase A. The 32-candidate IAP coverage remains an app-wide inventory, not a demand to place every component here.
@@ -89,6 +93,8 @@ Create, schedule, assign, execute, close, cancel, carry forward, reset frequency
 
 The v2 SVG targets are candidate revisions preserving the accepted photo-header direction and including the How it works entry point. Modal-open states are separate candidate SVGs. The DVP targets document the design only; screen source and accessible focus behavior remain unimplemented. Before product PaYaml: complete the functional source inventory/review; pin the exact target and approval evidence; map every target region to function, state, component/control and acceptance; run Phase A, Phase B, capacity/responsive, Phase C and v3.3 source reports against one candidate SHA; record the separate initial-view action gate. A first Studio import/render and matched screenshot comparison are still runtime evidence, not implied by this document.
 
-- [Work Queue v2 target](targets/work-queue-v2-candidate.svg)\n- [Work Queue help-open state](targets/work-queue-help-open-v1-candidate.svg)
-- [Annual Order Detail v2 target](targets/annual-order-detail-v2-candidate.svg)\n- [Annual Order Detail help-open state](targets/annual-order-detail-help-open-v1-candidate.svg)
+- [Work Queue v2 target](targets/work-queue-v2-candidate.svg)
+- [Work Queue help-open state](targets/work-queue-help-open-v1-candidate.svg)
+- [Annual Order Detail v2 target](targets/annual-order-detail-v2-candidate.svg)
+- [Annual Order Detail help-open state](targets/annual-order-detail-help-open-v1-candidate.svg)
 - [First-use brief v2](first-touch-work-order-experience-v2.md)
