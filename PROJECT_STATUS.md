@@ -6,7 +6,7 @@ El primer recorrido queda acotado a Work Queue PM anual → Annual Order Detail 
 |---|---|---|
 | Perfil sintético funcional v1.1 | PREPARADO | 250 activos; 62 órdenes anuales; 248 actuaciones planificadas; 124 ExecutionRecords anuales; 265 actuaciones totales. Sin datos de planta ni reglas aprobadas. |
 | Alcance funcional | CANDIDATO; revisión pendiente | Scope v2 con baseline_review.status=PENDING. No se declara FE-COVERAGE aprobado. |
-| Targets Work Queue y Annual Order Detail v2 | CANDIDATOS | Hashes blob: Work Queue 9d52868acd79a8f4fbefaced1bc056ed21d77e3d; detalle 9f97bccf2bfa819d0f48e34b8466bc3192396d24. Revisión visual humana pendiente. |
+| Targets Work Queue y Annual Order Detail v2 | CANDIDATOS | Hashes blob: Work Queue f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d; detalle 360ca111366f5f0e13caa051a762587715285bb2. Revisión visual humana pendiente. |
 | Componentes IAP / host | INVENTARIO DRAFT | Ver iap-component-inventory-v1.md. Contratos/source hashes por verificar; no hay validación Studio. |
 | Product PaYaml / D2P v3.3 | NO INICIADO | Requiere baseline revisado, target aprobado, source registry, region map y gates D2P. |
 | Studio / runtime | PENDIENTE | Sin aplicación Canvas ni evidencia Studio, SQL o Power Automate para este slice. |
