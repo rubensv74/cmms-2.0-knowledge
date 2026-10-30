@@ -17,7 +17,7 @@ Use the IAP DataGridPro main candidate for the first AS-01 lab pass, pending imp
 - The PULSE `cmp_DataTableProV2` source has useful pagination and richer selection, but its contract also exposes bulk actions, checkboxes, column selection and context actions that AS-01 does not need. Its rows must already be filtered, sorted and paged by the host.
 - The IAP PR #10 alternative remains on hold because it shares the Canvas component identity. Do not import both sources.
 
-This selects a candidate for the isolated lab. It does not promote the source to a CMMS canonical or validated component.
+This selects a candidate for the isolated lab. It does not promote the source to a CMMS canonical or validated component. **Known gap:** the current grid only renders its icon keys for status-style cells and does not render an arbitrary equipment-type icon in a normal text cell. AS-01’s target includes a type glyph, so either confirm a host-level category icon treatment or adapt and validate the shared grid before calling the target fully implemented.
 
 ## 2. Expected host controls
 
@@ -118,7 +118,7 @@ ClearCollect(
 Set(varAS01_DataState, "READY");
 Set(varAS01_SortKey, "AssetCode");
 Set(varAS01_SortDirection, "ASC");
-Set(varAS01_SelectedAssetCode, Blank());
+Set(varAS01_SelectedAssetCode, "");
 
 Select(btnAS01_ApplyFilters);
 ```
@@ -139,7 +139,7 @@ ClearCollect(
             IsBlank(ddAS01_Type.Selected.Code) ||
                 EquipmentTypeCode = ddAS01_Type.Selected.Code,
             IsBlank(ddAS01_Location.Selected.Code) ||
-                StartsWith(LocationCode, ddAS01_Location.Selected.Code),
+                LocationCode = ddAS01_Location.Selected.Code,
             IsBlank(ddAS01_Lifecycle.Selected.Code) ||
                 LifecycleStatusCode = ddAS01_Lifecycle.Selected.Code,
             IsBlank(ddAS01_Criticality.Selected.Code) ||
@@ -169,7 +169,7 @@ Set each search/filter control's `OnChange` to:
 Select(btnAS01_ApplyFilters)
 ```
 
-All search and filter work is local over `colAS01_Fixture`; it is not a production data adapter and has no delegation behavior to validate.
+All search and filter work is local over `colAS01_Fixture`; it is not a production data adapter and has no delegation behavior to validate. The fixture location filter matches an exact `LocationCode`; no hierarchy expansion or FLH traversal is implied.
 
 ## 5. IAP DataGridPro properties
 
