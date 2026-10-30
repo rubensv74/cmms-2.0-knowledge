@@ -42,7 +42,7 @@
   "baseline_review": {
     "status": "PENDING",
     "reviewer": "",
-    "evidence_ref": "Requirement IDs were derived from the current proposal and checked against DVP screen contract v2; functional analyst review of this v2 inventory is not recorded."
+    "evidence_ref": "Human review of the overall v2 scope is still pending. On 2026-10-30 the user accepted adding the cross-screen decision-help modal requirement; that acceptance covers the two help requirements only, not approval of the remaining scope or visual targets."
   },
   "views": [
     {
