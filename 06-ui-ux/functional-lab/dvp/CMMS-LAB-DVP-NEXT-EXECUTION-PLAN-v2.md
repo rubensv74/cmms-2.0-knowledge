@@ -17,6 +17,8 @@
 
 ## Artefactos de preparación añadidos
 
+- Revisión estática de fórmulas y dependencias de los candidatos seleccionados: iap-component-formula-dependency-review-v1.md. Aclara responsabilidades de componentes vs. host; no es validación Studio.
+
 - Inventario IAP/host: iap-component-inventory-v1.md. Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos; fórmulas internas, grafo Power Fx, usos y host siguen pendientes.
 - Mapa regional y de estado candidato: work-queue-annual-order-region-map-v2-candidate.md. Deriva propósito/aceptación de regiones visibles del SVG; no afirma layout medido en Canvas.
 - Se retiró Refresh de ambos SVG porque no tenía contrato funcional. El detalle ahora muestra los nombres de la actividad asociada al registro seleccionado.
@@ -36,7 +38,7 @@
 
 ## Siguiente orden de trabajo autónomo
 
-1. Completar análisis interno/dependencias Power Fx de componentes elegidos y definir overlay Canvas accesible, búsqueda local y paginador del host.
+1. Cerrar los bindings candidatos del host (búsqueda local, filtros, orden/página, selección, navegación y overlay), con fórmulas y estado explícitos; completar revisión de usos canónicos.
 2. Medir en Studio el region map candidato y resolver presupuesto responsive, capacidad, scroll y paginación.
 3. Medir modal y reflow con el shell en Studio; comprobar apertura/cierre, foco/retorno al botón del host, teclado, lector de pantalla, scroll interno y persistencia de contexto. El botón interno del componente queda oculto para este DVP; no se requiere modificar su contrato compartido.
 4. Actualizar matriz de estados/interacción con evidencia Studio; mantener separadas actuaciones planificadas y ExecutionRecord.
