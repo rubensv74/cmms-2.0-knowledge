@@ -27,7 +27,7 @@
 | Gate | Estado | Siguiente evidencia concreta |
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
-| Target visual exacto | Candidato | Revisar/pinar Work Queue blob 273a771d1f51905f27e099a18e065bbfe454bda1, detalle blob 01a23bd3cfd9b9490cae8747316aa32baab28a57 y modal-open blobs 351deb3bb57f460758c2b2c67e55e891b0522703 / e95b0a6a68c899b29b7a265d8c12f95d2a8cc89a; decisión humana pendiente. |
+| Target visual exacto | Candidato | Revisar/pinar Work Queue blob ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c, detalle blob 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5 y modal-open blobs e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208; decisión humana pendiente. |
 | D2P Phase A | Draft | Completar Phase A con fórmulas, dependencias Power Fx, usos canónicos, host de búsqueda/pager y overlay; el activador del modal usa PageHeaderPhotoPro.Action. Registry de 12 paths/SHAs/CustomProperties ya extraído. Ver iap-component-inventory-v1.md. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
 | D2P Phase C / v3.3 | No iniciado | Cubrir navegación, filtros, sort/page, Help open/close, retorno del foco, estados, accesibilidad y acción inicial visible. |
