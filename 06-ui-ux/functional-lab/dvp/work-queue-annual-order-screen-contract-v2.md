@@ -62,7 +62,7 @@ The interactions are read-only: open/close screen help, search, combine/clear fi
 | Region | IAP candidates | Host responsibility |
 |---|---|---|
 | Shared shell | GlobalContextBar, ContextBreadcrumb | Project context, app navigation and breadcrumb |
-| Page identity | cmp_IAP_PageHeaderPhotoPro | Host supplies photo and purpose; ShowAction=true, ActionText=How it works, OnAction opens the screen-specific help modal; Back is host-owned |
+| Page identity | cmp_IAP_PageHeaderPhotoPro (TMS-imported definition) | Host supplies photo/purpose; ShowAction=true, ActionText=How it works, ActionBusy=false; component OnAction event opens the screen-specific modal. Do not add a duplicate host button. TMS attachment signature matches 32 IAP properties; use the imported TMS body as source of truth. |
 | Queue | MiniMetricStrip, FilterChips, DataGridPro | Host composes accessible local Search TextInput and pager; FilterChips emits filter intent; DataGrid receives normalized rows and emits row-select/sort. It has no search or pagination API. |
 | Detail | EntityInspector, ActivityTimeline | Bind provenance and actual executions; compose planned-action selection in the host |
 | Loading/feedback | SkeletonLoader, ActionFeedbackBar | Present loading/read errors; no refresh/retry outcome is in scope |
@@ -71,7 +71,7 @@ The interactions are read-only: open/close screen help, search, combine/clear fi
 
 These are candidate sources; pin each used source SHA and host property contract during D2P Phase A. The 32-candidate IAP coverage remains an app-wide inventory, not a demand to place every component here.
 
-The header source candidate is `cmp_IAP_PageHeaderPhotoPro`, IAP main commit `377a6b3c00c7bef7a8d9e1cfdb5eeb968fbdfe2c`, blob `ee19e10cf66b2648f5b91433e990cf988f64fcad`. Work Queue uses COMPACT; detail uses HERO. Studio import, rendering and interaction remain unverified.
+The imported TMS component definition supplied by the user is the instance authority; its 32-property signature was compared with IAP main commit `377a6b3c00c7bef7a8d9e1cfdb5eeb968fbdfe2c`, blob `ee19e10cf66b2648f5b91433e990cf988f64fcad`. Names, PropertyKind and DataType match; bodies differ. Work Queue uses COMPACT; detail uses HERO. The target action aligns to the source button width (120 px); Studio import, binding and interaction remain unverified.
 
 ## 5. Data contract for the DVP projection
 
