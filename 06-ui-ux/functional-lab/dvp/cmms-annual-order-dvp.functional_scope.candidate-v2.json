@@ -1,0 +1,196 @@
+{
+  "schema": "iap-functional-scope-v1",
+  "screen": "CMMS_LAB_ANNUAL_PM_WORK_QUEUE_AND_ORDER_DETAIL",
+  "sources": [
+    {
+      "id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "reference": "https://chatgpt.com/library?file_id=libfile_f5251d0722e88191a6c495330180b566&account_id=personal",
+      "revision": "Library version 12; CMMS Propuesta de Solución, 30 October 2026, pages 3, 6 and 7",
+      "authority": "CANONICAL"
+    },
+    {
+      "id": "SRC_DEC_025",
+      "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/00-governance/decisions/DEC-025-annual-preventive-work-order.md",
+      "revision": "DEC-025 candidate on the CMMS Lab branch; not TR-ratified policy",
+      "authority": "SUPPORTING_CANDIDATE"
+    },
+    {
+      "id": "SRC_DVP_SYNTHETIC_PROFILE_V11",
+      "reference": "https://github.com/rubensv74/cmms-2.0-knowledge/blob/feat/cmms-annual-preventive-workorder-lab-v1/06-ui-ux/functional-lab/synthetic-data/cases/cmms-work-queue-annual-detail-v1.1.json",
+      "revision": "CMMS-LAB-SYNTH-FUNCTIONAL-V1, dataset 1.1.0, generated with functional profile",
+      "authority": "DEMO_ONLY"
+    }
+  ],
+  "baseline_review": {
+    "status": "PENDING",
+    "reviewer": "",
+    "evidence_ref": "Requirement IDs were derived from the current proposal and checked against DVP screen contract v2; functional analyst review of this v2 inventory is not recorded."
+  },
+  "views": [
+    {
+      "id": "WORK_QUEUE",
+      "kind": "PRIMARY"
+    },
+    {
+      "id": "ANNUAL_ORDER_DETAIL",
+      "kind": "SECONDARY",
+      "back_to": "WORK_QUEUE",
+      "breadcrumb": "CMMS Lab / Work Queue / Annual Work Order",
+      "retains_context": [
+        "project",
+        "filters",
+        "sort",
+        "page",
+        "selection"
+      ]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "J_ANNUAL_ORDER_INSPECTION",
+      "steps": [
+        {
+          "view": "WORK_QUEUE",
+          "action": "Search or filter the annual preventive view, inspect a row and open an annual preventive order.",
+          "next_view": "ANNUAL_ORDER_DETAIL"
+        },
+        {
+          "view": "ANNUAL_ORDER_DETAIL",
+          "action": "Inspect plan provenance, cycle, planned actions and inline execution evidence for a selected action.",
+          "next_view": "ANNUAL_ORDER_DETAIL"
+        },
+        {
+          "view": "ANNUAL_ORDER_DETAIL",
+          "action": "Return to the queue.",
+          "next_view": "WORK_QUEUE"
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ_ANNUAL_ONLY_QUEUE",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough participant; named users have no inferred business role or permission.",
+      "goal": "Find the annual preventive work that the first DVP slice can explain.",
+      "trigger": "Open the Work Queue.",
+      "information": "Annual preventive order identity, asset/activity, explicit cycle label, action counts, next scheduled date and displayed state.",
+      "decision": "Choose an annual preventive order for inspection.",
+      "action": "Search/filter/sort/page the annual PM view and open a matching annual order.",
+      "validation": "Only PREVENTIVE_ANNUAL rows are shown; nonannual orders are not routed into Annual Order Detail.",
+      "result": "A selected annual order opens its matching detail.",
+      "feedback": "Selection and queue context remain visible in the detail breadcrumb and return path.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "WORK_QUEUE",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "LOADING",
+        "READY",
+        "EMPTY",
+        "NO_RESULTS",
+        "ERROR",
+        "STALE"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_ANNUAL_ORDER_PLAN_PROVENANCE",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough participant; no plan approval authority inferred.",
+      "goal": "Understand the approved-plan source represented by the synthetic annual order.",
+      "trigger": "Open annual order detail.",
+      "information": "Asset, plan/version, activity and explicit CycleKey/display label.",
+      "decision": "Recognize which synthetic plan and cycle the order represents.",
+      "action": "Inspect the order context and plan provenance.",
+      "validation": "All values are labelled synthetic/demo; no unapproved example is presented as a real corporate plan.",
+      "result": "The order is traceable to its synthetic plan/version and cycle.",
+      "feedback": "Plan identity, activity, status and cycle are shown separately.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_PLANNED_ACTION_EXECUTION_SEPARATION",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough participant; no execution authority inferred.",
+      "goal": "Distinguish planned preventive actions from work actually performed.",
+      "trigger": "Inspect the selected annual order.",
+      "information": "Each planned-action date/state and linked ExecutionRecord with actual dates/result when available.",
+      "decision": "Identify completed, scheduled and still-planned actions.",
+      "action": "Select an action and review its execution evidence inline when present.",
+      "validation": "DueAt, ScheduledAt and actual dates remain distinct; missing actuals/results are not fabricated.",
+      "result": "The user understands which action is executed and what result was recorded.",
+      "feedback": "Execution details remain in the order view and do not imply a separate route.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_CYCLE_END_PENDING_VISIBILITY",
+      "source_id": "SRC_CMMS_PROPOSAL_2026_10_30",
+      "essential": true,
+      "actor": "First walkthrough participant; no disposition authority inferred.",
+      "goal": "Recognize which planned actions remain pending at cycle end.",
+      "trigger": "Open the cycle-end synthetic scenario.",
+      "information": "Completed and pending action states and the absence of a selected disposition.",
+      "decision": "Understand the pending action is unresolved.",
+      "action": "Review the pending action without changing its state.",
+      "validation": "The demo does not close, carry forward, replace or cancel the pending action.",
+      "result": "Pending remains explicit and no operational policy is inferred.",
+      "feedback": "A synthetic/open-decision label is visible.",
+      "next_state": "ANNUAL_ORDER_DETAIL",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "READY",
+        "PARTIAL_DATA",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    },
+    {
+      "id": "REQ_READ_CONTEXT_RETURN",
+      "source_id": "SRC_DVP_SYNTHETIC_PROFILE_V11",
+      "essential": true,
+      "actor": "First walkthrough participant.",
+      "goal": "Explore the synthetic annual queue without losing their place.",
+      "trigger": "Search/filter a queue and open a row.",
+      "information": "Current project, filters, sort, page and selected order.",
+      "decision": "Return to the same queue result after inspection.",
+      "action": "Use Back to Work Queue.",
+      "validation": "Project, filters, sort, page and selection are restored; no backend write occurs.",
+      "result": "The read-only walkthrough continues from the same context.",
+      "feedback": "Queue returns with the same view state.",
+      "next_state": "WORK_QUEUE",
+      "view_id": "ANNUAL_ORDER_DETAIL",
+      "journey_id": "J_ANNUAL_ORDER_INSPECTION",
+      "states": [
+        "READY",
+        "ERROR"
+      ],
+      "implementation_status": "VISUAL_DEMO"
+    }
+  ],
+  "expected_requirement_ids": [
+    "REQ_ANNUAL_ONLY_QUEUE",
+    "REQ_ANNUAL_ORDER_PLAN_PROVENANCE",
+    "REQ_PLANNED_ACTION_EXECUTION_SEPARATION",
+    "REQ_CYCLE_END_PENDING_VISIBILITY",
+    "REQ_READ_CONTEXT_RETURN"
+  ]
+}
