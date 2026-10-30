@@ -13,6 +13,7 @@
 4. Annual Order Detail v2 apunta a orden/activo/plan existentes; diferencia actuaciones planificadas y ejecuciones reales inline.
 5. Se escribieron el screen contract y la First-Touch experience del recorrido mínimo.
 6. Se creó scope funcional candidato v2. baseline_review.status sigue PENDING; no se declara FE-COVERAGE aprobado.
+7. Se incorporó como requisito transversal el modal How it works por pantalla: explica propósito, acciones/límites y decisiones con fecha/estado. Se añadieron dos requisitos al scope, contrato del modal y variantes visuales cerradas/abiertas. No hay un modal IAP candidato; la composición Canvas sigue pendiente.
 
 ## Artefactos de preparación añadidos
 
@@ -26,20 +27,21 @@
 | Gate | Estado | Siguiente evidencia concreta |
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
-| Target visual exacto | Candidato | Revisar/pinar Work Queue blob f15d2a5ea4654c91791ee6f0b1b4c7c5aa02010d y detalle blob 360ca111366f5f0e13caa051a762587715285bb2; decisión humana pendiente. |
-| D2P Phase A | Draft | Completar Phase A inspeccionando fórmulas, dependencias Power Fx, usos canónicos, bindings y contrato del host; definir TextInput y pager accesibles del host, ya que los candidatos DataGrid/Filter no ofrecen búsqueda local ni paginación. Registry de paths/SHAs/CustomProperties iniciado. Ver iap-component-inventory-v1.md. |
+| Target visual exacto | Candidato | Revisar/pinar Work Queue blob 273a771d1f51905f27e099a18e065bbfe454bda1, detalle blob 01a23bd3cfd9b9490cae8747316aa32baab28a57 y modal-open blobs 351deb3bb57f460758c2b2c67e55e891b0522703 / e95b0a6a68c899b29b7a265d8c12f95d2a8cc89a; decisión humana pendiente. |
+| D2P Phase A | Draft | Completar Phase A con fórmulas, dependencias Power Fx, usos canónicos, host de búsqueda/pager y overlay; el activador del modal usa PageHeaderPhotoPro.Action. Registry de 12 paths/SHAs/CustomProperties ya extraído. Ver iap-component-inventory-v1.md. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
-| D2P Phase C / v3.3 | No iniciado | Cubrir navegación ida/vuelta, selección, filtros, sort/page, estados, accesibilidad y acción inicial visible. |
+| D2P Phase C / v3.3 | No iniciado | Cubrir navegación, filtros, sort/page, Help open/close, retorno del foco, estados, accesibilidad y acción inicial visible. |
 | Product PaYaml | No iniciado | Solo con evidencia de los gates funcionales, visuales, A/B/C y v3.3 para los mismos hashes de target/source. |
 | Studio | Pendiente | First-Touch manual cuando readiness D2P indique READY_FOR_STUDIO; guardar evidencia de importación, render e interacciones. |
 
 ## Siguiente orden de trabajo autónomo
 
-1. Inspeccionar fuentes IAP y host contra el commit canónico; resolver nombres y contratos reales.
+1. Completar análisis interno/dependencias Power Fx de componentes elegidos y definir overlay Canvas accesible, búsqueda local y paginador del host.
 2. Medir en Studio el region map candidato y resolver presupuesto responsive, capacidad, scroll y paginación.
-3. Preparar matriz de interacción/estado basada en el screen contract; mantener separadas actuaciones planificadas y ExecutionRecord.
-4. Con source evidence, generar los informes D2P requeridos contra hashes fijados y registrar hallazgos.
-5. Entregar target exacto y cobertura para revisión humana; no presentar PaYaml de producto como listo antes de ese gate.
+3. Medir modal y reflow con el shell en Studio; comprobar apertura/cierre, foco, teclado, lectura, scroll interno y persistencia de contexto.
+4. Actualizar matriz de estados/interacción con evidencia Studio; mantener separadas actuaciones planificadas y ExecutionRecord.
+5. Con source evidence, generar los informes D2P requeridos contra hashes fijados y registrar hallazgos.
+6. Entregar targets exactos y cobertura para revisión humana; no presentar PaYaml de producto como listo antes de ese gate.
 
 ## Límites
 
