@@ -18,8 +18,9 @@
 ## Artefactos de preparación añadidos
 
 - Revisión estática de fórmulas y dependencias de los candidatos seleccionados: iap-component-formula-dependency-review-v1.md. Aclara responsabilidades de componentes vs. host; no es validación Studio.
+- Contrato candidato implementable para el modal reutilizable por pantalla, con binding de PageHeaderPhotoPro, contenido trazable, cierre y preservación del contexto: screen-help-modal-implementation-contract-v1.md.
 
-- Inventario IAP/host: iap-component-inventory-v1.md. Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos; fórmulas internas, grafo Power Fx, usos y host siguen pendientes.
+- Inventario IAP/host: iap-component-inventory-v1.md. Pin IAP 377a6b3c y 12 blob SHAs/contratos principales extraídos; la revisión estática de fórmulas/dependencias de los candidatos elegidos está en iap-component-formula-dependency-review-v1.md. Usos canónicos y bindings completos del host siguen pendientes.
 - Mapa regional y de estado candidato: work-queue-annual-order-region-map-v2-candidate.md. Deriva propósito/aceptación de regiones visibles del SVG; no afirma layout medido en Canvas.
 - Se retiró Refresh de ambos SVG porque no tenía contrato funcional. El detalle ahora muestra los nombres de la actividad asociada al registro seleccionado.
 - Readiness findings v2 registra hallazgos corregidos y gates pendientes; no declara screen readiness.
