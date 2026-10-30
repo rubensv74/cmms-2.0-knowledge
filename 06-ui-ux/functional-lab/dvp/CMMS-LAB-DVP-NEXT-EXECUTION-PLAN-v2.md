@@ -28,9 +28,9 @@
 |---|---|---|
 | Fuente funcional | Preparado para revisión | Vincular requisitos a propuesta 30/10 y DEC-025; registrar APPROVED o brechas. |
 | Target visual exacto | Candidato | Revisar/pinar Work Queue blob ecf0515db8e12d102ab3862ad4b7b0f3fcbff61c, detalle blob 1d243ce29a0c09259beb0d41cf6f7e152b97a1b5 y modal-open blobs e92600690ef25dddcbd5442f5f7b0378c3871c8c / 1ff8eb5e398ac1ccb1fc7bc07ea6a08e508f4208; decisión humana pendiente. |
-| D2P Phase A | Draft | Completar Phase A con fórmulas, dependencias Power Fx, usos canónicos, host de búsqueda/pager y overlay; el activador usa PageHeaderPhotoPro.Action. Demostrar retorno de foco: la firma no expone el botón interno. Registry de 12 paths/SHAs/CustomProperties ya extraído. Ver iap-component-inventory-v1.md. |
+| D2P Phase A | Draft | Completar Phase A con fórmulas, dependencias Power Fx, usos canónicos y contrato de búsqueda/pager/overlay. Mantener PageHeaderPhotoPro como identidad visual con ShowAction=false; el host ofrece su propio botón accesible “Cómo funciona” y controla apertura/cierre. El retorno del foco se dirige a ese botón del host. Registry de 12 paths/SHAs/CustomProperties ya extraído. Ver iap-component-inventory-v1.md. |
 | D2P Phase B | No iniciado | Redactar region map y presupuesto responsive; medir/contrastar después en Canvas. No traducir píxeles SVG a medidas Canvas. |
-| D2P Phase C / v3.3 | No iniciado | Cubrir navegación, filtros, sort/page, Help open/close, retorno del foco, estados, accesibilidad y acción inicial visible. |
+| D2P Phase C / v3.3 | No iniciado | Cubrir navegación, filtros, sort/page, ayuda abierta/cerrada, retorno del foco al botón del host, estados, accesibilidad y acción inicial visible. |
 | Product PaYaml | No iniciado | Solo con evidencia de los gates funcionales, visuales, A/B/C y v3.3 para los mismos hashes de target/source. |
 | Studio | Pendiente | First-Touch manual cuando readiness D2P indique READY_FOR_STUDIO; guardar evidencia de importación, render e interacciones. |
 
@@ -38,7 +38,7 @@
 
 1. Completar análisis interno/dependencias Power Fx de componentes elegidos y definir overlay Canvas accesible, búsqueda local y paginador del host.
 2. Medir en Studio el region map candidato y resolver presupuesto responsive, capacidad, scroll y paginación.
-3. Medir modal y reflow con el shell en Studio; comprobar apertura/cierre, foco/retorno al trigger interno, teclado, lectura, scroll interno y persistencia de contexto; si el host no puede devolver foco, actualizar el contrato compartido.
+3. Medir modal y reflow con el shell en Studio; comprobar apertura/cierre, foco/retorno al botón del host, teclado, lector de pantalla, scroll interno y persistencia de contexto. El botón interno del componente queda oculto para este DVP; no se requiere modificar su contrato compartido.
 4. Actualizar matriz de estados/interacción con evidencia Studio; mantener separadas actuaciones planificadas y ExecutionRecord.
 5. Con source evidence, generar los informes D2P requeridos contra hashes fijados y registrar hallazgos.
 6. Entregar targets exactos y cobertura para revisión humana; no presentar PaYaml de producto como listo antes de ese gate.
