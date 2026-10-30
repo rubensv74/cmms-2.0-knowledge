@@ -78,6 +78,6 @@ La ayuda se versiona junto con screen contract, scope y target. Si cambia una de
 - La ayuda no debe borrar ni reinicializar filtros, selección, paginación ni foco de la pantalla subyacente.
 - La implementación Canvas debe demostrar teclado, lector de pantalla, contraste y reflow en Studio. El patrón visual SVG no es evidencia de accesibilidad ni de implementación. Aunque la referencia pública no expone el botón interno, esa duda no bloquea el modal ni la construcción del resto del slice; comprobar apertura/cierre y foco en Studio, y resolver cualquier limitación accesible con evidencia.
 
-## Contrato de implementación pendiente
+## Contrato de implementación
 
-La revisión IAP fijada no contiene un componente modal/dialog de Canvas. Evaluar un componente local reutilizable construido con contenedores y controles nativos, con contenido distinto por pantalla. Antes de PaYaml registrar controles/props/eventos, focus trap o alternativa compatible con Canvas, Escape/cierre, scroll interno, breakpoint y límites de rendimiento. No llamar a esto modal validado hasta inspección en Power Apps Studio.
+La especificación implementable candidata está en [screen-help-modal-implementation-contract-v1.md](screen-help-modal-implementation-contract-v1.md). Define un componente Canvas local reutilizable con instancias y contenido distintos por pantalla, usando la acción integrada de PageHeaderPhotoPro como activador. La revisión IAP fijada no contiene un componente modal/dialog. Apertura/cierre, foco, teclado, scroll y reflow requieren verificación en Power Apps Studio. No llamar a esto modal validado hasta esa inspección.
