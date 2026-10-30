@@ -28,15 +28,13 @@
 9. Demonstration of major repair resetting selected time-based cadence from repair finish while condition-monitoring cadence stays unchanged.
 10. Corrective follow-up and plan/reliability feedback.
 11. Open decisions: annual-cycle boundaries, year-end visits, major-repair scope, PTW/inventory source, roles and authority, cost/KPI policy.
-9. Corrective follow-up and plan/reliability feedback.
-10. Open decisions: year-end visits, PTW/inventory source, roles and authority, cost/KPI policy.
 
 ## Profiles
 
 | Profile | Intended use | Volume status |
 |---|---|---|
 | walkthrough | User-led DVP and full-cycle demonstration | Fixed, curated records |
-| functional | 250 synthetic assets, 62 annual PM orders / 248 visits, 50 condition cases / 400 readings, 35 observation-event cases, 17 corrective orders and 141 execution records; also findings, follow-ups, permit references, crews and material requirements | Generated deterministically; demonstration only |
+| functional | 250 synthetic assets, 62 annual PM orders / 248 visits, 50 condition cases / 400 readings, 35 observation-event cases, 17 corrective orders, 141 execution records and 14 major-repair cadence-reset examples; also findings, follow-ups, permit references, crews and material requirements | Generated deterministically; demonstration only |
 | load | 2,000 assets and proportionally expanded linked lifecycle records | Generator profile only; no performance acceptance target until real read paths and limits are known |
 
 Curated walkthrough fixture: `cases/cmms-full-cycle-v1.json`. Functional volume fixture: `cmms-lab-synthetic-functional-v1.json.gz` (decompress to JSON before loading). Reproducible generator: `generate_cmms_lab_volume.py` (`--profile functional` or `--profile load`); output is compact UTF-8 JSON. Later expansions must retain the curated scenario IDs and stable keys.
