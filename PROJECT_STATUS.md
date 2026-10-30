@@ -11,7 +11,7 @@ El primer recorrido queda acotado a Work Queue PM anual → Annual Order Detail 
 | Product PaYaml / D2P v3.3 | NO INICIADO | Requiere baseline revisado, target aprobado, source registry, region map y gates D2P. |
 | Studio / runtime | PENDIENTE | Sin aplicación Canvas ni evidencia Studio, SQL o Power Automate para este slice. |
 
-**Preparación ya redactada:** inventario IAP preliminar y mapa de regiones/estados candidato (work-queue-annual-order-region-map-v2-candidate.md); ninguno afirma contratos source completos ni medición Canvas. **Siguiente trabajo:** cerrar revisión funcional y pin visual; completar source registry IAP y host; medir el mapa en Studio; cerrar los informes D2P contra un mismo conjunto de hashes. Ver [plan DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md).
+**Preparación ya redactada:** inventario IAP preliminar, mapa de regiones/estados candidato y readiness findings v2; ninguno afirma contratos source completos ni medición Canvas. **Siguiente trabajo:** cerrar revisión funcional y pin visual; completar source registry IAP y host; medir el mapa en Studio; cerrar los informes D2P contra un mismo conjunto de hashes. Ver [plan DVP v2](06-ui-ux/functional-lab/dvp/CMMS-LAB-DVP-NEXT-EXECUTION-PLAN-v2.md).
 
 **Lectura histórica:** la sección anterior del estado operativo corresponde a la revisión inicial del 30/10 y contiene referencias v1. Para DVP vigente, esta tabla y el plan v2 prevalecen.
 
