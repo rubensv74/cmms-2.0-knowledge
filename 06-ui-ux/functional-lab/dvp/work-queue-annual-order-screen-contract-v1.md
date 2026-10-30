@@ -22,7 +22,7 @@ The walkthrough has two screens. Users can find an order, understand what it cov
 | Region | Content | Interaction |
 |---|---|---|
 | Global context | CMMS Lab identity, project selector/context, breadcrumb, current data freshness | Change project context; no role choice is inferred |
-| Shared PageHeaderPro hero | Industrial hero image with readable overlay, screen title, one-sentence purpose, refresh timestamp and refresh action | Refresh the read model with visible loading/complete/error feedback; image is decorative and has accessible text alternative |
+| Shared CMMS page header (`cmp_CMMS_PageHeaderPro` adaptation candidate) with integrated hero | Industrial hero image with readable overlay, screen title, one-sentence purpose, refresh timestamp and refresh action | Refresh the read model with visible loading/complete/error feedback; image is decorative and has accessible text alternative |
 | Attention summary | Total open orders, due/upcoming planned actions, incomplete annual orders, orders with findings | Open the matching filtered queue; counts are synthetic |
 | Filters and views | Work type, order state, plan provenance, asset, cycle label, planned-action state; saved views as a candidate | Combine filters; clear filters; preserve the current view |
 | Work grid | Order number, asset, activity, plan/version, cycle label, completed/total actions, next planned date, aggregate order state | Sort, page, open a row without losing the current queue context |
@@ -35,7 +35,7 @@ Cycle values are read from the explicit CycleKey/display label. The interface do
 
 | Region | Content | Interaction |
 |---|---|---|
-| Shared PageHeaderPro hero | Industrial hero image, order identity/status, one-sentence explanation, return-to-queue and refresh actions | Return with filters/page retained; refresh read data with visible feedback |
+| Shared CMMS page header (`cmp_CMMS_PageHeaderPro` adaptation candidate) with integrated hero | Industrial hero image, order identity/status, one-sentence explanation, return-to-queue and refresh actions | Return with filters/page retained; refresh read data with visible feedback |
 | Order context | Asset, approved plan/version, activity, explicit cycle label and aggregate status | Follow plan provenance; cycle label is displayed as supplied |
 | Summary strip | Planned-action count, completed count, scheduled count, pending count | Selecting a count filters the action list |
 | Planned-action timeline | Chronological “Actuaciones programadas” with planned date, state, schedule/resource summary | Select an action; timeline selection does not mutate the order |
@@ -46,7 +46,7 @@ The 2026 synthetic scenario shows four planned actions: two completed, one sched
 
 ## 3. Screen states
 
-The hero image remains decorative: it must not carry instructions or status information, and overlay contrast must preserve readable text.
+The hero image is integrated within N1 Page Identity as Rubén requested; it remains decorative and carries no instructions or status information. Preserve overlay contrast. The current CMMS catalog classifies `cmp_CMMS_PageHeaderPro` as an adaptation candidate, not a Studio-validated component; pin the actual source and confirm the hero-image input before composing the Canvas screen.
 
 The screen-level actions are read-only in this slice: refresh, search, combine/clear filters, choose a saved view, sort/page, open an order, return to the queue, select a planned action and follow an existing relationship. Each action must produce an understandable result; no write behavior is implied.
 
@@ -67,13 +67,13 @@ Use only components whose task fits the surface. The 32-component inventory rema
 
 | Surface | IAP candidates | Intended use |
 |---|---|---|
-| Shared shell | PageHeaderPro with hero image, GlobalContextBar, ContextBreadcrumb | Identity, project context, location in the app; provide a readable title/purpose and screen-level refresh or return actions |
+| Shared shell | `cmp_CMMS_PageHeaderPro` adaptation candidate with hero image, GlobalContextBar, ContextBreadcrumb | Identity, project context, location in the app; provide a readable title/purpose and screen-level refresh or return actions |
 | Work Queue | MiniMetricStrip, FilterChips, SavedViews, DataGridPro, NeedsAttentionInbox, ActionFeedbackBar | Orient, narrow, inspect and open work |
 | Annual detail | EntityInspector, ActivityTimeline, RelationshipsExplorer, SmartDrawer | Explain order context, sequence, links and selected action details |
 | Responsive behavior | ResponsiveLayoutMetrics, ResponsiveScreenBudget | Check tablet density and narrow layouts |
 | User feedback | SkeletonLoader, ActionFeedbackBar | Loading and refresh states; no write-action assumptions |
 
-Component names are candidate identities from the IAP source inventory. Before screen generation, pin exact source revisions and host contracts in the DVP evidence package.
+Component names are candidate identities from the CMMS/IAP inventories. Before screen generation, pin exact source revisions and host contracts in the DVP evidence package.
 
 ## 5. Candidate data read contract
 
