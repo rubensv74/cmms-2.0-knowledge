@@ -65,7 +65,9 @@ Este slice no permite modificar fechas, asignar personal, ejecutar, cerrar, canc
 - Mostrar el estado de cada referencia: decisión confirmada en reunión, descripción AS-IS, abierto, baseline posterior aceptado por analista o ratificación pendiente.
 - Una decisión de una reunión no debe presentarse como aprobada para el producto cuando las propias notas la registran como AS-IS o pendiente.
 - Para cada afirmación, guardar el source ID, path/revisión documental y pantalla a la que aplica. En UI mostrar identificador, fecha y resumen; el detalle de fuente puede abrir un documento solo si existe destino interno estable y accesible.
-- El activador reutiliza cmp_IAP_PageHeaderPhotoPro.Action con ActionText “How it works” y su evento OnAction; no se añade un segundo botón de cabecera. En el host se propone un estado local por pantalla para abrir/cerrar el overlay; fórmula y foco quedan sujetos a evidencia Canvas. La variante importada TMS prevalece para la integración porque su firma coincide con IAP, pero el cuerpo exacto difiere de la revisión pública fijada.\n\nLa ayuda se versiona junto con screen contract, scope y target. Si cambia una decisión, revisar el copy y su vinculación antes de liberar la pantalla.
+- El activador reutiliza cmp_IAP_PageHeaderPhotoPro.Action con ActionText “How it works” y su evento OnAction; no se añade un segundo botón de cabecera. En el host se propone un estado local por pantalla para abrir/cerrar el overlay; fórmula y foco quedan sujetos a evidencia Canvas. La variante importada TMS prevalece para la integración porque su firma coincide con IAP, pero el cuerpo exacto difiere de la revisión pública fijada.
+
+La ayuda se versiona junto con screen contract, scope y target. Si cambia una decisión, revisar el copy y su vinculación antes de liberar la pantalla.
 - Mantener el badge sintético y la ausencia de writes también dentro del modal.
 
 ## Comportamiento accesible requerido
