@@ -18,7 +18,7 @@ The initial slice is not the full CMMS product, and it does not assign a named r
 
 ## 2. Scenario source
 
-Use the versioned synthetic functional fixture from the synthetic-data folder. Its annual PM parent has four periodic visit slots; completed, scheduled and planned examples show different states. Use one completed visit with an independent result, one pending visit and one upcoming visit. Use the major-repair cadence-reset records only as a separate scenario; they are DEMO-only and do not assert an approved scope rule.
+Use the 2026 annual PM parent in the versioned functional fixture for completed, scheduled and upcoming visit states. Use the separate SCN-ANNUAL-YEAR-END-PENDING scenario in the curated walkthrough fixture to show three completed visits and one pending at cycle end; its cycle boundary and disposition options are illustrative and no outcome is selected. Use the major-repair cadence-reset records only as a separate scenario; they are DEMO-only and do not assert an approved scope rule.
 
 No real asset, person, corporate standard or production inventory is represented.
 
