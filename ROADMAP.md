@@ -1,32 +1,29 @@
 # Roadmap CMMS 2.0
 
-**Última revisión:** 2026-10-09
+**Última revisión:** 2026-10-30
 
-> **Estado operativo vigente.** Los apartados de aprendizaje funcional posteriores a este resumen mantienen valor como alcance e historia, pero cualquier orden de gates antiguo queda sustituido por la siguiente secuencia. Los PASS de contrato/benchmark no equivalen a runtime ni a aceptación de un proceso local.
+> **Estado operativo vigente.** DEC-025 confirma la orden preventiva anual con varias visitas independientes para las actividades elegibles. El SQL/SP/PA validado en octubre representa el modelo previo y no valida esta semántica. Las secciones históricas permanecen para contexto.
 
 ## 0. Gates alcanzados y siguiente paso
 
 | Secuencia | Gate | Resultado documentado |
 |---:|---|---|
-| 1 | MSL-G01 — Source Normalization | PASS_WITH_RECORDED_AMBIGUITIES |
-| 2 | MSL-G02 — Core Contracts | PASS_WITH_DEFERRED_TRIGGER_VALUES |
-| 3 | TRG-G01 — Triggering Domain Contract | PASS_CONTRACT |
-| 4 | WM-G02 — Execution Package | PASS_CONTRACT_WITH_EXTERNAL_PERMIT_BOUNDARY |
-| 5 | WM-G03 — Planning & Scheduling | PASS_BENCHMARKED_CONTRACT |
-| 6 | WM-G05 — Execution Feedback | PASS_BENCHMARKED_CONTRACT |
-| 7 | DM-G01 — Conceptual Reconciliation | PASS_WITH_OPEN_CONTRACTS; gate intermedio |
-| 8 | DM-G02 — Core Logical Freeze | PASS_CORE_LOGICAL_MODEL |
-| 9 | DB-G01 — Physical Design | Diseño y static review completados |
-| 10 | DB-G01-RUNTIME — Core SQL | PASS_RUNTIME (37 tablas en `db-omm-dev`) |
-| 11 | SP-G01 — Core Stored Procedures | PASS_RUNTIME |
-| 12 | PA-G01 — Flow Contracts | DESIGN_READY_FOR_RUNTIME_VALIDATION |
-| **13** | **PA-G01-RUNTIME-MIN — 2 flows mínimos** | **NEXT / PENDING_RUNTIME** |
+| 1–8 | MSL-G01/02, TRG-G01, WM-G02/03/05, DM-G01/02 | PASS de contrato/benchmark/lógico según el alcance registrado |
+| 9 | DB-G01-RUNTIME / SP-G01 | PASS_RUNTIME para el modelo previo (37 tablas y procedimientos) |
+| 10 | DEC-025 | CONFIRMED: una orden preventiva anual seleccionada, varias visitas, fechas/resultados separados |
+| **11** | **PM-GROUP-G01 — Contrato anual** | **NEXT / EN DISEÑO; riesgo C** |
+| 12 | DB/SP/PA incremental | Bloqueado hasta aprobar el contrato y la migración |
+| 13 | PA runtime + primer slice Canvas/DVP | Después de la revisión SQL/flow; requiere evidencia en herramientas reales |
 
-**Prioridad actual:** construir y ejecutar `CMMS_CORE_WorkQueue_List` y `CMMS_CORE_WorkOrder_Materialize`. Gate PASS únicamente con evidencia real de READY/JSON, idempotencia por `requestId`, manejo de errores CMMS-404/409 y fallos técnicos CMMS-500. En caso de PASS, extender el patrón a los otros seis flows **por incrementos verificados**; después conectar la primera vertical Power Apps y validar en Studio.
+**Siguiente acción:** cerrar `PM-GROUP-G01`: cardinalidades, `CycleKey`, elegibilidad, materialización/idempotencia, agenda y recursos por visita, estados, hallazgos, cierres y migración/backfill. El contrato candidato está en [annual preventive work order aggregation](07-it-handoff/04-data/annual-preventive-work-order-aggregation-v1.md).
 
-**Paralelo / diferido:** `MSL-G03/G04` (adopción y feedback corporativo), contraste operacional real del benchmark WM-G03/WM-G05, AE/Functional Lab, permisos PTW/LOTO integrales y dominios fuera del freeze técnico (costes, inventario, compras, facturación, RCA, KPI definitivo). Ninguno queda considerado implementado por la validación SQL del núcleo.
+**No ejecutar todavía:** el Flow 2 del paquete histórico materializa una WO por `MaintenanceOccurrence`, lo que contradice el agrupamiento anual. También queda suspendido el Flow 1 como prueba de la nueva vertical hasta que el contrato de lectura incorpore visitas y estados agregados. El paquete se actualizará tras la aprobación del contrato.
 
-**Referencias:** [Estado](PROJECT_STATUS.md), [DM-G02](00-governance/audits/2026-10-08-data-model-g02.md), [DB-G01 runtime](00-governance/audits/2026-10-08-db-g01-runtime.md), [SP-G01](00-governance/audits/2026-10-08-sp-g01.md), [PA-G01](00-governance/audits/2026-10-08-pa-g01.md).
+**CMMS Lab en paralelo:** fixture funcional sintético enlazado (250 activos; PM anual, CBM, correctivo, hallazgos, actuals y límites de permisos/inventario), bajo autoridad demostrativa. No representa valores ni estándares aprobados. El generador ofrece perfil de carga separado.
+
+**DVP / Power Apps:** iniciar generación de pantallas cuando estén fijados el contrato de esta capacidad y el first-touch runtime baseline requerido; no se afirma implementación/validación Studio en este corte.
+
+**Después del gate:** migración aditiva con backfill, procedures y flows idempotentes, runtime validation manual en el entorno de desarrollo, primer vertical slice Power Apps y handoff funcional-técnico para IT.
 
 ---
 
